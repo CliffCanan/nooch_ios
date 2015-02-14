@@ -55,15 +55,19 @@ NSMutableURLRequest *request;
 {
     [super viewDidLoad];
 
+
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(applicationWillEnterFG_Home:) name:UIApplicationWillEnterForegroundNotification object:nil];
+
+
     ABAddressBookRef addressBook = ABAddressBookCreateWithOptions(nil, nil);
     ABAddressBookRegisterExternalChangeCallback(addressBook, addressBookChanged, (__bridge void *)(self));
 
     nav_ctrl = self.navigationController;
-    [ self.navigationItem setLeftBarButtonItem:Nil];
+    [self.navigationItem setLeftBarButtonItem:Nil];
 
     user = [NSUserDefaults standardUserDefaults];
     [[UINavigationBar appearance] setTintColor:[UIColor whiteColor]];
-    [[assist shared]isPOP];
+    [[assist shared] isPOP];
 
     [self.view setBackgroundColor:[UIColor whiteColor]];
     UIImageView *backgroundImage = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"SplashPageBckgrnd-568h@2x.png"]];
@@ -98,6 +102,7 @@ NSMutableURLRequest *request;
         loadInfo = [[NSMutableDictionary alloc] initWithContentsOfFile:[self autoLogin]];
         [[NSUserDefaults standardUserDefaults] setValue:[loadInfo valueForKey:@"MemberId"] forKey:@"MemberId"];
         [[NSUserDefaults standardUserDefaults] setValue:[loadInfo valueForKey:@"UserName"] forKey:@"UserName"];
+
         [me birth];
     }
     else
@@ -649,21 +654,21 @@ void addressBookChanged(ABAddressBookRef addressBook, CFDictionaryRef info, void
     [super viewDidAppear:animated];
     [self.navigationItem setTitle:@"Nooch"];
 
-    bannerAlert = 0;
-
-    //Update Pending Status
-    NSUserDefaults * defaults = [[NSUserDefaults alloc]init];
-
-    if (![[assist shared]isPOP])
+    if (![[assist shared] isPOP])
     {
         [[UIApplication sharedApplication] setStatusBarHidden:YES withAnimation:UIStatusBarAnimationSlide];
-        
+
+        self.slidingViewController.panGesture.enabled = YES;
+        [self.view addGestureRecognizer:self.slidingViewController.panGesture];
+
         if ([[user objectForKey:@"logged_in"] isKindOfClass:[NSNull class]])
         {
             //push login
             return;
         }
-        if ([[assist shared]needsReload])
+
+        if ([[assist shared] needsReload] &&
+            [[[NSUserDefaults standardUserDefaults] valueForKey:@"ProfileComplete"]isEqualToString:@"YES"])
         {
             RTSpinKitView *spinner1 = [[RTSpinKitView alloc] initWithStyle:RTSpinKitViewStyleCircleFlip];
             spinner1.color = [UIColor clearColor];
@@ -674,16 +679,18 @@ void addressBookChanged(ABAddressBookRef addressBook, CFDictionaryRef info, void
             self.hud.mode = MBProgressHUDModeCustomView;
             self.hud.customView = spinner1;
             self.hud.delegate = self;
-            self.hud.labelText = @"Loading your Nooch account";
+            self.hud.labelText = NSLocalizedString(@"Home_HUDlbl1", @"Home Screen 'Loading Your Nooch Account' HUD");
             self.hud.labelColor = kNoochGrayDark;
             [self.hud show:YES];
-        }
 
-        if ([[[NSUserDefaults standardUserDefaults] valueForKey:@"ProfileComplete"]isEqualToString:@"YES"] )
-        {
-            serve *serveOBJ = [serve new ];
+            //location
+            [self checkIfLocAllowed];
+
+            serve * serveOBJ = [serve new];
             [serveOBJ setTagName:@"sets"];
             [serveOBJ getSettings];
+
+            NSLog(@"Home: Reload Initiated");
         }
     }
     else
@@ -695,6 +702,90 @@ void addressBookChanged(ABAddressBookRef addressBook, CFDictionaryRef info, void
         return;
     }
 
+    // Address Book Authorization grant
+    if (ABAddressBookGetAuthorizationStatus() == kABAuthorizationStatusDenied ||
+        ABAddressBookGetAuthorizationStatus() == kABAuthorizationStatusRestricted)
+    {
+        NSLog(@"AB Denied");
+    }
+    else if (ABAddressBookGetAuthorizationStatus() == kABAuthorizationStatusAuthorized)
+    {
+        NSLog(@"AB Authorized");
+        if ([[[assist shared]assosAll] count] == 0) {
+            [self address_book];
+        }
+    }
+    else
+    {
+        ABAddressBookRequestAccessWithCompletion(ABAddressBookCreateWithOptions(NULL, nil), ^(bool granted, CFErrorRef error)
+                                                 {
+                                                     if (!granted) {
+                                                         NSLog(@"AB Just denied");
+                                                         return;
+                                                     }
+                                                     if ([[[assist shared]assosAll] count] == 0) {
+                                                         [self address_book];
+                                                     }
+                                                     dispatch_async(dispatch_get_main_queue(), ^{
+                                                         [self GetFavorite];
+                                                     });
+                                                     NSLog(@"AB Just authorized");
+                                                 });
+        NSLog(@"AB Not determined");
+    }
+    
+    [self GetFavorite];
+
+    [self checkAllBannerStatuses];
+
+    [[assist shared] setRequestMultiple:NO];
+    [[assist shared] setArray:nil];
+
+    NSString * versionNumFromArtisan = [ARPowerHookManager getValueForHookById:@"versionNum"];
+    versionNumFromArtisan = [versionNumFromArtisan stringByReplacingOccurrencesOfString:@"1." withString:@""];
+    NSString * versionNumFromBundle = [[[NSBundle mainBundle] infoDictionary] objectForKey:@"CFBundleVersion"];
+    versionNumFromBundle = [versionNumFromBundle stringByReplacingOccurrencesOfString:@"1." withString:@""];
+
+    float versionNumFromArtisanDouble = [versionNumFromArtisan floatValue];
+    float bundleVersionNumDouble = [versionNumFromBundle floatValue];
+
+    if (bundleVersionNumDouble < versionNumFromArtisanDouble &&
+        [[NSUserDefaults standardUserDefaults] boolForKey:@"VersionUpdateNoticeDisplayed"] == false )
+    {
+        [self displayVersionUpdateNotice];
+    }
+
+    [ARProfileManager registerString:@"IsBankAttached" withValue:@"unknown"];
+
+    if ([[[NSUserDefaults standardUserDefaults] objectForKey:@"IsBankAvailable"]isEqualToString:@"1"])
+    {
+        [ARProfileManager setStringValue:@"YES" forVariable:@"IsBankAttached"];
+    }
+    else
+    {
+        [ARProfileManager setStringValue:@"NO" forVariable:@"IsBankAttached"];
+    }
+}
+
+- (void)applicationWillEnterFG_Home:(NSNotification *)notification
+{
+    //NSLog(@"Checkpoint: applicationWillEnterFG notification");
+    [self checkAllBannerStatuses];
+}
+
+-(void)checkAllBannerStatuses
+{
+    //NSLog(@"checkAllBannerStatuses Checkpoint # 1");
+    bannerAlert = 0;
+    carouselTopValue = 48;
+    topBtnTopValue = 260;
+
+    // for the red notification bubble if a user has a pending RECEIVED Request
+    serve * getPendingCount = [serve new];
+    [getPendingCount setDelegate:self];
+    [getPendingCount setTagName:@"getPendingTransfersCount"];
+    [getPendingCount getPendingTransfersCount];
+
     NSShadow * shadowRed = [[NSShadow alloc] init];
     shadowRed.shadowColor = Rgb2UIColor(71, 8, 7, .4);
     shadowRed.shadowOffset = CGSizeMake(0, 1);
@@ -703,11 +794,19 @@ void addressBookChanged(ABAddressBookRef addressBook, CFDictionaryRef info, void
     if ([[user objectForKey:@"Status"] isEqualToString:@"Suspended"] ||
         [[user objectForKey:@"Status"] isEqualToString:@"Temporarily_Blocked"])
     {
-        bannerAlert++;
+        if ([self.view.subviews containsObject:self.pending_requests]) {
+            [self dismiss_requestsPendingBanner];
+        }
+        if ([self.view.subviews containsObject:self.phone_incomplete]) {
+            [self dismiss_phone_unvalidated];
+        }
+        if ([self.view.subviews containsObject:self.profile_incomplete]) {
+            [self dismiss_profile_unvalidated];
+        }
 
+        bannerAlert++;
         if (![self.view.subviews containsObject:self.suspended])
         {
-            
             [self.suspended removeFromSuperview];
             self.suspended = [UIView new];
             [self.suspended setStyleId:@"suspended_home"];
@@ -715,15 +814,15 @@ void addressBookChanged(ABAddressBookRef addressBook, CFDictionaryRef info, void
 
             UILabel * sus_header = [UILabel new];
             [sus_header setStyleClass:@"banner_header"];
-            sus_header.attributedText = [[NSAttributedString alloc] initWithString:@"Account Suspended"
-                                                                   attributes:textAttributes];
+            sus_header.attributedText = [[NSAttributedString alloc] initWithString:[NSString  stringWithFormat:NSLocalizedString(@"SuspBannerTitle", @"Home Screen Suspended Banner Title")]
+                                                                        attributes:textAttributes];
             [self.suspended addSubview:sus_header];
 
             UILabel * sus_info = [UILabel new];
             [sus_info setStyleClass:@"banner_info"];
             [sus_info setNumberOfLines:0];
-            sus_info.attributedText = [[NSAttributedString alloc] initWithString:@"Your account will be limited while you are suspended."
-                                                                        attributes:textAttributes];
+            sus_info.attributedText = [[NSAttributedString alloc] initWithString:[NSString stringWithFormat:NSLocalizedString(@"SuspBannerBodyTxt", @"Home Screen Suspended Banner Body Text")]
+                                                                      attributes:textAttributes];
             [self.suspended addSubview:sus_info];
 
             UILabel * sus_exclaim = [UILabel new];
@@ -733,7 +832,7 @@ void addressBookChanged(ABAddressBookRef addressBook, CFDictionaryRef info, void
 
             UIButton * contact = [UIButton buttonWithType:UIButtonTypeRoundedRect];
             [contact setStyleClass:@"go_now_text"];
-            [contact setTitle:@"TAP TO CONTACT NOOCH" forState:UIControlStateNormal];
+            [contact setTitle:[NSString stringWithFormat:NSLocalizedString(@"SuspBannerAction", @"Home Screen Suspended Banner Action Text")] forState:UIControlStateNormal];
             [contact setTitleShadowColor:Rgb2UIColor(71, 8, 7, 0.4) forState:UIControlStateNormal];
             contact.titleLabel.shadowOffset = CGSizeMake(0.0, 1.0);
             [contact addTarget:self action:@selector(contact_support) forControlEvents:UIControlEventTouchUpInside];
@@ -761,7 +860,7 @@ void addressBookChanged(ABAddressBookRef addressBook, CFDictionaryRef info, void
             bannerAlert--;
         }
     }
-    
+
     if ([[user objectForKey:@"Status"] isEqualToString:@"Registered"])
     {
         if (![self.view.subviews containsObject:self.profile_incomplete])
@@ -770,33 +869,32 @@ void addressBookChanged(ABAddressBookRef addressBook, CFDictionaryRef info, void
             self.profile_incomplete = [UIView new];
             [self.profile_incomplete setStyleId:@"email_unverified"];
             [self.profile_incomplete addGestureRecognizer:[[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(go_profileFromHome)]];
-          
+
             UILabel * em = [UILabel new];
             [em setStyleClass:@"banner_header"];
-            em.attributedText = [[NSAttributedString alloc] initWithString:@"Confirm Your Email Address"
-                                                                       attributes:textAttributes];
+            em.attributedText = [[NSAttributedString alloc] initWithString:[NSString stringWithFormat:NSLocalizedString(@"EmailUnverifiedTitle", @"Home Screen Email Unregistered Title")]
+                                                                attributes:textAttributes];
             [self.profile_incomplete addSubview:em];
-            
+
             UILabel * em_exclaim = [UILabel new];
             [em_exclaim setStyleClass:@"banner_alert_glyph"];
             [em_exclaim setText:[NSString fontAwesomeIconStringForIconIdentifier:@"fa-exclamation-triangle"]];
             [self.profile_incomplete addSubview:em_exclaim];
-            
+
             UILabel * em_info = [UILabel new];
             [em_info setStyleClass:@"banner_info"];
             [em_info setNumberOfLines:0];
-            em_info.attributedText = [[NSAttributedString alloc] initWithString:@"Complete your profile to unlock all features."
-                                                             attributes:textAttributes];
+            em_info.attributedText = [[NSAttributedString alloc] initWithString:NSLocalizedString(@"EmailUnverifiedBodyTxt", @"Home Screen Email Unregistered Body Text") attributes:textAttributes];
             [self.profile_incomplete addSubview:em_info];
-            
+
             UIButton * go = [UIButton buttonWithType:UIButtonTypeRoundedRect];
             [go setStyleClass:@"go_now_text"];
-            [go setTitle:@"TAP TO FIX NOW" forState:UIControlStateNormal];
+            [go setTitle:NSLocalizedString(@"EmailUnverifiedActinoTxt", @"Home Screen Email Unregistered Action Text") forState:UIControlStateNormal];
             [go setTitleShadowColor:Rgb2UIColor(71, 8, 7, 0.4) forState:UIControlStateNormal];
             go.titleLabel.shadowOffset = CGSizeMake(0.0, 1.0);
             [go addTarget:self action:@selector(go_profileFromHome) forControlEvents:UIControlEventTouchUpInside];
             [self.profile_incomplete addSubview:go];
-            
+
             UIButton * dis = [UIButton buttonWithType:UIButtonTypeCustom];
             [dis setStyleClass:@"dismiss_banner"];
             [dis setTitle:[NSString fontAwesomeIconStringForIconIdentifier:@"fa-times-circle"] forState:UIControlStateNormal];
@@ -804,11 +902,11 @@ void addressBookChanged(ABAddressBookRef addressBook, CFDictionaryRef info, void
             [dis setTitleColor:[Helpers hexColor:@"F49593"] forState:UIControlStateHighlighted];
             dis.titleLabel.shadowOffset = CGSizeMake(0.0, 1.0);
             [dis addTarget:self action:@selector(dismiss_profile_unvalidated) forControlEvents:UIControlEventTouchUpInside];
-          
+            
             [self.profile_incomplete addSubview:dis];
             [self.view addSubview:self.profile_incomplete];
-
-            [UIView animateKeyframesWithDuration:.6
+            
+            [UIView animateKeyframesWithDuration:.4
                                            delay:0
                                          options:2 << 16
                                       animations:^{
@@ -843,47 +941,47 @@ void addressBookChanged(ABAddressBookRef addressBook, CFDictionaryRef info, void
         }
     }
 
-    if (![[[NSUserDefaults standardUserDefaults] valueForKey:@"IsVerifiedPhone"]isEqualToString:@"YES"] )
+    if (![[[NSUserDefaults standardUserDefaults] valueForKey:@"IsVerifiedPhone"]isEqualToString:@"YES"] &&
+        ![[user objectForKey:@"Status"] isEqualToString:@"Suspended"])
     {
         if (![self.view.subviews containsObject:self.phone_incomplete])
         {
             [self.phone_incomplete removeFromSuperview];
-
+            
             self.phone_incomplete = [UIView new];
             [self.phone_incomplete setStyleId:@"phone_unverified"];
             [self.phone_incomplete addGestureRecognizer:[[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(go_profileFromHome)]];
-
+            
             UILabel * em = [UILabel new];
             [em setStyleClass:@"banner_header"];
-            em.attributedText = [[NSAttributedString alloc] initWithString:@"Phone Number Not Verified"
-                                                                      attributes:textAttributes];
+            em.attributedText = [[NSAttributedString alloc] initWithString:NSLocalizedString(@"PhoneUnverifiedTitle", @"Home Screen Phone Unverified Title") attributes:textAttributes];
             [self.phone_incomplete addSubview:em];
-
+            
             UILabel * em_exclaim = [UILabel new];
             [em_exclaim setStyleClass:@"banner_alert_glyph"];
             [em_exclaim setText:[NSString fontAwesomeIconStringForIconIdentifier:@"fa-phone"]];
             [self.phone_incomplete addSubview:em_exclaim];
-
+            
             UILabel * glyph_phone = [UILabel new];
             [glyph_phone setStyleClass:@"banner_alert_glyph_sm"];
             [glyph_phone setText:[NSString fontAwesomeIconStringForIconIdentifier:@"fa-exclamation"]];
             [self.phone_incomplete addSubview:glyph_phone];
-
+            
             UILabel * em_info = [UILabel new];
             [em_info setStyleClass:@"banner_info"];
             [em_info setNumberOfLines:0];
-            em_info.attributedText = [[NSAttributedString alloc] initWithString:@"Please verify your phone - respond 'Go' to the SMS."
-                                                                    attributes:textAttributes];
+            em_info.attributedText = [[NSAttributedString alloc] initWithString:NSLocalizedString(@"PhoneUnverifiedBodyTxt", @"Home Screen Phone Unregistered Body Text")
+                                                                     attributes:textAttributes];
             [self.phone_incomplete addSubview:em_info];
-
+            
             UIButton * go = [UIButton buttonWithType:UIButtonTypeRoundedRect];
             [go setStyleClass:@"go_now_text"];
-            [go setTitle:@"TAP TO ADD NUMBER" forState:UIControlStateNormal];
+            [go setTitle:NSLocalizedString(@"PhoneUnverifiedActionTxt", @"Home Screen Phone Unverified Action Text") forState:UIControlStateNormal];
             [go setTitleShadowColor:Rgb2UIColor(71, 8, 7, 0.4) forState:UIControlStateNormal];
             go.titleLabel.shadowOffset = CGSizeMake(0.0, 1.0);
             [go addTarget:self action:@selector(go_profileFromHome) forControlEvents:UIControlEventTouchUpInside];
             [self.phone_incomplete addSubview:go];
-
+            
             UIButton * dis = [UIButton buttonWithType:UIButtonTypeCustom];
             [dis setStyleClass:@"dismiss_banner"];
             [dis setTitle:[NSString fontAwesomeIconStringForIconIdentifier:@"fa-times-circle"] forState:UIControlStateNormal];
@@ -891,12 +989,12 @@ void addressBookChanged(ABAddressBookRef addressBook, CFDictionaryRef info, void
             [dis setTitleColor:[Helpers hexColor:@"F49593"] forState:UIControlStateHighlighted];
             dis.titleLabel.shadowOffset = CGSizeMake(0.0, 1.0);
             [dis addTarget:self action:@selector(dismiss_phone_unvalidated) forControlEvents:UIControlEventTouchUpInside];
-
+            
             [self.phone_incomplete addSubview:dis];
-
+            
             [self.view addSubview:self.phone_incomplete];
-
-            [UIView animateKeyframesWithDuration:.5
+            
+            [UIView animateKeyframesWithDuration:.4
                                            delay:0
                                          options:2 << 16
                                       animations:^{
@@ -915,11 +1013,11 @@ void addressBookChanged(ABAddressBookRef addressBook, CFDictionaryRef info, void
                                       } completion: ^(BOOL finished) {
                                           [self.view bringSubviewToFront:self.phone_incomplete];
                                       }
-            ];
+             ];
         }
         else
         {
-            [UIView animateKeyframesWithDuration:.25
+            [UIView animateKeyframesWithDuration:.4
                                            delay:0
                                          options:2 << 16
                                       animations:^{
@@ -945,7 +1043,8 @@ void addressBookChanged(ABAddressBookRef addressBook, CFDictionaryRef info, void
     }
     else
     {
-        if (bannerAlert > 0) {
+        if (bannerAlert > 0 && ![self.view.subviews containsObject:self.suspended])
+        {
             bannerAlert--;
         }
         if ([self.view.subviews containsObject:self.phone_incomplete])
@@ -954,152 +1053,52 @@ void addressBookChanged(ABAddressBookRef addressBook, CFDictionaryRef info, void
         }
     }
 
+    //NSLog(@"Banner count is: %d",bannerAlert);
+
+    //Update Pending Status
+    NSUserDefaults * defaults = [[NSUserDefaults alloc] init];
+
     if ([[defaults objectForKey:@"Pending_count"] intValue] > 0)
     {
-        [self.navigationItem setLeftBarButtonItem:nil];
-        UILabel * pending_notif = [UILabel new];
-        [pending_notif setText:[defaults objectForKey:@"Pending_count"]];
-        [pending_notif setFrame:CGRectMake(16, -2, 20, 20)];
-        [pending_notif setStyleId:@"pending_notif"];
-        
-        UIButton * hamburger = [UIButton buttonWithType:UIButtonTypeRoundedRect];
-        [hamburger setStyleId:@"navbar_hamburger"];
-        [hamburger addTarget:self action:@selector(showMenu) forControlEvents:UIControlEventTouchUpInside];
-        [hamburger setTitle:[NSString fontAwesomeIconStringForIconIdentifier:@"fa-bars"] forState:UIControlStateNormal];
-        [hamburger setTitleShadowColor:Rgb2UIColor(19, 32, 38, 0.22) forState:UIControlStateNormal];
-        hamburger.titleLabel.shadowOffset = CGSizeMake(0.0, -1.0);
-        [hamburger addSubview:pending_notif];
-        UIBarButtonItem * menu = [[UIBarButtonItem alloc] initWithCustomView:hamburger];
-        [self.navigationItem setLeftBarButtonItem:menu];
-
-        if ([[user objectForKey:@"Status"] isEqualToString:@"Active"] &&
-            [[[NSUserDefaults standardUserDefaults] valueForKey:@"IsVerifiedPhone"]isEqualToString:@"YES"])
-        {
-            bannerAlert++;
-            
-            if (![self.view.subviews containsObject:self.pending_requests])
-            {
-                [self.pending_requests removeFromSuperview];
-
-                self.pending_requests = [UIView new];
-                [self.pending_requests setStyleId:@"pendingRequestBanner"];
-                [self.pending_requests addGestureRecognizer:[[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(go_history)]];
-
-                NSShadow * shadowBlue = [[NSShadow alloc] init];
-                shadowBlue.shadowColor = Rgb2UIColor(19, 32, 38, .25);
-                shadowBlue.shadowOffset = CGSizeMake(0, 1);
-                NSDictionary * textShadowBlue = @{NSShadowAttributeName:shadowBlue};
-
-                UILabel * em = [UILabel new];
-                [em setStyleClass:@"banner_header"];
-
-                UILabel * em_exclaim = [UILabel new];
-                [em_exclaim setStyleClass:@"banner_alert_glyph"];
-                [em_exclaim setText:[NSString fontAwesomeIconStringForIconIdentifier:@"fa-inbox"]];
-                CGRect frameOfGlyph = em_exclaim.frame;
-                frameOfGlyph.origin.x += 6;
-                [em_exclaim setFrame:frameOfGlyph];
-                [self.pending_requests addSubview:em_exclaim];
-
-                UILabel * em_info = [UILabel new];
-                [em_info setStyleClass:@"banner_info"];
-                [em_info setNumberOfLines:0];
-                if ([[defaults objectForKey:@"Pending_count"] intValue] == 1)
-                {
-                    em.attributedText = [[NSAttributedString alloc] initWithString:@"Pending Request Waiting"
-                                                                        attributes:textShadowBlue];
-                    em_info.attributedText = [[NSAttributedString alloc] initWithString:[NSString stringWithFormat:@"You have %d payment request waiting for a response.",[[defaults objectForKey:@"Pending_count"] intValue]]
-                                                                             attributes:textShadowBlue];
-                }
-                else if ([[defaults objectForKey:@"Pending_count"] intValue] > 1)
-                {
-                    em.attributedText = [[NSAttributedString alloc] initWithString:@"Pending Requests Waiting"
-                                                                        attributes:textShadowBlue];
-                    em_info.attributedText = [[NSAttributedString alloc] initWithString:[NSString stringWithFormat:@"You have %d payment requests waiting for a response.",[[defaults objectForKey:@"Pending_count"] intValue]]
-                                                                             attributes:textShadowBlue];
-                }
-                [self.pending_requests addSubview:em];
-                [self.pending_requests addSubview:em_info];
-
-                UIButton * goHistory = [UIButton buttonWithType:UIButtonTypeRoundedRect];
-                [goHistory setStyleClass:@"go_now_text"];
-                [goHistory setTitle:@"TAP TO VIEW & RESPOND" forState:UIControlStateNormal];
-                [goHistory setTitleShadowColor:Rgb2UIColor(19, 32, 38, .25) forState:UIControlStateNormal];
-                goHistory.titleLabel.shadowOffset = CGSizeMake(0.0, 1.0);
-                [goHistory addTarget:self action:@selector(go_history) forControlEvents:UIControlEventTouchUpInside];
-                [self.pending_requests addSubview:goHistory];
-                
-                UIButton * dis = [UIButton buttonWithType:UIButtonTypeCustom];
-                [dis setStyleClass:@"dismiss_banner"];
-                [dis setTitle:[NSString fontAwesomeIconStringForIconIdentifier:@"fa-times-circle"] forState:UIControlStateNormal];
-                [dis setTitleShadowColor:Rgb2UIColor(19, 32, 38, .25) forState:UIControlStateNormal];
-                [dis setTitleColor:[Helpers hexColor:@"a5d8f1"] forState:UIControlStateHighlighted];
-                dis.titleLabel.shadowOffset = CGSizeMake(0.0, 1.0);
-                [dis addTarget:self action:@selector(dismiss_requestsPendingBanner) forControlEvents:UIControlEventTouchUpInside];
-
-                [self.pending_requests addSubview:dis];
-
-                [self.view addSubview:self.pending_requests];
-
-                [UIView animateKeyframesWithDuration:.65
-                                               delay:0
-                                             options:2 << 16
-                                          animations:^{
-                                              [UIView addKeyframeWithRelativeStartTime:.28 relativeDuration:.72 animations:^{
-                                                  CGRect frame = self.pending_requests.frame;
-                                                  frame.origin.y = 0;
-                                                  [self.pending_requests setFrame:frame];
-                                              }];
-                                          } completion: ^(BOOL finished) {
-                                              [self.view bringSubviewToFront:self.pending_requests];
-                                          }
-                 ];
-            }
-        }
-        else if ([self.view.subviews containsObject:self.pending_requests])
-        {
-            if (bannerAlert > 0) {
-                bannerAlert--;
-            }
-            [self dismiss_requestsPendingBanner];
-        }
+        [self addPendingBanner];
     }
     else
     {
         if ([self.view.subviews containsObject:self.pending_requests])
         {
-            if (bannerAlert > 0) {
+            if (bannerAlert > 0 && ![self.view.subviews containsObject:self.suspended]) {
                 bannerAlert--;
             }
             [self dismiss_requestsPendingBanner];
         }
     }
 
-    [top_button removeFromSuperview];
-
     NSString * homeBtnColorFromArtisan = [ARPowerHookManager getValueForHookById:@"homeBtnClr"];
 
-    top_button = [UIButton buttonWithType:UIButtonTypeRoundedRect];
-    [top_button setFrame:CGRectMake(20, 260, 280, 54)];
-    if ([homeBtnColorFromArtisan isEqualToString:@"green"])
+    if (![self.view.subviews containsObject:top_button])
     {
-        [top_button setStyleId:@"button_green_home"];
+        top_button = [UIButton buttonWithType:UIButtonTypeRoundedRect];
+        [top_button setFrame:CGRectMake(20, topBtnTopValue, 280, 54)];
+        [top_button setTitle:[NSString stringWithFormat:NSLocalizedString(@"HomeBtnTitle", @"Home Screen Btn Title")] forState:UIControlStateNormal];
+        [top_button setTitleShadowColor:Rgb2UIColor(26, 38, 32, 0.2) forState:UIControlStateNormal];
+        top_button.titleLabel.shadowOffset = CGSizeMake(0.0, -1.0);
+        [top_button addTarget:self action:@selector(stayPressed:) forControlEvents:UIControlEventTouchDown];
+        [top_button addTarget:self action:@selector(releasePress:) forControlEvents:UIControlEventTouchDragExit];
+        [top_button addTarget:self action:@selector(send_request) forControlEvents:UIControlEventTouchUpInside];
+        if ([homeBtnColorFromArtisan isEqualToString:@"blue"])
+        {
+            [top_button setStyleId:@"button_blue_home"];
+        }
+        else if ([homeBtnColorFromArtisan isEqualToString:@"green"])
+        {
+            [top_button setStyleId:@"button_green_home"];
+        }
+        else
+        {
+            [top_button setStyleId:@"button_green_home"];
+        }
     }
-    else if ([homeBtnColorFromArtisan isEqualToString:@"blue"])
-    {
-        [top_button setStyleId:@"button_blue_home"];
-    }
-    else
-    {
-        [top_button setStyleId:@"button_green_home"];
-    }
-    [top_button setTitleShadowColor:Rgb2UIColor(26, 38, 32, 0.2) forState:UIControlStateNormal];
-    top_button.titleLabel.shadowOffset = CGSizeMake(0.0, -1.0);
     top_button.alpha = .01;
-    [top_button addTarget:self action:@selector(stayPressed:) forControlEvents:UIControlEventTouchDown];
-    [top_button addTarget:self action:@selector(releasePress:) forControlEvents:UIControlEventTouchDragExit];
-    [top_button addTarget:self action:@selector(send_request) forControlEvents:UIControlEventTouchUpInside];
-    [top_button setTitle:@"   Search For More Friends" forState:UIControlStateNormal];
     
     NSShadow * shadow = [[NSShadow alloc] init];
     shadow.shadowColor = Rgb2UIColor(26, 38, 32, .2);
@@ -1109,113 +1108,198 @@ void addressBookChanged(ABAddressBookRef addressBook, CFDictionaryRef info, void
     UILabel * glyph_search = [UILabel new];
     [glyph_search setFont:[UIFont fontWithName:@"FontAwesome" size:16]];
     glyph_search.attributedText = [[NSAttributedString alloc] initWithString:[NSString fontAwesomeIconStringForIconIdentifier:@"fa-search"] attributes:textAttributes1];
-    [glyph_search setFrame:CGRectMake(14, 0, 15, 52)];
+    [glyph_search setFrame:CGRectMake(17, 0, 15, 52)];
     [glyph_search setTextColor:[UIColor whiteColor]];
     [top_button addSubview:glyph_search];
-
+    
     [self.view addSubview:top_button];
 
-    NSLog(@"Banner count is: %d",bannerAlert);
-    int carouselTop;
-    if (bannerAlert == 1)
+    if ([self.navigationController.view.subviews containsObject:self.hud])
     {
-        [UIView animateKeyframesWithDuration:0.5
-                                       delay:0
-                                     options:2 << 16
-                                  animations:^{
-                                      [UIView addKeyframeWithRelativeStartTime:0.2 relativeDuration:0.8 animations:^{
-                                          [top_button setFrame:CGRectMake(20, 284, 280, 54)];
-                                          top_button.alpha = 1;
-                                      }];
-                                  } completion: nil
-        ];
+        [self.hud hide:YES];
+    }
+
+    [self drawCarousel];
+}
+
+-(void)addPendingBanner
+{
+    //Update Pending Status
+    NSUserDefaults * defaults = [[NSUserDefaults alloc] init];
+
+    [self.navigationItem setLeftBarButtonItem:nil];
+    UILabel * pending_notif = [UILabel new];
+    [pending_notif setText:[defaults objectForKey:@"Pending_count"]];
+    [pending_notif setFrame:CGRectMake(16, -2, 20, 20)];
+    [pending_notif setStyleId:@"pending_notif"];
+    
+    UIButton * hamburger = [UIButton buttonWithType:UIButtonTypeRoundedRect];
+    [hamburger setStyleId:@"navbar_hamburger"];
+    [hamburger addTarget:self action:@selector(showMenu) forControlEvents:UIControlEventTouchUpInside];
+    [hamburger setTitle:[NSString fontAwesomeIconStringForIconIdentifier:@"fa-bars"] forState:UIControlStateNormal];
+    [hamburger setTitleShadowColor:Rgb2UIColor(19, 32, 38, 0.22) forState:UIControlStateNormal];
+    hamburger.titleLabel.shadowOffset = CGSizeMake(0.0, -1.0);
+    [hamburger addSubview:pending_notif];
+    UIBarButtonItem * menu = [[UIBarButtonItem alloc] initWithCustomView:hamburger];
+    [self.navigationItem setLeftBarButtonItem:menu];
+    
+    if ([[user objectForKey:@"Status"] isEqualToString:@"Active"] &&
+        [[[NSUserDefaults standardUserDefaults] valueForKey:@"IsVerifiedPhone"]isEqualToString:@"YES"])
+    {
+        bannerAlert++;
         
-        carouselTop = 75;
+        if (![self.view.subviews containsObject:self.pending_requests])
+        {
+            [self.pending_requests removeFromSuperview];
+            
+            self.pending_requests = [UIView new];
+            [self.pending_requests setStyleId:@"pendingRequestBanner"];
+            [self.pending_requests addGestureRecognizer:[[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(go_history)]];
+            
+            NSShadow * shadowBlue = [[NSShadow alloc] init];
+            shadowBlue.shadowColor = Rgb2UIColor(19, 32, 38, .25);
+            shadowBlue.shadowOffset = CGSizeMake(0, 1);
+            NSDictionary * textShadowBlue = @{NSShadowAttributeName:shadowBlue};
+            
+            UILabel * em = [UILabel new];
+            [em setStyleClass:@"banner_header"];
+            
+            UILabel * em_exclaim = [UILabel new];
+            [em_exclaim setStyleClass:@"banner_alert_glyph"];
+            [em_exclaim setText:[NSString fontAwesomeIconStringForIconIdentifier:@"fa-inbox"]];
+            CGRect frameOfGlyph = em_exclaim.frame;
+            frameOfGlyph.origin.x += 6;
+            [em_exclaim setFrame:frameOfGlyph];
+            [self.pending_requests addSubview:em_exclaim];
+            
+            UILabel * em_info = [UILabel new];
+            [em_info setStyleClass:@"banner_info"];
+            [em_info setNumberOfLines:0];
+            if ([[defaults objectForKey:@"Pending_count"] intValue] == 1)
+            {
+                em.attributedText = [[NSAttributedString alloc] initWithString:NSLocalizedString(@"PendingBannerTitleSingular", @"Home Screen Pending Title Singular") attributes:textShadowBlue];
+                em_info.attributedText = [[NSAttributedString alloc] initWithString:NSLocalizedString(@"PendingBannerBodyTxtSingular", @"Home Screen Pending Body Text Singular") attributes:textShadowBlue];
+            }
+            else if ([[defaults objectForKey:@"Pending_count"] intValue] > 1)
+            {
+                em.attributedText = [[NSAttributedString alloc] initWithString:NSLocalizedString(@"PendingBannerTitlePlural", @"Home Screen Pending Title Plural") attributes:textShadowBlue];
+                em_info.attributedText = [[NSAttributedString alloc] initWithString:[NSString stringWithFormat:NSLocalizedString(@"PendingBannerBodyTxtPlural", @"Home Screen Pending Body Text Plural"), [[defaults objectForKey:@"Pending_count"] intValue]] attributes:textShadowBlue];
+            }
+            [self.pending_requests addSubview:em];
+            [self.pending_requests addSubview:em_info];
+            
+            UIButton * goHistory = [UIButton buttonWithType:UIButtonTypeRoundedRect];
+            [goHistory setStyleClass:@"go_now_text"];
+            [goHistory setTitle:NSLocalizedString(@"PendingBannerActionTxt", @"Home Screen Pending Banner Action Text") forState:UIControlStateNormal];
+            [goHistory setTitleShadowColor:Rgb2UIColor(19, 32, 38, .25) forState:UIControlStateNormal];
+            goHistory.titleLabel.shadowOffset = CGSizeMake(0.0, 1.0);
+            [goHistory addTarget:self action:@selector(go_history) forControlEvents:UIControlEventTouchUpInside];
+            [self.pending_requests addSubview:goHistory];
+            
+            UIButton * dis = [UIButton buttonWithType:UIButtonTypeCustom];
+            [dis setStyleClass:@"dismiss_banner"];
+            [dis setTitle:[NSString fontAwesomeIconStringForIconIdentifier:@"fa-times-circle"] forState:UIControlStateNormal];
+            [dis setTitleShadowColor:Rgb2UIColor(19, 32, 38, .25) forState:UIControlStateNormal];
+            [dis setTitleColor:[Helpers hexColor:@"a5d8f1"] forState:UIControlStateHighlighted];
+            dis.titleLabel.shadowOffset = CGSizeMake(0.0, 1.0);
+            [dis addTarget:self action:@selector(dismiss_requestsPendingBanner) forControlEvents:UIControlEventTouchUpInside];
+            
+            [self.pending_requests addSubview:dis];
+            
+            [self.view addSubview:self.pending_requests];
+            
+            [UIView animateKeyframesWithDuration:.6
+                                           delay:0
+                                         options:2 << 16
+                                      animations:^{
+                                          [UIView addKeyframeWithRelativeStartTime:.28 relativeDuration:.72 animations:^{
+                                              CGRect frame = self.pending_requests.frame;
+                                              frame.origin.y = 0;
+                                              [self.pending_requests setFrame:frame];
+                                          }];
+                                      } completion: ^(BOOL finished) {
+                                          [self.view bringSubviewToFront:self.pending_requests];
+                                      }
+             ];
+        }
     }
-    else if (bannerAlert >= 2)
+    else if ([self.view.subviews containsObject:self.pending_requests])
     {
-        [UIView animateKeyframesWithDuration:0.5
-                                       delay:0
-                                     options:2 << 16
-                                  animations:^{
-                                      [UIView addKeyframeWithRelativeStartTime:0.2 relativeDuration:0.8 animations:^{
-                                          [top_button setFrame:CGRectMake(20, 320, 280, 54)];
-                                          top_button.alpha = 1;
-                                      }];
-                                  } completion: nil
-        ];
-        carouselTop = 114;
+        if (bannerAlert > 0 && ![self.view.subviews containsObject:self.suspended]) {
+            bannerAlert--;
+        }
+        [self dismiss_requestsPendingBanner];
     }
-    else
+
+    [self drawCarousel];
+}
+
+-(void)drawCarousel
+{
+    if (bannerAlert == 1 && carouselTopValue != 75 )
+    {
+        carouselTopValue = 75;
+        topBtnTopValue = 284;
+    }
+    else if (bannerAlert >= 2 && carouselTopValue != 114)
+    {
+        carouselTopValue = 114;
+        topBtnTopValue = 320;
+    }
+    else if (bannerAlert == 0 && carouselTopValue != 48)
+    {
+        carouselTopValue = 48;
+        topBtnTopValue = 260;
+    }
+    
+    [UIView animateKeyframesWithDuration:0.5
+                                   delay:0
+                                 options:2 << 16
+                              animations:^{
+                                  [UIView addKeyframeWithRelativeStartTime:0.2 relativeDuration:0.8 animations:^{
+                                      [top_button setFrame:CGRectMake(20, topBtnTopValue, 280, 54)];
+                                  }];
+                              } completion: nil
+     ];
+
+    if (top_button.alpha != 1)
     {
         [UIView animateKeyframesWithDuration:0.5
                                        delay:0
                                      options:2 << 16
                                   animations:^{
                                       [UIView addKeyframeWithRelativeStartTime:0.2 relativeDuration:.8 animations:^{
-                                          [top_button setFrame:CGRectMake(20, 260, 280, 54)];
                                           top_button.alpha = 1;
                                       }];
                                   } completion: nil
-        ];
-        carouselTop = 48;
+         ];
     }
-    
-    // Address Book Authorization grant
-    if (ABAddressBookGetAuthorizationStatus() == kABAuthorizationStatusDenied ||
-        ABAddressBookGetAuthorizationStatus() == kABAuthorizationStatusRestricted)
-    {
-        NSLog(@"AB Denied");
-    }
-    else if (ABAddressBookGetAuthorizationStatus() == kABAuthorizationStatusAuthorized)
-    {
-        NSLog(@"AB Authorized");
-        if ([[[assist shared]assosAll] count] == 0) {
-            [self address_book];
-        }
-    }
-    else
-    {
-        ABAddressBookRequestAccessWithCompletion(ABAddressBookCreateWithOptions(NULL, nil), ^(bool granted, CFErrorRef error)
-                                                 {
-                                                     if (!granted) {
-                                                        NSLog(@"AB Just denied");
-                                                         return;
-                                                     }
-                                                     if ([[[assist shared]assosAll] count] == 0) {
-                                                         [self address_book];
-                                                         
-                                                     }
-                                                     dispatch_async(dispatch_get_main_queue(), ^{
-                                                         [self GetFavorite];
-                                                     });
-                                                     NSLog(@"AB Just authorized");
-                                                 });
-        NSLog(@"AB Not determined");
-    }
-
-    [self GetFavorite]; 
 
     if ([self.view.subviews containsObject:_carousel])
     {
-        short randNum = arc4random() % [favorites count];
-        NSLog(@"RandNum is: %d",randNum);
-
         float duration = .35;
-        if (abs(([_carousel currentItemIndex] - randNum) == 2))
+        short randNum = 0;
+        
+        if (favorites && [favorites count] > 1)
         {
-            duration = .6;
+            randNum = arc4random() % [favorites count];
+            
+            if (abs(([_carousel currentItemIndex] - randNum) == 2))
+            {
+                duration = .6;
+            }
+            else if (abs(([_carousel currentItemIndex] - randNum) > 2))
+            {
+                duration = .7;
+            }
         }
-        else if (abs(([_carousel currentItemIndex] - randNum) > 2))
-        {
-            duration = .7;
-        }
+
         [UIView animateKeyframesWithDuration:duration
                                        delay:0
                                      options:2 << 16
                                   animations:^{
                                       [UIView addKeyframeWithRelativeStartTime:0 relativeDuration:1 animations:^{
-                                          [_carousel setFrame:CGRectMake(0, carouselTop, 320, 175)];
+                                          [_carousel setFrame:CGRectMake(0, carouselTopValue, 320, 175)];
                                       }];
                                   } completion: ^(BOOL finished) {
                                       [_carousel scrollToItemAtIndex:randNum duration:.7];
@@ -1224,58 +1308,16 @@ void addressBookChanged(ABAddressBookRef addressBook, CFDictionaryRef info, void
     }
     else
     {
-        _carousel = [[iCarousel alloc] initWithFrame:CGRectMake(0, carouselTop, 320, 175)];
+        //NSLog(@"drawCarousel --> Banner count is: %d  and carouselTopValue is: %d  and topBtnTopValue is: %d",bannerAlert, carouselTopValue, topBtnTopValue);
+
+        _carousel = [[iCarousel alloc] initWithFrame:CGRectMake(0, carouselTopValue, 320, 175)];
         _carousel.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
         _carousel.type = iCarouselTypeCylinder;
-
+        
         [_carousel setNeedsLayout];
         _carousel.delegate = self;
         _carousel.dataSource = self;
         [self.view addSubview:_carousel];
-    }
-
-    if ([self.navigationController.view.subviews containsObject:self.hud])
-    {
-        [self.hud hide:YES];
-    }
-
-    if (![[assist shared]isPOP])
-    {
-        self.slidingViewController.panGesture.enabled = YES;
-        [self.view addGestureRecognizer:self.slidingViewController.panGesture];
-
-        //location
-        [self checkIfLocAllowed];
-    }
-
-    [[assist shared] setRequestMultiple:NO];
-    [[assist shared] setArray:nil];
-
-    NSString * versionNumFromArtisan = [ARPowerHookManager getValueForHookById:@"versionNum"];
-    versionNumFromArtisan = [versionNumFromArtisan stringByReplacingOccurrencesOfString:@"1." withString:@""];
-    NSString * versionNumFromBundle = [[[NSBundle mainBundle] infoDictionary] objectForKey:@"CFBundleVersion"];
-    versionNumFromBundle = [versionNumFromBundle stringByReplacingOccurrencesOfString:@"1." withString:@""];
-
-    float versionNumFromArtisanDouble = [versionNumFromArtisan floatValue];
-    float bundleVersionNumDouble = [versionNumFromBundle floatValue];
-    //NSLog(@"VersionNumFromArtisan is: %f", versionNumFromArtisanDouble);
-    //NSLog(@"xCode Bundle Version Number is: %f", bundleVersionNumDouble);
-
-    if (bundleVersionNumDouble < versionNumFromArtisanDouble &&
-        [[NSUserDefaults standardUserDefaults] boolForKey:@"VersionUpdateNoticeDisplayed"] == false )
-    {
-        [self displayVersionUpdateNotice];
-    }
-
-    [ARProfileManager registerString:@"IsBankAttached" withValue:@"unknown"];
-
-    if ([[[NSUserDefaults standardUserDefaults] objectForKey:@"IsBankAvailable"]isEqualToString:@"1"])
-    {
-        [ARProfileManager setStringValue:@"YES" forVariable:@"IsBankAttached"];
-    }
-    else
-    {
-        [ARProfileManager setStringValue:@"NO" forVariable:@"IsBankAttached"];
     }
 }
 
@@ -1291,9 +1333,10 @@ void addressBookChanged(ABAddressBookRef addressBook, CFDictionaryRef info, void
 {
     if ([CLLocationManager locationServicesEnabled])
     {
-        if ([CLLocationManager authorizationStatus] == kCLAuthorizationStatusAuthorized)
+        if ([CLLocationManager authorizationStatus] == kCLAuthorizationStatusAuthorized  ||
+            [CLLocationManager authorizationStatus] == kCLAuthorizationStatusAuthorizedWhenInUse)
         {
-            NSLog(@"Location Services Allowed");
+            NSLog(@"Home: Location Services Allowed");
             
             locationManager = [[CLLocationManager alloc] init];
             
@@ -1305,7 +1348,7 @@ void addressBookChanged(ABAddressBookRef addressBook, CFDictionaryRef info, void
         }
         else
         {
-            NSLog(@"Location Services NOT Allowed");
+            NSLog(@"Home: Location Services NOT Allowed");
         }
     }
 }
@@ -1315,12 +1358,20 @@ void addressBookChanged(ABAddressBookRef addressBook, CFDictionaryRef info, void
     [super viewDidDisappear:animated];
 
     [top_button removeFromSuperview];
+
+    if ([self.view.subviews containsObject:self.pending_requests])
+    {
+        NSLog(@"Checkpoint Home viewDidDisappear & self.view contains Pending Banner");
+
+        [self dismiss_requestsPendingBanner];
+    }
 }
 
 - (void)viewWillAppear:(BOOL)animated
 {
     [super viewWillAppear:animated];
     self.screenName = @"Home Screen";
+    self.artisanNameTag = @"Home Screen";
 
     NSMutableDictionary * automatic = [[NSMutableDictionary alloc] init];
     if ([[NSUserDefaults standardUserDefaults] valueForKey:@"MemberId"] &&
@@ -1331,10 +1382,10 @@ void addressBookChanged(ABAddressBookRef addressBook, CFDictionaryRef info, void
         [automatic writeToFile:[self autoLogin] atomically:YES];
     }
     // for the red notification bubble if a user has a pending RECEIVED Request
-    serve * getPendingCount = [serve new];
+    /*serve * getPendingCount = [serve new];
     [getPendingCount setDelegate:self];
     [getPendingCount setTagName:@"getPendingTransfersCount"];
-    [getPendingCount getPendingTransfersCount];
+    [getPendingCount getPendingTransfersCount];*/
 
     //do carousel
     [self.view addSubview:_carousel];
@@ -1527,7 +1578,6 @@ void addressBookChanged(ABAddressBookRef addressBook, CFDictionaryRef info, void
 #pragma mark - iCarousel methods
 - (NSInteger)numberOfItemsInCarousel:(iCarousel *)carousel
 {
-    //return the total number of items in the carousel
     return 5;
 }
 
@@ -1754,7 +1804,7 @@ void addressBookChanged(ABAddressBookRef addressBook, CFDictionaryRef info, void
         UIAlertView * alert = [[UIAlertView alloc]initWithTitle:@"Access To Contacts"
                                                         message:@"You can send money to ANY contact in your address book, even if they don't have Nooch.\n\nTO ENABLE, turn on access to Contacts in your iPhone's Settings:\n\nSettings  -->  Privacy  -->  Contacts"
                                                        delegate:Nil
-                                              cancelButtonTitle:@"Ok"
+                                              cancelButtonTitle:@"OK"
                                               otherButtonTitles:Nil, nil];
         [alert show];
     }
@@ -1836,16 +1886,6 @@ void addressBookChanged(ABAddressBookRef addressBook, CFDictionaryRef info, void
     CGRect existing = top_button.frame;
     existing.origin.y += 2;
     [top_button setFrame:existing];
-
-    /*if (bannerAlert == 0) {
-        [top_button setFrame:CGRectMake(20, 262, 280, 54)];
-    }
-    if (bannerAlert == 1) {
-        [top_button setFrame:CGRectMake(20, 262, 280, 54)];
-    }
-    if (bannerAlert == 2) {
-        [top_button setFrame:CGRectMake(20, 262, 280, 54)];
-    }*/
 }
 
 -(void)releasePress:(UIButton *) sender
@@ -1926,7 +1966,7 @@ void addressBookChanged(ABAddressBookRef addressBook, CFDictionaryRef info, void
     if ([[assist shared]getSuspended] || [[user objectForKey:@"Status"] isEqualToString:@"Temporarily_Blocked"])
     {
         SIAlertView * alertView = [[SIAlertView alloc] initWithTitle:@"Account Temporarily Suspended" andMessage:@"\xE2\x9B\x94\nFor security your account has been suspended for 24 hours.\n\nWe really apologize for the inconvenience and ask for your patience. Our top priority is keeping Nooch safe and secure.\n \nPlease contact us at support@nooch.com for more information."];
-        [alertView addButtonWithTitle:@"Ok" type:SIAlertViewButtonTypeCancel handler:nil];
+        [alertView addButtonWithTitle:@"OK" type:SIAlertViewButtonTypeCancel handler:nil];
         [alertView addButtonWithTitle:@"Contact Nooch" type:SIAlertViewButtonTypeDefault
                               handler:^(SIAlertView *alert) {
                                   [self contact_support];
@@ -1960,7 +2000,7 @@ void addressBookChanged(ABAddressBookRef addressBook, CFDictionaryRef info, void
     else if ([[user valueForKey:@"Status"]isEqualToString:@"Registered"])
     {
         SIAlertView * alertView = [[SIAlertView alloc] initWithTitle:@"Please Verify Your Email" andMessage:@"Terribly sorry, but before you can send money, please confirm your email address by clicking the link we sent to the email address you used to sign up.\n\xF0\x9F\x99\x8F"];
-        [alertView addButtonWithTitle:@"Ok" type:SIAlertViewButtonTypeCancel handler:nil];
+        [alertView addButtonWithTitle:@"OK" type:SIAlertViewButtonTypeCancel handler:nil];
         [[SIAlertView appearance] setButtonColor:kNoochBlue];
         
         alertView.transitionStyle = SIAlertViewTransitionStyleDropDown;
@@ -2064,7 +2104,6 @@ void addressBookChanged(ABAddressBookRef addressBook, CFDictionaryRef info, void
 
     if ([tagName isEqualToString:@"favorites"])
     {
-        [self.hud hide:YES];
         NSError * error;
         favorites = [[NSMutableArray alloc]init];
         favorites = [NSJSONSerialization
@@ -2092,6 +2131,11 @@ void addressBookChanged(ABAddressBookRef addressBook, CFDictionaryRef info, void
         {
             [ARProfileManager setNumberValue:[NSNumber numberWithDouble:[favorites count]] forVariable:@"Fav_Nooch_Friends"];
         }
+
+        if ([self.view.subviews containsObject:self.hud])
+        {
+            [self.hud hide:YES];
+        }
     }
 
     else if ([tagName isEqualToString:@"getPendingTransfersCount"])
@@ -2106,7 +2150,7 @@ void addressBookChanged(ABAddressBookRef addressBook, CFDictionaryRef info, void
 
         [self.navigationItem setLeftBarButtonItem:nil];
 
-        NSUserDefaults * defaults = [[NSUserDefaults alloc]init];
+        NSUserDefaults * defaults = [[NSUserDefaults alloc] init];
 
         if (pendingRequestsReceived > 0)
         {
@@ -2127,8 +2171,15 @@ void addressBookChanged(ABAddressBookRef addressBook, CFDictionaryRef info, void
             [self.navigationItem setLeftBarButtonItem:menu];
 
             [defaults setBool:true forKey:@"hasPendingItems"];
+            count = [dict valueForKey:@"pendingRequestsReceived"];
 
-            count = [NSString stringWithFormat:@"%@", [dict valueForKey:@"pendingRequestsReceived"]];
+            [defaults setValue: count forKey:@"Pending_count"];
+            [defaults synchronize];
+
+            if (![self.view.subviews containsObject:self.pending_requests])
+            {
+                [self addPendingBanner];
+            }
         }
         else
         {
@@ -2145,10 +2196,20 @@ void addressBookChanged(ABAddressBookRef addressBook, CFDictionaryRef info, void
             [defaults setBool:false forKey:@"hasPendingItems"];
 
             count = @"0";
+
+            if ([self.view.subviews containsObject:self.pending_requests])
+            {
+                [self dismiss_requestsPendingBanner];
+            }
+
+            [defaults setValue:count forKey:@"Pending_count"];
+            [defaults synchronize];
         }
 
-        [defaults setValue: count forKey:@"Pending_count"];
-        [defaults synchronize];
+        if ([self.view.subviews containsObject:self.hud])
+        {
+            [self.hud hide:YES];
+        }
     }
 
     else if ([tagName isEqualToString:@"emailCheck"])
@@ -2186,7 +2247,7 @@ void addressBookChanged(ABAddressBookRef addressBook, CFDictionaryRef info, void
             [dict setObject:emailID forKey:@"email"];
             [dict setObject:@"nonuser" forKey:@"nonuser"];
 
-            if (![firstNameAB isEqualToString:@""])
+            if (![firstNameAB isEqualToString:@""] )
             {
                 [dict setObject:firstNameAB forKey:@"firstName"];
             }
@@ -2263,10 +2324,10 @@ void addressBookChanged(ABAddressBookRef addressBook, CFDictionaryRef info, void
         }
     }
 
-    if ([result rangeOfString:@"Invalid OAuth 2 Access"].location!=NSNotFound)
+    if ([result rangeOfString:@"Invalid OAuth 2 Access"].location != NSNotFound)
     {
         [self.hud hide:YES];
-        
+
         [[NSFileManager defaultManager] removeItemAtPath:[self autoLogin] error:nil];
         [[NSUserDefaults standardUserDefaults] removeObjectForKey:@"UserName"];
         [[NSUserDefaults standardUserDefaults] removeObjectForKey:@"MemberId"];
@@ -2358,6 +2419,11 @@ void addressBookChanged(ABAddressBookRef addressBook, CFDictionaryRef info, void
     NSDate * aDate = [dateFormatter dateFromString:aStr];
 
     return aDate;
+}
+
+- (void)dealloc
+{
+    [[NSNotificationCenter defaultCenter] removeObserver:self name:UIApplicationWillEnterForegroundNotification object:nil];
 }
 
 - (void)didReceiveMemoryWarning

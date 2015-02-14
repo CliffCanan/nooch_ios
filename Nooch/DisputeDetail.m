@@ -25,6 +25,7 @@
 
 @implementation DisputeDetail
 @synthesize email_nooch;
+
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
 {
     self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil];
@@ -34,7 +35,8 @@
     return self;
 }
 
-- (id)initWithData:(NSDictionary *)trans {
+- (id)initWithData:(NSDictionary *)trans
+{
     self = [super initWithNibName:nil bundle:nil];
     if (self) {
         // Custom initialization
@@ -44,16 +46,18 @@
     return self;
 }
 
--(void)viewWillAppear:(BOOL)animated{
+-(void)viewWillAppear:(BOOL)animated
+{
     [super viewWillAppear:animated];
     self.screenName = @"Dispute Detail Screen";
+    self.artisanNameTag = @"Dispute Details Screen";
 }
 
 - (void)viewDidLoad
 {
     [super viewDidLoad];
     self.navigationController.navigationBar.topItem.title = @"";
-    self.title=@"Dispute Details";
+    self.title = NSLocalizedString(@"DisputeDet_ScrnTitle", @"'Dispute Details' Screen Title");
 
     [self.view setBackgroundColor:[UIColor whiteColor]];
     UIImageView * backgroundImage = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"SplashPageBckgrnd-568h@2x.png"]];
@@ -84,7 +88,7 @@
     self.txtDate = [[UITextField alloc] initWithFrame:CGRectMake(95, 5, 210, 44)];
     [self.txtDate setTextAlignment:NSTextAlignmentRight];
     [self.txtDate setBackgroundColor:[UIColor clearColor]];
-    [self.txtDate setPlaceholder:@"Date Reported"];
+    [self.txtDate setPlaceholder:NSLocalizedString(@"DisputeDet_DateRprtdPlchldr", @"Dispute Details 'Date Reported' placeholder text")];
     [self.txtDate setDelegate:self];
     [self.txtDate setUserInteractionEnabled:NO];
     [self.txtDate setStyleClass:@"table_view_cell_detailtext_1"];
@@ -95,7 +99,7 @@
     self.txtReviewDate = [[UITextField alloc] initWithFrame:CGRectMake(95, 5, 210, 44)];
     [self.txtReviewDate setTextAlignment:NSTextAlignmentRight];
     [self.txtReviewDate setBackgroundColor:[UIColor clearColor]];
-    [self.txtReviewDate setPlaceholder:@"Not Reviewed Yet"];
+    [self.txtReviewDate setPlaceholder:NSLocalizedString(@"DisputeDet_RvwDatePlchldr", @"Dispute Details 'Not Reviewed Yet' placeholder text")];
     [self.txtReviewDate setDelegate:self];
     [self.txtReviewDate setStyleClass:@"table_view_cell_detailtext_1"];
     [self.txtReviewDate setTag:2];
@@ -106,7 +110,7 @@
     self.txtResolvedD = [[UITextField alloc] initWithFrame:CGRectMake(95, 5, 210, 44)];
     [self.txtResolvedD setTextAlignment:NSTextAlignmentRight];
     [self.txtResolvedD setBackgroundColor:[UIColor clearColor]];
-    [self.txtResolvedD setPlaceholder:@"Not Resolved Yet"];
+    [self.txtResolvedD setPlaceholder:NSLocalizedString(@"DisputeDet_RslvdDatePlchldr", @"Dispute Details 'Not Resolved Yet' placeholder text")];
     [self.txtResolvedD setDelegate:self];
     [self.txtResolvedD setUserInteractionEnabled:NO];
     [self.txtResolvedD setStyleClass:@"table_view_cell_detailtext_1"];
@@ -117,10 +121,11 @@
     self.txtNotes = [[UITextField alloc] initWithFrame:CGRectMake(95, 5, 210, 44)];
     [self.txtNotes setTextAlignment:NSTextAlignmentRight];
     [self.txtNotes setBackgroundColor:[UIColor clearColor]];
-    [self.txtNotes setPlaceholder:@"Notes"];
+    [self.txtNotes setPlaceholder:NSLocalizedString(@"DisputeDet_NotesPlchldr", @"Dispute Details 'Notes' placeholder text")];
     [self.txtNotes setDelegate:self];
     [self.txtNotes setStyleClass:@"table_view_cell_detailtext_1"];
-    if ([self.disputeDetails valueForKey:@"AdminNotes"] != NULL && ![[self.disputeDetails valueForKey:@"AdminNotes"] isKindOfClass:[NSNull class]]) {
+    if ([self.disputeDetails valueForKey:@"AdminNotes"] != NULL && ![[self.disputeDetails valueForKey:@"AdminNotes"] isKindOfClass:[NSNull class]])
+    {
         [self.txtNotes setText:[NSString stringWithFormat:@"%@ ",[self.disputeDetails valueForKey:@"AdminNotes"]]];
     }
     [self.txtNotes setUserInteractionEnabled:NO];
@@ -141,7 +146,7 @@
     
     email_nooch = [UIButton buttonWithType:UIButtonTypeRoundedRect];
     [email_nooch setFrame:CGRectMake(20, 354, 280,50)];
-    [email_nooch setTitle:@"Email Nooch" forState:UIControlStateNormal];
+    [email_nooch setTitle:NSLocalizedString(@"DisputeDet_EmailNooch", @"Dispute Details 'Email Nooch' text") forState:UIControlStateNormal];
     [email_nooch addTarget:self action:@selector(email_noochClicked:) forControlEvents:UIControlEventTouchUpInside];
     [email_nooch setStyleClass:@"button_blue"];
     [email_nooch setTitleShadowColor:Rgb2UIColor(19, 32, 38, 0.26) forState:UIControlStateNormal];
@@ -239,7 +244,6 @@
 }
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
-
 {
     return 6;
 }
@@ -260,7 +264,7 @@
     {
         UILabel * Status = [[UILabel alloc] initWithFrame:CGRectMake(14, 5, 140, 50)];
         [Status setBackgroundColor:[UIColor clearColor]];
-        [Status setText:@"Status"];
+        [Status setText:NSLocalizedString(@"DisputeDet_StatusTxt", @"Dispute Details 'Status' text")];
         [Status setStyleClass:@"table_view_cell_textlabel_1"];
         [cell.contentView addSubview:Status];
         [cell.contentView addSubview:self.txtStatus];
@@ -278,7 +282,7 @@
     {
         UILabel * ID = [[UILabel alloc] initWithFrame:CGRectMake(14, 5, 140, 50)];
         [ID setBackgroundColor:[UIColor clearColor]];
-        [ID setText:@"Dispute ID"];
+        [ID setText:NSLocalizedString(@"DisputeDet_DisputeIdTxr", @"Dispute Details 'Dispute ID' text")];
         [ID setStyleClass:@"table_view_cell_textlabel_1"];
         [cell.contentView addSubview:ID];
         [cell.contentView addSubview:self.txtID];
@@ -287,7 +291,7 @@
     {
         UILabel * Date = [[UILabel alloc] initWithFrame:CGRectMake(14, 5, 140, 50)];
         [Date setBackgroundColor:[UIColor clearColor]];
-        [Date setText:@"Dispute Date"];
+        [Date setText:NSLocalizedString(@"DisputeDet_DisputeDateTxr", @"Dispute Details 'Dispute Date' text")];
         [Date setStyleClass:@"table_view_cell_textlabel_1"];
         [cell.contentView addSubview:Date];
         [cell.contentView addSubview:self.txtDate];
@@ -296,7 +300,7 @@
     {
         UILabel * ReviewDate = [[UILabel alloc] initWithFrame:CGRectMake(14, 5, 140, 50)];
         [ReviewDate setBackgroundColor:[UIColor clearColor]];
-        [ReviewDate setText:@"Review Date"];
+        [ReviewDate setText:NSLocalizedString(@"DisputeDet_RvwDateTxr", @"Dispute Details 'Review Date' text")];
         [ReviewDate setStyleClass:@"table_view_cell_textlabel_1"];
         [cell.contentView addSubview:ReviewDate];
         [cell.contentView addSubview:self.txtReviewDate];
@@ -305,7 +309,7 @@
     {
         UILabel * ResolvedD = [[UILabel alloc] initWithFrame:CGRectMake(14, 5, 140, 50)];
         [ResolvedD setBackgroundColor:[UIColor clearColor]];
-        [ResolvedD setText:@"Resolved Date"];
+        [ResolvedD setText:NSLocalizedString(@"DisputeDet_RslvdDareTxr", @"Dispute Details 'Resolved Date' text")];
         [ResolvedD setStyleClass:@"table_view_cell_textlabel_1"];
         [cell.contentView addSubview:ResolvedD];
         [cell.contentView addSubview:self.txtResolvedD];
@@ -314,7 +318,7 @@
     {
         UILabel * Note = [[UILabel alloc] initWithFrame:CGRectMake(14, 5, 140, 50)];
         [Note setBackgroundColor:[UIColor clearColor]];
-        [Note setText:@"Note"];
+        [Note setText:NSLocalizedString(@"DisputeDet_NoteTxr", @"Dispute Details 'Note' text")];
         [Note setStyleClass:@"table_view_cell_textlabel_1"];
         [cell.contentView addSubview:Note];
         [cell.contentView addSubview:self.txtNotes];
@@ -322,8 +326,8 @@
     return cell;
 }
 
--(void)Error:(NSError *)Error {
-   
+-(void)Error:(NSError *)Error
+{
     /* UIAlertView *alert = [[UIAlertView alloc]
                           initWithTitle:@"Message"
                           message:@"Error connecting to server"

@@ -50,7 +50,7 @@
     [self.view addSubview:logoicon];
 
     UILabel *title = [[UILabel alloc] initWithFrame:CGRectMake(10, 108, 300, 40)];
-    [title setText:@"Enter Your PIN"];
+    [title setText:NSLocalizedString(@"ReEnterPIN_instruct", @"'Enter Your PIN' Instruction Text")];
     [title setStyleClass:@"header_signupflow"];
     [title setStyleClass:@"animate_pulse"];
     [self.view addSubview:title];
@@ -95,7 +95,7 @@
     [self.prompt removeFromSuperview];
     short len = [textField.text length] + [string length];
 
-    if([string length] == 0) //deleting
+    if ([string length] == 0) //deleting
     {
         switch (len) {
             case 4:
@@ -116,9 +116,10 @@
                 break;
         }
     }
-    else {
+    else
+    {
         UIColor *which;
-        
+
         which = kNoochGreen;
         switch (len) {
             case 5:
@@ -169,12 +170,6 @@
 
 -(void)listen:(NSString *)result tagName:(NSString *)tagName
 {
-
-    /*UIActivityIndicatorView * spinner = [[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleWhiteLarge];
-    [spinner setFrame:CGRectMake(140, (self.view.frame.size.height / 2) - 15, 40, 40)];
-    [spinner setHidesWhenStopped:YES];
-    [spinner setColor:kNoochBlue];*/
-
     NSError * error;
     
     dictResult = [NSJSONSerialization
@@ -184,13 +179,8 @@
 
     if ([tagName isEqualToString:@"ValidatePinNumber"])
     {
-        //[spinner stopAnimating];
-        //[spinner setHidden:YES];
-        //[spinner startAnimating];
-        //[self.view addSubview:spinner];
-
         NSString * encryptedPIN = [dictResult valueForKey:@"Status"];
-        
+
         serve * checkValid = [serve new];
         checkValid.tagName = @"checkValid";
         checkValid.Delegate = self;
@@ -199,20 +189,16 @@
     
     else if ([tagName isEqualToString:@"checkValid"])
     {
-        //[spinner stopAnimating];
-        //[spinner setHidden:YES];
-        //[spinner removeFromSuperview];
-        
         if ([[dictResult objectForKey:@"Result"] isEqualToString:@"Success"])
         {
             if ( [user objectForKey:@"requiredImmediately"] == NULL ||
                 [[user objectForKey:@"requiredImmediately"] isKindOfClass:[NSNull class]])
             {
-                UIAlertView * av = [[UIAlertView alloc] initWithTitle:@"Require PIN Setting"
-                                                              message:@"The Require Immediately function is an added security feature that prompts you for your PIN whenever you open Nooch.\n\nWould you like to keep this on or turn it off? You can change this setting in Settings."
+                UIAlertView * av = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"ReEnterPIN_RqrPinStngAlrtTtl", @"'Require PIN Setting' Alert Title")
+                                                              message:NSLocalizedString(@"ReEnterPIN_RqrPinStngAlrtBody", @"Require PIN Setting Alert Body")//@"The Require Immediately function is an added security feature that prompts you for your PIN whenever you open Nooch.\n\nWould you like to keep this on or turn it off? You can change this setting in Settings."
                                                              delegate:self
-                                                    cancelButtonTitle:@"Turn Off"
-                                                    otherButtonTitles:@"Keep On", nil];
+                                                    cancelButtonTitle:NSLocalizedString(@"ReEnterPIN_RqrPinStngAlrtOffBtn", @"Require PIN Setting Alert 'Turn Off' Btn Text")
+                                                    otherButtonTitles:NSLocalizedString(@"ReEnterPIN_RqrPinStngAlrtOnBtn", @"Require PIN Setting Alert 'Keep On' Btn Text"), nil];
                 [av setTag:1];
                 [av show];
                 return;
@@ -220,7 +206,6 @@
             else
             {
                 [self dismissViewControllerAnimated:YES completion:nil];
-
                 return;
             }
         }
@@ -245,7 +230,7 @@
                 [self.third_num setStyleClass:@"shakePin3"];
                 [self.second_num setStyleClass:@"shakePin2"];
                 [self.first_num setStyleClass:@"shakePin1"];
-                self.prompt.text = @"Incorrect Pin - Please Try Again";
+                self.prompt.text = NSLocalizedString(@"ReEnterPIN_IncrctPinLbl", @"ReEnter PIN 'Incorrect PIN - Please Try Again' Feedback Text");
                 [self.view addSubview:self.prompt];
             }
             else if ([[dictResult objectForKey:@"Result"]isEqual:@"PIN number you entered again is incorrect. Your account will be suspended for 24 hours if you enter wrong PIN number again."])
@@ -258,11 +243,11 @@
                 [self.third_num setStyleClass:@"shakePin3"];
                 [self.second_num setStyleClass:@"shakePin2"];
                 [self.first_num setStyleClass:@"shakePin1"];
-                self.prompt.text = @"2nd failed attempt.";
-                UIAlertView * suspendedAlert = [[UIAlertView alloc]initWithTitle:@"Please Try Again"
-                                                                         message:@"For security protection, your account will be suspended for 24 hours if you enter an incorrect PIN again."
+                self.prompt.text = NSLocalizedString(@"ReEnterPIN_IncrctPinLbl2nd", @"ReEnter PIN 'Incorrect PIN - 2nd Failed Attempt' Feedback Text");
+                UIAlertView * suspendedAlert = [[UIAlertView alloc]initWithTitle:NSLocalizedString(@"ReEnterPIN_TryAgnAlrtTtl", @"'Please Try Again' Alert Title")
+                                                                         message:NSLocalizedString(@"ReEnterPIN_TryAgnAlrtBody", @"Please Try Again Alert Body Text")
                                                                         delegate:nil
-                                                               cancelButtonTitle:@"Ok"
+                                                               cancelButtonTitle:@"OK"
                                                                otherButtonTitles:nil];
                 [suspendedAlert show];
             }

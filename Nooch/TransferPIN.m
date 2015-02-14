@@ -66,7 +66,7 @@
         self.receiver = receiver;
         self.amnt = amount;
 
-        NSLog(@"\nself.type is: %@\nself.amnt is: %f", self.type, self.amnt);
+        //NSLog(@"\nself.type is: %@\nself.amnt is: %f", self.type, self.amnt);
     }
     return self;
 }
@@ -75,6 +75,7 @@
 {
     [super viewWillAppear:animated];
     self.screenName = @"TransferPin Screen";
+    self.artisanNameTag = @"TransferPIN Screen";
 }
 
 -(void)viewDidDisappear:(BOOL)animated
@@ -86,6 +87,25 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
+
+    [self.navigationItem setTitle:NSLocalizedString(@"EnterPIN_ScrnTitle", @"Enter PIN Screen Title")];
+    [self.navigationItem setHidesBackButton:YES];
+
+    NSShadow * shadowNavText = [[NSShadow alloc] init];
+    shadowNavText.shadowColor = Rgb2UIColor(19, 32, 38, .2);
+    shadowNavText.shadowOffset = CGSizeMake(0, -1.0);
+    NSDictionary * titleAttributes = @{NSShadowAttributeName: shadowNavText};
+
+    UITapGestureRecognizer * backTap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(backPressed:)];
+
+    UILabel * back_button = [UILabel new];
+    [back_button setStyleId:@"navbar_back"];
+    [back_button setUserInteractionEnabled:YES];
+    [back_button addGestureRecognizer: backTap];
+    back_button.attributedText = [[NSAttributedString alloc] initWithString:[NSString fontAwesomeIconStringForIconIdentifier:@"fa-angle-left"] attributes:titleAttributes];
+
+    UIBarButtonItem * menu = [[UIBarButtonItem alloc] initWithCustomView:back_button];
+    [self.navigationItem setLeftBarButtonItem:menu];
 
     getlocation = [[GetLocation alloc] init];
 	getlocation.delegate = self;
@@ -111,30 +131,11 @@
     [self.pin becomeFirstResponder];
     [self.view setBackgroundColor:[UIColor whiteColor]];
 
-    [self.navigationItem setTitle:@"Enter PIN"];
-    [self.navigationItem setHidesBackButton:YES];
-
     UILabel *title = [[UILabel alloc] initWithFrame:CGRectMake(10, 40, 300, 60)];
-    [title setText:@"Enter Your PIN to confirm your"]; [title setTextAlignment:NSTextAlignmentCenter];
+    [title setText:NSLocalizedString(@"EnterPIN_InstructionTxt", @"Enter PIN Screen instruction text")]; [title setTextAlignment:NSTextAlignmentCenter];
     [title setNumberOfLines:2];
     [title setStyleClass:@"pin_instructiontext"];
     [self.view addSubview:title];
-
-    NSShadow * shadowNavText = [[NSShadow alloc] init];
-    shadowNavText.shadowColor = Rgb2UIColor(19, 32, 38, .2);
-    shadowNavText.shadowOffset = CGSizeMake(0, -1.0);
-    NSDictionary * titleAttributes = @{NSShadowAttributeName: shadowNavText};
-
-    UITapGestureRecognizer * backTap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(backPressed:)];
-
-    UILabel * back_button = [UILabel new];
-    [back_button setStyleId:@"navbar_back"];
-    [back_button setUserInteractionEnabled:YES];
-    [back_button addGestureRecognizer: backTap];
-    back_button.attributedText = [[NSAttributedString alloc] initWithString:[NSString fontAwesomeIconStringForIconIdentifier:@"fa-angle-left"] attributes:titleAttributes];
-
-    UIBarButtonItem * menu = [[UIBarButtonItem alloc] initWithCustomView:back_button];
-    [self.navigationItem setLeftBarButtonItem:menu];
 
     if ([[UIScreen mainScreen] bounds].size.height == 480)
     {
@@ -144,18 +145,16 @@
     {
         self.prompt = [[UILabel alloc] initWithFrame:CGRectMake(10, 42, 300, 18)];
     }
+
     if ([self.type isEqualToString:@"send"] || [self.type isEqualToString:@"requestRespond"])
     {
-        [self.prompt setText:@"transfer"];
+        [self.prompt setText:NSLocalizedString(@"EnterPIN_InstructTransfer", @"Enter PIN Screen instructions transfer")];
         [self.prompt setStyleId:@"Transferpin_instructiontext_send"];
     }
-    else if ([self.type isEqualToString:@"request"]) {    
-        [self.prompt setText:@"request"];
+    else if ([self.type isEqualToString:@"request"])
+    {
+        [self.prompt setText:NSLocalizedString(@"EnterPIN_InstructRequest", @"Enter PIN Screen instructions request")];
         [self.prompt setStyleId:@"pin_instructiontext_request"];
-    }
-    else {
-        [self.prompt setText:@"contribution"];
-        [self.prompt setStyleId:@"pin_instructiontext_donate"];
     }
     [self.prompt setTextAlignment:NSTextAlignmentCenter];
     [self.view addSubview:self.prompt];
@@ -275,7 +274,7 @@
     }
     else
     {
-        [memo_label setText:@"No memo attached"];
+        [memo_label setText:NSLocalizedString(@"EnterPIN_NoMemoTxt", @"Enter PIN Screen no memo attached text")];
     }
 
     if (memo_label.text.length > 34)
@@ -349,10 +348,12 @@
     self.first_num.backgroundColor = self.second_num.backgroundColor = self.third_num.backgroundColor = self.fourth_num.backgroundColor = [UIColor clearColor];
     self.first_num.layer.borderWidth = self.second_num.layer.borderWidth = self.third_num.layer.borderWidth = self.fourth_num.layer.borderWidth = 3;
 
-    if ([self.type isEqualToString:@"send"]) {
+    if ([self.type isEqualToString:@"send"])
+    {
         self.first_num.layer.borderColor = self.second_num.layer.borderColor = self.third_num.layer.borderColor = self.fourth_num.layer.borderColor = kNoochGreen.CGColor;        
     }
-    else {
+    else
+    {
         self.first_num.layer.borderColor = self.second_num.layer.borderColor = self.third_num.layer.borderColor = self.fourth_num.layer.borderColor = kNoochBlue.CGColor;    
     }
 
@@ -382,6 +383,8 @@
         [trans_image setImage:[[assist shared] getTranferImage]];
         [self.view addSubview:trans_image];
     }
+
+    [[assist shared] setneedsReload:YES];
 }
 
 -(void)backPressed:(id)sender
@@ -429,23 +432,26 @@
 - (void)transferPinLocationUpdateManager:(CLLocationManager *)manager
                       didUpdateLocations:(NSArray *)locationsArray
 {
-    CLLocationCoordinate2D loc = manager.location.coordinate;
-    lat = [[[NSString alloc] initWithFormat:@"%f",loc.latitude] floatValue];
-    lon = [[[NSString alloc] initWithFormat:@"%f",loc.longitude] floatValue];
+    if (lat == 0 || lon == 0)
+    {
+        CLLocationCoordinate2D loc = manager.location.coordinate;
+        lat = [[[NSString alloc] initWithFormat:@"%f",loc.latitude] floatValue];
+        lon = [[[NSString alloc] initWithFormat:@"%f",loc.longitude] floatValue];
 
-    latitude = [NSString stringWithFormat:@"%f",lat];
-    longitude = [NSString stringWithFormat:@"%f",lon];
+        latitude = [NSString stringWithFormat:@"%f",lat];
+        longitude = [NSString stringWithFormat:@"%f",lon];
 
-    [self updateLocation:[NSString stringWithFormat:@"%f",lat]
+        [self updateLocation:[NSString stringWithFormat:@"%f",lat]
           longitudeField:[NSString stringWithFormat:@"%f",lon]];
+    }
 }
 
--(void) updateLocation:(NSString*)latitudeField longitudeField:(NSString*)longitudeField
+-(void)updateLocation:(NSString*)latitudeField longitudeField:(NSString*)longitudeField
 {
-    //NSLog(@"TransferPIN --> updateLocation: lat is: %@  & long is: %@",latitudeField,longitudeField);
+    // The parameter 'result_type = locality' below makes Google return only a City level address. Since that's all we need, we shouldn't ask for everything, which can be a lot more unnecessary data from Google parsing the variations of the address
+    NSString * googleGeocodeUrl = [NSString stringWithFormat:@"https://maps.googleapis.com/maps/api/geocode/json?latlng=%@,%@&result_type=locality&key=AIzaSyDrUnX1gGpPL9fWmsWfhOxIDIy3t7YjcEY", latitudeField, longitudeField];
 
-    NSString * fetchURL = [NSString stringWithFormat:@"http://maps.googleapis.com/maps/api/geocode/json?latlng=%@,%@&sensor=true", latitudeField, longitudeField];
-    NSURL * url = [NSURL URLWithString:fetchURL];
+    NSURL * url = [NSURL URLWithString:googleGeocodeUrl];
 
     NSMutableURLRequest * request = [NSMutableURLRequest requestWithURL:url cachePolicy:NSURLRequestReloadIgnoringCacheData timeoutInterval:60.0];
 
@@ -453,7 +459,7 @@
                                        queue:[NSOperationQueue mainQueue]
                            completionHandler:^(NSURLResponse * response, NSData *data, NSError *err) {
         NSError * error;
-        jsonDictionary = [NSJSONSerialization JSONObjectWithData:data options: NSJSONReadingMutableContainers error: &error];
+        googleLocationResults = [NSJSONSerialization JSONObjectWithData:data options: NSJSONReadingMutableContainers error: &error];
         [self setLocation];
     }];
 }
@@ -465,124 +471,72 @@
 
 -(void)setLocation
 {
-    NSArray * placemark = [jsonDictionary objectForKey:@"results"];
-    //NSLog(@"Placemark COUNT is: %d\nPlacemark is: %@", [placemark count], placemark);
+    NSArray * addressResults = [googleLocationResults objectForKey:@"results"];
 
-    if ([placemark count] > 0)
+    if (![[googleLocationResults objectForKey:@"status"] isEqualToString:@"OK"])
     {
-        // if Google returned a Street Address
-        if ([[placemark objectAtIndex:0] objectForKey:@"address_components"] &&
-            [[[[placemark objectAtIndex:0] objectForKey:@"types"] objectAtIndex:0] isEqualToString: @"street_address"])
-        {
-            NSArray * addressComponents = [[placemark objectAtIndex:0] objectForKey:@"address_components"];
+        NSLog(@"Google Geocode Results Error --> Status is: %@", [googleLocationResults objectForKey:@"status"]);
 
-            // Get Street Address
-            if ([[[[addressComponents objectAtIndex:0] objectForKey:@"types"] objectAtIndex:0] isEqualToString:@"street_number"])
-            {
-                addressLine1 = [NSString stringWithFormat:@"%@ %@", [[addressComponents objectAtIndex:0] objectForKey:@"long_name"],[[addressComponents objectAtIndex:1] objectForKey:@"long_name"]];
-            }
+        if ([googleLocationResults objectForKey:@"error_message"])
+        {
+            NSLog(@"Google Geocode Error Message: %@",[googleLocationResults objectForKey:@"error_message"]);
+        }
+    }
+    else if ([addressResults count] > 0)
+    {
+        // if Google returned a City
+        if (  [[addressResults objectAtIndex:0] objectForKey:@"address_components"] &&
+            [[[[addressResults objectAtIndex:0] objectForKey:@"types"] objectAtIndex:0] isEqualToString: @"locality"])
+        {
+            NSArray * address_components = [[addressResults objectAtIndex:0] objectForKey:@"address_components"];
 
             // Get City
-            if ( [[[[addressComponents objectAtIndex:2] objectForKey:@"types"] objectAtIndex:0]isEqualToString:@"administrative_area_level_3"] ||
-                 [[[[addressComponents objectAtIndex:2] objectForKey:@"types"] objectAtIndex:1]isEqualToString:@"administrative_area_level_3"] )
+            if ( [[[[address_components objectAtIndex:0] objectForKey:@"types"] objectAtIndex:0] isEqualToString:@"locality"] ||
+                 [[[[address_components objectAtIndex:0] objectForKey:@"types"] objectAtIndex:0] isEqualToString:@"administrative_area_level_3"])
             {
-                city = [[addressComponents objectAtIndex:2] objectForKey:@"long_name"];
+                city = [[address_components objectAtIndex:0] objectForKey:@"long_name"];
             }
-            else if ([[[[addressComponents objectAtIndex:3] objectForKey:@"types"] objectAtIndex:0] isEqualToString:@"administrative_area_level_3"] ||
-                     [[[[addressComponents objectAtIndex:3] objectForKey:@"types"] objectAtIndex:1] isEqualToString:@"administrative_area_level_3"] )
+            else if ( [[[[address_components objectAtIndex:1] objectForKey:@"types"] objectAtIndex:0] isEqualToString:@"locality"] ||
+                      [[[[address_components objectAtIndex:1] objectForKey:@"types"] objectAtIndex:0] isEqualToString:@"administrative_area_level_3"])
             {
-                city = [[addressComponents objectAtIndex:3] objectForKey:@"long_name"];
+                city = [[address_components objectAtIndex:1] objectForKey:@"long_name"];
+            }
+            // There was no city/locality, so attempt to grab the County instead
+            else if ( [[[[address_components objectAtIndex:0] objectForKey:@"types"] objectAtIndex:0] isEqualToString:@"administrative_area_level_2"])
+            {
+                city = [[address_components objectAtIndex:0] objectForKey:@"long_name"];
+            }
+            else if ([[[[address_components objectAtIndex:1] objectForKey:@"types"] objectAtIndex:0] isEqualToString:@"administrative_area_level_2"])
+            {
+                city = [[address_components objectAtIndex:1] objectForKey:@"long_name"];
             }
 
             // Get State
-            if ( [[[[addressComponents objectAtIndex:4] objectForKey:@"types"] objectAtIndex:0] isEqualToString:@"administrative_area_level_1"] ||
-                 [[[[addressComponents objectAtIndex:4] objectForKey:@"types"] objectAtIndex:1] isEqualToString:@"administrative_area_level_1"] )
+            if ( [[[[address_components objectAtIndex:1] objectForKey:@"types"] objectAtIndex:0] isEqualToString:@"administrative_area_level_1"])
             {
-                state = [[addressComponents objectAtIndex:4] objectForKey:@"short_name"];
+                state = [[address_components objectAtIndex:1] objectForKey:@"short_name"];
             }
-            else if ([[[[addressComponents objectAtIndex:5] objectForKey:@"types"] objectAtIndex:0] isEqualToString:@"administrative_area_level_1"] ||
-                     [[[[addressComponents objectAtIndex:5] objectForKey:@"types"] objectAtIndex:1] isEqualToString:@"administrative_area_level_1"] )
+            else if ([[[[address_components objectAtIndex:2] objectForKey:@"types"] objectAtIndex:0] isEqualToString:@"administrative_area_level_1"])
             {
-                state = [[addressComponents objectAtIndex:5] objectForKey:@"short_name"];
+                state = [[address_components objectAtIndex:2] objectForKey:@"short_name"];
             }
 
-            // Get ZIP
-            if ([[[[addressComponents objectAtIndex:4] objectForKey:@"types"] objectAtIndex:0] isEqualToString:@"postal_code"])
+            // Get Country
+            if ([[[[address_components objectAtIndex:3] objectForKey:@"types"] objectAtIndex:0] isEqualToString:@"country"])
             {
-                zipcode = [[addressComponents objectAtIndex:4] objectForKey:@"short_name"];
-            }
-            else if ([[[[addressComponents objectAtIndex:5] objectForKey:@"types"] objectAtIndex:0] isEqualToString:@"postal_code"])
-            {
-                zipcode = [[addressComponents objectAtIndex:5] objectForKey:@"short_name"];
-            }
-            else if ([[[[addressComponents objectAtIndex:6] objectForKey:@"types"] objectAtIndex:0] isEqualToString:@"postal_code"])
-            {
-                zipcode = [[addressComponents objectAtIndex:6] objectForKey:@"short_name"];
-            }
-            else if ([[[[addressComponents objectAtIndex:7] objectForKey:@"types"] objectAtIndex:0] isEqualToString:@"postal_code"])
-            {
-                zipcode = [[addressComponents objectAtIndex:7] objectForKey:@"short_name"];
-            }
-        }
-
-        // Get Country
-        if ( [[placemark objectAtIndex:1] objectForKey:@"address_components"] &&
-            [[[[placemark objectAtIndex:1] objectForKey:@"types"] objectAtIndex:0] isEqualToString:@"postal_code"])
-        {
-            NSArray * addressComponents2 = [[placemark objectAtIndex:1] objectForKey:@"address_components"];
-            NSUInteger lastObject = [addressComponents2 count] - 1;
-
-            // Country should always be "US", but adding this code just to make sure
-            if ([[addressComponents2 objectAtIndex:lastObject] objectForKey:@"short_name"])
-            {
-                country = [[addressComponents2 objectAtIndex:lastObject] objectForKey:@"short_name"];
-                if ([country rangeOfString:@"US"].location == NSNotFound)
+                if ([[address_components objectAtIndex:3] objectForKey:@"short_name"])
                 {
-                    country = @"NOT US";
+                    country = [[address_components objectAtIndex:3] objectForKey:@"short_name"];
+                    if ([country rangeOfString:@"US"].location == NSNotFound)
+                    {
+                        country = [@"NOT US" stringByAppendingFormat:@" - %@", country];
+                    }
+                }
+                else
+                {
+                    country = @"US of A";
                 }
             }
-            else
-            {
-                country = @"USA";
-            }
-        }
-
-        //NSLog(@"1.) ADDRESS NOW IS: %@, %@, %@, %@, %@",addressLine1,city, state, zipcode, country);
-
-        // Old method of parsing by getting entire formatted address and breaking it down
-        if ([addressLine1 length] < 2 && [city length] < 2 && [zipcode length] < 5)
-        {
-            NSString * addr = [[placemark objectAtIndex:0] objectForKey:@"formatted_address"];
-
-            NSLog(@"addr is: %@", addr);
-
-            NSArray *addrParse = [addr componentsSeparatedByString:@","];
-
-            if ([addrParse count] == 4)
-            {
-                addressLine1 = [addrParse objectAtIndex:0];
-                city = [addrParse objectAtIndex:1];
-                state = [[addrParse objectAtIndex:2] substringToIndex:3];
-                zipcode = [[addrParse objectAtIndex:2] substringFromIndex:3];
-                country = [addrParse objectAtIndex:3];
-            }
-            else if ([addrParse count] > 4)
-            {
-                addressLine1 = [addrParse objectAtIndex:0];
-                addressLine2 = [addrParse objectAtIndex:1];
-                city = [addrParse objectAtIndex:2];
-                state = [[addrParse objectAtIndex:3] substringToIndex:3];
-                zipcode = [[addrParse objectAtIndex:3] substringFromIndex:3];
-                country = [addrParse objectAtIndex:4];
-            }
-            else
-            {
-                addressLine1 = [addrParse objectAtIndex:0];
-                addressLine2 = @"";
-                city = [addrParse objectAtIndex:1];
-            }
-
-            NSLog(@"2.) ADDRESS NOW IS: %@, %@, %@, %@, %@",addressLine1,city, state, zipcode, country);
         }
     }
 
@@ -593,18 +547,14 @@
     if ([state rangeOfString:@"null"].location != NSNotFound || state == NULL) {
         state = @"";
     }
-    if ([zipcode rangeOfString:@"null"].location != NSNotFound || zipcode == NULL) {
-        zipcode = @"";
+    if ([country rangeOfString:@"null"].location != NSNotFound || country == NULL) {
+        country = @"";
     }
     if ([addressLine1 rangeOfString:@"null"].location != NSNotFound || addressLine1 == NULL) {
         addressLine1 = @"";
     }
-    if ([addressLine2 rangeOfString:@"null"].location != NSNotFound || addressLine2 == NULL) {
-        addressLine2 = @"";
-    }
-    if ([Altitude rangeOfString:@"null"].location != NSNotFound || Altitude == NULL) {
-        Altitude = @"0.0";
-    }
+
+    //NSLog(@"Full Address Is: %@, %@, %@, %@", addressLine1, city, state, country);
 }
 
 #pragma mark - UITextField delegation
@@ -679,11 +629,13 @@
     if (len == 4)
     {
         NSString * textLoading=@"";
-        if ([self.type isEqualToString:@"send"] || [self.type isEqualToString:@"requestRespond"]) {
-            textLoading = @"Sending your payment...";
+        if ([self.type isEqualToString:@"send"] || [self.type isEqualToString:@"requestRespond"])
+        {
+            textLoading = NSLocalizedString(@"EnterPIN_HUDlblSend", @"Enter PIN Screen HUD label text for sending a payment");
         }
-        else if ([self.type isEqualToString:@"request"]) {
-            textLoading = @"Generating your request...";
+        else if ([self.type isEqualToString:@"request"])
+        {
+            textLoading = NSLocalizedString(@"EnterPIN_HUDlblRequest", @"Enter PIN Screen HUD label text for sending a request");
         }
 
         RTSpinKitView *spinner1 = [[RTSpinKitView alloc] initWithStyle:RTSpinKitViewStyleThreeBounce];
@@ -710,8 +662,8 @@
 {
     [self.hud hide:YES];
      UIAlertView *alert = [[UIAlertView alloc]
-                          initWithTitle:@"Message"
-                          message:@"Error connecting to server"
+                          initWithTitle:NSLocalizedString(@"TrnsfrPIN_CnctnErrAlrtTitle", @"Transfer PIN screen 'Connection Error' Alert Text")
+                          message:NSLocalizedString(@"TrnsfrPIN_CnctnErrAlrtBody", @"Transfer PIN screen Connection Error Alert Body Text")
                           delegate:nil
                           cancelButtonTitle:@"OK"
                           otherButtonTitles:nil];
@@ -774,13 +726,13 @@
                 [transactionInputTransfer setValue:@"false" forKey:@"IsPrePaidTransaction"];
                 [transactionInputTransfer setValue:[NSString stringWithFormat:@"%f",lat] forKey:@"Latitude"];
                 [transactionInputTransfer setValue:[NSString stringWithFormat:@"%f",lon] forKey:@"Longitude"];
-                [transactionInputTransfer setValue:Altitude forKey:@"Altitude"];
+                [transactionInputTransfer setValue:@"0" forKey:@"Altitude"];
                 [transactionInputTransfer setValue:addressLine1 forKey:@"AddressLine1"];
-                [transactionInputTransfer setValue:addressLine2 forKey:@"AddressLine2"];
+                [transactionInputTransfer setValue:@"" forKey:@"AddressLine2"];
                 [transactionInputTransfer setValue:city forKey:@"City"];
                 [transactionInputTransfer setValue:state forKey:@"State"];
                 [transactionInputTransfer setValue:country forKey:@"Country"];
-                [transactionInputTransfer setValue:zipcode forKey:@"Zipcode"];
+                [transactionInputTransfer setValue:@"" forKey:@"Zipcode"];
      
                 if ([self.type isEqualToString:@"send"])
                 {
@@ -913,9 +865,8 @@
                 [self.second_num setStyleClass:@"shakePin2"];
                 [self.first_num setStyleClass:@"shakePin1"];
 
-                self.prompt.text=@"1 failed attempt. Please try again.";
+                self.prompt.text = NSLocalizedString(@"EnterPIN_IncorrectPin1x", @"Enter PIN Screen PIN entered incorrectly once text");
                 self.prompt.textColor = kNoochRed;
-
             }
             else if([[dictResult objectForKey:@"Result"]isEqual:@"PIN number you entered again is incorrect. Your account will be suspended for 24 hours if you enter wrong PIN number again."])
             {
@@ -931,18 +882,18 @@
                 [self.second_num setStyleClass:@"shakePin2"];
                 [self.first_num setStyleClass:@"shakePin1"];
 
-                self.prompt.text=@"2nd Failed Attempt";
+                self.prompt.text = NSLocalizedString(@"EnterPIN_IncorrectPin2x", @"Enter PIN Screen PIN entered incorrectly twice text");
                 self.prompt.textColor = kNoochRed;
             }
             else if (([[dictResult objectForKey:@"Result"] isEqualToString:@"Your account has been suspended for 24 hours from now. Please contact admin or send a mail to support@nooch.com if you need to reset your PIN number immediately."]))
             {
                 [self.hud hide:YES];
 
-                UIAlertView *av = [[UIAlertView alloc] initWithTitle:@"Account Suspended"
-                                                             message:@"Your account has been suspended for 24 hours. Please contact us via email at support@nooch.com if you need to reset your PIN number immediately."
+                UIAlertView *av = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"EnterPIN_AccntSuspAlertTitle", @"Enter PIN Screen account suspended Alert Title")
+                                                             message:NSLocalizedString(@"EnterPIN_AccntSuspAlertBody", @"Enter PIN Screen account suspended Alert Body Text")
                                                             delegate:self
                                                    cancelButtonTitle:@"OK"
-                                                   otherButtonTitles:@"Contact Support",nil];
+                                                   otherButtonTitles:NSLocalizedString(@"EnterPIN_ContactSupportBtn", @"Enter PIN Screen account suspended Alert Button Contact Support"),nil];
                 [av setTag:50];
                 [av show];
 
@@ -957,24 +908,24 @@
                 [self.second_num setStyleClass:@"shakePin2"];
                 [self.first_num setStyleClass:@"shakePin1"];
 
-                self.prompt.text=@"Account suspended.";
+                self.prompt.text = NSLocalizedString(@"EnterPIN_InstructAccntSusp", @"Enter PIN Screen account suspended Instruction Text");
                 self.prompt.textColor = kNoochRed;
             }
             else if (([[dictResult objectForKey:@"Result"] isEqualToString:@"Your account has been suspended. Please contact admin or send a mail to support@nooch.com if you need to reset your PIN number immediately."]))
             {
                 [self.hud hide:YES];
 
-                UIAlertView *av = [[UIAlertView alloc] initWithTitle:@"Account Suspended"
-                                                             message:@"Your account has been suspended for 24 hours. Please contact us via email at support@nooch.com if you need to reset your PIN number immediately."
+                UIAlertView *av = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"EnterPIN_AccntSuspAlertTitle", @"Enter PIN Screen account suspended Alert Title")
+                                                             message:NSLocalizedString(@"EnterPIN_AccntSuspAlertBody", @"Enter PIN Screen account suspended Alert Body Text")
                                                             delegate:self
                                                    cancelButtonTitle:@"OK"
-                                                   otherButtonTitles:@"Contact Support",nil];
+                                                   otherButtonTitles:NSLocalizedString(@"EnterPIN_ContactSupportBtn", @"Enter PIN Screen account suspended Alert Button Contact Support"),nil];
                 [av setTag:50];
                 [av show];
 
                 [[assist shared] setSusPended:YES];
 
-                self.prompt.text = @"Account suspended.";
+                self.prompt.text = NSLocalizedString(@"EnterPIN_InstructAccntSusp", @"Enter PIN Screen account suspended Instruction Text");
                 self.prompt.textColor = kNoochRed;
             }
         }
@@ -1043,11 +994,11 @@
             [transactionInputTransfer setValue:[NSString stringWithFormat:@"%f",lat] forKey:@"Latitude"];
             [transactionInputTransfer setValue:[NSString stringWithFormat:@"%f",lon] forKey:@"Longitude"];
             [transactionInputTransfer setValue:addressLine1 forKey:@"AddressLine1"];
-            [transactionInputTransfer setValue:addressLine2 forKey:@"AddressLine2"];
+            [transactionInputTransfer setValue:@"" forKey:@"AddressLine2"];
             [transactionInputTransfer setValue:city forKey:@"City"];
             [transactionInputTransfer setValue:state forKey:@"State"];
             [transactionInputTransfer setValue:country forKey:@"Country"];
-            [transactionInputTransfer setValue:zipcode forKey:@"Zipcode"];
+            [transactionInputTransfer setValue:@"" forKey:@"Zipcode"];
             [transactionInputTransfer setValue:self.memo forKey:@"Memo"];
             if ([self.type isEqualToString:@"request"]) {
                 transactionTransfer = [[NSMutableDictionary alloc] initWithObjectsAndKeys:transactionInputTransfer, @"requestInput",[[NSUserDefaults standardUserDefaults] valueForKey:@"OAuthToken"],@"accessToken", nil];
@@ -1125,11 +1076,11 @@
             [transactionInputTransfer setValue:[NSString stringWithFormat:@"%f",lat] forKey:@"Latitude"];
             [transactionInputTransfer setValue:[NSString stringWithFormat:@"%f",lon] forKey:@"Longitude"];
             [transactionInputTransfer setValue:addressLine1 forKey:@"AddressLine1"];
-            [transactionInputTransfer setValue:addressLine2 forKey:@"AddressLine2"];
+            [transactionInputTransfer setValue:@"" forKey:@"AddressLine2"];
             [transactionInputTransfer setValue:city forKey:@"City"];
             [transactionInputTransfer setValue:state forKey:@"State"];
             [transactionInputTransfer setValue:country forKey:@"Country"];
-            [transactionInputTransfer setValue:zipcode forKey:@"Zipcode"];
+            [transactionInputTransfer setValue:@"" forKey:@"Zipcode"];
             [transactionInputTransfer setValue:self.memo forKey:@"Memo"];
 
             transactionTransfer = [[NSMutableDictionary alloc] initWithObjectsAndKeys:transactionInputTransfer, @"handleRequestInput",[[NSUserDefaults standardUserDefaults] valueForKey:@"OAuthToken"],@"accessToken", nil];
@@ -1191,7 +1142,7 @@
             [transactionInputTransfer setValue:city forKey:@"City"];
             [transactionInputTransfer setValue:state forKey:@"State"];
             [transactionInputTransfer setValue:country forKey:@"Country"];
-            [transactionInputTransfer setValue:zipcode forKey:@"Zipcode"];
+            [transactionInputTransfer setValue:@"" forKey:@"Zipcode"];
             [transactionInputTransfer setValue:self.memo forKey:@"Memo"];
 
             transactionTransfer = [[NSMutableDictionary alloc] initWithObjectsAndKeys:transactionInputTransfer, @"transactionInput",[[NSUserDefaults standardUserDefaults] valueForKey:@"OAuthToken"],@"accessToken", nil];
@@ -1303,7 +1254,7 @@
             [arrNav addObject: mainHistoryScreen];
             [nav_ctrl setViewControllers:arrNav animated:NO];
 
-            NSLog(@"TransferPIN -> nav_ctrl.viewControllers is: %@", nav_ctrl.viewControllers);
+            //NSLog(@"TransferPIN -> nav_ctrl.viewControllers is: %@", nav_ctrl.viewControllers);
 
             TransactionDetails *td = [[TransactionDetails alloc] initWithData:input];
             [nav_ctrl pushViewController:td animated:YES];
@@ -1382,11 +1333,11 @@
 
 -(void)errorAlerts:(NSString *)referenceNumber
 {
-    UIAlertView *av = [[UIAlertView alloc] initWithTitle:@"Error #2650"
-                                                 message:@"\xF0\x9F\x98\xB3\nUnfortunately something is not quite right. This is a polite way of saying we screwed up.\n\nPlease try your transfer again or contact us if the problem persists."
+    UIAlertView *av = [[UIAlertView alloc] initWithTitle:[NSString stringWithFormat:NSLocalizedString(@"EnterPIN_ErrorAlrtTitle", @"Enter PIN Screen error Alert Title"),referenceNumber]
+                                                 message:[NSString stringWithFormat:@"\xF0\x9F\x98\xB3\n%@", NSLocalizedString(@"EnterPIN_ErrorAlrtBody", @"Enter PIN Screen error alert Body Text")]
                                                 delegate:self
                                        cancelButtonTitle:@"OK"
-                                       otherButtonTitles:@"Contact Support",nil];
+                                       otherButtonTitles:NSLocalizedString(@"EnterPIN_ContactSupportBtn", @"Enter PIN Screen account suspended Alert Button Contact Support"),nil];
     [av setTag:52];
     [av show];
 }
@@ -1404,17 +1355,17 @@
     NSLog(@"This is the response:  %@",responseString);
     if ([self.receiver valueForKey:@"nonuser"])
     {
-        if ([[[dictResultTransfer valueForKey:@"TransferMoneyToNonNoochUserUsingKnoxResult"] valueForKey:@"Result"]localizedCaseInsensitiveContainsString:@"Your cash was sent successfully"] ||
-            [[[dictResultTransfer valueForKey:@"TransferMoneyToNonNoochUserThroughPhoneUsingKnoxResult"] valueForKey:@"Result"]localizedCaseInsensitiveContainsString:@"Your cash was sent successfully"])
+        if ([[[dictResultTransfer valueForKey:@"TransferMoneyToNonNoochUserUsingKnoxResult"] valueForKey:@"Result"]isEqualToString:@"Your cash was sent successfully"] ||
+            [[[dictResultTransfer valueForKey:@"TransferMoneyToNonNoochUserThroughPhoneUsingKnoxResult"] valueForKey:@"Result"]isEqualToString:@"Your cash was sent successfully"])
         {
             [[assist shared] setTranferImage:nil];
             UIImage * imgempty = [UIImage imageNamed:@""];
             [[assist shared] setTranferImage:imgempty];
-            UIAlertView * av = [[UIAlertView alloc] initWithTitle:@"Great Success"
-                                                          message:@"\xF0\x9F\x91\x8D\nYour transfer was sent successfully.\n\nThe recipient must accept this payment by linking a bank account. We will contact them and let you know when they respond."
+            UIAlertView * av = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"EnterPIN_GrtSuccessAlrtTitle", @"Enter PIN Screen Great Success Alert Title")
+                                                          message:[NSString stringWithFormat:@"\xF0\x9F\x91\x8D\n%@", NSLocalizedString(@"EnterPIN_NonUsrSuccessAlrtTitle", @"Enter PIN Screen send to nonuser success Alert Body Text")]
                                                          delegate:self
                                                 cancelButtonTitle:@"OK"
-                                                otherButtonTitles:@"View Details",nil];
+                                                otherButtonTitles:NSLocalizedString(@"EnterPIN_SuccessAlrtViewDetails", @"Enter PIN Screen success alert button for View Details"),nil];
             av.tag = 1;
             [av show];
             return;
@@ -1425,17 +1376,18 @@
             [self errorAlerts:@"420"];
             return;
         }
-        if ([[[dictResultTransfer valueForKey:@"RequestMoneyFromNonNoochUserUsingKnoxResult"] valueForKey:@"Result"]localizedCaseInsensitiveContainsString:@"Request made successfully."] ||
-            [[[dictResultTransfer valueForKey:@"RequestMoneyToNonNoochUserThroughPhoneUsingKnoxResult"] valueForKey:@"Result"]localizedCaseInsensitiveContainsString:@"Request made successfully"])
+
+        if ([[[dictResultTransfer valueForKey:@"RequestMoneyFromNonNoochUserUsingKnoxResult"] valueForKey:@"Result"]isEqualToString:@"Request made successfully."] ||
+            [[[dictResultTransfer valueForKey:@"RequestMoneyToNonNoochUserThroughPhoneUsingKnoxResult"] valueForKey:@"Result"]isEqualToString:@"Request made successfully."])
         {
             [[assist shared] setTranferImage:nil];
             UIImage * imgempty = [UIImage imageNamed:@""];
             [[assist shared] setTranferImage:imgempty];
-            UIAlertView * av = [[UIAlertView alloc] initWithTitle:@"Great Success"
-                                                          message:@"\xF0\x9F\x91\x8D\nYour request was sent successfully.\n\nThe recipient can pay this request by clicking the link we emailed to them.\n\nThey do not have to download Nooch to pay the request (but they totally can too)."
+            UIAlertView * av = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"EnterPIN_GrtSuccessAlrtTitle", @"Enter PIN Screen Great Success Alert Title")
+                                                          message:[NSString stringWithFormat:@"\xF0\x9F\x91\x8D\n%@", NSLocalizedString(@"EnterPIN_NonUsrRqstSuccessAlrtTitle", @"Enter PIN Screen request to nonuser success Alert Body Text")]
                                                          delegate:self
                                                 cancelButtonTitle:@"OK"
-                                                otherButtonTitles:@"View Details",nil];
+                                                otherButtonTitles:NSLocalizedString(@"EnterPIN_SuccessAlrtViewDetails", @"Enter PIN Screen success alert button for View Details"),nil];
             av.tag = 1;
             [av show];
             return;
@@ -1471,8 +1423,8 @@
 
     if ([[resultValueTransfer valueForKey:@"Result"] isEqualToString:@"Recepient does not have any active bank account."])
     {
-         UIAlertView *av = [[UIAlertView alloc] initWithTitle:@"Transfer Failed"
-                                                      message:@"\xF0\x9F\x98\xA9\nThe recepient has a Nooch account, but has not linked a bank funding source yet, so they can't receive transfers quite yet!"
+         UIAlertView *av = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"EnterPIN_TrnsfrFaildAlrtTitle", @"Enter PIN Screen transfer failed Alert Title")
+                                                      message:[NSString stringWithFormat:@"\xF0\x9F\x98\xA9\n%@", NSLocalizedString(@"EnterPIN_TrnsfrFaildAlrtBody", @"Enter PIN Screen transfer failed Alert Body Text")]
                                                      delegate:self
                                             cancelButtonTitle:nil
                                             otherButtonTitles:@"OK",nil];
@@ -1490,113 +1442,113 @@
         NSString * alertMsgFromArtisan = [ARPowerHookManager getValueForHookById:@"transSuccessAlertMsg"];
         switch (randNum) {
             case 0:
-                av = [[UIAlertView alloc] initWithTitle:@"Nice Work"
+                av = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"EnterPIN_SuccessAlrt1", @"Enter PIN Screen success alert title - Nice Work")
                                                 message:[NSString stringWithFormat:@"\xF0\x9F\x98\x8E\nYou just sent money to %@, and you did it with style… and class.",[receiverFirst capitalizedString]]
                                                delegate:self
                                       cancelButtonTitle:@"OK"
-                                      otherButtonTitles:@"View Details",nil];
+                                      otherButtonTitles:NSLocalizedString(@"EnterPIN_SuccessAlrtViewDetails", @"Enter PIN Screen success alert button for View Details"),nil];
                 break;
             case 1:
-                av = [[UIAlertView alloc] initWithTitle:@"Payment Sent"
+                av = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"EnterPIN_SuccessAlrt2", @"Enter PIN Screen success alert title - Payment Sent")
                                                 message:[NSString stringWithFormat:@"\xF0\x9F\x92\xB8\nYour money has successfully been digitalized into pixie dust and is currently floating over our heads in a million pieces on its way to %@.",[receiverFirst capitalizedString]]
                                                delegate:self
                                       cancelButtonTitle:@"OK"
-                                      otherButtonTitles:@"View Details",nil];
+                                      otherButtonTitles:NSLocalizedString(@"EnterPIN_SuccessAlrtViewDetails", @"Enter PIN Screen success alert button for View Details"),nil];
                 break;
             case 2:
-                av = [[UIAlertView alloc] initWithTitle:@"Success"
+                av = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"EnterPIN_SuccessAlrt3", @"Enter PIN Screen success alert title - Success")
                                                 message:[NSString stringWithFormat:@"\xF0\x9F\x98\x89\nYou have officially 'Nooched' %@. That's right, it's a verb.",[receiverFirst capitalizedString]]
                                                delegate:self
                                       cancelButtonTitle:@"OK"
-                                      otherButtonTitles:@"View Details" ,nil];
+                                      otherButtonTitles:NSLocalizedString(@"EnterPIN_SuccessAlrtViewDetails", @"Enter PIN Screen success alert button for View Details") ,nil];
                 break;
             case 3:
-                av = [[UIAlertView alloc] initWithTitle:@"Congratulations"
+                av = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"EnterPIN_SuccessAlrt4", @"Enter PIN Screen success alert title - Congratulations")
                                                 message:@"\xE2\x98\xBA\nYou now have less money. Eh, it's just money."
                                                delegate:self
                                       cancelButtonTitle:@"OK"
-                                      otherButtonTitles:@"View Details" ,nil];
+                                      otherButtonTitles:NSLocalizedString(@"EnterPIN_SuccessAlrtViewDetails", @"Enter PIN Screen success alert button for View Details"),nil];
                 break;
             case 4:
-                av = [[UIAlertView alloc] initWithTitle:@"Congratulations"
+                av = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"EnterPIN_SuccessAlrt4", @"Enter PIN Screen success alert title - Congratulations")
                                                 message:@"\xF0\x9F\x91\x8F\nYour debt burden has been lifted!"
                                                delegate:self
                                       cancelButtonTitle:@"OK"
-                                      otherButtonTitles:@"View Details" ,nil];
+                                      otherButtonTitles:NSLocalizedString(@"EnterPIN_SuccessAlrtViewDetails", @"Enter PIN Screen success alert button for View Details"),nil];
                 break;
             case 5:
-                av = [[UIAlertView alloc] initWithTitle:@"Money Sent"
+                av = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"EnterPIN_SuccessAlrt5", @"Enter PIN Screen success alert title - Money Sent")
                                                 message:[NSString stringWithFormat:@"\xF0\x9F\x98\x87\nNo need to thank us, it's our job.\n\n%@ should probably thank you though.",[receiverFirst capitalizedString]]
                                                delegate:self
                                       cancelButtonTitle:@"OK"
-                                      otherButtonTitles:@"View Details" ,nil];
+                                      otherButtonTitles:NSLocalizedString(@"EnterPIN_SuccessAlrtViewDetails", @"Enter PIN Screen success alert button for View Details"),nil];
                 break;
             case 6:
-                av = [[UIAlertView alloc] initWithTitle:@"Payment Sent"
+                av = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"EnterPIN_SuccessAlrt6", @"Enter PIN Screen success alert title - Payment Sent")
                                                 message:@"\xF0\x9F\x91\x8D\nYou are now free to close Nooch and put your phone away. You're good to go." delegate:self
                                       cancelButtonTitle:@"OK"
-                                      otherButtonTitles:@"View Details" ,nil];
+                                      otherButtonTitles:NSLocalizedString(@"EnterPIN_SuccessAlrtViewDetails", @"Enter PIN Screen success alert button for View Details"),nil];
                 break;
             case 7:
-                av = [[UIAlertView alloc] initWithTitle:@"You're Welcome"
+                av = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"EnterPIN_SuccessAlrt7", @"Enter PIN Screen success alert title - Payment Sent")
                                                 message:[NSString stringWithFormat:@"\xF0\x9F\x91\x8C\nThat was some good Nooching. Money sent to %@.",[receiverFirst capitalizedString]]
                                                delegate:self
                                       cancelButtonTitle:@"OK"
-                                      otherButtonTitles:@"View Details" ,nil];
+                                      otherButtonTitles:NSLocalizedString(@"EnterPIN_SuccessAlrtViewDetails", @"Enter PIN Screen success alert button for View Details"),nil];
                 break;
             case 8:
-                av = [[UIAlertView alloc] initWithTitle:@"Great Scott!"
+                av = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"EnterPIN_SuccessAlrt8", @"Enter PIN Screen success alert title - Great Scott")
                                                 message:@"\xE2\x9A\xA1\nThis sucker generated 1.21 gigawatts and sent your money, even without plutonium."
                                                delegate:self
                                       cancelButtonTitle:@"OK"
-                                      otherButtonTitles:@"View Details", nil];
+                                      otherButtonTitles:NSLocalizedString(@"EnterPIN_SuccessAlrtViewDetails", @"Enter PIN Screen success alert button for View Details"), nil];
                 break;
             case 9:
-                av = [[UIAlertView alloc] initWithTitle:@"Knowledge Is Power"
+                av = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"EnterPIN_SuccessAlrt9", @"Enter PIN Screen success alert title - Knowledge Is Power")
                                                 message:@"You know how easy Nooch is. But with great power, comes great responsibility..."
                                                delegate:self
                                       cancelButtonTitle:@"OK"
-                                      otherButtonTitles:@"View Details" ,nil];
+                                      otherButtonTitles:NSLocalizedString(@"EnterPIN_SuccessAlrtViewDetails", @"Enter PIN Screen success alert button for View Details"),nil];
                 break;
             case 10:
-                av = [[UIAlertView alloc] initWithTitle:@"Humpty Dumpty Sat on a Wall"
+                av = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"EnterPIN_SuccessAlrt10", @"Enter PIN Screen success alert title - Humpty Dumpty")
                                                 message:@"And processed Nooch transfers."
                                                delegate:self
                                       cancelButtonTitle:@"OK"
-                                      otherButtonTitles:@"View Details", nil];
+                                      otherButtonTitles:NSLocalizedString(@"EnterPIN_SuccessAlrtViewDetails", @"Enter PIN Screen success alert button for View Details"), nil];
                 break;
             case 11:
-                av = [[UIAlertView alloc] initWithTitle:@"Nooch Haiku"
+                av = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"EnterPIN_SuccessAlrt11", @"Enter PIN Screen success alert title - Nooch Haiku")
                                                 message:@"Nooch application.\nEasy, Simple, Convenient.\nGetting the job done." delegate:self
                                       cancelButtonTitle:@"OK"
-                                      otherButtonTitles:@"View Details" ,nil];
+                                      otherButtonTitles:NSLocalizedString(@"EnterPIN_SuccessAlrtViewDetails", @"Enter PIN Screen success alert button for View Details"),nil];
                 break;
             case 12:
-                av = [[UIAlertView alloc] initWithTitle:@"Nooch Loves You"
+                av = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"EnterPIN_SuccessAlrt12", @"Enter PIN Screen success alert title - Nooch Loves You")
                                                 message:@"\xF0\x9F\x92\x99\nThat is all. Pay it forward.\n\n...and yes, Nooch's heart is actually blue."
                                                delegate:self
                                       cancelButtonTitle:@"OK"
-                                      otherButtonTitles:@"View Details",nil];
+                                      otherButtonTitles:NSLocalizedString(@"EnterPIN_SuccessAlrtViewDetails", @"Enter PIN Screen success alert button for View Details"),nil];
                 break;
             case 13:
-                av = [[UIAlertView alloc] initWithTitle:@"Easy As Pie"
+                av = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"EnterPIN_SuccessAlrt13", @"Enter PIN Screen success alert title - Easy As Pie")
                                                 message:[NSString stringWithFormat:@"\xF0\x9F\x8D\xB0\nWasn't that easier than lugging to an ATM and forking over colored pieces of paper to %@?",[receiverFirst capitalizedString]]
                                                delegate:self
                                       cancelButtonTitle:@"OK"
-                                      otherButtonTitles:@"View Details",nil];
+                                      otherButtonTitles:NSLocalizedString(@"EnterPIN_SuccessAlrtViewDetails", @"Enter PIN Screen success alert button for View Details"),nil];
                 break;
             case 14:
                 av = [[UIAlertView alloc] initWithTitle:alertTitleFromArtisan
                                                 message:alertMsgFromArtisan
                                                delegate:self
                                       cancelButtonTitle:@"OK"
-                                      otherButtonTitles:@"View Details",nil];
+                                      otherButtonTitles:NSLocalizedString(@"EnterPIN_SuccessAlrtViewDetails", @"Enter PIN Screen success alert button for View Details"),nil];
                 break;
             default:
-                av = [[UIAlertView alloc] initWithTitle:@"Nice Work"
+                av = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"EnterPIN_SuccessAlrt1", @"Enter PIN Screen success alert title - Nice Work")
                                                 message:[NSString stringWithFormat:@"\xF0\x9F\x92\xB8\nYour cash was sent successfully to %@.",[receiverFirst capitalizedString]]
                                                delegate:self cancelButtonTitle:@"OK"
-                                      otherButtonTitles:@"View Details" ,nil];
+                                      otherButtonTitles:NSLocalizedString(@"EnterPIN_SuccessAlrtViewDetails", @"Enter PIN Screen success alert button for View Details"),nil];
                 break;
         }
         [av show];
@@ -1611,7 +1563,7 @@
         UIImage * imgempty = [UIImage imageNamed:@""];
         [[assist shared] setTranferImage:imgempty];
 
-        UIAlertView * av = [[UIAlertView alloc] initWithTitle:@"Request Fulfilled"
+        UIAlertView * av = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"EnterPIN_RequestFulfilledAlertTitle", @"Enter PIN Screen request fulfilled successfully Alert Title")
                                                       message:[NSString stringWithFormat:@"\xF0\x9F\x91\x8D\nYou successfully fulfilled %@'s request for $%.02f.",[receiverFirst capitalizedString],self.amnt]
                                                      delegate:self
                                             cancelButtonTitle:nil
@@ -1635,7 +1587,7 @@
             }
 
             strMultiple = [strMultiple substringFromIndex:1];
-            UIAlertView *av = [[UIAlertView alloc] initWithTitle:@"Pay Me"
+            UIAlertView *av = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"EnterPIN_RequestSuccessAlrtTitle", @"Enter PIN Screen request made successfully Alert Title")
                                                          message:[NSString stringWithFormat:@"\xF0\x9F\x98\x80\nYou requested $%.02f from %@ successfully.",self.amnt,strMultiple]
                                                         delegate:self
                                                cancelButtonTitle:nil
@@ -1645,7 +1597,7 @@
         }
         else
         {
-            UIAlertView *av = [[UIAlertView alloc] initWithTitle:@"Pay Me"
+            UIAlertView *av = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"EnterPIN_RequestSuccessAlrtTitle", @"Enter PIN Screen request made successfully Alert Title")
                                                          message:[NSString stringWithFormat:@"\xF0\x9F\x98\x80\nYou requested $%.02f from %@ successfully.",self.amnt,[receiverFirst capitalizedString]]
                                                         delegate:self
                                                cancelButtonTitle:nil otherButtonTitles:@"OK",@"View Details",nil];
@@ -1660,7 +1612,7 @@
     {
         AudioServicesPlaySystemSound(kSystemSoundID_Vibrate);
         self.prompt.textColor = kNoochRed;
-        self.prompt.text=@"1 failed attempt. Please try again.";
+        self.prompt.text = NSLocalizedString(@"EnterPIN_IncorrectPin1x", @"Enter PIN Screen PIN entered incorrectly once text");
         self.fourth_num.layer.borderColor = kNoochRed.CGColor;
         self.third_num.layer.borderColor = kNoochRed.CGColor;
         self.second_num.layer.borderColor = kNoochRed.CGColor;
@@ -1680,7 +1632,7 @@
             || [[[dictResultTransfer objectForKey:@"RequestMoneyResult"] objectForKey:@"Result"] isEqualToString:@"PIN number you entered again is incorrect. Your account will be suspended for 24 hours if you enter wrong PIN number again."])
     {
         AudioServicesPlaySystemSound(kSystemSoundID_Vibrate);
-        self.prompt.text = @"2nd failed attempt";
+        self.prompt.text = NSLocalizedString(@"EnterPIN_IncorrectPin2x", @"Enter PIN Screen PIN entered incorrectly twice text");
         self.fourth_num.layer.borderColor = kNoochRed.CGColor;
         self.third_num.layer.borderColor = kNoochRed.CGColor;
         self.second_num.layer.borderColor = kNoochRed.CGColor;
@@ -1698,7 +1650,7 @@
         UIAlertView *suspendedAlert=[[UIAlertView alloc]initWithTitle:@""
                                                               message:@"\xE2\x9A\xA0\n\nTo protect your account, your Nooch account will be suspended for 24 hours if you enter another incorrect PIN."
                                                              delegate:self
-                                                    cancelButtonTitle:@"Ok"
+                                                    cancelButtonTitle:@"OK"
                                                     otherButtonTitles:nil];
         [suspendedAlert show];
         [suspendedAlert setTag:9];
@@ -1708,7 +1660,7 @@
             || [[[dictResultTransfer objectForKey:@"RequestMoneyResult"] objectForKey:@"Result"] isEqualToString:@"Your account has been suspended for 24 hours from now. Please contact admin or send a mail to support@nooch.com if you need to reset your PIN number immediately."])
     {
         [[assist shared]setSusPended:YES];
-        self.prompt.text=@"3rd failed attempt";
+        self.prompt.text = NSLocalizedString(@"EnterPIN_InstructAccntSusp", @"Enter PIN Screen account suspended Instruction Text");
         self.fourth_num.layer.borderColor = kNoochRed.CGColor;
         self.third_num.layer.borderColor = kNoochRed.CGColor;
         self.second_num.layer.borderColor = kNoochRed.CGColor;
@@ -1726,8 +1678,8 @@
         UIAlertView *suspendedAlert=[[UIAlertView alloc]initWithTitle:@"\xE2\x9B\x94"
                                                               message:@"We're terribly sorry, but to keep Nooch safe, your account has been suspended for 24 hours. Please contact us anytime at support@nooch.com if you believe this was a mistake or would like more information."
                                                              delegate:self
-                                                    cancelButtonTitle:@"Ok"
-                                                    otherButtonTitles:@"Contact Support",nil];
+                                                    cancelButtonTitle:@"OK"
+                                                    otherButtonTitles:NSLocalizedString(@"EnterPIN_ContactSupportBtn", @"Enter PIN Screen account suspended Alert Button Contact Support"),nil];
         [suspendedAlert setTag:50];
         [suspendedAlert show];
     }
@@ -1739,7 +1691,7 @@
                                                      message:@"\xF0\x9F\x98\xB3\nLooks like we screwed up. We hate when this happens - sorry for the delay!\n\nPlease try making your transfer again or contact us if the problem persists."
                                                     delegate:self
                                            cancelButtonTitle:@"OK"
-                                           otherButtonTitles:@"Contact Support",nil];
+                                           otherButtonTitles:NSLocalizedString(@"EnterPIN_ContactSupportBtn", @"Enter PIN Screen account suspended Alert Button Contact Support"),nil];
         [av setTag:51];
         [av show];
         transferFinished = YES;
@@ -1772,7 +1724,8 @@
     return [protectionSpace.authenticationMethod isEqualToString:NSURLAuthenticationMethodServerTrust];
 }
 
-- (void)connection:(NSURLConnection *)connection didReceiveAuthenticationChallenge:(NSURLAuthenticationChallenge *)challenge {
+- (void)connection:(NSURLConnection *)connection didReceiveAuthenticationChallenge:(NSURLAuthenticationChallenge *)challenge
+{
     if ([challenge.protectionSpace.authenticationMethod isEqualToString:NSURLAuthenticationMethodServerTrust])
         [challenge.sender useCredential:[NSURLCredential credentialForTrust:challenge.protectionSpace.serverTrust] forAuthenticationChallenge:challenge];
     [challenge.sender continueWithoutCredentialForAuthenticationChallenge:challenge];
@@ -1783,6 +1736,7 @@
     [textField resignFirstResponder];
     return YES;
 }
+
 - (void)didReceiveMemoryWarning
 {
     [super didReceiveMemoryWarning];

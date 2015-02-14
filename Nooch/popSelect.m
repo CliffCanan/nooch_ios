@@ -69,17 +69,17 @@
     {
         [cell.textLabel setTextAlignment:NSTextAlignmentCenter];
         if (indexPath.row == 0) {
-            cell.textLabel.text = @"All Transfers";
+            cell.textLabel.text = NSLocalizedString(@"PopSelect_Row1", @"'All Transfers' Text");
         } else if(indexPath.row == 1) {
-            cell.textLabel.text = @"Sent";
+            cell.textLabel.text = NSLocalizedString(@"PopSelect_Row2", @"'Sent' Text");
         } else if(indexPath.row == 2) {
-            cell.textLabel.text = @"Received";
+            cell.textLabel.text = NSLocalizedString(@"PopSelect_Row3", @"'Received' Text");
         } else if(indexPath.row == 3) {
-            cell.textLabel.text = @"Requests";
+            cell.textLabel.text = NSLocalizedString(@"PopSelect_Row4", @"'Requests' Text");
         } else if(indexPath.row == 4) {
-            cell.textLabel.text = @"Disputes";
+            cell.textLabel.text = NSLocalizedString(@"PopSelect_Row5", @"'Disputes' Text");
         } else if(indexPath.row == 5) {
-            cell.textLabel.text = @"Cancel";
+            cell.textLabel.text = NSLocalizedString(@"PopSelect_CancelRow", @"'Cancel' Text");
         }
         return cell;
     }

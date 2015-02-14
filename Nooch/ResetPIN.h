@@ -14,7 +14,6 @@
 
 @interface ResetPIN : GAITrackedViewController<serveD,MFMailComposeViewControllerDelegate>
 {
-    UIActivityIndicatorView*spinner;
     NSDictionary*dictResult;
     UILabel *title;
     int pinchangeProgress;

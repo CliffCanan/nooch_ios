@@ -394,6 +394,7 @@
     [super viewWillAppear:animated];
     [self.navigationItem setTitle:@"Set My Apartment"];
     self.screenName = @"Set My Apartment Screen";
+    self.artisanNameTag = @"Set My Apartment Screen";
 }
 
 -(void)DateToAutoPaySelection:(id)sender

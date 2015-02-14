@@ -59,7 +59,8 @@
 
     [self.navigationController setNavigationBarHidden:NO];
     self.navigationController.navigationBar.topItem.title = @"";
-    [self.navigationItem setTitle:@"How Much?"];
+    //@"How Much?"
+    [self.navigationItem setTitle:NSLocalizedString(@"HowMuch_ScrnTitle", @"How Much Screen Title")];
     [self.navigationItem setHidesBackButton:YES];
 
     NSShadow * shadowNavText = [[NSShadow alloc] init];
@@ -224,8 +225,8 @@
 
     self.user_pic = [UIImageView new];
     [self.user_pic setFrame:CGRectMake(12, 48, 84, 84)];
-    self.user_pic.layer.borderColor = [Helpers hexColor:@"939598"].CGColor;
-    self.user_pic.layer.borderWidth = 1;
+    self.user_pic.layer.borderColor = kNoochGrayLight.CGColor;
+    self.user_pic.layer.borderWidth = 2;
     self.user_pic.clipsToBounds = YES;
     self.user_pic.layer.cornerRadius = 42;
     if ([self.receiver valueForKey:@"nonuser"])
@@ -281,7 +282,7 @@
     [self.back addSubview:memoShell];
 
     self.memo = [[UITextField alloc] initWithFrame:CGRectMake(2, 0, 255, 38)];
-    [self.memo setPlaceholder:@"     Enter a memo"];
+    [self.memo setPlaceholder:NSLocalizedString(@"HowMuch_MemoPlaceholder", @"How Much memo placeholder text")];
     [self.memo setTextAlignment:NSTextAlignmentCenter];
     [self.memo setTextColor:kNoochGrayDark];
     [self.memo setDelegate:self];
@@ -339,14 +340,14 @@
     self.send = [UIButton buttonWithType:UIButtonTypeRoundedRect];
     [self.send setFrame:CGRectMake(160, 194, 150, 50)];
     [self.send setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
-    [self.send setTitle:@"Send" forState:UIControlStateNormal];
-    [self.send setTitleShadowColor:Rgb2UIColor(19, 32, 38, 0.22) forState:UIControlStateNormal];
+    [self.send setTitle:NSLocalizedString(@"HowMuch_SendBtn", @"How Much send button text") forState:UIControlStateNormal];
+    [self.send setTitleShadowColor:Rgb2UIColor(26, 38, 19, 0.21) forState:UIControlStateNormal];
     self.send.titleLabel.shadowOffset = CGSizeMake(0.0, -1.0);
     [self.send addTarget:self action:@selector(initialize_send) forControlEvents:UIControlEventTouchUpInside];
 
     self.request = [UIButton buttonWithType:UIButtonTypeRoundedRect];
     [self.request setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
-    [self.request setTitleShadowColor:Rgb2UIColor(26, 32, 38, 0.22) forState:UIControlStateNormal];
+    [self.request setTitleShadowColor:Rgb2UIColor(26, 32, 38, 0.21) forState:UIControlStateNormal];
     self.request.titleLabel.shadowOffset = CGSizeMake(0.0, -1.0);
     [self.request addTarget:self action:@selector(initialize_request) forControlEvents:UIControlEventTouchUpInside];
     [self.request setStyleId:@"howmuch_request"];
@@ -358,7 +359,7 @@
     [self.reset_type setBackgroundColor:[UIColor clearColor]];
     [self.reset_type setStyleId:@"reset_glyph"];
     [self.reset_type setTitle:[NSString fontAwesomeIconStringForIconIdentifier:@"fa-times"] forState:UIControlStateNormal];
-    [self.reset_type setTitleShadowColor:Rgb2UIColor(19, 32, 38, 0.25) forState:UIControlStateNormal];
+    [self.reset_type setTitleShadowColor:Rgb2UIColor(19, 32, 38, 0.22) forState:UIControlStateNormal];
     self.reset_type.titleLabel.shadowOffset = CGSizeMake(0.0, -1.0);
 
     if ([UIScreen mainScreen].bounds.size.height > 500) {
@@ -375,7 +376,7 @@
     {
         UILabel * multRecipNote = [[UILabel alloc] initWithFrame:CGRectMake(144, 120, 172, 17)];
         [multRecipNote setFont:[UIFont fontWithName:@"Roboto-light" size:14]];
-        [multRecipNote setText:@"(from each person)"];
+        [multRecipNote setText:NSLocalizedString(@"HowMuch_MultiRecipNote", @"How Much multiple recipients note")];
         [multRecipNote setTextAlignment:NSTextAlignmentCenter];
         [multRecipNote setTextColor:kNoochGrayDark];
         [self.back addSubview: multRecipNote];
@@ -383,7 +384,7 @@
         [self.send removeFromSuperview];
         [self.request setStyleClass:@"howmuch_buttons"];
         [self.request setStyleId:@"howmuch_request_mult_expand"];
-        [self.request setTitle:@"Confirm Request" forState:UIControlStateNormal];
+        [self.request setTitle:NSLocalizedString(@"HowMuch_ConfirmRequest", @"How Much confirm request button text") forState:UIControlStateNormal];
         [self.request removeTarget:self action:@selector(initialize_request) forControlEvents:UIControlEventTouchUpInside];
         [self.request addTarget:self action:@selector(confirm_request) forControlEvents:UIControlEventTouchUpInside];
     }
@@ -394,14 +395,14 @@
         [self.send setStyleClass:@"howmuch_buttons"];
         [self.send setStyleId:@"howmuch_send"];
         [self.send setStyleId:@"howmuch_send_expand"];
-        [self.send setTitle:@"Confirm Payment" forState:UIControlStateNormal];
+        [self.send setTitle:NSLocalizedString(@"HowMuch_ConfirmSend", @"How Much confirm send payment text") forState:UIControlStateNormal];
         [self.send removeTarget:self action:@selector(initialize_send) forControlEvents:UIControlEventTouchUpInside];
         [self.send addTarget:self action:@selector(confirm_send) forControlEvents:UIControlEventTouchUpInside];
         [self.back addSubview:self.send];
     }
     else
     {
-        [self.request setTitle:@"Request" forState:UIControlStateNormal];
+        [self.request setTitle:NSLocalizedString(@"HowMuch_RequestBtn", @"How Much request button text") forState:UIControlStateNormal];
         [self.send setStyleClass:@"howmuch_buttons"];
         [self.send setStyleId:@"howmuch_send"];
         [self.back addSubview:self.send];
@@ -465,9 +466,12 @@
 - (void)viewWillAppear:(BOOL)animated
 {
     [super viewWillAppear:animated];
-    self.screenName = @"HowMuch Screen";
+    self.screenName = @"How Much Screen";
+    self.artisanNameTag = @"How Much Screen";
+
     [self.amount becomeFirstResponder];
-    [self.navigationItem setTitle:@"How Much?"];
+    //@"How Much?"
+    [self.navigationItem setTitle:NSLocalizedString(@"HowMuch_ScrnTitle", @"How Much Screen Title")];
 }
 
 #pragma mark- Request Multiple case
@@ -522,7 +526,8 @@
     self.user_pic.layer.borderColor = kNoochGreen.CGColor;
 
     [self.send addTarget:self action:@selector(confirm_send) forControlEvents:UIControlEventTouchUpInside];
-    [self.send setTitle:@"Confirm Send" forState:UIControlStateNormal];
+    //@"Confirm Send"
+    [self.send setTitle:NSLocalizedString(@"HowMuch_ConfirmSend", @"How Much confirm send payment text") forState:UIControlStateNormal];
     [self.request setStyleId:@"howmuch_request_hide"];
     [self.send setStyleId:@"howmuch_send_expand"];
     [self.reset_type setAlpha:1];
@@ -545,7 +550,8 @@
     self.user_pic.layer.borderColor = kNoochBlue.CGColor;
 
     [self.request addTarget:self action:@selector(confirm_request) forControlEvents:UIControlEventTouchUpInside];
-    [self.request setTitle:@"Confirm Request" forState:UIControlStateNormal];
+    //@"Confirm Request"
+    [self.request setTitle:NSLocalizedString(@"HowMuch_ConfirmRequest", @"How Much confirm request button text") forState:UIControlStateNormal];
     [self.send setStyleId:@"howmuch_send_hide"];
     [self.request setStyleId:@"howmuch_request_expand"];
     [self.reset_type setAlpha:1];
@@ -561,7 +567,8 @@
 {
     [self.recip_back setStyleClass:@"barbackground_gray"];
 
-    if (![[assist shared] isRequestMultiple]) {
+    if (![[assist shared] isRequestMultiple])
+    {
         self.divider = [UIImageView new];
         [self.divider setStyleId:@"howmuch_divider"];
         [self.divider setAlpha:0];
@@ -582,7 +589,8 @@
         [self.request setStyleId:@"howmuch_request_4"];
         [self.divider setStyleId:@"howmuch_divider_4"];
     }
-    else {
+    else
+    {
         [self.send setStyleId:@"howmuch_send"];
         [self.request setStyleId:@"howmuch_request"];
     }
@@ -606,31 +614,32 @@
         if (([self.receiver valueForKey:@"nonuser"] && ![self.receiver objectForKey:@"firstName"]) ||
             ([[assist shared] isRequestMultiple] && [[[assist shared] getArray] count] > 1))
         {
-            alertMessage = @"\xF0\x9F\x98\xAC\nPlease enter a value over $0.\n\nWe'd love to send a $0 payment, but it's actually surprisingly tricky.";
+            alertMessage = [NSString stringWithFormat:@"\xF0\x9F\x98\xAC\n%@", NSLocalizedString(@"HowMuch_CnfrmSndZeroNoNameAlertText", @"How Much confirm send with zero amount and no first or last name alert body text")];
         }
         else if ([self.receiver valueForKey:@"nonuser"] && [self.receiver objectForKey:@"firstName"])
         {
-            alertMessage = [NSString stringWithFormat:@"\xF0\x9F\x98\xAC\nPlease enter a value over $0.\n\nWe'd love to send a $0 payment to %@, but it's actually rather tricky.",[[self.receiver objectForKey:@"firstName"] capitalizedString]];
+            alertMessage = [NSString stringWithFormat:@"\xF0\x9F\x98\xAC\n%@", [NSString stringWithFormat:NSLocalizedString(@"HowMuch_CnfrmSndZeroFirstNameAlertText", @"How Much confirm send with zero amount and only first name alert body text"),[[self.receiver objectForKey:@"firstName"] capitalizedString]]];
         }
         else
         {
-            alertMessage = [NSString stringWithFormat:@"\xF0\x9F\x98\xAC\nPlease enter a value over $0.\n\nWe'd love to send a $0 payment to %@, but it's actually rather tricky.",[[self.receiver objectForKey:@"FirstName"] capitalizedString]];
+            //@"\xF0\x9F\x98\xAC\nPlease enter a value over $0.\n\nWe'd love to send a $0 payment to %@, but it's actually rather tricky."
+            alertMessage = [NSString stringWithFormat:NSLocalizedString(@"HowMuch_CnfrmSndZeroFirstNameAlertText", @"How Much confirm send with zero amount and only first name alert body text"),[[self.receiver objectForKey:@"FirstName"] capitalizedString]];
         }
         UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Non-cents!"
                                                         message:alertMessage
                                                         delegate:self
                                                 cancelButtonTitle:nil
-                                                otherButtonTitles:@"Ok", nil];
+                                                otherButtonTitles:@"OK", nil];
         [alert show];
         return;
     }
     else if ([[[self.amount text] substringFromIndex:1] doubleValue] > transLimitFromArtisanInt && !isFromMyApt)
     {
-        UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Whoa Now"
-                                                        message:[NSString stringWithFormat:@"\xF0\x9F\x98\xB3\nTo keep Nooch safe, please don’t send more than $%@. We hope to raise this limit very soon!", transLimitFromArtisanString]
+        UIAlertView *alert = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"HowMuch_CnfrmSndOverLimitAlertTitle", @"How Much confirm send when amount is over limit Alert Title")
+                                                        message:[NSString stringWithFormat:@"\xF0\x9F\x98\xB3\n%@", [NSString stringWithFormat:NSLocalizedString(@"HowMuch_CnfrmSndOverLimitAlertBody", @"How Much confirm send when amount is over limit Alert Body Text"), transLimitFromArtisanString]]
                                                        delegate:self
                                               cancelButtonTitle:nil
-                                              otherButtonTitles:@"Ok", nil];
+                                              otherButtonTitles:@"OK", nil];
         [alert show];
         return;
     }
@@ -646,7 +655,8 @@
         TransferPIN *pin = [[TransferPIN alloc] initWithReceiver:transaction type:@"send" amount:input_amount];
         [self.navigationController pushViewController:pin animated:YES];
     }
-    else {
+    else
+    {
         TransferPIN *pin = [[TransferPIN alloc] initWithReceiver:transaction type:@"send" amount: input_amount];
         [self.navigationController pushViewController:pin animated:YES];
     }
@@ -682,31 +692,31 @@
         if (([self.receiver valueForKey:@"nonuser"] && ![self.receiver objectForKey:@"firstName"]) ||
            ([[assist shared] isRequestMultiple] && [[[assist shared] getArray] count] > 1))
         {
-            alertMessage = @"\xF0\x9F\x98\xAC\nPlease enter a value over $0.\n\nWe'd love to send a $0 request, but it would just get too confusing for everyone.";
+            alertMessage = [NSString stringWithFormat:@"\xF0\x9F\x98\xAC\n%@", NSLocalizedString(@"HowMuch_CnfrmRequestZeroNoNameAlertTitle", @"How Much confirm request when amount is zero and no first or last name Alert Body")];
         }
         else if ([self.receiver valueForKey:@"nonuser"] && [self.receiver objectForKey:@"firstName"])
         {
-            alertMessage = [NSString stringWithFormat:@"\xF0\x9F\x98\xAC\nPlease enter a value over $0.\n\nSurely %@ owes you more than that...", [[self.receiver objectForKey:@"firstName"] capitalizedString]];
+            alertMessage = [NSString stringWithFormat:NSLocalizedString(@"HowMuch_CnfrmRequestZeroFirstNameAlertTitle", @"How Much confirm request when amount is zero and only first name Alert Body"), [[self.receiver objectForKey:@"firstName"] capitalizedString]];
         }
         else
         {
-            alertMessage = [NSString stringWithFormat:@"\xF0\x9F\x98\xAC\nPlease enter a value over $0.\n\nSurely %@ owes you more than that...", [[self.receiver objectForKey:@"FirstName"] capitalizedString]];
+            alertMessage = [NSString stringWithFormat:@"\xF0\x9F\x98\xAC\n%@", [NSString stringWithFormat:NSLocalizedString(@"HowMuch_CnfrmRequestZeroFirstNameAlertTitle", @"How Much confirm request when amount is zero and only first name Alert Body"), [[self.receiver objectForKey:@"FirstName"] capitalizedString]]];
         }
         UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Non-cents!"
                                                         message:alertMessage
                                                        delegate:self
                                               cancelButtonTitle:nil
-                                              otherButtonTitles:@"Ok", nil];
+                                              otherButtonTitles:@"OK", nil];
         [alert show];
         return;
     }
     else if ([[[self.amount text] substringFromIndex:1] doubleValue] > transLimitFromArtisanInt && !isFromMyApt)
     {
-        UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Whoa Big Spender"
-                                                        message:[NSString stringWithFormat:@"\xF0\x9F\x98\x87\nWhile we definitely appreciate your enthusiasm, we are limiting transfers to $%@ for now in order to minimize our risk (and yours). We're working to raise the limit soon!", transLimitFromArtisanString]
+        UIAlertView *alert = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"HowMuch_CnfrmRequestOverLimitAlertTitle", @"How Much confirm request when amount is over limit Alert Title")
+                                                        message:[NSString stringWithFormat:@"\xF0\x9F\x98\x87\n%@", [NSString stringWithFormat:NSLocalizedString(@"HowMuch_CnfrmRequestOverLimitAlertBody", @"How Much confirm request when amount is over limit Alert Body Text"), transLimitFromArtisanString]]
                                                        delegate:self
                                               cancelButtonTitle:nil
-                                              otherButtonTitles:@"Ok", nil];
+                                              otherButtonTitles:@"OK", nil];
         [alert show];
         return;
     }
@@ -748,12 +758,12 @@
         if ([UIAlertController class]) // for iOS 8
         {
             UIAlertController * alert = [UIAlertController
-                                         alertControllerWithTitle:@"Replace Picture?"
-                                         message:@"Do you want to remove the current picture?"
+                                         alertControllerWithTitle:NSLocalizedString(@"HowMuch_ReplacePicAlertTitle", @"How Much replace picture alert title")
+                                         message:NSLocalizedString(@"HowMuch_ReplacePicAlertBody", @"How Much replace picture alert body text")
                                          preferredStyle:UIAlertControllerStyleAlert];
             
             UIAlertAction * yes = [UIAlertAction
-                                  actionWithTitle:@"Yes"
+                                  actionWithTitle:NSLocalizedString(@"HowMuch_Yes", @"How Much alert button YES text")
                                   style:UIAlertActionStyleDefault
                                   handler:^(UIAlertAction * action)
                                   {
@@ -775,7 +785,7 @@
                                       [self attach_pic];
                                   }];
             UIAlertAction * no = [UIAlertAction
-                                  actionWithTitle:@"No"
+                                  actionWithTitle:NSLocalizedString(@"HowMuch_No", @"How Much alert button NO text")
                                   style:UIAlertActionStyleCancel handler:^(UIAlertAction * action)
                                   {
                                       [alert dismissViewControllerAnimated:YES completion:nil];
@@ -788,11 +798,11 @@
         }
         else
         {
-            UIAlertView * av = [[UIAlertView alloc] initWithTitle:@"Replace Picture?"
-                                                          message:@"Do you want to remove the current picture?"
+            UIAlertView * av = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"HowMuch_ReplacePicAlertTitle", @"How Much replace picture alert title")//@"Replace Picture?"
+                                                          message:NSLocalizedString(@"HowMuch_ReplacePicAlertBody", @"How Much replace picture alert body text")//@"Do you want to remove the current picture?"
                                                          delegate:self
-                                                cancelButtonTitle:@"No"
-                                                otherButtonTitles:@"Yes", nil];
+                                                cancelButtonTitle:NSLocalizedString(@"HowMuch_No", @"How Much alert button NO text")
+                                                otherButtonTitles:NSLocalizedString(@"HowMuch_Yes", @"How Much alert button YES text"), nil];
             [av show];
             [av setTag:11];
             return;
@@ -865,7 +875,7 @@
     [UIView beginAnimations:Nil context:nil];
     [UIView setAnimationDuration:.5];
     
-//    self.choose = [[UIView alloc] initWithFrame:CGRectMake(270, 220, 8, 6)];
+    // self.choose = [[UIView alloc] initWithFrame:CGRectMake(270, 220, 8, 6)];
 
     for (UIView *subview in [self.choose subviews]) {
         [subview removeFromSuperview];
@@ -881,8 +891,8 @@
 {
     if (![UIImagePickerController isSourceTypeAvailable:UIImagePickerControllerSourceTypeCamera])
     {
-        UIAlertView *myAlertView = [[UIAlertView alloc] initWithTitle:@"Error"
-                                                              message:@"Device has no camera"
+        UIAlertView *myAlertView = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"HowMuch_ErrorAlertTitle", @"How Much  no camera error alert title")
+                                                              message:NSLocalizedString(@"HowMuch_ErrorAlertBody", @"How Much  no camera error alert body text")
                                                              delegate:nil
                                                     cancelButtonTitle:@"OK"
                                                     otherButtonTitles: nil];
@@ -968,8 +978,7 @@
 {
     [self cancel_photo];
     [self.camera setStyleId:@"howmuch_camera"];
-    [picker dismissViewControllerAnimated:YES completion:^{
-    }];
+    [picker dismissViewControllerAnimated:YES completion:nil];
 }
 
 #pragma mark - UITextField delegation

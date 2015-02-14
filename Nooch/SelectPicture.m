@@ -40,15 +40,16 @@
 {
     [super viewWillAppear:animated];
     self.screenName = @"Select Picture Screen";
+    self.artisanNameTag = @"Select Picture Screen";
 }
 
 - (void)change_pic
 {
     UIActionSheet *actionSheetObject = [[UIActionSheet alloc] initWithTitle:nil
                                                                    delegate:self
-                                                          cancelButtonTitle:@"Cancel"
+                                                          cancelButtonTitle:NSLocalizedString(@"SelPic_CancelTxt", @"Select Picture screen 'Cancel' Btn Text")
                                                      destructiveButtonTitle:nil
-                                                          otherButtonTitles:@"Use Facebook Picture", @"Use Camera", @"From iPhone Library", nil];
+                                                          otherButtonTitles:NSLocalizedString(@"SelPic_UseFBPicTxt", @"Select Picture screen 'Use Facebook Picture' Text"), NSLocalizedString(@"SelPic_UseCamTxt", @"Select Picture screen 'Use Camera' Text"), NSLocalizedString(@"SelPic_UseiPhnLibTxt", @"Select Picture screen 'From iPhone Library' Text"), nil];
     actionSheetObject.actionSheetStyle = UIActionSheetStyleDefault;
     [actionSheetObject showInView:self.view];
 }
@@ -134,14 +135,16 @@
     self.pic.layer.borderWidth = 3;
     self.pic.layer.borderColor = kNoochBlue.CGColor;
 
-    [self.message setText:@"Great Pic! If you're happy with it tap \"Continue\" or if you wish to change it tap \"Change Picture\""];
+    [self.message setText:NSLocalizedString(@"SelPic_InstrctTxt", @"Select Picture screen Instruction Text after selecting a pic")];
 
-    [self.choose_pic setTitle:@"Change Picture" forState:UIControlStateNormal];
+    [self.choose_pic setTitle:NSLocalizedString(@"SelPic_ChngPicBtn1", @"Select Picture screen 'Change Picture' Btn Text") forState:UIControlStateNormal];
 
-    [self.next_button setTitle:@"Continue" forState:UIControlStateNormal];
+    [self.next_button setTitle:NSLocalizedString(@"SelPic_ContinBtn3", @"Select Picture screen 'Continue' Btn Text") forState:UIControlStateNormal];
     [self.next_button removeTarget:self action:@selector(next) forControlEvents:UIControlEventTouchUpInside];
     [self.next_button addTarget:self action:@selector(cont) forControlEvents:UIControlEventTouchUpInside];
     [self.next_button setStyleClass:@"button_green"];
+    [self.next_button setTitleShadowColor:Rgb2UIColor(26, 32, 38, 0.21) forState:UIControlStateNormal];
+    self.next_button.titleLabel.shadowOffset = CGSizeMake(0.0, -1.0);
 }
 
 - (void)imagePickerControllerDidCancel:(UIImagePickerController *)picker1
@@ -208,7 +211,8 @@
     [self.view addSubview:slogan];
 
     UILabel * welcome = [[UILabel alloc] initWithFrame:CGRectMake(0, 115, 320, 35)];
-    [welcome setText:[NSString stringWithFormat:@"Hey %@!",[[self.user objectForKey:@"first_name" ] capitalizedString]]];
+    //@"Hey %@!"
+    [welcome setText:[NSString stringWithFormat:NSLocalizedString(@"SelPic_GreetingTxt", @"Select Picture screen 'Hey %@' Greeting Text"),[[self.user objectForKey:@"first_name" ] capitalizedString]]];
     [welcome setBackgroundColor:[UIColor clearColor]];
     [welcome setStyleClass:@"header_signupflow"];
 
@@ -261,26 +265,31 @@
         [self.pic setImage:[UIImage imageWithData:[self.user objectForKey:@"image"]]];
         [[assist shared]setTranferImage:[UIImage imageWithData:[self.user objectForKey:@"image"]]];
 
-        [self.message setText:@"Great Pic! If you're happy with it tap \"Continue\" or if you wish to change it tap \"Change Picture\""];
-        [self.choose_pic setTitle:@"  Change Picture" forState:UIControlStateNormal];
+        [self.message setText:NSLocalizedString(@"SelPic_InstrctTxt2", @"Select Picture screen Instruction Text after selecting a pic (2nd)")];
 
-        [self.next_button setTitle:@"Continue" forState:UIControlStateNormal];
+        [self.choose_pic setTitle:NSLocalizedString(@"SelPic_ChngPicBtn2", @"Select Picture screen '  Change Picture' Btn Text") forState:UIControlStateNormal];
+
+        [self.next_button setTitle:NSLocalizedString(@"SelPic_ContinBtn2", @"Select Picture screen 'Continue' Btn Text (2nd)") forState:UIControlStateNormal];
         [self.next_button removeTarget:self action:@selector(next) forControlEvents:UIControlEventTouchUpInside];
         [self.next_button addTarget:self action:@selector(cont) forControlEvents:UIControlEventTouchUpInside];
         [self.next_button setStyleClass:@"button_green"];
+        [self.next_button setTitleShadowColor:Rgb2UIColor(26, 32, 38, 0.21) forState:UIControlStateNormal];
+        self.next_button.titleLabel.shadowOffset = CGSizeMake(0.0, -1.0);
     }
     else
     {
         [self.pic setImage:[UIImage imageNamed:@"silhouette.png"]];
 
-        [self.message setText:@"Add a picture so people can find you more easily when sending you money."];
+        [self.message setText:NSLocalizedString(@"SelPic_InstrucTxt3a", @"Select Picture screen Add Pic Instruction Text")];
 
-        [self.choose_pic setTitle:@"  Choose Picture" forState:UIControlStateNormal];
+        [self.choose_pic setTitle:NSLocalizedString(@"SelPic_ChoosePicBtn1", @"Select Picture screen '  Choose Picture' Btn Text") forState:UIControlStateNormal];
 
         [self.next_button setBackgroundColor:[UIColor clearColor]];
         [self.next_button setTitleColor:kNoochGrayDark forState:UIControlStateNormal];
-        [self.next_button setTitle:@"I don't want to add a picture now..." forState:UIControlStateNormal];
+        [self.next_button setTitle:NSLocalizedString(@"SelPic_LaterBtn1", @"Select Picture screen 'I don't want to add a picture now...' Btn Text") forState:UIControlStateNormal];
         [self.next_button setStyleClass:@"label_small"];
+        [self.next_button setTitleShadowColor:Rgb2UIColor(255, 255, 255, 0) forState:UIControlStateNormal];
+        self.next_button.titleLabel.shadowOffset = CGSizeMake(0, 0);
     }
 
     [self.choose_pic addSubview:glyphcamera];
@@ -384,14 +393,16 @@
 {
     [self.pic setImage:[UIImage imageNamed:@"silhouette.png"]];
 
-    [self.message setText:@"Add a picture so people can find you more easily when sending you money."];
+    [self.message setText:NSLocalizedString(@"SelPic_InstrucTxt3b", @"Select Picture screen Add Pic Instruction Text (2nd)")];
 
-    [self.choose_pic setTitle:@"  Choose Picture" forState:UIControlStateNormal];
+    [self.choose_pic setTitle:NSLocalizedString(@"SelPic_ChoosePicBtn2", @"Select Picture screen '  Choose Picture' Btn Text (2nd)") forState:UIControlStateNormal];
 
     [self.next_button setBackgroundColor:[UIColor clearColor]];
     [self.next_button setTitleColor:kNoochGrayDark forState:UIControlStateNormal];
-    [self.next_button setTitle:@"I don't want to add a picture now..." forState:UIControlStateNormal];
+    [self.next_button setTitle:NSLocalizedString(@"SelPic_LaterBtn2", @"Select Picture screen 'I don't want to add a picture now...' Btn Text (2nd)") forState:UIControlStateNormal];
     [self.next_button setStyleClass:@"label_small"];
+    [self.next_button setTitleShadowColor:Rgb2UIColor(255, 255, 255, 0) forState:UIControlStateNormal];
+    self.next_button.titleLabel.shadowOffset = CGSizeMake(0, 0);
 }
 
 // Facebook: Show the user the logged-in UI
@@ -420,15 +431,16 @@
 
             self.pic.layer.borderWidth = 4;
             self.pic.layer.borderColor = kNoochBlue.CGColor;
-            //  [self.pic setImage:[UIImage imageWithData:[self.user objectForKey:@"image"]]];
             
-            [self.message setText:@"Great Pic! If you're happy with it tap \"Continue\" or if you wish to change it tap \"Change Picture\""];
-            [self.choose_pic setTitle:@"  Change Picture" forState:UIControlStateNormal];
+            [self.message setText:NSLocalizedString(@"SelPic_InstrctTxt3", @"Select Picture screen Instruction Text after selecting a pic (3rd)")];
+            [self.choose_pic setTitle:NSLocalizedString(@"SelPic_ChngPicBtn3", @"Select Picture screen '  Change Picture' Btn Text") forState:UIControlStateNormal];
             
-            [self.next_button setTitle:@"Continue" forState:UIControlStateNormal];
+            [self.next_button setTitle:NSLocalizedString(@"SelPic_ContinBtn4", @"Select Picture screen 'Continue' Btn Text (3rd)") forState:UIControlStateNormal];
             [self.next_button removeTarget:self action:@selector(next) forControlEvents:UIControlEventTouchUpInside];
             [self.next_button addTarget:self action:@selector(cont) forControlEvents:UIControlEventTouchUpInside];
             [self.next_button setStyleClass:@"button_green"];
+            [self.next_button setTitleShadowColor:Rgb2UIColor(26, 32, 38, 0.21) forState:UIControlStateNormal];
+            self.next_button.titleLabel.shadowOffset = CGSizeMake(0.0, -1.0);
         }
         else
         {

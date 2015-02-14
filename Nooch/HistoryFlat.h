@@ -34,8 +34,7 @@ serveD,FPPopoverControllerDelegate,UISearchBarDelegate,SWTableViewCellDelegate,M
     BOOL isFilter;
     BOOL isSearch;
     FPPopoverController*fp;
-    NSString*SearchStirng;
-    UIActivityIndicatorView *spinner;
+    NSString*SearchString;
     UIView*mapArea;
     float firstX,firstY;
     BOOL isMapOpen;

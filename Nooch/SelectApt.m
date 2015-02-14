@@ -114,6 +114,7 @@
 -(void)viewWillAppear:(BOOL)animated
 {
     [super viewWillAppear:YES];
+    self.artisanNameTag = @"Select Apartment Screen";
 }
 
 -(void)viewDidAppear:(BOOL)animated

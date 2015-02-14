@@ -4,6 +4,7 @@
 //  Copyright (c) 2015 Nooch. All rights reserved.
 
 #import "LimitsAndFees.h"
+#import "Home.h"
 #import "ECSlidingViewController.h"
 #import <PixateFreestyle/PixateFreestyle.h>
 #import "NSString+FontAwesome.h"
@@ -28,8 +29,10 @@
 -(void)viewWillAppear:(BOOL)animated
 {
     [super viewWillAppear:animated];
-    self.screenName = @"Limit & Fees Screen";
+    self.screenName = @"Limits & Fees Screen";
+    self.artisanNameTag = @"Limist and Fees Screen";
 }
+
 -(void)viewDidDisappear:(BOOL)animated{
     [self.hud hide:YES];
     [super viewDidDisappear:animated];
@@ -38,7 +41,7 @@
 {
     [super viewDidLoad];
 
-    [self.navigationItem setTitle:@"Limits and Fees"];
+    [self.navigationItem setTitle:NSLocalizedString(@"LimitsFees_ScrnTitle", @"LimitsFees 'Limits & Fees' Screen Title")];
     [self.view setBackgroundColor:[UIColor whiteColor]];
     
     UIButton * hamburger = [UIButton buttonWithType:UIButtonTypeRoundedRect];
@@ -61,7 +64,7 @@
     self.hud.mode = MBProgressHUDModeCustomView;
     self.hud.customView = spinner1;
     self.hud.delegate = self;
-    self.hud.labelText = @"Loading & Other Computer Activities";
+    self.hud.labelText = NSLocalizedString(@"LimitsFees_HUDlbl", @"LimitsFees 'Loading & Other Computer Activities' HUD Label");
     [self.hud show:YES];
 
     NSURL * webURL = [NSURL URLWithString:@"https://www.nooch.com/2248-112188/"];

@@ -46,17 +46,21 @@
 {
     [super viewWillAppear:animated];
     self.screenName = @"Notification Settings Screen";
+    self.artisanNameTag = @"Notification Settings Screen";
 }
+
 -(void)viewDidDisappear:(BOOL)animated{
     [self.hud hide:YES];
     [super viewDidDisappear:animated];
 }
+
 - (void)viewDidLoad
 {
     [super viewDidLoad];
 	// Do any additional setup after loading the view.
     self.navigationController.navigationBar.topItem.title = @"";
-    [self.navigationItem setTitle:@"Notification Settings"];
+    //@"Notification Settings"
+    [self.navigationItem setTitle:NSLocalizedString(@"NotifSettings_ScrnTitle", @"Notification Settings screen title")];
 
     [self.view setBackgroundColor:[UIColor whiteColor]];
 
@@ -220,7 +224,7 @@
     spinner1.color = [UIColor whiteColor];
     self.hud = [[MBProgressHUD alloc] initWithView:self.navigationController.view];
     [self.navigationController.view addSubview:self.hud];
-    self.hud.labelText = @"Loading your settings...";
+    self.hud.labelText = NSLocalizedString(@"NotifSettings_HUDtxt", @"Notification Settings HUD loading text");
     self.hud.mode = MBProgressHUDModeCustomView;
     self.hud.customView = spinner1;
     self.hud.delegate = self;
@@ -394,13 +398,13 @@
     if (tableView == self.transfers_table)
     {
         if (indexPath.row == 0) {
-            cell.textLabel.text = @"Transfer Received";
+            cell.textLabel.text = NSLocalizedString(@"NotifSettings_Row1", @"Notification Settings row lbl - 'Transfer Received'");
         }
         else if (indexPath.row == 1) {
-            cell.textLabel.text = @"Transfer Sent";
+            cell.textLabel.text = NSLocalizedString(@"NotifSettings_Row2", @"Notification Settings row lbl - 'Transfer Sent'");
         }
         else if (indexPath.row == 2) {
-            cell.textLabel.text = @"Transfer Unclaimed";
+            cell.textLabel.text = NSLocalizedString(@"NotifSettings_Row3", @"Notification Settings row lbl - 'Transfer Unclaimed'");
         }
     }
     

@@ -37,13 +37,14 @@
     self.pin_check = @"";
  
     self.screenName = @"Create PIN Screen";
+    self.artisanNameTag = @"Create PIN Screen";
 
     [self.pin setText:@""];
     [self.first_num setBackgroundColor:[UIColor clearColor]];
     [self.second_num setBackgroundColor:[UIColor clearColor]];
     [self.third_num setBackgroundColor:[UIColor clearColor]];
     [self.fourth_num setBackgroundColor:[UIColor clearColor]];
-    [self.prompt setText:@"You'll be asked to enter this PIN anytime you send or request money."];
+    [self.prompt setText:NSLocalizedString(@"CreatePIN_Instruc1", @"Create PIN screen Initial Instruction Text")];
 }
 
 #pragma mark - UITextField delegation
@@ -51,7 +52,7 @@
 {
     NSUInteger len = [textField.text length] + [string length];
     
-    if([string length] == 0) { //deleting
+    if ([string length] == 0) { //deleting
         switch (len) {
             case 4:
                 [self.fourth_num setBackgroundColor:[UIColor clearColor]];
@@ -84,7 +85,7 @@
                 if ([self.pin_check length] != 4)
                 {
                     self.pin_check = [NSString stringWithFormat:@"%@%@",textField.text,string];
-                    [self.prompt setText:@"Confirm Your PIN"];
+                    [self.prompt setText:NSLocalizedString(@"CreatePIN_CnfrmPin", @"Create PIN screen 'Confirm PIN' Text")];
                     [self.pin setText:@""];
                     [self.first_num setBackgroundColor:[UIColor clearColor]];
                     [self.second_num setBackgroundColor:[UIColor clearColor]];
@@ -105,7 +106,7 @@
                     {
                         self.pin_check = @"";
                         [self.pin setText:@""];
-                        [self.prompt setText:@"The PINs you entered did not match! Please try again."];
+                        [self.prompt setText:NSLocalizedString(@"CreatePIN_NoMatch", @"Create PIN screen PINs don't match feedback Text Instruction Text")];
                         [self.prompt setTextColor:kNoochRed];
                         [self.first_num setBackgroundColor:[UIColor clearColor]];
                         [self.second_num setBackgroundColor:[UIColor clearColor]];
@@ -132,11 +133,14 @@
     }
     return YES;
 }
+
 -(void) BackClicked:(id) sender
 {
     [self.navigationController popViewControllerAnimated:YES];
 }
-- (BOOL)textFieldShouldReturn:(UITextField *)textField{
+
+- (BOOL)textFieldShouldReturn:(UITextField *)textField
+{
     [textField resignFirstResponder];
     return YES;
 }
@@ -185,16 +189,16 @@
                                        NSShadowAttributeName: shadowNavText};
     [[UINavigationBar appearance] setTitleTextAttributes:titleAttributes];
 
-    [self.navigationItem setTitle:@"Create PIN"];
+    [self.navigationItem setTitle:NSLocalizedString(@"CreatePIN_ScrnTtl", @"'Create PIN' screen Title")];
 
     UILabel *title = [[UILabel alloc] initWithFrame:CGRectMake(10, 118, 300, 40)];
-    [title setText:@"Create your PIN"];
+    [title setText:NSLocalizedString(@"CreatePIN_HdrTxt", @"'Create your PIN' Header Text")];
     [title setStyleClass:@"header_signupflow"];
     [self.view addSubview:title];
 
     self.prompt = [[UILabel alloc] initWithFrame:CGRectMake(10, 231, 300, 50)];
     [self.prompt setNumberOfLines:2];
-    [self.prompt setText:@"You'll be asked to enter this PIN anytime you send or request money."];
+    [self.prompt setText:NSLocalizedString(@"CreatePIN_Instruc2", @"Create PIN screen Initial Instruction Text (2nd)")];
     [self.prompt setStyleClass:@"instruction_text"];
 
     self.pin = [UITextField new];

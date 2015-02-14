@@ -58,7 +58,7 @@
         self.hud.mode = MBProgressHUDModeCustomView;
         self.hud.customView = spinner1;
         self.hud.delegate = self;
-        self.hud.labelText = @"Checking Login Credentials...";
+        self.hud.labelText = NSLocalizedString(@"Login_HUDlbl", @"'Checking Login Credentials...' HUD Label");
         [self.hud show:YES];
 
         serve *log = [serve new];
@@ -69,11 +69,14 @@
     }
     else
     {
+        NSString * avTitle = NSLocalizedString(@"Login_Alrt1Ttl", @"'Please Enter Email And Password' Alert Title");
+        NSString * avMsg = NSLocalizedString(@"Login_Alrt1Body", @"'We can't log you in if we don't know who you are!' Alert Body");
+
         if ([UIAlertController class]) // for iOS 8
         {
             UIAlertController * alert = [UIAlertController
-                                         alertControllerWithTitle:@"Please Enter Email And Password"
-                                         message:@"We can't log you in if we don't know who you are!"
+                                         alertControllerWithTitle:avTitle
+                                         message:avMsg
                                          preferredStyle:UIAlertControllerStyleAlert];
 
             UIAlertAction * ok = [UIAlertAction
@@ -88,8 +91,8 @@
         }
         else  // for iOS 7 and prior
         {
-            UIAlertView * av = [[UIAlertView alloc] initWithTitle:@"Please Enter Email And Password"
-                                                          message:@"We can't log you in if we don't know who you are!"
+            UIAlertView * av = [[UIAlertView alloc] initWithTitle:avTitle
+                                                          message:avMsg
                                                          delegate:nil
                                                 cancelButtonTitle:@"OK"
                                                 otherButtonTitles: nil];
@@ -107,6 +110,7 @@
 {
     [super viewWillAppear:animated];
      self.screenName = @"Login Screen";
+    self.artisanNameTag = @"Login Screen";
 }
 
 -(void)viewDidAppear:(BOOL)animated
@@ -176,8 +180,6 @@
         [self.view addSubview:slogan];
     }
 
-    //[self.navigationItem setTitle:@"Log In"];
-
     NSShadow * shadowFB = [[NSShadow alloc] init];
     shadowFB.shadowColor = Rgb2UIColor(19, 32, 38, .2);
     shadowFB.shadowOffset = CGSizeMake(0, -1);
@@ -217,14 +219,14 @@
     UILabel * emailLbl = [[UILabel alloc] initWithFrame:CGRectMake(19, 165, 120, 40)];
     [emailLbl setFont:[UIFont fontWithName:@"Roboto-regular" size:17]];
     [emailLbl setTextColor:kNoochBlue];
-    [emailLbl setText:@"Email"];
+    [emailLbl setText:NSLocalizedString(@"Login_EmailTxt", @"'Email' Text")];
     [emailLbl setTextAlignment:NSTextAlignmentLeft];
     [self.view addSubview:emailLbl];
 
     self.password = [[UITextField alloc] initWithFrame:CGRectMake(87, 207, 214, 40)];
     [self.password setFont:[UIFont fontWithName:@"Roboto-regular" size:17]];
     [self.password setTextColor:[Helpers hexColor:@"313233"]];
-    [self.password setPlaceholder:@"Password"];
+    [self.password setPlaceholder:NSLocalizedString(@"Login_PwPlchldr", @"'Password' Placeholder Text")];
     self.password.inputAccessoryView = [[UIView alloc] init];
     [self.password setAutocapitalizationType:UITextAutocapitalizationTypeNone];
     [self.password setSecureTextEntry:YES];
@@ -236,13 +238,13 @@
     UILabel * pass = [[UILabel alloc] initWithFrame:CGRectMake(19, 207, 120, 40)];
     [pass setFont:[UIFont fontWithName:@"Roboto-regular" size:17]];
     [pass setTextColor:kNoochBlue];
-    [pass setText:@"Password"];
+    [pass setText:NSLocalizedString(@"Login_PwTxt", @"'Password' Text")];
     [pass setTextAlignment:NSTextAlignmentLeft];
 
     self.login = [UIButton buttonWithType:UIButtonTypeRoundedRect];
     [self.login setTitleShadowColor:Rgb2UIColor(19, 32, 38, 0.22) forState:UIControlStateNormal];
     self.login.titleLabel.shadowOffset = CGSizeMake(0.0, -1.0);
-    [self.login setTitle:@"Log In  " forState:UIControlStateNormal];
+    [self.login setTitle:NSLocalizedString(@"Login_LoginBtn", @"'Login  ' Button Text") forState:UIControlStateNormal];
     [self.login setFrame:CGRectMake(10, 263, 300, 50)];
     [self.login addTarget:self action:@selector(check_credentials) forControlEvents:UIControlEventTouchUpInside];
     [self.login setStyleClass:@"button_green"];
@@ -269,12 +271,12 @@
     self.stay_logged_in.transform = CGAffineTransformMakeScale(0.8, 0.8);
 
     UILabel *remember_me = [[UILabel alloc] initWithFrame:CGRectMake(19, 320, 140, 30)];
-    [remember_me setText:@"Remember Me"];
+    [remember_me setText:NSLocalizedString(@"Login_RemMeTxt", @"'Remember Me' Text")];
     [remember_me setStyleId:@"label_rememberme"];
 
     UIButton *forgot = [UIButton buttonWithType:UIButtonTypeRoundedRect];
     [forgot setBackgroundColor:[UIColor clearColor]];
-    [forgot setTitle:@"Forgot Password?" forState:UIControlStateNormal];
+    [forgot setTitle:NSLocalizedString(@"Login_ForgPwTxt", @"'Forgot Password?' Text") forState:UIControlStateNormal];
     [forgot setFrame:CGRectMake(190, 320, 120, 30)];
     [forgot addTarget:self action:@selector(forgot_pass) forControlEvents:UIControlEventTouchUpInside];
     [forgot setStyleId:@"label_forgotpw"];
@@ -462,7 +464,6 @@
         if (!error)
         {
             // Success! Now Log User into Nooch using the FB ID
-            // NSLog(@"user info: %@", result);
 
             [self checkIfLocationAllowed];
 
@@ -556,16 +557,20 @@
 
 - (void)forgot_pass
 {
+    NSString * avTitle = NSLocalizedString(@"Login_ForgPwAlrtTtl", @"'Forgot Password' Alert Title");
+    NSString * avMsg = NSLocalizedString(@"Login_ForgPwAlrtBody", @"'Please enter your email and we will send you a reset link.' Alert Body Text");
+    NSString * avCancel = NSLocalizedString(@"Login_ForgPwAlrtCncl", @"'Cancel' Alert Button Text");
+
     if ([UIAlertController class]) // for iOS 8
     {
         UIAlertController * alert = [UIAlertController
-                                     alertControllerWithTitle:@"Forgot Password"
-                                     message:@"Please enter your email and we will send you a reset link."
+                                     alertControllerWithTitle:avTitle
+                                     message:avMsg
                                      preferredStyle:UIAlertControllerStyleAlert];
 
         [alert addTextFieldWithConfigurationHandler:^(UITextField *textField)
         {
-             textField.placeholder = NSLocalizedString(@"Email Address", @"Email Field Placeholder");
+             textField.placeholder = NSLocalizedString(@"Email Address", @"'Email' Field Placeholder");
             [textField setText:self.email.text];
             [textField setKeyboardType:UIKeyboardTypeEmailAddress];
             [textField setStyleClass:@"customTextField_2"];
@@ -573,7 +578,7 @@
         }];
 
         UIAlertAction * cancel = [UIAlertAction
-                                  actionWithTitle:@"Cancel"
+                                  actionWithTitle:avCancel
                                   style:UIAlertActionStyleCancel
                                   handler:^(UIAlertAction * action){
                                       [alert dismissViewControllerAnimated:YES completion:nil];
@@ -611,10 +616,10 @@
                                   }
                                   else
                                   {
-                                      UIAlertView * alert = [[UIAlertView alloc]initWithTitle:@"Forgot Password"
+                                      UIAlertView * alert = [[UIAlertView alloc]initWithTitle:avTitle
                                                                                       message:@"Please make sure you've entered a valid email address."
                                                                                      delegate:self
-                                                                            cancelButtonTitle:@"Cancel"
+                                                                            cancelButtonTitle:avCancel
                                                                             otherButtonTitles:@"OK", nil];
                                       alert.alertViewStyle = UIAlertViewStylePlainTextInput;
                                       [alert setTag:22];
@@ -631,10 +636,10 @@
     }
     else // iOS 7 and prior
     {
-        UIAlertView * alert = [[UIAlertView alloc]initWithTitle:@"Forgot Password"
-                                                        message:@"Please enter your email and we will send you a reset link."
+        UIAlertView * alert = [[UIAlertView alloc]initWithTitle:avTitle
+                                                        message:avMsg
                                                        delegate:self
-                                              cancelButtonTitle:@"Cancel"
+                                              cancelButtonTitle:avCancel
                                               otherButtonTitles:@"OK", nil];
         alert.alertViewStyle = UIAlertViewStylePlainTextInput;
         [[alert textFieldAtIndex:0] setText:self.email.text];
@@ -744,8 +749,8 @@
     [self.hud hide:YES];
 
     UIAlertView *alert = [[UIAlertView alloc]
-                          initWithTitle:@"Message"
-                          message:@"The internet is busy right now... please try again."
+                          initWithTitle:NSLocalizedString(@"Login_CnctnErrAlrtTitle", @"Login screen 'Connection Error' Alert Text")
+                          message:NSLocalizedString(@"Login_CnctnErrAlrtBody", @"Login screen Connection Error Alert Body Text")
                           delegate:nil
                           cancelButtonTitle:@"OK"
                           otherButtonTitles:nil];
@@ -832,11 +837,11 @@
             [FBSession.activeSession close];
             [FBSession setActiveSession:nil];
 
-            UIAlertView * alert = [[UIAlertView alloc]initWithTitle:@"Facebook Login Failed"
-                                                            message:@"Your Facebook account is not associated with a Nooch account.\nWould you like to create a Nooch account now?"
+            UIAlertView * alert = [[UIAlertView alloc]initWithTitle:NSLocalizedString(@"Login_FbFailedAlrtTitle", @"'Facebook Login Failed' Alert Title")
+                                                            message:NSLocalizedString(@"Login_FbFailedAlrtBody", @"'Facebook Login Failed' Alert Body Text")//@"Your Facebook account is not associated with a Nooch account.\nWould you like to create a Nooch account now?"
                                                            delegate:self
-                                                  cancelButtonTitle:@"Register Now"
-                                                  otherButtonTitles:@"Cancel", nil];
+                                                  cancelButtonTitle:NSLocalizedString(@"Login_FbFailedAlrtBtn1", @"Facebook Login Failed 'Register Now' Alert Button text")
+                                                  otherButtonTitles:NSLocalizedString(@"Login_FbFailedAlrtBtn2", @"Facebook Login Failed 'Cancel' Alert Button text"), nil];
             [alert setTag:568];
             [alert show];
             return;
@@ -847,7 +852,7 @@
             ![[loginResult objectForKey:@"Result"] isEqualToString:@"Invalid user id or password."] &&
             ![[loginResult objectForKey:@"Result"] isEqualToString:@"Temporarily_Blocked"] &&
             ![[loginResult objectForKey:@"Result"] isEqualToString:@"The password you have entered is incorrect."] &&
-            ![[loginResult objectForKey:@"Result"] isEqualToString:@"Suspended"] &&
+             [[loginResult objectForKey:@"Result"] rangeOfString:@"Suspended"].location == NSNotFound &&
              [[loginResult objectForKey:@"Result"] rangeOfString:@"Your account has been temporarily blocked."].location == NSNotFound)
         {
             // Now that it was successful (user logged into Nooch with fb id), update the button
@@ -858,63 +863,14 @@
             getDetails.tagName = @"getMemberId";
             [getDetails getMemIdFromuUsername:email_fb];
         }
-        else if ( loginResult != nil &&
-                 [loginResult objectForKey:@"Result"] &&
-                 [[loginResult objectForKey:@"Result"] rangeOfString:@"Your account has been temporarily blocked."].location != NSNotFound)
+
+        else if (  [loginResult objectForKey:@"Result"] && loginResult != nil &&
+                  ([[[loginResult objectForKey:@"Result"] lowercaseString] rangeOfString:@"suspended"].location != NSNotFound  ||
+                    [[loginResult objectForKey:@"Result"] rangeOfString:@"temporarily blocked"].location != NSNotFound ||
+                    [[loginResult objectForKey:@"Result"] isEqualToString:@"Temporarily_Blocked"]) )
         {
             [self.hud hide:YES];
             [self userIsTempBlocked_3xWrong];
-        }
-
-        else if ( [loginResult objectForKey:@"Result"] &&
-                 [[loginResult objectForKey:@"Result"] isEqualToString:@"Suspended"] && loginResult != nil)
-        {
-            [self.hud hide:YES];
-            
-            if ([UIAlertController class]) // for iOS 8
-            {
-                UIAlertController * alert = [UIAlertController
-                                             alertControllerWithTitle:@"Account Suspended"
-                                             message:@"Your account has been temporarily suspended pending a review. We will contact you as soon as possible, and you can always contact us via email if this is a mistake or error."
-                                             preferredStyle:UIAlertControllerStyleAlert];
-                
-                UIAlertAction * ok = [UIAlertAction
-                                      actionWithTitle:@"OK"
-                                      style:UIAlertActionStyleDefault
-                                      handler:^(UIAlertAction * action)
-                                      {
-                                          [alert dismissViewControllerAnimated:YES completion:nil];
-                                      }];
-                UIAlertAction * contactSupport = [UIAlertAction
-                                                  actionWithTitle:@"Contact Support"
-                                                  style:UIAlertActionStyleDefault
-                                                  handler:^(UIAlertAction * action)
-                                                  {
-                                                      [alert dismissViewControllerAnimated:YES completion:nil];
-                                                      [self emailNoochSupport];
-                                                  }];
-                [alert addAction:ok];
-                [alert addAction:contactSupport];
-                
-                [self presentViewController:alert animated:YES completion:nil];
-            }
-            else // iOS 7 and prior
-            {
-                UIAlertView * alert = [[UIAlertView alloc]initWithTitle:@"Account Suspended"
-                                                                message:@"Your account has been temporarily suspended pending a review. We will contact you as soon as possible, and you can always contact us via email if this is a mistake or error."
-                                                               delegate:self
-                                                      cancelButtonTitle:@"OK"
-                                                      otherButtonTitles:@"Contact Support", nil];
-                [alert setTag:500];
-                [alert show];
-            }
-        }
-
-        else if ( [loginResult objectForKey:@"Result"] &&
-                 [[loginResult objectForKey:@"Result"] isEqualToString:@"Temporarily_Blocked"] && loginResult != nil)
-        {
-            [self.hud hide:YES];
-            [self userIsTempBlocked];
         }
     }
 
@@ -943,11 +899,14 @@
         {
             [self.hud hide:YES];
 
+            NSString * avTitle = NSLocalizedString(@"Login_InvldCredsAlrtTtl", @"Login Screen 'Invalid Email or Password' Alert Title");
+            NSString * avMsg = NSLocalizedString(@"Login_InvldCredsBody", @"Login Screen Invalid Email or Password Alert Body Text");
+
             if ([UIAlertController class]) // for iOS 8
             {
                 UIAlertController * alert = [UIAlertController
-                                             alertControllerWithTitle:@"Invalid Email or Password"
-                                             message:@"We don't recognize that information, please double check your email is entered correctly and try again."
+                                             alertControllerWithTitle:avTitle
+                                             message:avMsg
                                              preferredStyle:UIAlertControllerStyleAlert];
             
                 UIAlertAction * ok = [UIAlertAction
@@ -964,8 +923,8 @@
             }
             else // iOS 7 and prior
             {
-                UIAlertView * alert = [[UIAlertView alloc]initWithTitle:@"Invalid Email or Password"
-                                                                message:@"We don't recognize that information, please double check your email is entered correctly and try again."
+                UIAlertView * alert = [[UIAlertView alloc]initWithTitle:avTitle
+                                                                message:avMsg
                                                                delegate:Nil
                                                       cancelButtonTitle:@"OK"
                                                       otherButtonTitles:nil, nil];
@@ -977,11 +936,14 @@
         {
             [self.hud hide:YES];
 
+            NSString * avTitle = NSLocalizedString(@"Login_InvldCredsAlrtTtl2", @"Login Screen 'This Is Awkward' Alert Title");
+            NSString * avMsg = [NSString stringWithFormat:@"\xF0\x9F\x94\x90\n%@",  NSLocalizedString(@"Login_InvldCredsBody2", @"Login Screen This Is Awkward Alert Body Text")];
+
             if ([UIAlertController class]) // for iOS 8
             {
                 UIAlertController * alert = [UIAlertController
-                                         alertControllerWithTitle:@"This Is Awkward"
-                                         message:@"\xF0\x9F\x94\x90\nThat doesn't appear to be the correct password. Please try again or contact us for futher help."
+                                         alertControllerWithTitle:avTitle
+                                         message:avMsg
                                          preferredStyle:UIAlertControllerStyleAlert];
             
                 UIAlertAction * ok = [UIAlertAction
@@ -1006,8 +968,8 @@
             }
             else // iOS 7 and prior
             {
-                UIAlertView * alert = [[UIAlertView alloc]initWithTitle:@"This Is Awkward"
-                                                                message:@"\xF0\x9F\x94\x90\nThat doesn't appear to be the correct password. Please try again or contact us for futher help"
+                UIAlertView * alert = [[UIAlertView alloc]initWithTitle:avTitle
+                                                                message:avMsg
                                                                delegate:self
                                                       cancelButtonTitle:@"OK"
                                                       otherButtonTitles:@"Forgot Password", nil];
@@ -1016,65 +978,14 @@
             }
         }
 
-        else if ( [loginResult objectForKey:@"Result"] &&
-                 [[loginResult objectForKey:@"Result"] rangeOfString:@"Your account has been temporarily blocked."].location != NSNotFound &&
-                 loginResult != nil)
+        else if ( ([loginResult objectForKey:@"Result"] && loginResult != nil) &&
+                 ([[[loginResult objectForKey:@"Result"] lowercaseString] rangeOfString:@"suspended"].location != NSNotFound ||
+                   [[loginResult objectForKey:@"Result"] rangeOfString:@"temporarily blocked"].location != NSNotFound ||
+                   [[loginResult objectForKey:@"Result"] isEqualToString:@"Temporarily_Blocked"]) )
         {
             [self.hud hide:YES];
             [self userIsTempBlocked_3xWrong];
         }
-
-        else if ( [loginResult objectForKey:@"Result"] &&
-                 [[loginResult objectForKey:@"Result"] isEqualToString:@"Suspended"] && loginResult != nil)
-        {
-            [self.hud hide:YES];
-
-            if ([UIAlertController class]) // for iOS 8
-            {
-                UIAlertController * alert = [UIAlertController
-                                         alertControllerWithTitle:@"Account Suspended"
-                                         message:@"Your account has been temporarily suspended pending a review. We will contact you as soon as possible, and you can always contact us via email if this is a mistake or error."
-                                         preferredStyle:UIAlertControllerStyleAlert];
-            
-                UIAlertAction * ok = [UIAlertAction
-                                  actionWithTitle:@"OK"
-                                  style:UIAlertActionStyleDefault
-                                  handler:^(UIAlertAction * action)
-                                  {
-                                      [alert dismissViewControllerAnimated:YES completion:nil];
-                                  }];
-                UIAlertAction * contactSupport = [UIAlertAction
-                                              actionWithTitle:@"Contact Support"
-                                              style:UIAlertActionStyleDefault
-                                              handler:^(UIAlertAction * action)
-                                              {
-                                                  [alert dismissViewControllerAnimated:YES completion:nil];
-                                                  [self emailNoochSupport];
-                                              }];
-                [alert addAction:ok];
-                [alert addAction:contactSupport];
-            
-                [self presentViewController:alert animated:YES completion:nil];
-            }
-            else // iOS 7 and prior
-            {
-                UIAlertView * alert = [[UIAlertView alloc]initWithTitle:@"Account Suspended"
-                                                                message:@"Your account has been temporarily suspended pending a review. We will contact you as soon as possible, and you can always contact us via email if this is a mistake or error."
-                                                               delegate:self
-                                                      cancelButtonTitle:@"OK"
-                                                      otherButtonTitles:@"Contact Support", nil];
-                [alert setTag:500];
-                [alert show];
-            }
-        }
-
-        else if ( [loginResult objectForKey:@"Result"] &&
-                 [[loginResult objectForKey:@"Result"] isEqualToString:@"Temporarily_Blocked"] && loginResult != nil)
-        {
-            [self.hud hide:YES];
-            [self userIsTempBlocked];
-        }
-
     }
     
     else if ([tagName isEqualToString:@"getMemberId"])
@@ -1089,13 +1000,15 @@
             [[NSUserDefaults standardUserDefaults] setObject:email_fb forKey:@"UserName"];
         }
         else
-        [[NSUserDefaults standardUserDefaults] setObject:[self.email.text lowercaseString] forKey:@"UserName"];
+            [[NSUserDefaults standardUserDefaults] setObject:[self.email.text lowercaseString] forKey:@"UserName"];
         user = [NSUserDefaults standardUserDefaults];
         
-        if (![self.stay_logged_in isOn]) {
+        if (![self.stay_logged_in isOn])
+        {
             [[NSFileManager defaultManager] removeItemAtPath:[self autoLogin] error:nil];
         }
-        else {
+        else
+        {
             NSMutableDictionary * automatic = [[NSMutableDictionary alloc] init];
             [automatic setObject:[[NSUserDefaults standardUserDefaults] valueForKey:@"MemberId"] forKey:@"MemberId"];
             [automatic setObject:[[NSUserDefaults standardUserDefaults] valueForKey:@"UserName"] forKey:@"UserName"];
@@ -1109,7 +1022,7 @@
              [[me usr] setObject:email_fb forKey:@"UserName"];
         }
         else
-        [[me usr] setObject:[self.email.text lowercaseString] forKey:@"UserName"];
+            [[me usr] setObject:[self.email.text lowercaseString] forKey:@"UserName"];
         
         serve * enc_user = [serve new];
         [enc_user setDelegate:self];
@@ -1151,16 +1064,18 @@
         [UIView commitAnimations];
         return;
     }
-
 }
 
 -(void)userIsTempBlocked_3xWrong
 {
+    NSString * avTitle = NSLocalizedString(@"Login_SuspAlrtTtl", @"Login Screen 'Account Temporarily Suspended' Alert Title");
+    NSString * avMsg = NSLocalizedString(@"Login_SuspAlrtBody", @"Login Screen Account Suspended Alert Body Text");
+
     if ([UIAlertController class]) // for iOS 8
     {
         UIAlertController * alert = [UIAlertController
-                                     alertControllerWithTitle:@"Account Temporarily Suspended"
-                                     message:@"To keep Nooch safe your account has been temporarily suspended because you entered an incorrect password too many times.\n\nIn most cases your account will be automatically un-suspended in 24 hours. For immediate access or more information, please contact Nooch Support.\n\nWe apologize for this inconvenience, please understand it is only to protect all Nooch accounts."
+                                     alertControllerWithTitle:avTitle
+                                     message:avMsg
                                      preferredStyle:UIAlertControllerStyleAlert];
         
         UIAlertAction * ok = [UIAlertAction
@@ -1185,54 +1100,13 @@
     }
     else // iOS 7 and prior
     {
-        UIAlertView * alert = [[UIAlertView alloc]initWithTitle:@"Account Temporarily Suspended"
-                                                        message:@"To keep Nooch safe your account has been temporarily suspended because you entered an incorrect password too many times.\n\nIn most cases your account will be automatically un-suspended in 24 hours. You can always contact support if this is a mistake or error.\n\nWe apologize for this inconvenience, please understand it is only to protect your account."
+        UIAlertView * alert = [[UIAlertView alloc]initWithTitle:avTitle
+                                                        message:avMsg
                                                        delegate:self
                                               cancelButtonTitle:@"OK"
                                               otherButtonTitles:@"Contact Support", nil];
         [alert setTag:600];
         [alert show];
-    }
-}
-
--(void)userIsTempBlocked
-{
-    if ([UIAlertController class]) // for iOS 8
-    {
-        UIAlertController * alert = [UIAlertController
-                                     alertControllerWithTitle:@"Account Temporarily Suspended"
-                                     message:@"For security your account has been temporarily suspended.\n\nWe really apologize for the inconvenience and ask for your patience. Our top priority is keeping Nooch safe and secure.\n\nPlease contact Nooch Support for more information."
-                                     preferredStyle:UIAlertControllerStyleAlert];
-        
-        UIAlertAction * ok = [UIAlertAction
-                              actionWithTitle:@"OK"
-                              style:UIAlertActionStyleDefault
-                              handler:^(UIAlertAction * action)
-                              {
-                                  [alert dismissViewControllerAnimated:YES completion:nil];
-                              }];
-        UIAlertAction * contactSupport = [UIAlertAction
-                                          actionWithTitle:@"Contact Support"
-                                          style:UIAlertActionStyleDefault
-                                          handler:^(UIAlertAction * action)
-                                          {
-                                              [alert dismissViewControllerAnimated:YES completion:nil];
-                                              [self emailNoochSupport];
-                                          }];
-        [alert addAction:ok];
-        [alert addAction:contactSupport];
-        
-        [self presentViewController:alert animated:YES completion:nil];
-    }
-    else // iOS 7 and prior
-    {
-        UIAlertView * alert = [[UIAlertView alloc]initWithTitle:@"Account Temporarily Suspended"
-                                                        message:@"For security your account has been temporarily suspended.\n\nWe really apologize for the inconvenience and ask for your patience. Our top priority is keeping Nooch safe and secure.\n\nPlease contact Nooch Support for more information."
-                                                       delegate:self
-                                              cancelButtonTitle:@"OK"
-                                              otherButtonTitles:@"Contact Support", nil];
-        [alert show];
-        [alert setTag:50];
     }
 }
 

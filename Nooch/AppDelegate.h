@@ -18,9 +18,6 @@ bool rainbows;
 bool inBack;
 
 @interface AppDelegate : UIResponder <UIApplicationDelegate>{
-    UIActivityIndicatorView * activityView;
-    UIView * loadingView;
-    UILabel * loadingLabel;
     UIImageView * noConnectionView;
     Reachability * hostReach;
     Reachability * internetReach;
