@@ -900,7 +900,7 @@
             [self.hud hide:YES];
 
             NSString * avTitle = NSLocalizedString(@"Login_InvldCredsAlrtTtl", @"Login Screen 'Invalid Email or Password' Alert Title");
-            NSString * avMsg = NSLocalizedString(@"Login_InvldCredsBody", @"Login Screen Invalid Email or Password Alert Body Text");//We don't recognize that information, please double check your email is entered correctly and try again.
+            NSString * avMsg = NSLocalizedString(@"Login_InvldCredsBody", @"Login Screen Invalid Email or Password Alert Body Text");
 
             if ([UIAlertController class]) // for iOS 8
             {
@@ -937,7 +937,7 @@
             [self.hud hide:YES];
 
             NSString * avTitle = NSLocalizedString(@"Login_InvldCredsAlrtTtl2", @"Login Screen 'This Is Awkward' Alert Title");
-            NSString * avMsg = NSLocalizedString(@"Login_InvldCredsBody2", @"Login Screen This Is Awkward Alert Body Text");//  \xF0\x9F\x94\x90\nThat doesn't appear to be the correct password. Please try again or contact us for futher help.
+            NSString * avMsg = [NSString stringWithFormat:@"\xF0\x9F\x94\x90\n%@",  NSLocalizedString(@"Login_InvldCredsBody2", @"Login Screen This Is Awkward Alert Body Text")];
 
             if ([UIAlertController class]) // for iOS 8
             {
@@ -1069,7 +1069,7 @@
 -(void)userIsTempBlocked_3xWrong
 {
     NSString * avTitle = NSLocalizedString(@"Login_SuspAlrtTtl", @"Login Screen 'Account Temporarily Suspended' Alert Title");
-    NSString * avMsg = NSLocalizedString(@"Login_SuspAlrtBody", @"Login Screen Account Suspended Alert Body Text");// To keep Nooch safe your account has been temporarily suspended because you entered an incorrect password too many times.\n\nIn most cases your account will be automatically un-suspended in 24 hours. You can always contact support if this is an error.\n\nWe really apologize for the inconvenience and ask for your patience. Our top priority is keeping Nooch safe and secure.
+    NSString * avMsg = NSLocalizedString(@"Login_SuspAlrtBody", @"Login Screen Account Suspended Alert Body Text");
 
     if ([UIAlertController class]) // for iOS 8
     {

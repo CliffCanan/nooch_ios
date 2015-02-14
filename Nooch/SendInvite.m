@@ -398,7 +398,7 @@
              }
              if ([output isEqualToString:@"Post Shared Successfully"])
              {
-                 UIAlertView * alert = [[UIAlertView alloc] initWithTitle:@"Facebook Message" message:output delegate:nil cancelButtonTitle:@"Ok" otherButtonTitles:nil];
+                 UIAlertView * alert = [[UIAlertView alloc] initWithTitle:@"Facebook Message" message:output delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil];
                  [alert show];
              }
          }];
@@ -478,7 +478,7 @@
              }
              if ([output isEqualToString:@"Tweet Posted"])
              {
-                 UIAlertView * alert = [[UIAlertView alloc] initWithTitle:@"Twitter Message" message:output delegate:nil cancelButtonTitle:@"Ok" otherButtonTitles:nil];
+                 UIAlertView * alert = [[UIAlertView alloc] initWithTitle:@"Twitter Message" message:output delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil];
                  [alert show];
              }
         }];

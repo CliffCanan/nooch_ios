@@ -58,7 +58,6 @@
 
     UIButton *change_pin = [UIButton buttonWithType:UIButtonTypeRoundedRect];
     [change_pin setFrame:CGRectMake(20, 30, 280, 60)];
-    //@"Change PIN"
     [change_pin setTitle:NSLocalizedString(@"SecSettings_ChgPinBtn", @"Security Settings change PIN btn text") forState:UIControlStateNormal];
     [change_pin setTitleShadowColor:Rgb2UIColor(19, 32, 38, 0.21) forState:UIControlStateNormal];
     change_pin.titleLabel.shadowOffset = CGSizeMake(0.0, -1.0);
@@ -69,7 +68,6 @@
     UILabel *req_imm = [[UILabel alloc] initWithFrame:CGRectMake(-1, 100, 322, 56)];
     [req_imm setBackgroundColor:[UIColor whiteColor]];
     [req_imm setFont:[UIFont fontWithName:@"Roboto-regular" size:17]];
-    //@"    Require PIN Immediately"
     [req_imm setText:NSLocalizedString(@"SecSettings_ReqPin", @"Security Settings require PIN immediately label")];
     [req_imm setTextColor:[Helpers hexColor:@"313233"]];
     req_imm.layer.borderColor = Rgb2UIColor(188, 190, 192, 0.85).CGColor;
@@ -87,7 +85,6 @@
     [info setTextAlignment:NSTextAlignmentCenter];
     [info setFont:[UIFont fontWithName:@"Roboto-Light" size:15]];
     [info setTextColor:[Helpers hexColor:@"6c6e71"]];
-    //@"Require your PIN to enter the app."
     [info setText:NSLocalizedString(@"SecSettings_ReqPinInstruc", @"Security Settings require PIN instruction text")];
     [self.view addSubview:info];
     if ([[user objectForKey:@"requiredImmediately"] boolValue]) {
@@ -97,7 +94,6 @@
     UIButton *change_password = [UIButton buttonWithType:UIButtonTypeRoundedRect];
     [change_password setFrame:CGRectMake(0, 240, 0, 0)];
     [change_password setStyleClass:@"button_blue"];
-    //@"Change Password"
     [change_password setTitle:NSLocalizedString(@"SecSettings_ChgPwBtn", @"Security Settings change PW btn text") forState:UIControlStateNormal];
     [change_password setTitleShadowColor:Rgb2UIColor(19, 32, 38, 0.21) forState:UIControlStateNormal];
     change_password.titleLabel.shadowOffset = CGSizeMake(0.0, -1.0);
@@ -107,7 +103,6 @@
     UILabel *show_search = [[UILabel alloc] initWithFrame:CGRectMake(-1, 310, 322, 56)];
     [show_search setBackgroundColor:[UIColor whiteColor]];
     [show_search setFont:[UIFont fontWithName:@"Roboto-regular" size:17]];
-    //@"    Show in Search"
     [show_search setText:NSLocalizedString(@"SecSettings_ShowInSrch", @"Security Settings show in search label")];
     [show_search setTextColor:[Helpers hexColor:@"313233"]];
     show_search.layer.borderColor = Rgb2UIColor(188, 190, 192, 0.85).CGColor;
@@ -130,7 +125,6 @@
     [info2 setTextAlignment:NSTextAlignmentCenter];
     [info2 setFont:[UIFont fontWithName:@"Roboto-Light" size:15]];
     [info2 setTextColor:[Helpers hexColor:@"6c6e71"]];
-    //@"Show up when other members search for people nearby to send or request money."
     [info2 setText:NSLocalizedString(@"SecSettings_ShowInSrchInstruc", @"Security Settings show in search instruction text")];
     [self.view addSubview:info2];
 }

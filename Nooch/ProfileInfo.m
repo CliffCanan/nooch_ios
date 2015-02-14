@@ -116,14 +116,12 @@ UIImageView *picture;
     spinner1.color = [UIColor whiteColor];
     self.hud = [[MBProgressHUD alloc] initWithView:self.navigationController.view];
     [self.navigationController.view addSubview:self.hud];
-    //@"Loading your profile..."
     self.hud.labelText = NSLocalizedString(@"Profile_HUDloading", @"Profile Scrn initial HUD loading text");
     self.hud.mode = MBProgressHUDModeCustomView;
     self.hud.customView = spinner1;
     self.hud.delegate = self;
     [self.hud show:YES];
 
-    //@"Profile"
     [self.navigationItem setTitle:NSLocalizedString(@"Profile_ScrnTtl1", @"Profile Scrn Title")];
 
     int pictureRadius = 38;
@@ -616,7 +614,7 @@ UIImageView *picture;
 -(void)SaveAlert1
 {
     UIAlertView * alert = [[UIAlertView alloc]initWithTitle:NSLocalizedString(@"Profile_SaveAlrtTitle1", @"Profile 'Save Changes' Alert Title")
-                                                    message:NSLocalizedString(@"Profile_SaveAlrtBody1", @"Profile Save Changes Alert Body Text")//@"Do you want to save the changes in your profile?"
+                                                    message:NSLocalizedString(@"Profile_SaveAlrtBody1", @"Profile Save Changes Alert Body Text")
                                                    delegate:self
                                           cancelButtonTitle:NSLocalizedString(@"Profile_AlrtBtnYes1", @"Profile 'Yes' Button Text")
                                           otherButtonTitles:NSLocalizedString(@"Profile_AlrtBtnNo1", @"Profile 'No' Button Text"), nil];
@@ -727,7 +725,7 @@ UIImageView *picture;
     {
         [self.phone becomeFirstResponder];
         UIAlertView * alert = [[UIAlertView alloc]initWithTitle:NSLocalizedString(@"Profile_PhnTrblAlrtTtl", @"Profile 'Phone Number Trouble' Alert Title")
-                                                        message:NSLocalizedString(@"Profile_PhnTrblAlrtBody", @"Profile Phone Number Trouble Alert Body Text")//@"Please double check that you entered a valid 10-digit phone number."
+                                                        message:NSLocalizedString(@"Profile_PhnTrblAlrtBody", @"Profile Phone Number Trouble Alert Body Text")
                                                        delegate:nil
                                               cancelButtonTitle:@"OK"
                                               otherButtonTitles:nil, nil];
@@ -762,7 +760,7 @@ UIImageView *picture;
     if ([self.name.text length] == 0)
     {
         UIAlertView * av = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"Profile_NoNameAlrtTtl", @"Profile 'Need A Name' Alert Title")
-                                                      message:NSLocalizedString(@"Profile_NoNameAlrtBody", @"Profile Need A Name Alert Body Text")//@"\xF0\x9F\x99\x87\nWe can call you 'Blank' if you want, but it's probably better if you entered a name..."
+                                                      message:[NSString stringWithFormat:@"\xF0\x9F\x99\x87\n%@", NSLocalizedString(@"Profile_NoNameAlrtBody", @"Profile Need A Name Alert Body Text")]
                                                      delegate:Nil
                                             cancelButtonTitle:@"OK"
                                             otherButtonTitles:Nil, nil];
@@ -822,7 +820,7 @@ UIImageView *picture;
         {
             [self.phone becomeFirstResponder];
             UIAlertView * alert = [[UIAlertView alloc]initWithTitle:NSLocalizedString(@"Profile_PhnTrblAlrtTtl2", @"Profile 'Phone Number Trouble' Alert Title (2nd)")
-                                                            message:NSLocalizedString(@"Profile_PhnTrblAlrtBody2", @"Profile 'Phone Number Trouble' Alert Body Text (2nd)")//@"Please double check that you entered a valid 10-digit phone number."
+                                                            message:NSLocalizedString(@"Profile_PhnTrblAlrtBody2", @"Profile 'Phone Number Trouble' Alert Body Text (2nd)")
                                                            delegate:nil
                                                   cancelButtonTitle:@"OK"
                                                   otherButtonTitles:nil, nil];
@@ -831,10 +829,10 @@ UIImageView *picture;
         }
     }
 
-    if ([[me pic] isKindOfClass:[NSNull class]]) //|| [[user objectForKey:@"Photo"] rangeOfString:@"gv_no_photo.png"].location != NSNotFound)
+    if ([[me pic] isKindOfClass:[NSNull class]])
     {
         UIAlertView * av = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"Profile_NoPicAlrtTitle", @"Profile 'I don't see you!' Alert Title")
-                                                      message:NSLocalizedString(@"Profile_NoPicAlrtBody", @"Profile 'I don't see you!' Alert Body Text")//@"\xF0\x9F\x91\x80\n\nYou haven't set your profile picture, would you like to do that now?"
+                                                      message:[NSString stringWithFormat:@"\xF0\x9F\x91\x80\n\n%@", NSLocalizedString(@"Profile_NoPicAlrtBody", @"Profile 'I don't see you!' Alert Body Text")]
                                                      delegate:self
                                             cancelButtonTitle:NSLocalizedString(@"Profile_NoPicAlrtBtnNo", @"Profile I don't see you Alert 'No Thanks' Btn")
                                             otherButtonTitles:NSLocalizedString(@"Profile_NoPicAlrtBtnYes", @"Profile I don't see you! Alert 'Yes - Set Now' Btn"),nil];
@@ -932,11 +930,11 @@ UIImageView *picture;
 
 - (void)change_pic
 {
-    UIActionSheet * actionSheetObject = [[UIActionSheet alloc] initWithTitle:@""
+    UIActionSheet * actionSheetObject = [[UIActionSheet alloc] initWithTitle:@"Add A Profile Picture"
                                                                     delegate:self
                                                            cancelButtonTitle:NSLocalizedString(@"Profile_CancelTxt", @"Profile 'Cancel' Text")//
                                                       destructiveButtonTitle:nil
-                                                           otherButtonTitles:NSLocalizedString(@"Profile_UseCamera", @"Profile 'Use Camera' Text"), NSLocalizedString(@"Profile_FrmLbry", @"Profile 'From iPhone Library' Text"), nil];
+                                                           otherButtonTitles:@"Use Facebook Picture",NSLocalizedString(@"Profile_UseCamera", @"Profile 'Use Camera' Text"), NSLocalizedString(@"Profile_FrmLbry", @"Profile 'From iPhone Library' Text"), nil];
     actionSheetObject.actionSheetStyle = UIActionSheetStyleDefault;
     [actionSheetObject showInView:self.view];
 }
@@ -1213,7 +1211,6 @@ UIImageView *picture;
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    NSLog(@"Just a checkin'");
     static NSString *CellIdentifier = @"Cell";
     UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier];
     // UITableViewCell *cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleValue2 reuseIdentifier:CellIdentifier];
@@ -1653,7 +1650,7 @@ UIImageView *picture;
         if ([response isEqualToString:@"Already Activated."])
         {
             UIAlertView *av = [[UIAlertView alloc] initWithTitle:@""
-                                                         message:NSLocalizedString(@"Profile_EmailAlrdyVerAlrtBody", @"Profile Email already verified Alert Body Text")//@"Your email has already been verified."
+                                                         message:NSLocalizedString(@"Profile_EmailAlrdyVerAlrtBody", @"Profile Email already verified Alert Body Text")
                                                         delegate:nil
                                                cancelButtonTitle:@"OK"
                                                otherButtonTitles:nil];
@@ -1668,7 +1665,7 @@ UIImageView *picture;
         else if ([response isEqualToString:@"Not a nooch member."])
         {
             UIAlertView *av = [[UIAlertView alloc] initWithTitle:@""
-                                                         message:NSLocalizedString(@"Profile_NotAMbmrAlrtBody", @"Profile not a member Alert Body Text")//@"An error occurred when attempting to fulfill this request, please try again."
+                                                         message:NSLocalizedString(@"Profile_NotAMbmrAlrtBody", @"Profile not a member Alert Body Text")
                                                         delegate:nil
                                                cancelButtonTitle:@"OK"
                                                otherButtonTitles:nil];
@@ -1677,7 +1674,7 @@ UIImageView *picture;
         else if ([response isEqualToString:@"Success"])
         {
             UIAlertView *av = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"Profile_ChkEmlAlrtTitle", @"Profile 'Check Your Email' Alert Title")
-                                                         message:NSLocalizedString(@"Profile_ChkEmlAlrtBody", @"Profile 'Check Your Email' Alert Body Text")//[NSString stringWithFormat:@"\xF0\x9F\x93\xA5\nA verifiction link has been sent to %@.",self.email.text]
+                                                         message:[NSString stringWithFormat:@"\xF0\x9F\x93\xA5\n%@", [NSString stringWithFormat:NSLocalizedString(@"Profile_ChkEmlAlrtBody", @"Profile 'Check Your Email' Alert Body Text"),self.email.text]]
                                                         delegate:nil
                                                cancelButtonTitle:@"OK"
                                                otherButtonTitles:nil];
@@ -1692,7 +1689,7 @@ UIImageView *picture;
         else if ([response isEqualToString:@"Failure"])
         {
             UIAlertView *av = [[UIAlertView alloc] initWithTitle:@""
-                                                         message:NSLocalizedString(@"Profile_FailureAlrtBody", @"Profile failure Alert Body Text")//@"An error occurred when attempting to fulfill this request, please try again."
+                                                         message:NSLocalizedString(@"Profile_FailureAlrtBody", @"Profile failure Alert Body Text")
                                                         delegate:nil
                                                cancelButtonTitle:@"OK"
                                                otherButtonTitles:nil];
@@ -1708,8 +1705,8 @@ UIImageView *picture;
                                error:&error] objectForKey:@"Result"];
         
         if ([response isEqualToString:@"Already Verified."]) {
-            UIAlertView *av = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"Profile_SmsAlrdyVerAlrtTitle", @"Profile phone already verified Alert Title")//@"You're Good To Go  \xF0\x9F\x91\x8D"
-                                                         message:NSLocalizedString(@"Profile_SmsAlrdyVerAlrtBody", @"Profile phone already verified Alert Body Text")//@"Your phone number has already been verified."
+            UIAlertView *av = [[UIAlertView alloc] initWithTitle:[NSString stringWithFormat:@"%@  \xF0\x9F\x91\x8D", NSLocalizedString(@"Profile_SmsAlrdyVerAlrtTitle", @"Profile phone already verified Alert Title")]
+                                                         message:NSLocalizedString(@"Profile_SmsAlrdyVerAlrtBody", @"Profile phone already verified Alert Body Text")
                                                         delegate:nil
                                                cancelButtonTitle:@"OK"
                                                otherButtonTitles:nil];
@@ -1737,7 +1734,7 @@ UIImageView *picture;
         }
         else if ([response isEqualToString:@"Not a nooch member."]) {
             UIAlertView *av = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"Profile_UnexpErrorAlrtTitle1", @"Profile 'Unexpected Error' Alert Title")
-                                                         message:NSLocalizedString(@"Profile_UnexpErrorAlrtBody1", @"Profile 'Unexpected Error' Alert Body Text")//@"An error occurred when attempting to fulfill this request, please try again."
+                                                         message:NSLocalizedString(@"Profile_UnexpErrorAlrtBody1", @"Profile 'Unexpected Error' Alert Body Text")
                                                         delegate:nil
                                                cancelButtonTitle:@"OK"
                                                otherButtonTitles:nil];
@@ -1746,7 +1743,7 @@ UIImageView *picture;
         else if ([response isEqualToString:@"Success"])
         {
             UIAlertView *av = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"Profile_ChkSmsAlrtTitle", @"Profile 'Check Your Texts' Alert Title")
-                                                         message:NSLocalizedString(@"Profile_ChkSmsAlrtBody", @"Profile Check Your Texts Alert Body Text")//@"\xF0\x9F\x93\xB2\nA verifiction SMS has been sent to your phone. Please respond \"Go\" (case doesn't matter) to confirm your number."
+                                                         message:[NSString stringWithFormat:@"\xF0\x9F\x93\xB2\n%@", NSLocalizedString(@"Profile_ChkSmsAlrtBody", @"Profile Check Your Texts Alert Body Text")]
                                                         delegate:nil
                                                cancelButtonTitle:@"OK"
                                                otherButtonTitles:nil];
@@ -1775,7 +1772,7 @@ UIImageView *picture;
         else if ([response isEqualToString:@"Failure"])
         {
             UIAlertView *av = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"Profile_UnexpErrorAlrtTitle2", @"Profile 'Unexpected Error' Alert Title (2nd)")
-                                                         message:NSLocalizedString(@"Profile_UnexpErrorAlrtBody2", @"Profile 'Unexpected Error' Alert Body Text (2nd)")//@"An error occurred when attempting to fulfill this request, please try again."
+                                                         message:NSLocalizedString(@"Profile_UnexpErrorAlrtBody2", @"Profile 'Unexpected Error' Alert Body Text (2nd)")
                                                         delegate:nil
                                                cancelButtonTitle:@"OK"
                                                otherButtonTitles:nil];
@@ -1785,7 +1782,7 @@ UIImageView *picture;
                  [response isEqualToString:@"Suspended"])
         {
             UIAlertView *av = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"Profile_AcntSuspTitle", @"Profile 'Account Is Suspended' Alert Title")
-                                                         message:NSLocalizedString(@"Profile_AcntSuspBody", @"Profile 'Account Is Suspended' Alert Body Text")//@"Your account is currently suspended, please attempt to verify your phone number when your account is no longer suspended."
+                                                         message:NSLocalizedString(@"Profile_AcntSuspBody", @"Profile 'Account Is Suspended' Alert Body Text")
                                                         delegate:nil
                                                cancelButtonTitle:@"OK"
                                                otherButtonTitles:nil];
@@ -1833,7 +1830,7 @@ UIImageView *picture;
                 self.phone.text.length > 8)
             {
                 UIAlertView *av = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"Profile_SvdSucAlrtTtle", @"Profile 'Profile Saved' Alert Title")
-                                                             message:NSLocalizedString(@"Profile_SvdSucAlrtBody", @"Profile Profile Saved and phone not yet verified Alert Body Text")//@"Your details were updated successfully.\n\n\xF0\x9F\x93\xB2\nTo verify your phone number, we will send you a text. Just reply with 'Go' to verify."
+                                                             message:[NSString stringWithFormat:@"%@\n\xF0\x9F\x93\xB2", NSLocalizedString(@"Profile_SvdSucAlrtBody", @"Profile Profile Saved and phone not yet verified Alert Body Text")]
                                                             delegate:self
                                                    cancelButtonTitle:@"OK"
                                                    otherButtonTitles:nil];
@@ -1842,7 +1839,7 @@ UIImageView *picture;
             else
             {
                 UIAlertView *av = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"Profile_SvdSucAlrtTtle2", @"Profile 'Profile Saved' Alert Title (2nd)")
-                                                             message:NSLocalizedString(@"Profile_SvdSucAlrtBody2", @"Profile Profile Saved Alert Body Text")//@"Your details have been updated successfully."
+                                                             message:NSLocalizedString(@"Profile_SvdSucAlrtBody2", @"Profile Profile Saved Alert Body Text")
                                                             delegate:self
                                                    cancelButtonTitle:@"OK"
                                                    otherButtonTitles:nil];
@@ -1852,7 +1849,7 @@ UIImageView *picture;
         else if ([[resultValue valueForKey:@"Result"] isEqualToString:@"Phone Number already registered with Nooch"])
         {
             UIAlertView *av = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"Profile_PhnAlrdRegAlrtTitle", @"Profile 'Phone Number Already Registered' Alert Title")
-                                                         message:[NSString stringWithFormat:NSLocalizedString(@"Profile_PhnAlrdRegAlrtBody", @"Profile 'Phone Number Already Registered' Alert Body Text"),self.phone.text]//@"Looks like %@ is already registered with another Nooch account. Please contact us if this is a mistake or for further help."
+                                                         message:[NSString stringWithFormat:NSLocalizedString(@"Profile_PhnAlrdRegAlrtBody", @"Profile 'Phone Number Already Registered' Alert Body Text"),self.phone.text]
                                                         delegate:self
                                                cancelButtonTitle:@"OK"
                                                otherButtonTitles:nil];
@@ -1867,7 +1864,7 @@ UIImageView *picture;
             }
 
             UIAlertView *av = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"Profile_SmthngWrngAlrtTitle", @"Profile 'Something Went Wrong' Alert Title")
-                                                         message:NSLocalizedString(@"Profile_SmthngWrngAlrtBody", @"Profile Something Went Wrong Alert Body Text")//@"Please double check to make sure your info is correct and try again. If the problem persists, please contact Nooch support."
+                                                         message:NSLocalizedString(@"Profile_SmthngWrngAlrtBody", @"Profile Something Went Wrong Alert Body Text")
                                                         delegate:self
                                                cancelButtonTitle:@"OK"
                                                otherButtonTitles:nil];

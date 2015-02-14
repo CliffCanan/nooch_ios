@@ -121,7 +121,6 @@
     [info setTextAlignment:NSTextAlignmentCenter];
     [info setFont:[UIFont fontWithName:@"Roboto-Light" size:15]];
     [info setTextColor:[Helpers hexColor:@"6c6e71"]];
-    //@"Connect your Facebook account to Nooch to allow quicker login and to share payments with friends."
     [info setText:NSLocalizedString(@"SocSettings_Instruct", @"Social Settings instruction text")];
     [self.view addSubview:info];
 
@@ -129,8 +128,8 @@
 
 -(void)disconnect_fb
 {
-    UIAlertView *av = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"SocSettings_DisconnectAlrtTitle", @"Social Settings FB disconnect Alert Title")//@"Confirmation"
-                                                 message:NSLocalizedString(@"SocSettings_DisconnectAlrtBody", @"Social Settings FB disconnect Alert Body Text")//@"Are you sure you want to disconnect Nooch from facebook?"
+    UIAlertView *av = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"SocSettings_DisconnectAlrtTitle", @"Social Settings FB disconnect Alert Title")
+                                                 message:NSLocalizedString(@"SocSettings_DisconnectAlrtBody", @"Social Settings FB disconnect Alert Body Text")
                                                 delegate:self
                                        cancelButtonTitle:NSLocalizedString(@"SocSettings_NoTxt", @"'No' button")
                                        otherButtonTitles:NSLocalizedString(@"SocSettings_YesTxt", @"'Yes' button"),nil];
@@ -340,7 +339,7 @@
     [[[UIAlertView alloc] initWithTitle:title
                                 message:text
                                delegate:self
-                      cancelButtonTitle:@"Ok"
+                      cancelButtonTitle:@"OK"
                       otherButtonTitles:nil] show];
 }
 

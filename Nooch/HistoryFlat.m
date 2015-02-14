@@ -355,7 +355,6 @@
     
     self.emptyLocHdr = [[UILabel alloc] initWithFrame:CGRectMake(44, 112, 276, 38)];
     [self.emptyLocHdr setFont:[UIFont fontWithName:@"Roboto-regular" size: 22]];
-    //@"No Transfers To Show"
     self.emptyLocHdr.attributedText = [[NSAttributedString alloc] initWithString:NSLocalizedString(@"History_EmptyTableTitleHdr", @"History screen no results to show header text") attributes:shadowWhite];
     [self.emptyLocHdr setTextColor:kNoochGrayLight];
     [self.emptyLocHdr setTextAlignment:NSTextAlignmentCenter];
@@ -365,12 +364,10 @@
     [self.emptyLocBody setFont:[UIFont fontWithName:@"Roboto-light" size: 17]];
     if ([[assist shared] checkIfLocAllowed])
     {
-        //@"You haven't made any payments yet.  Once you do, you can come here to see where you've been paying."
         self.emptyLocBody.attributedText = [[NSAttributedString alloc] initWithString:NSLocalizedString(@"History_EmptyMapViewTitleBody", @"History screen no results to show on map view body text")attributes:shadowWhite];
     }
     else
     {
-        //@"To access this feature, please enable Location Services."
         self.emptyLocBody.attributedText = [[NSAttributedString alloc] initWithString:NSLocalizedString(@"History_NoLocationAccess", @"History screen no location access text") attributes:shadowWhite];
     }
     [self.emptyLocBody setTextColor:kNoochGrayLight];
@@ -387,11 +384,10 @@
 
     if (!isMapOpen && ![[assist shared] checkIfLocAllowed])
     {
-        UIAlertView * alert = [[UIAlertView alloc]initWithTitle:NSLocalizedString(@"History_NeedLocAlrtTitle", @"History screen need location access Alert Title")//@"Need Location Access"
+        UIAlertView * alert = [[UIAlertView alloc]initWithTitle:NSLocalizedString(@"History_NeedLocAlrtTitle", @"History screen need location access Alert Title")
                                                         message:NSLocalizedString(@"History_NeedLocAlrtBody", @"History screen need location access Body Text")
-                                                                //@"To access this feature and view your payment locations, please enable Location Services.\n\nTO ENABLE:\n• Go to your iPhone's Settings\n•  Tap 'Privacy'\n•  Tap 'Location Services'\n• Scroll to Nooch and tap the switch"
                                                        delegate:Nil
-                                              cancelButtonTitle:@"Ok"
+                                              cancelButtonTitle:@"OK"
                                               otherButtonTitles:Nil, nil];
         [alert show];
     }
@@ -506,12 +502,10 @@
     {
         if ([[user valueForKey:@"MemberId"] isEqualToString:[[histArrayCommon objectAtIndex:[[marker title]intValue]] valueForKey:@"MemberId"]])
         {
-            //@"Sent to:"
             TransactionType = NSLocalizedString(@"History_SentToTxt", @"History screen 'Sent To' Text");
         }
         else
         {
-            //@"Payment From:"
             TransactionType = NSLocalizedString(@"History_PaymentFromTxt", @"History screen 'Payment From' text");
         }
     }
@@ -519,31 +513,26 @@
     {
         if ([[[histArrayCommon objectAtIndex:[[marker title]intValue]]valueForKey:@"TransactionStatus"]isEqualToString:@"Cancelled"])
         {
-            //@"Canceled:"
             statusstr = NSLocalizedString(@"History_CancelledTxt", @"History screen 'Cancelled' Text");
             [lblloc setStyleClass:@"red_text"];
         }
         else if ([[[histArrayCommon objectAtIndex:[[marker title]intValue]] valueForKey:@"TransactionStatus"]isEqualToString:@"Rejected"])
         {
-            //@"Rejected:"
             statusstr = NSLocalizedString(@"History_RejectedTxt", @"History screen 'Rejected' Text");
             [lblloc setStyleClass:@"red_text"];
         }
         else
         {
-            //@"Pending:"
             statusstr = NSLocalizedString(@"History_PendingTxt", @"History screen 'Pending' Text");
             [lblloc setStyleClass:@"green_text"];
         }
         
         if ([[user valueForKey:@"MemberId"] isEqualToString:[[histArrayCommon objectAtIndex:[[marker title]intValue]] valueForKey:@"RecepientId"]])
         {
-            //@"Request Sent to:"
             TransactionType = NSLocalizedString(@"History_RequestSentToTxt", @"History screen 'Request Sent To' Text");
         }
         else
         {
-            //@"Request From:"
             TransactionType = NSLocalizedString(@"History_RequestFromTxt", @"History screen 'Request From' Text");
         }
         
@@ -558,7 +547,6 @@
     {
         TransactionType = NSLocalizedString(@"History_SentToTxt", @"History screen 'Sent To' Text");
         [imgV setImage:[UIImage imageNamed:@"profile_picture.png"]];
-        //@"Invited on:"
         statusstr = NSLocalizedString(@"History_InvitedOnTxt", @"History screen 'Invited On' Text");
         [lblloc setStyleClass:@"green_text"];
     }
@@ -569,7 +557,6 @@
              [[[histArrayCommon objectAtIndex:[[marker title]intValue]] valueForKey:@"TransactionType"] isEqualToString:@"Received"] ||
              [[[histArrayCommon objectAtIndex:[[marker title]intValue]] valueForKey:@"TransactionType"] isEqualToString:@"Transfer"] )
     {
-        //@"Completed on:"
         statusstr = NSLocalizedString(@"History_CompletedOnTxt", @"History screen 'Completed On' Text");
         [lblloc setStyleClass:@"green_text"];
     }
@@ -584,7 +571,6 @@
     dateFormatter.dateFormat = @"dd-MMMM-yyyy";
     [dateFormatter setTimeZone:[NSTimeZone localTimeZone]];
 
-    //nslog(@"%@",[dateFormatter stringFromDate:yourDate]);
     NSArray * arrdate = [[dateFormatter stringFromDate:yourDate] componentsSeparatedByString:@"-"];
 
     if ([[[histArrayCommon objectAtIndex:[[marker title]intValue]] valueForKey:@"TransactionType"] isEqualToString:@"Request"])
@@ -740,7 +726,6 @@
     spinner1.color = [UIColor whiteColor];
     self.hud = [[MBProgressHUD alloc] initWithView:self.navigationController.view];
     [self.navigationController.view addSubview:self.hud];
-    //@"Loading Transaction History"
     self.hud.labelText = NSLocalizedString(@"History_HUDloadingTxt", @"History screen HUD loading text");
     [self.hud show:YES];
     self.hud.mode = MBProgressHUDModeCustomView;
@@ -2117,7 +2102,6 @@
     spinner1.color = [UIColor whiteColor];
     self.hud = [[MBProgressHUD alloc] initWithView:self.navigationController.view];
     [self.navigationController.view addSubview:self.hud];
-    //@"Searching History..."
     self.hud.labelText = NSLocalizedString(@"History_HUDsearching", @"History screen HUD when searching Text");
     [self.hud show:YES];
     self.hud.mode = MBProgressHUDModeCustomView;
@@ -2179,7 +2163,7 @@
                           initWithTitle:NSLocalizedString(@"ConnectionErrorAlrtTitle", @"Any screen Connection Error Alert Text")
                           message:NSLocalizedString(@"ConnectionErrorAlrtBody", @"Any screen Connection Error Alert Body Text")
                           delegate:nil
-                          cancelButtonTitle:@"Ok"
+                          cancelButtonTitle:@"OK"
                           otherButtonTitles:nil];
     [alert show];
 }
@@ -2215,10 +2199,10 @@
         
         if ([[[dictResponse valueForKey:@"sendTransactionInCSVResult"]valueForKey:@"Result"]isEqualToString:@"1"])
         {
-            UIAlertView * alert = [[UIAlertView alloc]initWithTitle:NSLocalizedString(@"History_ExprtSuccessAlrtTitle", @"History screen export successful Alert Title")//@"Export Successful"
-                                                            message:NSLocalizedString(@"History_ExprtSuccessAlrtBody", @"History screen export successful Alert Body Text")//@"\xF0\x9F\x93\xA5\nYour personalized transaction report has been emailed to you."
+            UIAlertView * alert = [[UIAlertView alloc]initWithTitle:NSLocalizedString(@"History_ExprtSuccessAlrtTitle", @"History screen export successful Alert Title")
+                                                            message:[NSString stringWithFormat:@"\xF0\x9F\x93\xA5\n%@", NSLocalizedString(@"History_ExprtSuccessAlrtBody", @"History screen export successful Alert Body Text")]
                                                            delegate:Nil
-                                                  cancelButtonTitle:@"Ok"
+                                                  cancelButtonTitle:@"OK"
                                                   otherButtonTitles:Nil, nil];
             [alert show];
         }
@@ -2321,7 +2305,6 @@
                         {
                             [_emptyText setFrame:CGRectMake(15, 5, 290, 68)];
                         }
-                        //@"Once you make or receive a payment, come here to see all the details."
                         [_emptyText setText:NSLocalizedString(@"History_EmptyCompletedTxt", @"History screen when there are no Completed payments to display text")];
                         [_emptyPic setStyleClass:@"animate_bubble"];
                     }
@@ -2335,7 +2318,6 @@
                         {
                             [_emptyText setFrame:CGRectMake(35, 5, 250, 68)];
                         }
-                        //@"No pending payments for you at the moment."
                         [_emptyText setText:NSLocalizedString(@"History_EmptyPendingTxt", @"History screen when there are no Pending payments to display text")];
                     }
 
@@ -2475,8 +2457,8 @@
 
     else if ([tagName isEqualToString:@"reject"])
     {
-        UIAlertView * alert = [[UIAlertView alloc]initWithTitle:NSLocalizedString(@"History_RequestRejectedAlrtTitle", @"History screen request rejected successfully Alert Title")//@"Request Rejected"
-                                                        message:NSLocalizedString(@"History_RequestRejectedAlrtBody", @"History screen request rejected successfully Alert Body Text")//@"No problem, you have rejected this request successfully."
+        UIAlertView * alert = [[UIAlertView alloc]initWithTitle:NSLocalizedString(@"History_RequestRejectedAlrtTitle", @"History screen request rejected successfully Alert Title")
+                                                        message:NSLocalizedString(@"History_RequestRejectedAlrtBody", @"History screen request rejected successfully Alert Body Text")
                                                        delegate:nil
                                               cancelButtonTitle:@"OK"
                                               otherButtonTitles:nil, nil];
@@ -2491,8 +2473,8 @@
     else if ([tagName isEqualToString:@"CancelMoneyTransferToNonMemberForSender"])
     {
         [self.hud hide:YES];
-        UIAlertView * alert = [[UIAlertView alloc]initWithTitle:NSLocalizedString(@"History_TransferCancelledAlrtTitle", @"History screen transfer/invite cancelled successfully Alert Title")//@"Transfer Cancelled"
-                                                        message:NSLocalizedString(@"History_TransferCancelledAlrtBody", @"History screen transfer/invite cancelled successfully Alert Body Text")//@"Aye aye. That transfer has been cancelled successfully."
+        UIAlertView * alert = [[UIAlertView alloc]initWithTitle:NSLocalizedString(@"History_TransferCancelledAlrtTitle", @"History screen transfer/invite cancelled successfully Alert Title")
+                                                        message:NSLocalizedString(@"History_TransferCancelledAlrtBody", @"History screen transfer/invite cancelled successfully Alert Body Text")
                                                        delegate:nil
                                               cancelButtonTitle:@"OK"
                                               otherButtonTitles:nil, nil];
@@ -2508,8 +2490,8 @@
              [tagName isEqualToString:@"cancelRequestToNonNoochUser"])
     {
         [self.hud hide:YES];
-        UIAlertView * alert = [[UIAlertView alloc]initWithTitle:NSLocalizedString(@"History_RequestCancelledAlrtTitle", @"History screen request cancelled successfully Alert Title")//@"Request Cancelled"
-                                                        message:NSLocalizedString(@"History_RequestCancelledAlrtBody", @"History screen request cancelled successfully Alert Body Text")//@"You got it. That request has been cancelled successfully."
+        UIAlertView * alert = [[UIAlertView alloc]initWithTitle:NSLocalizedString(@"History_RequestCancelledAlrtTitle", @"History screen request cancelled successfully Alert Title")
+                                                        message:NSLocalizedString(@"History_RequestCancelledAlrtBody", @"History screen request cancelled successfully Alert Body Text")
                                                        delegate:nil
                                               cancelButtonTitle:@"OK"
                                               otherButtonTitles:nil, nil];
@@ -2524,7 +2506,7 @@
     else if ([tagName isEqualToString:@"remind"])
     {
         // NSLog(@"Remind response was: %@",result);
-        UIAlertView * alert = [[UIAlertView alloc]initWithTitle:NSLocalizedString(@"History_ReminderSuccessAlrtTitle", @"History screen reminder sent successfully Alert Title")//@"Reminder Sent Successfully"
+        UIAlertView * alert = [[UIAlertView alloc]initWithTitle:NSLocalizedString(@"History_ReminderSuccessAlrtTitle", @"History screen reminder sent successfully Alert Title")
                                                         message:nil
                                                        delegate:nil
                                               cancelButtonTitle:@"OK"
@@ -2543,7 +2525,7 @@
             UIAlertView *av = [[UIAlertView alloc] initWithTitle:@""
                                                          message:@"Your email has already been verified."
                                                         delegate:nil
-                                               cancelButtonTitle:@"Ok"
+                                               cancelButtonTitle:@"OK"
                                                otherButtonTitles:nil];
             [av show];
         }
@@ -2552,7 +2534,7 @@
             UIAlertView *av = [[UIAlertView alloc] initWithTitle:@""
                                                          message:NSLocalizedString(@"History_ErrorAlrtBody", @"History screen generic error Alert Body Text")
                                                         delegate:nil
-                                               cancelButtonTitle:@"Ok"
+                                               cancelButtonTitle:@"OK"
                                                otherButtonTitles:nil];
             [av show];
         }
@@ -2561,16 +2543,16 @@
             UIAlertView *av = [[UIAlertView alloc] initWithTitle:@"Check Your Email"
                                                          message:[NSString stringWithFormat:@"\xF0\x9F\x93\xA5\nA verifiction link has been sent to %@.",[[NSUserDefaults standardUserDefaults] objectForKey:@"email"]]
                                                         delegate:nil
-                                               cancelButtonTitle:@"Ok"
+                                               cancelButtonTitle:@"OK"
                                                otherButtonTitles:nil];
             [av show];
         }
         else if ([response isEqualToString:@"Failure"])
         {
             UIAlertView *av = [[UIAlertView alloc] initWithTitle:@""
-                                                         message:NSLocalizedString(@"History_ErrorAlrtBody", @"History screen generic error Alert Body Text")//@"An error occurred when attempting to fulfill this request, please try again."
+                                                         message:NSLocalizedString(@"History_ErrorAlrtBody", @"History screen generic error Alert Body Text")
                                                         delegate:nil
-                                               cancelButtonTitle:@"Ok"
+                                               cancelButtonTitle:@"OK"
                                                otherButtonTitles:nil];
             [av show];
         }
@@ -2581,8 +2563,8 @@
 #pragma mark Exporting History
 - (IBAction)ExportHistory:(id)sender
 {
-    UIAlertView * alert = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"History_ExportAlrtTitle", @"History screen export transfer data Alert Title")//@"Export Transfer Data"
-                                                     message:NSLocalizedString(@"History_ExportAlrtBody", @"History screen export transfer data Alert Body Text")//@"Where should we email your data?"
+    UIAlertView * alert = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"History_ExportAlrtTitle", @"History screen export transfer data Alert Title")
+                                                     message:NSLocalizedString(@"History_ExportAlrtBody", @"History screen export transfer data Alert Body Text")
                                                     delegate:self
                                            cancelButtonTitle:NSLocalizedString(@"CancelTxt", @"Any screen 'Cancel' Button Text")
                                            otherButtonTitles:NSLocalizedString(@"History_SendTxt", @"History screen 'Send' Button Text"), nil];
@@ -2652,7 +2634,6 @@
         spinner1.color = [UIColor whiteColor];
         self.hud = [[MBProgressHUD alloc] initWithView:self.navigationController.view];
         [self.navigationController.view addSubview:self.hud];
-        //@"Cancelling this request..."
         self.hud.labelText = NSLocalizedString(@"History_HUDcancellingReq", @"History screen HUD text for cancelling a request");
         [self.hud show:YES];
         self.hud.mode = MBProgressHUDModeCustomView;
@@ -2678,7 +2659,6 @@
         spinner1.color = [UIColor whiteColor];
         self.hud = [[MBProgressHUD alloc] initWithView:self.navigationController.view];
         [self.navigationController.view addSubview:self.hud];
-        //@"Cancelling this transfer..."
         self.hud.labelText = NSLocalizedString(@"History_HUDcancelling", @"History screen HUD text for cancelling a transfer/invite");
         [self.hud show:YES];
         self.hud.mode = MBProgressHUDModeCustomView;
@@ -2697,7 +2677,6 @@
         spinner1.color = [UIColor whiteColor];
         self.hud = [[MBProgressHUD alloc] initWithView:self.navigationController.view];
         [self.navigationController.view addSubview:self.hud];
-        //@"Rejecting this request..."
         self.hud.labelText = NSLocalizedString(@"History_HUDrejecting", @"History screen HUD text for rejecting a request");
         [self.hud show:YES];
         self.hud.mode = MBProgressHUDModeCustomView;
@@ -2722,7 +2701,7 @@
                                              preferredStyle:UIAlertControllerStyleAlert];
                 
                 UIAlertAction * ok = [UIAlertAction
-                                      actionWithTitle:@"Ok"
+                                      actionWithTitle:@"OK"
                                       style:UIAlertActionStyleDefault
                                       handler:^(UIAlertAction * action)
                                       {

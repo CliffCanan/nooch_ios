@@ -42,7 +42,6 @@
 
     UIButton * back = [UIButton buttonWithType:UIButtonTypeCustom];
     [back setStyleClass:@"backbutton"];
-    //@"Cancel"
     [back setTitle:NSLocalizedString(@"ResetPw_cancelBtn", @"Reset PW 'Cancel' btn text") forState:UIControlStateNormal];
     [back setTitleShadowColor:Rgb2UIColor(19, 32, 38, 0.2) forState:UIControlStateNormal];
     back.titleLabel.shadowOffset = CGSizeMake(0.0, -1.0);
@@ -56,7 +55,6 @@
     
     NSDictionary * textAttributes = @{NSShadowAttributeName: shadow };
     UILabel *lbl = [[UILabel alloc]initWithFrame:CGRectMake(105, 24, 200, 30)];
-    //@"Reset Password"
     lbl.attributedText = [[NSAttributedString alloc] initWithString:NSLocalizedString(@"ResetPw_scrnTitle", @"Reset PW Scrn Title") attributes:textAttributes];
     [lbl setFont:[UIFont systemFontOfSize:22]];
     [lbl setTextColor:[UIColor whiteColor]];
@@ -67,7 +65,6 @@
 {
     [super viewDidLoad];
 
-	// Do any additional setup after loading the view.
     serve * serveOBJ = [serve new];
     serveOBJ.tagName = @"myset";
     [serveOBJ setDelegate:self];
@@ -97,46 +94,41 @@
     [menu setScrollEnabled:NO];
     [self.view addSubview:menu];
     [menu reloadData];
-    
+
     self.old = [[UITextField alloc] initWithFrame:CGRectMake(0, 10, 0, 0)];
     [self.old setStyleClass:@"resetpw_right_label"];
     [self.old setDelegate:self];
-    //@"Enter Password"
     [self.old setPlaceholder:NSLocalizedString(@"ResetPw_pwPlaceholder", @"Reset PW 'Enter Password' placeholder text")];
     [self.old setSecureTextEntry:YES];
     self.old.returnKeyType = UIReturnKeyNext;
     [self.old becomeFirstResponder];
-    
+
     self.pass = [[UITextField alloc] initWithFrame:self.old.frame];
     [self.pass setStyleClass:@"resetpw_right_label"];
     [self.pass setDelegate:self];
-    //@"New Password"
     [self.pass setPlaceholder:NSLocalizedString(@"ResetPw_NewPwPlaceholder", @"Reset PW 'New Password' placeholder text")];
     [self.pass setSecureTextEntry:YES];
     self.pass.returnKeyType = UIReturnKeyNext;
-    
+
     self.confirm = [[UITextField alloc] initWithFrame:self.old.frame];
     [self.confirm setStyleClass:@"resetpw_right_label"];
     [self.confirm setDelegate:self];
-    //@"Confirm Password"
     [self.confirm setPlaceholder:NSLocalizedString(@"ResetPw_ConfirmPwPlaceholder", @"Reset PW 'Confirm Password' placeholder text")];
     [self.confirm setSecureTextEntry:YES];
     self.confirm.returnKeyType = UIReturnKeyDone;
-    
+
     self.changepwbtn = [UIButton buttonWithType:UIButtonTypeRoundedRect];
     [self.changepwbtn setFrame:CGRectMake(0, 270, 0, 0)];
     [self.changepwbtn setStyleClass:@"button_green"];
-    //@"Change Password"
     [self.changepwbtn setTitle:NSLocalizedString(@"ResetPw_ChngPwBtn", @"Reset PW 'Change Password' btn text") forState:UIControlStateNormal];
     [self.changepwbtn setTitleShadowColor:Rgb2UIColor(26, 38, 19, 0.2) forState:UIControlStateNormal];
     self.changepwbtn.titleLabel.shadowOffset = CGSizeMake(0.0, -1.0);
     [self.changepwbtn addTarget:self action:@selector(finishResetPassword:) forControlEvents:UIControlEventTouchUpInside];
     [self.changepwbtn setEnabled:NO];
     [self.view addSubview:self.changepwbtn];
-    
+
     UIButton *forgot = [UIButton buttonWithType:UIButtonTypeRoundedRect];
     [forgot setBackgroundColor:[UIColor clearColor]];
-    //@"Forgot Password?"
     [forgot setTitle:NSLocalizedString(@"ResetPw_forgotPwBtn", @"Reset PW 'Forgot Password?' btn text") forState:UIControlStateNormal];
     [forgot setFrame:CGRectMake(20, 240, 280, 22)];
     [forgot.titleLabel setFont:[UIFont fontWithName:@"Roboto-Regular" size:13]];
@@ -145,35 +137,34 @@
     [forgot setStyleId:@"label_forgotpw"];
     [self.view addSubview:forgot];
 
-    self.pwValidator1 = [[UIView alloc] initWithFrame:CGRectMake(20, 366, 69, 4)];
+    self.pwValidator1 = [[UIView alloc] initWithFrame:CGRectMake(15, 171, 72, 4)];
     [self.pwValidator1 setBackgroundColor:Rgb2UIColor(188, 190, 192, .5)];
     [self.pwValidator1 setHidden:YES];
     [self.view addSubview:self.pwValidator1];
-    
-    self.pwValidator2 = [[UIView alloc] initWithFrame:CGRectMake(91, 366, 69, 4)];
+
+    self.pwValidator2 = [[UIView alloc] initWithFrame:CGRectMake(89, 171, 72, 4)];
     [self.pwValidator2 setBackgroundColor:Rgb2UIColor(188, 190, 192, .5)];
     [self.pwValidator2 setHidden:YES];
     [self.view addSubview:self.pwValidator2];
-    
-    self.pwValidator3 = [[UIView alloc] initWithFrame:CGRectMake(162, 366, 69, 4)];
+
+    self.pwValidator3 = [[UIView alloc] initWithFrame:CGRectMake(163, 171, 72, 4)];
     [self.pwValidator3 setBackgroundColor:Rgb2UIColor(188, 190, 192, .5)];
     [self.pwValidator3 setHidden:YES];
     [self.view addSubview:self.pwValidator3];
-    
-    self.pwValidator4 = [[UIView alloc] initWithFrame:CGRectMake(233, 366, 69, 4)];
+
+    self.pwValidator4 = [[UIView alloc] initWithFrame:CGRectMake(237, 171, 72, 4)];
     [self.pwValidator4 setBackgroundColor:Rgb2UIColor(188, 190, 192, .5)];
     [self.pwValidator4 setHidden:YES];
     [self.view addSubview:self.pwValidator4];
-    
+
     self.pwValidator = [UILabel new];
-    [self.pwValidator setFrame:CGRectMake(202, 110, 100, 12)];
+    [self.pwValidator setFrame:CGRectMake(211, 175, 100, 13)];
     [self.pwValidator setFont:[UIFont fontWithName:@"Roboto-regular" size:11]];
     [self.pwValidator setText:@"Very Weak"];
     [self.pwValidator setTextAlignment:NSTextAlignmentRight];
     [self.pwValidator setTextColor:kNoochRed];
     [self.pwValidator setHidden:YES];
     [self.view addSubview:self.pwValidator];
-
 
     NSString * disAptsFromArtisanStrg = [ARPowerHookManager getValueForHookById:@"DispApts"];
 
@@ -206,10 +197,10 @@
     
     if ([self.old.text length] == 0)
     {
-        UIAlertView *alert = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"ResetPw_noOldPwAlrtTitle", @"Reset PW no old pw text Alert Title")//@"Wait a Sec..."
-                                                        message:NSLocalizedString(@"ResetPw_noOldPwAlrtBody", @"Reset PW no old pw text Alert Body Text")//@"Please enter your current password."
+        UIAlertView *alert = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"ResetPw_noOldPwAlrtTitle", @"Reset PW no old pw text Alert Title")
+                                                        message:NSLocalizedString(@"ResetPw_noOldPwAlrtBody", @"Reset PW no old pw text Alert Body Text")
                                                        delegate:nil
-                                              cancelButtonTitle:@"Ok"
+                                              cancelButtonTitle:@"OK"
                                               otherButtonTitles:nil, nil];
         [alert show];
         [self.old becomeFirstResponder];
@@ -218,10 +209,10 @@
 
     if ([self.pass.text length] == 0)
     {
-        UIAlertView *alert = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"ResetPw_noNewPwAlrtTitle", @"Reset PW no new pw text Alert Title")//@"Need New Password"
-                                                     message:NSLocalizedString(@"ResetPw_noNewPwAlrtBody", @"Reset PW no new pw text Alert Body Text")//@"Please enter the shiniest new password you can think of!"
+        UIAlertView *alert = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"ResetPw_noNewPwAlrtTitle", @"Reset PW no new pw text Alert Title")
+                                                     message:NSLocalizedString(@"ResetPw_noNewPwAlrtBody", @"Reset PW no new pw text Alert Body Text")
                                                        delegate:nil
-                                              cancelButtonTitle:@"Ok"
+                                              cancelButtonTitle:@"OK"
                                               otherButtonTitles:nil, nil];
         [alert show];
         [self.pass becomeFirstResponder];
@@ -230,10 +221,10 @@
 
     if ([self.confirm.text length] == 0)
     {
-        UIAlertView * alert = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"ResetPw_noConfirmPwAlrtTitle", @"Reset PW no confirm pw text Alert Title")//@"Double Check"
-                                                         message:NSLocalizedString(@"ResetPw_noConfirmPwAlrtBody", @"Reset PW no confirm pw text Alert Body Text")//@"Please enter the NEW password twice to confirm."
+        UIAlertView * alert = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"ResetPw_noConfirmPwAlrtTitle", @"Reset PW no confirm pw text Alert Title")
+                                                         message:NSLocalizedString(@"ResetPw_noConfirmPwAlrtBody", @"Reset PW no confirm pw text Alert Body Text")
                                                         delegate:nil
-                                               cancelButtonTitle:@"Ok"
+                                               cancelButtonTitle:@"OK"
                                                otherButtonTitles:nil, nil];
         [alert show];
         [self.confirm becomeFirstResponder];
@@ -242,10 +233,10 @@
 
     if (![[[assist shared]getPass] isEqualToString:self.old.text])
     {
-        UIAlertView * alert = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"ResetPw_wrongPwAlrtTitle", @"Reset PW incorrect pw Alert Title")//@"This Is Awkward"
-                                                     message:NSLocalizedString(@"ResetPw_wrongPwAlrtBody", @"Reset PW incorrect pw Alert Body")//@"\xF0\x9F\x94\x90\nThat doesn't appear to be the correct password. Please try again or contact us for futher help"
+        UIAlertView * alert = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"ResetPw_wrongPwAlrtTitle", @"Reset PW incorrect pw Alert Title")
+                                                     message:[NSString stringWithFormat:@"\xF0\x9F\x94\x90\n%@", NSLocalizedString(@"ResetPw_wrongPwAlrtBody", @"Reset PW incorrect pw Alert Body")]
                                                     delegate:nil
-                                           cancelButtonTitle:@"Ok"
+                                           cancelButtonTitle:@"OK"
                                            otherButtonTitles:nil, nil];
         [alert show];
         return;
@@ -255,8 +246,8 @@
     {
         if ([self.pass.text length] < 8)
         {
-            UIAlertView *av = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"ResetPw_tooShortAlrtTitle", @"Reset PW new too short Alert Title")//@"Almost There"
-                                                         message:NSLocalizedString(@"ResetPw_tooShortAlrtBody", @"Reset PW new too short Alert Body Text")//@"For sucurity reasons, et cetera... we ask that passwords contain at least 8 characters."
+            UIAlertView *av = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"ResetPw_tooShortAlrtTitle", @"Reset PW new too short Alert Title")
+                                                         message:NSLocalizedString(@"ResetPw_tooShortAlrtBody", @"Reset PW new too short Alert Body Text")
                                                         delegate:self
                                                cancelButtonTitle:@"OK"
                                                otherButtonTitles:nil];
@@ -264,19 +255,19 @@
         }
         else if ([self.pass.text rangeOfCharacterFromSet:digitsCharSet].location == NSNotFound)
         {
-            UIAlertView *av = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"ResetPw_noNumAlrtTitle", @"Reset PW no number in new PW Alert Title")//@"Sooo Close"
-                                                         message:NSLocalizedString(@"ResetPw_noNumAlrtBody", @"Reset PW no number in new PW Alert Body Text")//@"For sucurity reasons, et cetera, et cetera... we ask that passwords contain at LEAST 1 number. We know it's annoying, but just trying to look out for you. Keep it safe!"
+            UIAlertView *av = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"ResetPw_noNumAlrtTitle", @"Reset PW no number in new PW Alert Title")
+                                                         message:NSLocalizedString(@"ResetPw_noNumAlrtBody", @"Reset PW no number in new PW Alert Body Text")
                                                         delegate:self
-                                               cancelButtonTitle:@"Ok"
+                                               cancelButtonTitle:@"OK"
                                                otherButtonTitles:nil];
             [av show];
         }
         else if ([self.pass.text rangeOfCharacterFromSet:lettercaseCharSet].location == NSNotFound)
         {
             UIAlertView *av = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"ResetPw_emptyAlrtTitle", @"Reset PW 'Gotta Give Something' Alert Title")//@"Gotta Give Something"
-                                                         message:NSLocalizedString(@"ResetPw_emptyAlrtBody", @"Reset PW 'Gotta Give Something' Alert Body Text")//@"For fairly self-evident reasons, your password must have more than 0 characters."
+                                                         message:NSLocalizedString(@"ResetPw_emptyAlrtBody", @"Reset PW 'Gotta Give Something' Alert Body Text")
                                                         delegate:self
-                                               cancelButtonTitle:@"Ok"
+                                               cancelButtonTitle:@"OK"
                                                otherButtonTitles:nil];
             [av show];
         }
@@ -288,10 +279,10 @@
     }
     else
     {
-        UIAlertView *av = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"ResetPw_NoMatchAlrtTitle", @"Reset PW 'Double Check' Alert Title")//@"Double Check"
-                                                     message:NSLocalizedString(@"ResetPw_NoMatchAlrtBody", @"Reset PW 'Double Check' Alert Body Text")//@"Please make sure the new passwords match."
+        UIAlertView *av = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"ResetPw_NoMatchAlrtTitle", @"Reset PW 'Double Check' Alert Title")
+                                                     message:NSLocalizedString(@"ResetPw_NoMatchAlrtBody", @"Reset PW 'Double Check' Alert Body Text")
                                                     delegate:self
-                                           cancelButtonTitle:@"Ok"
+                                           cancelButtonTitle:@"OK"
                                            otherButtonTitles:nil];
         [av show];
         passwordReset = @"";
@@ -344,10 +335,10 @@
 - (void)forgot_pass
 {
     UIAlertView * alert = [[UIAlertView alloc]initWithTitle:NSLocalizedString(@"ResetPw_ForgotAlrtTitle1", @"Reset PW Forgot Password Alert Title")//@"Forgot Password"
-                                                    message:NSLocalizedString(@"ResetPw_ForgotAlrtBody1", @"Reset PW Forgot Password Alert Body Text")//@"Enter your email and we will send you a reset link."
+                                                    message:NSLocalizedString(@"ResetPw_ForgotAlrtBody1", @"Reset PW Forgot Password Alert Body Text")
                                                    delegate:self
-                                          cancelButtonTitle:NSLocalizedString(@"ResetPw_ForgotAlrtBtn1", @"Reset PW Forgot Password Alert Cancel Btn")//@"Cancel"
-                                          otherButtonTitles:@"Ok", nil];
+                                          cancelButtonTitle:NSLocalizedString(@"ResetPw_ForgotAlrtBtn1", @"Reset PW Forgot Password Alert Cancel Btn")
+                                          otherButtonTitles:@"OK", nil];
     alert.alertViewStyle = UIAlertViewStylePlainTextInput;
     [[alert textFieldAtIndex:0] setText:[[NSUserDefaults standardUserDefaults] objectForKey:@"UserName"]];
     [[alert textFieldAtIndex:0] setKeyboardType:UIKeyboardTypeEmailAddress];
@@ -383,11 +374,11 @@
         }
         else
         {
-            UIAlertView * alert = [[UIAlertView alloc]initWithTitle:NSLocalizedString(@"ResetPw_ForgotAlrtTitle2", @"Reset PW Forgot Password Alert Title")//@"Forgot Password"
-                                                            message:NSLocalizedString(@"ResetPw_ForgotAlrtBody2", @"Reset PW Forgot Password Alert Body Text")//@"Please enter a valid email address."
+            UIAlertView * alert = [[UIAlertView alloc]initWithTitle:NSLocalizedString(@"ResetPw_ForgotAlrtTitle2", @"Reset PW Forgot Password Alert Title")
+                                                            message:NSLocalizedString(@"ResetPw_ForgotAlrtBody2", @"Reset PW Forgot Password Alert Body Text")
                                                            delegate:self
-                                                  cancelButtonTitle:NSLocalizedString(@"ResetPw_ForgotAlrtBtn2", @"Reset PW Forgot Password Alert Cancel Btn")//@"Cancel"
-                                                  otherButtonTitles:@"Ok", nil];
+                                                  cancelButtonTitle:NSLocalizedString(@"ResetPw_ForgotAlrtBtn2", @"Reset PW Forgot Password Alert Cancel Btn")
+                                                  otherButtonTitles:@"OK", nil];
             alert.alertViewStyle = UIAlertViewStylePlainTextInput;
             [[alert textFieldAtIndex:0] setKeyboardType:UIKeyboardTypeEmailAddress];
             [[alert textFieldAtIndex:0] setStyleClass:@"customTextField_2"];
@@ -547,7 +538,7 @@
             score += 1.2;;
         }
 
-        NSLog(@"Score is: %f",score);
+        //NSLog(@"Score is: %f",score);
         if (pwLength && score > 3.9)
         {
             [self.pwValidator1 setBackgroundColor:kNoochGreen];
@@ -665,7 +656,7 @@
             UIAlertView * showAlertMessage = [[UIAlertView alloc] initWithTitle:@"Great Success"
                                                                         message:@"Your password has been changed successfully."
                                                                        delegate:nil
-                                                              cancelButtonTitle:@"Ok"
+                                                              cancelButtonTitle:@"OK"
                                                               otherButtonTitles:nil, nil];
             [showAlertMessage show];
             [[assist shared]setPassValue:passwordReset];
@@ -678,7 +669,7 @@
             UIAlertView * showAlertMessage = [[UIAlertView alloc] initWithTitle:@"Incorrect Password"
                                                                         message:@"Please check your current password."
                                                                        delegate:nil
-                                                              cancelButtonTitle:@"Ok"
+                                                              cancelButtonTitle:@"OK"
                                                               otherButtonTitles:nil, nil];
             [showAlertMessage show];
         }

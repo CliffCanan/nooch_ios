@@ -70,7 +70,6 @@
         introText = [UILabel new];
         [introText setFrame:CGRectMake(10, 38, 300, 76)];
         introText.numberOfLines = 0;
-        //@"Attach a bank account to send or receive payments. Just select your bank, login to your online banking, and you're done."
         [introText setText:NSLocalizedString(@"Settings_NoBankIntroTxt", @"Settings Screen instruction text when no bank is attached")];
         [introText setTextAlignment:NSTextAlignmentCenter];
         [introText setStyleId:@"settings_introText"];
@@ -96,7 +95,6 @@
     UIBarButtonItem * menu1 = [[UIBarButtonItem alloc] initWithCustomView:hamburger];
     [self.navigationItem setLeftBarButtonItem:menu1];
 
-	// Do any additional setup after loading the view.
     [self.navigationItem setTitle:@"Settings"];
     [self.slidingViewController.panGesture setEnabled:YES];
     [self.view addGestureRecognizer:self.slidingViewController.panGesture];
@@ -111,12 +109,11 @@
     link_bank = [UIButton buttonWithType:UIButtonTypeRoundedRect];
     [link_bank setFrame:CGRectMake(0, 123, 0, 0)];
     if (isBankAttached)
-    {//@"Link a New Bank"
+    {
         [link_bank setTitle:NSLocalizedString(@"Settings_LinkNewBnk", @"Settings Screen button text when bank is attached") forState:UIControlStateNormal];
     }
     else
     {
-        //@"Link a Bank Now"
         [link_bank setTitle:NSLocalizedString(@"Settings_LinkBnkNow", @"Settings Screen button text when bank is NOT attached") forState:UIControlStateNormal];
     }
     [link_bank setTitleShadowColor:Rgb2UIColor(19, 32, 38, 0.22) forState:UIControlStateNormal];
@@ -221,10 +218,10 @@
 {
     if (isBankAttached)
     {
-        UIAlertView *av = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"Settings_AttchBnkAlrtTitle", @"Settings Screen attach a new bank Alert Title")//@"Attach New Bank Account"
-                                                     message:NSLocalizedString(@"Settings_AttchBnkAlrtBody", @"Settings Screen attach a new bank Alert Body Text")//@"You can only have one bank account attached at a time.  If you link a new account, that will replace your current bank account. This cannot be undone.\n\nAre you sure you want to replace this bank account?"
+        UIAlertView *av = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"Settings_AttchBnkAlrtTitle", @"Settings Screen attach a new bank Alert Title")
+                                                     message:NSLocalizedString(@"Settings_AttchBnkAlrtBody", @"Settings Screen attach a new bank Alert Body Text")
                                                     delegate:self
-                                           cancelButtonTitle:NSLocalizedString(@"Settings_AttchBnkAlrtYesBtn", @"Settings Screen attach a new bank Alert Btn - 'Yes - Replace'")//@"Yes - Replace"
+                                           cancelButtonTitle:NSLocalizedString(@"Settings_AttchBnkAlrtYesBtn", @"Settings Screen attach a new bank Alert Btn - 'Yes - Replace'")
                                            otherButtonTitles:NSLocalizedString(@"CancelTxt", @"Any screen 'Cancel' Button Text"), nil];
         [av setTag:32];
         [av show];
@@ -248,10 +245,10 @@
 
 -(void)remove_attached_bank
 {
-    UIAlertView *av = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"Settings_RemoveBnkAlrtTitle1", @"Settings Screen remove bank Alert Title")//@"Remove Bank Account"
-                                                 message:NSLocalizedString(@"Settings_RemoveBnkAlrtBody1", @"Settings Screen remove bank Alert Body Text")//@"If you remove this bank account, you will not be able to send or receive money. This cannot be undone.\n\nAre you sure you want to remove this bank account?"
+    UIAlertView *av = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"Settings_RemoveBnkAlrtTitle1", @"Settings Screen remove bank Alert Title")
+                                                 message:NSLocalizedString(@"Settings_RemoveBnkAlrtBody1", @"Settings Screen remove bank Alert Body Text")
                                                 delegate:self
-                                       cancelButtonTitle:NSLocalizedString(@"Settings_RemoveBnkAlrtYesBtn", @"Settings Screen remove bank Alert Btn - 'Yes - Remove'")//@"Yes - Remove"
+                                       cancelButtonTitle:NSLocalizedString(@"Settings_RemoveBnkAlrtYesBtn", @"Settings Screen remove bank Alert Btn - 'Yes - Remove'")
                                        otherButtonTitles:NSLocalizedString(@"CancelTxt", @"Any screen 'Cancel' Button Text"), nil];
     [av setTag:2];
     [av show];
@@ -400,7 +397,7 @@
                           initWithTitle:NSLocalizedString(@"ConnectionErrorAlrtTitle", @"Any screen Connection Error Alert Text")
                           message:NSLocalizedString(@"ConnectionErrorAlrtBody", @"Any screen Connection Error Alert Body Text")
                           delegate:nil
-                          cancelButtonTitle:@"Ok"
+                          cancelButtonTitle:@"OK"
                           otherButtonTitles:nil];
     [alert show];
 }
@@ -446,9 +443,9 @@
         if ([[dictResponse valueForKey:@"Result"] isEqualToString:@"Bank account deleted successfully"])
         {
             UIAlertView *av = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"Settings_RemoveBnkAlrtTitle2", @"Settings Screen 'Bank Removed' Alert Title")
-                                                         message:NSLocalizedString(@"Settings_RemoveBnkAlrtBody2", @"Settings Screen 'Bank Removed' Alert Body Text")//@"This bank account is no longer linked to your Nooch account. To make or receive payments, you must link a new bank account."
+                                                         message:NSLocalizedString(@"Settings_RemoveBnkAlrtBody2", @"Settings Screen 'Bank Removed' Alert Body Text")
                                                         delegate:self
-                                               cancelButtonTitle:@"Ok"
+                                               cancelButtonTitle:@"OK"
                                                otherButtonTitles:nil, nil];
             [av show];
 

@@ -135,7 +135,7 @@
     self.pic.layer.borderWidth = 3;
     self.pic.layer.borderColor = kNoochBlue.CGColor;
 
-    [self.message setText:NSLocalizedString(@"SelPic_InstrctTxt", @"Select Picture screen Instruction Text after selecting a pic")];//@"Great Pic! If you're happy with it tap \"Continue\" or if you wish to change it tap \"Change Picture\""
+    [self.message setText:NSLocalizedString(@"SelPic_InstrctTxt", @"Select Picture screen Instruction Text after selecting a pic")];
 
     [self.choose_pic setTitle:NSLocalizedString(@"SelPic_ChngPicBtn1", @"Select Picture screen 'Change Picture' Btn Text") forState:UIControlStateNormal];
 
@@ -265,7 +265,7 @@
         [self.pic setImage:[UIImage imageWithData:[self.user objectForKey:@"image"]]];
         [[assist shared]setTranferImage:[UIImage imageWithData:[self.user objectForKey:@"image"]]];
 
-        [self.message setText:NSLocalizedString(@"SelPic_InstrctTxt2", @"Select Picture screen Instruction Text after selecting a pic (2nd)")];//@"Great Pic! If you're happy with it tap \"Continue\" or if you wish to change it tap \"Change Picture\""];
+        [self.message setText:NSLocalizedString(@"SelPic_InstrctTxt2", @"Select Picture screen Instruction Text after selecting a pic (2nd)")];
 
         [self.choose_pic setTitle:NSLocalizedString(@"SelPic_ChngPicBtn2", @"Select Picture screen '  Change Picture' Btn Text") forState:UIControlStateNormal];
 
@@ -280,7 +280,7 @@
     {
         [self.pic setImage:[UIImage imageNamed:@"silhouette.png"]];
 
-        [self.message setText:NSLocalizedString(@"SelPic_InstrucTxt3a", @"Select Picture screen Add Pic Instruction Text")];//@"Add a picture so people can find you more easily when sending you money."
+        [self.message setText:NSLocalizedString(@"SelPic_InstrucTxt3a", @"Select Picture screen Add Pic Instruction Text")];
 
         [self.choose_pic setTitle:NSLocalizedString(@"SelPic_ChoosePicBtn1", @"Select Picture screen '  Choose Picture' Btn Text") forState:UIControlStateNormal];
 
@@ -393,7 +393,7 @@
 {
     [self.pic setImage:[UIImage imageNamed:@"silhouette.png"]];
 
-    [self.message setText:NSLocalizedString(@"SelPic_InstrucTxt3b", @"Select Picture screen Add Pic Instruction Text (2nd)")];//@"Add a picture so people can find you more easily when sending you money."];
+    [self.message setText:NSLocalizedString(@"SelPic_InstrucTxt3b", @"Select Picture screen Add Pic Instruction Text (2nd)")];
 
     [self.choose_pic setTitle:NSLocalizedString(@"SelPic_ChoosePicBtn2", @"Select Picture screen '  Choose Picture' Btn Text (2nd)") forState:UIControlStateNormal];
 
@@ -431,9 +431,8 @@
 
             self.pic.layer.borderWidth = 4;
             self.pic.layer.borderColor = kNoochBlue.CGColor;
-            //  [self.pic setImage:[UIImage imageWithData:[self.user objectForKey:@"image"]]];
             
-            [self.message setText:NSLocalizedString(@"SelPic_InstrctTxt3", @"Select Picture screen Instruction Text after selecting a pic (3rd)")];//@"Great Pic! If you're happy with it tap \"Continue\" or if you wish to change it tap \"Change Picture\""
+            [self.message setText:NSLocalizedString(@"SelPic_InstrctTxt3", @"Select Picture screen Instruction Text after selecting a pic (3rd)")];
             [self.choose_pic setTitle:NSLocalizedString(@"SelPic_ChngPicBtn3", @"Select Picture screen '  Change Picture' Btn Text") forState:UIControlStateNormal];
             
             [self.next_button setTitle:NSLocalizedString(@"SelPic_ContinBtn4", @"Select Picture screen 'Continue' Btn Text (3rd)") forState:UIControlStateNormal];

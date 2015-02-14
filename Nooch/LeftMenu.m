@@ -508,7 +508,7 @@
         else if (indexPath.row == 1)
         {
             //contact support
-            UIActionSheet *actionSheetObject = [[UIActionSheet alloc] initWithTitle:NSLocalizedString(@"LSidebar_SupportActShtTitle", @"Left Sidebar contact support Action Sheet Title")//@"Support Options"
+            UIActionSheet *actionSheetObject = [[UIActionSheet alloc] initWithTitle:NSLocalizedString(@"LSidebar_SupportActShtTitle", @"Left Sidebar contact support Action Sheet Title")
                                                                            delegate:self
                                                                   cancelButtonTitle:@"Cancel"
                                                              destructiveButtonTitle:nil

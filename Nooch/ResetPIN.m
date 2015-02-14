@@ -54,7 +54,6 @@
 
     UIButton * back = [UIButton buttonWithType:UIButtonTypeCustom];
     [back setStyleClass:@"backbutton_pinreset"];
-    //@"Cancel"
     [back setTitle:NSLocalizedString(@"ResetPIN_cancelTxt", @"Reset PIN cancel btn text") forState:UIControlStateNormal];
     [back setTitleShadowColor:Rgb2UIColor(19, 32, 38, 0.2) forState:UIControlStateNormal];
     back.titleLabel.shadowOffset = CGSizeMake(0.0, -1.0);
@@ -67,7 +66,6 @@
     
     NSDictionary * textAttributes = @{NSShadowAttributeName: shadow };
     UILabel * lbl = [[UILabel alloc]initWithFrame:CGRectMake(105, 20, 200, 30)];
-    //@"Reset PIN"
     lbl.attributedText = [[NSAttributedString alloc] initWithString:NSLocalizedString(@"ResetPIN_scrnTitle", @"Reset PIN screen Scrn Title") attributes:textAttributes];
     [lbl setFont:[UIFont systemFontOfSize:22]];
     [lbl setTextColor:[UIColor whiteColor]];
@@ -83,7 +81,6 @@
     //[self.navigationItem setTitle:@"Reset PIN "];
 
     title = [[UILabel alloc] initWithFrame:CGRectMake(10, 104, 300, 60)];
-    //@"Please enter your old PIN."
     [title setText:NSLocalizedString(@"ResetPIN_instruct", @"Reset PIN instructions")]; [title setTextAlignment:NSTextAlignmentCenter];
     [title setNumberOfLines:2];
     [title setStyleClass:@"Repin_instructiontext"];
@@ -208,11 +205,10 @@
             [self.first_num setBackgroundColor:[UIColor whiteColor]];
             self.pin.text = @"";
             newPinString = @"";
-            //@"PINs didn't match - try again"
+
             self.prompt.text = NSLocalizedString(@"ResetPIN_noMatchTxt", @"Reset PIN pins don't match text");
             self.prompt.textColor = kNoochRed;
             pinchangeProgress = 2;
-            //@"Enter new Pin"
             title.text = NSLocalizedString(@"ResetPIN_enterNewPin", @"Reset PIN 'Enter new PIN' text");
             return NO;
         }
@@ -231,10 +227,10 @@
 {
     if ([status isEqualToString:@"Pin changed successfully."])
     {
-        UIAlertView *showAlertMessage = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"ResetPIN_updatedAlrtTitle", @"Reset PIN updated successfully Alert Title")//@"PIN Updated"
-                                                                   message:NSLocalizedString(@"ResetPIN_updatedAlrtBody", @"Reset PIN updated successfully Alert Body Text")//@"Your PIN has been changed successfully."
+        UIAlertView *showAlertMessage = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"ResetPIN_updatedAlrtTitle", @"Reset PIN updated successfully Alert Title")
+                                                                   message:NSLocalizedString(@"ResetPIN_updatedAlrtBody", @"Reset PIN updated successfully Alert Body Text")
                                                                   delegate:nil
-                                                         cancelButtonTitle:@"Ok"
+                                                         cancelButtonTitle:@"OK"
                                                          otherButtonTitles:nil, nil];
         [showAlertMessage show];
         [self dismissViewControllerAnimated:YES completion:nil];
@@ -243,9 +239,8 @@
 
 -(void)Error:(NSError *)Error
 {
-    // [self.hud hide:YES];
     UIAlertView *alert = [[UIAlertView alloc]
-                          initWithTitle:@"Message"
+                          initWithTitle:@"Connection Trouble"
                           message:@"Error connecting to server"
                           delegate:nil
                           cancelButtonTitle:@"OK"
@@ -338,10 +333,10 @@
             self.prompt.text = NSLocalizedString(@"ResetPIN_2ndFailed", @"Reset PIN '2nd Failed Attempt' text");
             self.prompt.textColor = kNoochRed;
             
-            UIAlertView *suspendedAlert=[[UIAlertView alloc]initWithTitle:NSLocalizedString(@"ResetPIN_TryAgainAlrtTitle", @"Reset PIN Failed Alert Title")//@"Please Try Again"
-                                                                  message:NSLocalizedString(@"ResetPIN_TryAgainAlrtBody", @"Reset PIN Failed Alert Body Text")//@"Your account will be suspended for 24 hours if you enter another incorrect PIN."
+            UIAlertView *suspendedAlert=[[UIAlertView alloc]initWithTitle:NSLocalizedString(@"ResetPIN_TryAgainAlrtTitle", @"Reset PIN Failed Alert Title")
+                                                                  message:NSLocalizedString(@"ResetPIN_TryAgainAlrtBody", @"Reset PIN Failed Alert Body Text")
                                                                  delegate:nil
-                                                        cancelButtonTitle:@"Ok"
+                                                        cancelButtonTitle:@"OK"
                                                         otherButtonTitles:nil];
             [suspendedAlert show];
         }
@@ -356,7 +351,6 @@
 {
     [[assist shared]setSusPended:YES];
 
-    //@"Account suspended."
     self.prompt.text = NSLocalizedString(@"ResetPIN_AcntSuspLbl", @"Reset PIN account suspended text");
 
     self.fourth_num.layer.borderColor = kNoochRed.CGColor;
@@ -368,11 +362,10 @@
     [self.second_num setStyleClass:@"shakePin2"];
     [self.first_num setStyleClass:@"shakePin1"];
 
-    UIAlertView * av = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"ResetPIN_SuspAlrtTitle", @"Reset PIN Failed account suspended Alert Title")//@"Account Suspended"
-                                                 message:NSLocalizedString(@"ResetPIN_SuspAlrtBody", @"Reset PIN Failed account suspended Alert Body Text")//@"Your account has been suspended for 24 hours. Please contact us via email at support@nooch.com if you need to reset your PIN immediately."
+    UIAlertView * av = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"ResetPIN_SuspAlrtTitle", @"Reset PIN Failed account suspended Alert Title")
+                                                 message:NSLocalizedString(@"ResetPIN_SuspAlrtBody", @"Reset PIN Failed account suspended Alert Body Text")
                                                 delegate:self
                                        cancelButtonTitle:@"OK"
-                       //@"Contact Support"
                                        otherButtonTitles:NSLocalizedString(@"ResetPIN_SuspAlrtBtn", @"Reset PIN Failed account suspended Alert 'Contact Support' Btn"),nil];
     [av setTag:202320];
     [av show];

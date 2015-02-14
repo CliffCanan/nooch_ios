@@ -49,7 +49,7 @@
     page1.title = NSLocalizedString(@"Tour_Page1Title", @"Tour 'Welcome To Nooch' page Title");
     page1.titlePositionY = 430;
 
-    page1.desc = NSLocalizedString(@"Tour_Page1Desc", @"Tour page 1 Description");//@"Pay back a friend or send a payment request to anyone. The people you Nooch most will appear on the Home Screen. Send to anyone - even if they don't have Nooch."
+    page1.desc = NSLocalizedString(@"Tour_Page1Desc", @"Tour page 1 Description");
     page1.descWidth = 302;
     page1.descPositionY = 126;
 
@@ -64,7 +64,7 @@
     page2.title = NSLocalizedString(@"Tour_Page2Title", @"Tour 'Link A Funding Source' page Title");
     page2.titlePositionY = 120;
 
-    page2.desc = NSLocalizedString(@"Tour_Page2Desc", @"Tour page 2 Description");//@"No long forms or waiting periods.  Just select your bank and sign in using your existing online banking credentials.";
+    page2.desc = NSLocalizedString(@"Tour_Page2Desc", @"Tour page 2 Description");
     page2.descWidth = 302;
     page2.descPositionY = page2.titlePositionY - 26;
 
@@ -78,7 +78,7 @@
 
     page3.titlePositionY = 116;
 
-    page3.desc = NSLocalizedString(@"Tour_Page3Desc", @"Tour page 3 Description");//@"To send or request money, select from a recent contact, find nearby Nooch users, or enter ANY email address.";
+    page3.desc = NSLocalizedString(@"Tour_Page3Desc", @"Tour page 3 Description");
     page3.descWidth = 304;
     page3.descPositionY = page3.titlePositionY - 21;
 
@@ -92,7 +92,7 @@
     page4.title = NSLocalizedString(@"Tour_Page4Title", @"Tour 'Send or Request?' page Title");
     page4.titlePositionY = 120;
 
-    page4.desc = NSLocalizedString(@"Tour_Page4Desc", @"Tour page 4 Description");//@"Enter an amount, add a memo, or picture to any transfer.  Then tap 'Send' or 'Request'.";
+    page4.desc = NSLocalizedString(@"Tour_Page4Desc", @"Tour page 4 Description");
     page4.descWidth = 300;
     page4.descPositionY = page4.titlePositionY - 26;
     
@@ -106,7 +106,7 @@
     page5.title = NSLocalizedString(@"Tour_Page5Title", @"Tour 'Transaction History' page Title");
     page5.titlePositionY = 120;
     
-    page5.desc = NSLocalizedString(@"Tour_Page5Desc", @"Tour page 5 Description");//@"See all your Nooch transfers and filter by type.  To see a map of your payments, swipe left or tap the map icon in the navigation bar.";
+    page5.desc = NSLocalizedString(@"Tour_Page5Desc", @"Tour page 5 Description");
     page5.descWidth = 300;
     page5.descPositionY = page5.titlePositionY - 26;
     
@@ -119,7 +119,7 @@
     page6.title = NSLocalizedString(@"Tour_Page6Title", @"Tour 'Stats & Analytics' page Title");
     page6.titlePositionY = 120;
 
-    page6.desc = NSLocalizedString(@"Tour_Page6Desc", @"Tour page 6 Description");//@"Check out a breakdown of your payments including average payment amount and top friends.";
+    page6.desc = NSLocalizedString(@"Tour_Page6Desc", @"Tour page 6 Description");
     page6.descWidth = 300;
     page6.descPositionY = page6.titlePositionY - 26;
 

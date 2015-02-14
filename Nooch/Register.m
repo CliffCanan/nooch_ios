@@ -193,7 +193,7 @@
 
     self.fullNameInstruc = [[UILabel alloc] initWithFrame:CGRectMake(40, 286, 263, 15)];
     [self.fullNameInstruc setBackgroundColor:[UIColor clearColor]];
-    [self.fullNameInstruc setText:NSLocalizedString(@"Register_NameInstruct", @"Register Screen Full Name Instructions Text")];//@"\xF0\x9F\x98\xB3  Please enter a first AND last name"];
+    [self.fullNameInstruc setText:[NSString stringWithFormat:@"\xF0\x9F\x98\xB3  %@", NSLocalizedString(@"Register_NameInstruct", @"Register Screen Full Name Instructions Text")]];
     [self.fullNameInstruc setFont:[UIFont fontWithName:@"Roboto-regular" size:12]];
     [self.fullNameInstruc setTextColor:kNoochRed];
     [self.fullNameInstruc setTextAlignment:NSTextAlignmentRight];
@@ -639,7 +639,7 @@
     if ([self.password_field.text rangeOfCharacterFromSet:digitsCharSet].location == NSNotFound)
     {
         UIAlertView *av = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"Rgstr_InscrPwAlrtTtl", @"Register screen 'Insecure Password' Alert Title")
-                                                     message:NSLocalizedString(@"Rgstr_InscrPwAlrtBody", @"Register screen Insecure Pw Alert Body Text")//@"\xF0\x9F\x98\xB3\nFor security reasons, et cetera, we ask that passwords contain at least 1 number.\n\nWe know it's annoying, but we're just looking out for you. Keep it safe!"
+                                                     message:[NSString stringWithFormat:@"\xF0\x9F\x98\xB3\n%@", NSLocalizedString(@"Rgstr_InscrPwAlrtBody", @"Register screen Insecure Pw Alert Body Text")]
                                                     delegate:self
                                            cancelButtonTitle:@"OK"
                                            otherButtonTitles:nil];
@@ -650,7 +650,7 @@
     else if ([self.password_field.text rangeOfCharacterFromSet:lettercaseCharSet].location == NSNotFound)
     {
         UIAlertView *av = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"Rgstr_NeedLtrAlrtTtl", @"Register screen 'Letters Are Fun Too' Alert Title")
-                                                     message:NSLocalizedString(@"Rgstr_NeedLtrAlrtBody", @"Register screen Letters Are Fun Too Alert Body Text")//@"\xF0\x9F\x98\x8F\nRegrettably, your Nooch password must contain at least one actual letter."
+                                                     message:[NSString stringWithFormat:@"\xF0\x9F\x98\x8F\n%@", NSLocalizedString(@"Rgstr_NeedLtrAlrtBody", @"Register screen Letters Are Fun Too Alert Body Text")]
                                                     delegate:self
                                            cancelButtonTitle:@"OK"
                                            otherButtonTitles:nil];
@@ -662,7 +662,7 @@
     if (!isTermsChecked)
     {
         UIAlertView *av = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"Rgstr_TrmsAlrtTtl", @"Register screen 'Who Loves Lawyers' Alert Title")
-                                                     message:NSLocalizedString(@"Rgstr_TrmsAlrtBody", @"Register screen 'Who Loves Lawyers' Alert Body Text")//@"\xF0\x9F\x98\x81\nPlease read Nooch's Terms of Service and check the box to proceed."
+                                                     message:[NSString stringWithFormat:@"\xF0\x9F\x98\x81\n%@", NSLocalizedString(@"Rgstr_TrmsAlrtBody", @"Register screen 'Who Loves Lawyers' Alert Body Text")]
                                                     delegate:self
                                            cancelButtonTitle:@"OK"
                                            otherButtonTitles:@"Read Terms", nil];
@@ -928,7 +928,7 @@
             {
                 UIAlertController * alert = [UIAlertController
                                              alertControllerWithTitle:NSLocalizedString(@"Rgstr_SuspAlrtTtl1", @"Register screen 'Account Temporarily Suspended' Alert Title")
-                                             message:NSLocalizedString(@"Rgstr_SuspAlrtBody1", @"Register screen Account Temporarily Suspended Alert Body Text")//@"For security your account has been temporarily suspended.\n\nWe really apologize for the inconvenience and ask for your patience. Our top priority is keeping Nooch safe and secure.\n\nPlease contact us at support@nooch.com if you would like more information."
+                                             message:NSLocalizedString(@"Rgstr_SuspAlrtBody1", @"Register screen Account Temporarily Suspended Alert Body Text")
                                              preferredStyle:UIAlertControllerStyleAlert];
                 
                 UIAlertAction * ok = [UIAlertAction
@@ -954,7 +954,7 @@
             else // iOS 7 and prior
             {
                 UIAlertView * alert = [[UIAlertView alloc]initWithTitle:NSLocalizedString(@"Rgstr_SuspAlrtTtl2", @"Register screen 'Account Temporarily Suspended' Alert Title (2nd)")
-                                                                message:NSLocalizedString(@"Rgstr_SuspAlrtBody2", @"Register screen Account Temporarily Suspended Alert Body Text (2nd)")//@"For security your account has been temporarily suspended.\n\nWe really apologize for the inconvenience and ask for your patience. Our top priority is keeping Nooch safe and secure.\n\nPlease contact us at support@nooch.com if you would like more information."
+                                                                message:NSLocalizedString(@"Rgstr_SuspAlrtBody2", @"Register screen Account Temporarily Suspended Alert Body Text (2nd)")
                                                                delegate:self
                                                       cancelButtonTitle:@"OK"
                                                       otherButtonTitles:NSLocalizedString(@"Rgstr_SuspAlrtBtn2", @"Register screen 'Contact Support' Alert Btn (2nd)"), nil];
@@ -1032,7 +1032,7 @@
         if (![[loginResult objectForKey:@"Result"] isEqualToString:@"Not a nooch member."])
         {
             UIAlertView *av = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"Rgstr_EmlInUseAlrtTtl", @"Register screen 'Email In Use Already' Alert Title")
-                                                         message:NSLocalizedString(@"Rgstr_EmlInUseAlrtBody", @"Register screen 'Email In Use Already' Alert Body Text")//@"The email address you are attempting to sign up with is already in use. Do you want to login now?"
+                                                         message:NSLocalizedString(@"Rgstr_EmlInUseAlrtBody", @"Register screen 'Email In Use Already' Alert Body Text")
                                                         delegate:self
                                                cancelButtonTitle:@"No"
                                                otherButtonTitles:@"Login", nil];
@@ -1312,8 +1312,8 @@
                     [self.nameValidator setHidden:NO];
                     [self.name_field becomeFirstResponder];
 
-                    UIAlertView *av = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"Rgstr_ReallyAlrtTtl1", @"Register screen Really Alert Title")//@"\xF0\x9F\x98\x8F  Really?"
-                                                                 message:NSLocalizedString(@"Rgstr_ReallyAlrtBody1", @"Register screen Really Alert Body Text")//@"Your name has a number in it?\n\nPlease enter a real name.\n\nOr if your name actually does contain a number, our bad... please contact support@nooch.com and we'll create an account for you."
+                    UIAlertView *av = [[UIAlertView alloc] initWithTitle:[NSString stringWithFormat:@"\xF0\x9F\x98\x8F  %@", NSLocalizedString(@"Rgstr_ReallyAlrtTtl1", @"Register screen Really Alert Title")]
+                                                                 message:NSLocalizedString(@"Rgstr_ReallyAlrtBody1", @"Register screen Really Alert Body Text")
                                                                 delegate:self
                                                        cancelButtonTitle:@"OK"
                                                        otherButtonTitles:nil];
@@ -1325,8 +1325,8 @@
                     [self.nameValidator setHidden:NO];
                     [self.name_field becomeFirstResponder];
                         
-                    UIAlertView *av = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"Rgstr_ReallyAlrtTtl2", @"Register screen Really Alert Title")//@"\xF0\x9F\x98\x8F  Really?"
-                                                                 message:NSLocalizedString(@"Rgstr_ReallyAlrtBody2", @"Register screen Really Alert Body (2nd - symbol)")//@"Your name has a symbol in it now?\n\nPlease enter a real name.\n\nOr if your name actually does contain a symbol, our apologies... please contact support@nooch.com and we'll create an account for you."
+                    UIAlertView *av = [[UIAlertView alloc] initWithTitle:[NSString stringWithFormat:@"\xF0\x9F\x98\x8F  %@", NSLocalizedString(@"Rgstr_ReallyAlrtTtl2", @"Register screen Really Alert Title")]
+                                                                 message:NSLocalizedString(@"Rgstr_ReallyAlrtBody2", @"Register screen Really Alert Body (2nd - symbol)")
                                                                 delegate:self
                                                        cancelButtonTitle:@"OK"
                                                        otherButtonTitles:nil];

@@ -245,7 +245,7 @@
                 [self.first_num setStyleClass:@"shakePin1"];
                 self.prompt.text = NSLocalizedString(@"ReEnterPIN_IncrctPinLbl2nd", @"ReEnter PIN 'Incorrect PIN - 2nd Failed Attempt' Feedback Text");
                 UIAlertView * suspendedAlert = [[UIAlertView alloc]initWithTitle:NSLocalizedString(@"ReEnterPIN_TryAgnAlrtTtl", @"'Please Try Again' Alert Title")
-                                                                         message:NSLocalizedString(@"ReEnterPIN_TryAgnAlrtBody", @"Please Try Again Alert Body Text")//@"For security protection, your account will be suspended for 24 hours if you enter an incorrect PIN again."
+                                                                         message:NSLocalizedString(@"ReEnterPIN_TryAgnAlrtBody", @"Please Try Again Alert Body Text")
                                                                         delegate:nil
                                                                cancelButtonTitle:@"OK"
                                                                otherButtonTitles:nil];

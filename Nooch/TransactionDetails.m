@@ -424,7 +424,7 @@
 -(void)remind_request_existinguser
 {
     UIAlertView *av = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"TransDeets_SndRmndrAlrtTtl1", @"'Send Reminder' Alert Title")
-                                                 message:[NSString stringWithFormat:NSLocalizedString(@"TransDeets_SndRmndrAlrtBody1", @"'Send Reminder' Alert Body Text"),[[self.trans objectForKey:@"FirstName"] capitalizedString]]//@"Do you want to send %@ a reminder about this request?"
+                                                 message:[NSString stringWithFormat:NSLocalizedString(@"TransDeets_SndRmndrAlrtBody1", @"'Send Reminder' Alert Body Text"),[[self.trans objectForKey:@"FirstName"] capitalizedString]]
                                                 delegate:self
                                        cancelButtonTitle:NSLocalizedString(@"TransDeets_SndRmndrAlrtYesBtn1", @"'Yes' Button Text")
                                        otherButtonTitles:NSLocalizedString(@"TransDeets_SndRmndrAlrtNoBtn1", @"'No' Button Text"), nil];
@@ -446,7 +446,7 @@
 -(void)remind_invite_newuser
 {
     UIAlertView *av = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"TransDeets_SndRmndrAlrtTtl3", @"'Send Reminder' Alert Body Text (3rd)")
-                                                 message:NSLocalizedString(@"TransDeets_SndRmndrAlrtBody3", @"'Send Reminder' Alert Body Text (3rd)")//@"Do you want to send a reminder about this transfer?"
+                                                 message:NSLocalizedString(@"TransDeets_SndRmndrAlrtBody3", @"'Send Reminder' Alert Body Text (3rd)")
                                                 delegate:self
                                        cancelButtonTitle:NSLocalizedString(@"TransDeets_SndRmndrAlrtYesBtn3", @"'Yes' Button Text (3rd)")
                                        otherButtonTitles:NSLocalizedString(@"TransDeets_SndRmndrAlrtNoBtn3", @"'No' Button Text (3rd)"), nil];
@@ -552,7 +552,7 @@
 
     UILabel * desc=[[UILabel alloc]initWithFrame:CGRectMake(5, 0, 270, 36)];
     [desc setBackgroundColor:[UIColor clearColor]];
-    desc.text = NSLocalizedString(@"TransDeets_LocLtBxDesc", @"Location Lightbox description text");//@"This shows the location of the user who initiated the transfer.";
+    desc.text = NSLocalizedString(@"TransDeets_LocLtBxDesc", @"Location Lightbox description text");
     desc.font = [UIFont fontWithName:@"Roboto" size:12];
     [desc setStyleId:@"mapLightBox_paraText"];
     desc.numberOfLines = 0;
@@ -782,7 +782,7 @@
 -(void)cancel_invite
 {
     UIAlertView *av = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"TransDeets_CnclTrnsfrAlrtTitl", @"'Cancel This Transfer' Alert Title")
-                                                 message:NSLocalizedString(@"TransDeets_CnclTrnsfrAlrtBody", @"Cancel This Transfer Alert Body Text")//@"Are you sure you want to cancel this transfer?"
+                                                 message:NSLocalizedString(@"TransDeets_CnclTrnsfrAlrtBody", @"Cancel This Transfer Alert Body Text")
                                                 delegate:self
                                        cancelButtonTitle:NSLocalizedString(@"TransDeets_CnclTrnsfrAlrtYesBtn", @"Cancel This Transfer Alert 'Yes' Btn")
                                        otherButtonTitles:NSLocalizedString(@"TransDeets_CnclTrnsfrAlrtNoBtn", @"Cancel This Transfer Alert 'No' Btn"), nil];
@@ -831,7 +831,7 @@
     if ([[assist shared]getSuspended])
     {
         UIAlertView * alert = [[UIAlertView alloc]initWithTitle:NSLocalizedString(@"TransDeets_SuspAlrtTtl", @"'Account Suspended' Alert Title")
-                                                    message:NSLocalizedString(@"TransDeets_SuspAlrtBody", @"Account Suspended Alert Body Text")//@"Your account has been suspended for 24 hours from now. Please email support@nooch.com if you believe this was a mistake and we will be glad to help."
+                                                    message:NSLocalizedString(@"TransDeets_SuspAlrtBody", @"Account Suspended Alert Body Text")
                                                    delegate:self
                                           cancelButtonTitle:@"OK"
                                           otherButtonTitles:NSLocalizedString(@"TransDeets_SuspAlrtBtn", @"'Contact Support' Btn"), nil];
@@ -842,7 +842,7 @@
     if (![[user valueForKey:@"Status"]isEqualToString:@"Active"])
     {
         UIAlertView *alert = [[UIAlertView alloc]initWithTitle:NSLocalizedString(@"TransDeets_EmlVerNddAlrtTtl", @"'Email Verification Needed' Alert Title")
-                                                    message:NSLocalizedString(@"TransDeets_EmlVerNddAlrtBody", @"'Email Verification Needed' Alert Body Text")//@"Please click the link sent to your email to verify your email address."
+                                                    message:NSLocalizedString(@"TransDeets_EmlVerNddAlrtBody", @"'Email Verification Needed' Alert Body Text")
                                                    delegate:Nil
                                           cancelButtonTitle:@"OK"
                                           otherButtonTitles:Nil, nil];
@@ -893,7 +893,7 @@
 - (void)cancel_request_to_existing
 {
     UIAlertView *av = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"TransDeets_CnclRqstAlrtTtl1", @"Cancel This Request Alert Title")
-                                                 message:[NSString stringWithFormat:NSLocalizedString(@"TransDeets_CnclRqstAlrtBody1", @"Cancel This Request Alert Body Text"),[[self.trans objectForKey:@"Name"] capitalizedString]]//@"Are you sure you want to cancel this request to %@?"
+                                                 message:[NSString stringWithFormat:NSLocalizedString(@"TransDeets_CnclRqstAlrtBody1", @"Cancel This Request Alert Body Text"),[[self.trans objectForKey:@"Name"] capitalizedString]]
                                                 delegate:self
                                        cancelButtonTitle:NSLocalizedString(@"TransDeets_CnclRqstAlrtYesBtn1", @"Cancel This Request Alert 'Yes' Btn")
                                        otherButtonTitles:NSLocalizedString(@"TransDeets_CnclRqstfrAlrtNoBtn1", @"Cancel This Request Alert 'No' Btn"), nil];
@@ -904,7 +904,7 @@
 - (void)cancel_request_to_nonNoochUser
 {
     UIAlertView *av = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"TransDeets_CnclRqstAlrtTtl2", @"Cancel This Request Alert Title (2nd)")
-                                                 message:NSLocalizedString(@"TransDeets_CnclRqstAlrtBody2", @"Cancel This Request Alert Body (2nd)")//@"Are you sure you want to cancel this request?"
+                                                 message:NSLocalizedString(@"TransDeets_CnclRqstAlrtBody2", @"Cancel This Request Alert Body (2nd)")
                                                 delegate:self
                                        cancelButtonTitle:NSLocalizedString(@"TransDeets_CnclRqstAlrtYesBtn2", @"Cancel This Request Alert 'Yes' Btn")
                                        otherButtonTitles:NSLocalizedString(@"TransDeets_CnclRqstAlrtNoBtn2", @"Cancel This Request Alert 'No' Btn"), nil];
@@ -1219,7 +1219,7 @@
             UIAlertView *alert = [[UIAlertView alloc] initWithTitle:output
                                                             message:@"\xF0\x9F\x91\x8D"
                                                            delegate:nil
-                                                  cancelButtonTitle:@"Ok"
+                                                  cancelButtonTitle:@"OK"
                                                   otherButtonTitles:nil];
             [alert show];
         }

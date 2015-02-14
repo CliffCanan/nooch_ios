@@ -71,7 +71,7 @@
     UILabel *prompt = [[UILabel alloc] initWithFrame:CGRectMake(10, 166, 300, 70)];
     [prompt setBackgroundColor:[UIColor clearColor]];
     [prompt setNumberOfLines:3];
-    [prompt setText:NSLocalizedString(@"ReferCode_Instruct", @"Referral Code screen instruction Text")];//@"If you have a Referral Code from a current Nooch user, enter it below:"];
+    [prompt setText:NSLocalizedString(@"ReferCode_Instruct", @"Referral Code screen instruction Text")];
     [prompt setStyleClass:@"instruction_text"];
     [self.view addSubview:prompt];
 
@@ -155,7 +155,7 @@
     if ([requireCodeSettingFromArtisan isEqualToString:@"yes"])
     {
         UIAlertView *av = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"ReferCode_RqstCdAlrtTtl", @"'Request An Invite Code' Alert Title")
-                                                     message:NSLocalizedString(@"ReferCode_RqstCdAlrtBody", @"'Request An Invite Code' Alert Body")//@"To make sure every Nooch user has the best experience, you must have an invite or referral code.\n\nYou can get a code from any current Nooch user, or request an invite directly from us. We try to send out codes as quickly as possible when they are requested."
+                                                     message:NSLocalizedString(@"ReferCode_RqstCdAlrtBody", @"'Request An Invite Code' Alert Body")
                                                     delegate:self
                                            cancelButtonTitle:@"OK"
                                            otherButtonTitles:NSLocalizedString(@"ReferCode_RqstCdAlrtBtn", @"'Request code' Alert Button"), nil];
@@ -247,7 +247,7 @@
             UIAlertView *avInvalidCode = [[UIAlertView alloc]initWithTitle:@"Not Quite Right"
                                                                    message:@"We don't recognize that referral code. Please check to make sure you entered it correctly.  If you do not have a code, you can request one."
                                                                   delegate:self
-                                                         cancelButtonTitle:@"Ok"
+                                                         cancelButtonTitle:@"OK"
                                                          otherButtonTitles:@"Request Code", nil];
             [avInvalidCode setTag:88];
             [avInvalidCode show];
@@ -272,7 +272,7 @@
         {
             [self.hud hide:YES];
             UIAlertView * alert = [[UIAlertView alloc]initWithTitle:NSLocalizedString(@"ReferCode_ExprdAlrtTtl", @"'Expired Code' Alert Title")
-                                                            message:NSLocalizedString(@"ReferCode_ExprdAlrtBody", @"'Expired Code' Alert Body")//@"Sorry, looks like that referral code is no longer valid.  Please try another code."
+                                                            message:NSLocalizedString(@"ReferCode_ExprdAlrtBody", @"'Expired Code' Alert Body")
                                                            delegate:nil
                                                   cancelButtonTitle:@"OK"
                                                   otherButtonTitles:nil, nil];

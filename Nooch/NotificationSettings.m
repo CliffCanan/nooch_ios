@@ -224,7 +224,6 @@
     spinner1.color = [UIColor whiteColor];
     self.hud = [[MBProgressHUD alloc] initWithView:self.navigationController.view];
     [self.navigationController.view addSubview:self.hud];
-    //@"Loading your settings..."
     self.hud.labelText = NSLocalizedString(@"NotifSettings_HUDtxt", @"Notification Settings HUD loading text");
     self.hud.mode = MBProgressHUDModeCustomView;
     self.hud.customView = spinner1;

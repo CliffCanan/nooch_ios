@@ -44,7 +44,7 @@
     [self.second_num setBackgroundColor:[UIColor clearColor]];
     [self.third_num setBackgroundColor:[UIColor clearColor]];
     [self.fourth_num setBackgroundColor:[UIColor clearColor]];
-    [self.prompt setText:NSLocalizedString(@"CreatePIN_Instruc1", @"Create PIN screen Initial Instruction Text")];//@"You'll be asked to enter this PIN anytime you send or request money."];
+    [self.prompt setText:NSLocalizedString(@"CreatePIN_Instruc1", @"Create PIN screen Initial Instruction Text")];
 }
 
 #pragma mark - UITextField delegation
@@ -106,7 +106,7 @@
                     {
                         self.pin_check = @"";
                         [self.pin setText:@""];
-                        [self.prompt setText:NSLocalizedString(@"CreatePIN_NoMatch", @"Create PIN screen PINs don't match feedback Text Instruction Text")];//@"The PINs you entered did not match! Please try again."
+                        [self.prompt setText:NSLocalizedString(@"CreatePIN_NoMatch", @"Create PIN screen PINs don't match feedback Text Instruction Text")];
                         [self.prompt setTextColor:kNoochRed];
                         [self.first_num setBackgroundColor:[UIColor clearColor]];
                         [self.second_num setBackgroundColor:[UIColor clearColor]];
@@ -198,7 +198,7 @@
 
     self.prompt = [[UILabel alloc] initWithFrame:CGRectMake(10, 231, 300, 50)];
     [self.prompt setNumberOfLines:2];
-    [self.prompt setText:NSLocalizedString(@"CreatePIN_Instruc2", @"Create PIN screen Initial Instruction Text (2nd)")];//@"You'll be asked to enter this PIN anytime you send or request money."];
+    [self.prompt setText:NSLocalizedString(@"CreatePIN_Instruc2", @"Create PIN screen Initial Instruction Text (2nd)")];
     [self.prompt setStyleClass:@"instruction_text"];
 
     self.pin = [UITextField new];

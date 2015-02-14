@@ -941,7 +941,8 @@ void addressBookChanged(ABAddressBookRef addressBook, CFDictionaryRef info, void
         }
     }
 
-    if (![[[NSUserDefaults standardUserDefaults] valueForKey:@"IsVerifiedPhone"]isEqualToString:@"YES"] )
+    if (![[[NSUserDefaults standardUserDefaults] valueForKey:@"IsVerifiedPhone"]isEqualToString:@"YES"] &&
+        ![[user objectForKey:@"Status"] isEqualToString:@"Suspended"])
     {
         if (![self.view.subviews containsObject:self.phone_incomplete])
         {
@@ -1307,7 +1308,7 @@ void addressBookChanged(ABAddressBookRef addressBook, CFDictionaryRef info, void
     }
     else
     {
-        NSLog(@"drawCarousel #3 --> Banner count is: %d  and carouselTopValue is: %d  and topBtnTopValue is: %d",bannerAlert, carouselTopValue, topBtnTopValue);
+        //NSLog(@"drawCarousel --> Banner count is: %d  and carouselTopValue is: %d  and topBtnTopValue is: %d",bannerAlert, carouselTopValue, topBtnTopValue);
 
         _carousel = [[iCarousel alloc] initWithFrame:CGRectMake(0, carouselTopValue, 320, 175)];
         _carousel.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
@@ -1803,7 +1804,7 @@ void addressBookChanged(ABAddressBookRef addressBook, CFDictionaryRef info, void
         UIAlertView * alert = [[UIAlertView alloc]initWithTitle:@"Access To Contacts"
                                                         message:@"You can send money to ANY contact in your address book, even if they don't have Nooch.\n\nTO ENABLE, turn on access to Contacts in your iPhone's Settings:\n\nSettings  -->  Privacy  -->  Contacts"
                                                        delegate:Nil
-                                              cancelButtonTitle:@"Ok"
+                                              cancelButtonTitle:@"OK"
                                               otherButtonTitles:Nil, nil];
         [alert show];
     }
@@ -1965,7 +1966,7 @@ void addressBookChanged(ABAddressBookRef addressBook, CFDictionaryRef info, void
     if ([[assist shared]getSuspended] || [[user objectForKey:@"Status"] isEqualToString:@"Temporarily_Blocked"])
     {
         SIAlertView * alertView = [[SIAlertView alloc] initWithTitle:@"Account Temporarily Suspended" andMessage:@"\xE2\x9B\x94\nFor security your account has been suspended for 24 hours.\n\nWe really apologize for the inconvenience and ask for your patience. Our top priority is keeping Nooch safe and secure.\n \nPlease contact us at support@nooch.com for more information."];
-        [alertView addButtonWithTitle:@"Ok" type:SIAlertViewButtonTypeCancel handler:nil];
+        [alertView addButtonWithTitle:@"OK" type:SIAlertViewButtonTypeCancel handler:nil];
         [alertView addButtonWithTitle:@"Contact Nooch" type:SIAlertViewButtonTypeDefault
                               handler:^(SIAlertView *alert) {
                                   [self contact_support];
@@ -1999,7 +2000,7 @@ void addressBookChanged(ABAddressBookRef addressBook, CFDictionaryRef info, void
     else if ([[user valueForKey:@"Status"]isEqualToString:@"Registered"])
     {
         SIAlertView * alertView = [[SIAlertView alloc] initWithTitle:@"Please Verify Your Email" andMessage:@"Terribly sorry, but before you can send money, please confirm your email address by clicking the link we sent to the email address you used to sign up.\n\xF0\x9F\x99\x8F"];
-        [alertView addButtonWithTitle:@"Ok" type:SIAlertViewButtonTypeCancel handler:nil];
+        [alertView addButtonWithTitle:@"OK" type:SIAlertViewButtonTypeCancel handler:nil];
         [[SIAlertView appearance] setButtonColor:kNoochBlue];
         
         alertView.transitionStyle = SIAlertViewTransitionStyleDropDown;
@@ -2151,7 +2152,6 @@ void addressBookChanged(ABAddressBookRef addressBook, CFDictionaryRef info, void
 
         NSUserDefaults * defaults = [[NSUserDefaults alloc] init];
 
-        NSLog(@"LISTEN --> getPendingTransfersCount Checkpoint");
         if (pendingRequestsReceived > 0)
         {
             UILabel * pending_notif = [UILabel new];
