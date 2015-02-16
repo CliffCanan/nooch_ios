@@ -378,11 +378,11 @@ static assist * _sharedInstance = nil;
 {
     if (!islogout)
     {
+        NSUserDefaults * defaults = [NSUserDefaults standardUserDefaults];
+
         serve * info = [serve new];
         info.Delegate = self;
         info.tagName = @"info";
-
-        NSUserDefaults * defaults = [NSUserDefaults standardUserDefaults];
         [info getDetails:[defaults valueForKey:@"MemberId"]];
     }
 }
@@ -445,11 +445,11 @@ static assist * _sharedInstance = nil;
 
             if ([[loginResult valueForKey:@"Status"] isEqualToString:@"Suspended"])
             {
-                [[assist shared]setSusPended:YES];
+                isUserSuspended = YES;
             }
             else
             {
-               [[assist shared]setSusPended:NO];
+               isUserSuspended = NO;
             }
 
             if ( [loginResult valueForKey:@"DateCreated"] &&

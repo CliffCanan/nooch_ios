@@ -1062,6 +1062,7 @@
 		0169E22E18D8ED0600442642 /* Resources */ = {
 			isa = PBXGroup;
 			children = (
+				5CFE3C821A899D27005BEF45 /* Localizable.strings */,
 				014C433A185BB9EE00956A84 /* default.css */,
 				0129D8D61815AFBC00BEAC30 /* Fonts */,
 				014BD55C183D3E6E00C3DD7B /* images */,
@@ -1368,12 +1369,10 @@
 		6B30371615FA3FF200056DAD = {
 			isa = PBXGroup;
 			children = (
-				5C4A24531A899690000A349C /* baseInternat_storyboard.storyboard */,
 				16E4B1C0187054A80099D075 /* venturepact  */,
 				6B30372B15FA3FF300056DAD /* Nooch */,
 				6B30372415FA3FF300056DAD /* Frameworks */,
 				6B30372215FA3FF300056DAD /* Products */,
-				5CFE3C821A899D27005BEF45 /* Localizable.strings */,
 			);
 			sourceTree = "<group>";
 		};
@@ -1552,6 +1551,7 @@
 		6B75EA4415FE93A000B091D8 /* Storyboards */ = {
 			isa = PBXGroup;
 			children = (
+				5C4A24531A899690000A349C /* baseInternat_storyboard.storyboard */,
 				5CFE3C7D1A899768005BEF45 /* flat_storyboard.storyboard */,
 			);
 			name = Storyboards;
@@ -2049,6 +2049,7 @@
 				5C4A24561A8996AE000A349C /* es-MX */,
 			);
 			name = baseInternat_storyboard.storyboard;
+			path = ..;
 			sourceTree = "<group>";
 		};
 		5CFE3C7D1A899768005BEF45 /* flat_storyboard.storyboard */ = {
@@ -2068,6 +2069,7 @@
 				5C7C60BE1A8C83AA0071BA03 /* es-MX */,
 			);
 			name = Localizable.strings;
+			path = ..;
 			sourceTree = "<group>";
 		};
 		6B30372E15FA3FF300056DAD /* InfoPlist.strings */ = {
@@ -2177,7 +2179,6 @@
 					"$(inherited)",
 					"$(SRCROOT)",
 					"$(PROJECT_DIR)",
-					"$(PROJECT_DIR)/Nooch/artisan-sdk-2.3.7",
 					"$(PROJECT_DIR)/Nooch/artisan-sdk-latestNEW",
 				);
 				GCC_OPTIMIZATION_LEVEL = s;
@@ -2221,7 +2222,6 @@
 					"$(inherited)",
 					"$(SRCROOT)",
 					"$(PROJECT_DIR)",
-					"$(PROJECT_DIR)/Nooch/artisan-sdk-2.3.7",
 					"$(PROJECT_DIR)/Nooch/artisan-sdk-latestNEW",
 				);
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;

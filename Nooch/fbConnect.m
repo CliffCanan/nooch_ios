@@ -30,7 +30,6 @@
     [super viewDidLoad];
     
     self.navigationController.navigationBar.topItem.title = @"";
-    //@"Social Settings"
     [self.navigationItem setTitle:NSLocalizedString(@"SocSettings_ScrnTitle", @"Social Settings Screen Title")];
 
     [self.view setBackgroundColor:[UIColor whiteColor]];

@@ -473,98 +473,6 @@ UIImageView *picture;
     serveOBJ.tagName = @"myset";
     [serveOBJ setDelegate:self];
     [serveOBJ getSettings];
-
-
-    // Top Background Color (Red if Suspended)
-    if (![[user valueForKey:@"Status"] isEqualToString:@"Active"])
-    {
-        [self.member_since_back setBackgroundColor:Rgb2UIColor(214, 25, 21, .55)];
-        [self.member_since_back setStyleId:@"profileTopSectionBg_susp"];
-    }
-    else
-    {
-        [self.member_since_back setBackgroundColor:Rgb2UIColor(219, 220, 222, .38)];
-        [self.member_since_back setStyleId:@"profileTopSectionBg"];
-    }
-
-
-    // Email Glyph - ! or checkmark
-    if ([[user valueForKey:@"Status"] isEqualToString:@"Registered"])
-    {
-        UIView * email_not_validated = [[UIView alloc] initWithFrame:CGRectMake(0, 0, 320, rowHeight)];
-        [email_not_validated setBackgroundColor:Rgb2UIColor(250, 228, 3, .25)];
-
-        [self.emailGlyphIndicator setFont:[UIFont fontWithName:@"FontAwesome" size:19]];
-        [self.emailGlyphIndicator setText:[NSString fontAwesomeIconStringForIconIdentifier:@"fa-exclamation-circle"]];
-        [self.emailGlyphIndicator setStyleClass:@"animate_bubble_slow"];
-        [self.emailGlyphIndicator setFrame:CGRectMake(34, 6, 20, 38)];
-        [self.emailGlyphIndicator setTextColor:kNoochRed];
-    }
-    else
-    {
-        [self.email_NotValidated_YellowBg1 removeFromSuperview];
-        [self.email_NotValidated_YellowBg2 removeFromSuperview];
-
-        [self.emailGlyphIndicator setBackgroundColor:[UIColor clearColor]];
-        [self.emailGlyphIndicator setFont:[UIFont fontWithName:@"FontAwesome" size:16]];
-        [self.emailGlyphIndicator setText:[NSString fontAwesomeIconStringForIconIdentifier:@"fa-check-circle"]];
-        [self.emailGlyphIndicator setFrame:CGRectMake(40, 6, 20, 39)];
-        [self.emailGlyphIndicator setTextColor:kNoochGreen];
-
-        if (emailVerifyRowIsShowing)
-        {
-            NSIndexPath * indexPath = [NSIndexPath indexPathForRow:1 inSection:0];
-            [self deleteTableRow:indexPath];
-
-            emailVerifyRowIsShowing = false;
-        }
-    }
-
-    // Phone Glyph: ! or checkmark
-    if (![[user objectForKey:@"IsVerifiedPhone"] isEqualToString:@"YES"])
-    {
-        UIView * unverified_phone = [[UIView alloc] initWithFrame:CGRectMake(0, 0, 320, rowHeight)];
-        [unverified_phone setBackgroundColor:Rgb2UIColor(250, 228, 3, .25)];
-
-        [self.phoneGlyphIndicator setFont:[UIFont fontWithName:@"FontAwesome" size:19]];
-        [self.phoneGlyphIndicator setText:[NSString fontAwesomeIconStringForIconIdentifier:@"fa-exclamation-circle"]];
-        [self.phoneGlyphIndicator setStyleClass:@"animate_bubble_slow"];
-        [self.phoneGlyphIndicator setFrame:CGRectMake(31, 6, 20, 38)];
-        [self.phoneGlyphIndicator setTextColor:kNoochRed];
-    }
-    else
-    {
-        [self.phone_NotValidated_YellowBg1 removeFromSuperview];
-        [self.phone_NotValidated_YellowBg2 removeFromSuperview];
-
-        [self.phoneGlyphIndicator setBackgroundColor:[UIColor clearColor]];
-        [self.phoneGlyphIndicator setFont:[UIFont fontWithName:@"FontAwesome" size:16]];
-        [self.phoneGlyphIndicator setText:[NSString fontAwesomeIconStringForIconIdentifier:@"fa-check-circle"]];
-        [self.phoneGlyphIndicator setFrame:CGRectMake(33, 6, 20, 40)];
-        [self.phoneGlyphIndicator setTextColor:kNoochGreen];
-
-        if (smsVerifyRowIsShowing)
-        {
-            NSIndexPath * indexPath = nil;
-            if (emailVerifyRowIsShowing)
-            {
-                indexPath = [NSIndexPath indexPathForRow:3 inSection:0];
-            }
-            else if (!emailVerifyRowIsShowing)
-            {
-                indexPath = [NSIndexPath indexPathForRow:2 inSection:0];
-            }
-
-            [self deleteTableRow:indexPath];
-
-            smsVerifyRowIsShowing = false;
-        }
-
-        [self.list beginUpdates];
-        [self.list endUpdates];
-    }
-
-    [self.list reloadData];
 }
 
 -(void)showMenu
@@ -2002,6 +1910,97 @@ UIImageView *picture;
             decry->tag = [NSNumber numberWithInteger:2];
             [decry getDecryptedValue:@"GetDecryptedData" pwdString:[dictProfileinfo objectForKey:@"Zipcode"]];
         }
+
+        // Top Background Color (Red if Suspended)
+        if (![[user valueForKey:@"Status"] isEqualToString:@"Active"])
+        {
+            [self.member_since_back setBackgroundColor:Rgb2UIColor(214, 25, 21, .55)];
+            [self.member_since_back setStyleId:@"profileTopSectionBg_susp"];
+        }
+        else
+        {
+            [self.member_since_back setBackgroundColor:Rgb2UIColor(219, 220, 222, .38)];
+            [self.member_since_back setStyleId:@"profileTopSectionBg"];
+        }
+
+
+        // Email Glyph - ! or checkmark
+        if ([[user valueForKey:@"Status"] isEqualToString:@"Registered"])
+        {
+            UIView * email_not_validated = [[UIView alloc] initWithFrame:CGRectMake(0, 0, 320, rowHeight)];
+            [email_not_validated setBackgroundColor:Rgb2UIColor(250, 228, 3, .25)];
+            
+            [self.emailGlyphIndicator setFont:[UIFont fontWithName:@"FontAwesome" size:19]];
+            [self.emailGlyphIndicator setText:[NSString fontAwesomeIconStringForIconIdentifier:@"fa-exclamation-circle"]];
+            [self.emailGlyphIndicator setStyleClass:@"animate_bubble_slow"];
+            [self.emailGlyphIndicator setFrame:CGRectMake(34, 6, 20, 38)];
+            [self.emailGlyphIndicator setTextColor:kNoochRed];
+        }
+        else
+        {
+            [self.email_NotValidated_YellowBg1 removeFromSuperview];
+            [self.email_NotValidated_YellowBg2 removeFromSuperview];
+            
+            [self.emailGlyphIndicator setBackgroundColor:[UIColor clearColor]];
+            [self.emailGlyphIndicator setFont:[UIFont fontWithName:@"FontAwesome" size:16]];
+            [self.emailGlyphIndicator setText:[NSString fontAwesomeIconStringForIconIdentifier:@"fa-check-circle"]];
+            [self.emailGlyphIndicator setFrame:CGRectMake(40, 6, 20, 39)];
+            [self.emailGlyphIndicator setTextColor:kNoochGreen];
+            
+            if (emailVerifyRowIsShowing)
+            {
+                NSIndexPath * indexPath = [NSIndexPath indexPathForRow:1 inSection:0];
+                [self deleteTableRow:indexPath];
+                
+                emailVerifyRowIsShowing = false;
+            }
+        }
+
+        // Phone Glyph: ! or checkmark
+        if ([[dictProfileinfo valueForKey:@"IsVerifiedPhone"] boolValue] == 0)
+        {
+            UIView * unverified_phone = [[UIView alloc] initWithFrame:CGRectMake(0, 0, 320, rowHeight)];
+            [unverified_phone setBackgroundColor:Rgb2UIColor(250, 228, 3, .25)];
+
+            [self.phoneGlyphIndicator setFont:[UIFont fontWithName:@"FontAwesome" size:19]];
+            [self.phoneGlyphIndicator setText:[NSString fontAwesomeIconStringForIconIdentifier:@"fa-exclamation-circle"]];
+            [self.phoneGlyphIndicator setStyleClass:@"animate_bubble_slow"];
+            [self.phoneGlyphIndicator setFrame:CGRectMake(31, 6, 20, 38)];
+            [self.phoneGlyphIndicator setTextColor:kNoochRed];
+        }
+        else
+        {
+            [self.phone_NotValidated_YellowBg1 removeFromSuperview];
+            [self.phone_NotValidated_YellowBg2 removeFromSuperview];
+            
+            [self.phoneGlyphIndicator setBackgroundColor:[UIColor clearColor]];
+            [self.phoneGlyphIndicator setFont:[UIFont fontWithName:@"FontAwesome" size:16]];
+            [self.phoneGlyphIndicator setText:[NSString fontAwesomeIconStringForIconIdentifier:@"fa-check-circle"]];
+            [self.phoneGlyphIndicator setFrame:CGRectMake(33, 6, 20, 40)];
+            [self.phoneGlyphIndicator setTextColor:kNoochGreen];
+            
+            if (smsVerifyRowIsShowing)
+            {
+                NSIndexPath * indexPath = nil;
+                if (emailVerifyRowIsShowing)
+                {
+                    indexPath = [NSIndexPath indexPathForRow:3 inSection:0];
+                }
+                else if (!emailVerifyRowIsShowing)
+                {
+                    indexPath = [NSIndexPath indexPathForRow:2 inSection:0];
+                }
+                
+                [self deleteTableRow:indexPath];
+                
+                smsVerifyRowIsShowing = false;
+            }
+            
+            [self.list beginUpdates];
+            [self.list endUpdates];
+        }
+
+        [self.list reloadData];
     }
 }
 
@@ -2026,29 +2025,6 @@ UIImageView *picture;
             decry->tag = [NSNumber numberWithInteger:2];
             [decry getDecryptionL:@"GetDecryptedData" textString:[dictProfileinfo objectForKey:@"FirstName"]];
         }
-        /*if (![[dictProfileinfo objectForKey:@"RecoveryMail"] isKindOfClass:[NSNull class]] &&
-              [dictProfileinfo objectForKey:@"RecoveryMail"] != NULL &&
-            ![[dictProfileinfo objectForKey:@"RecoveryMail"] isEqualToString:@""])
-         {
-             self.ServiceType = @"recovery";
-             Decryption *decry = [[Decryption alloc] init];
-             decry.Delegate = self;
-             [decry getDecryptionL:@"GetDecryptedData" textString:[dictProfileinfo objectForKey:@"RecoveryMail"]];
-         }
-         else
-         {
-             self.recovery_email.text = @"";
-             self.ServiceType = @"pwd";
-         
-             if (![[dictProfileinfo objectForKey:@"Password"] isKindOfClass:[NSNull class]])
-             {
-                 Decryption *decry = [[Decryption alloc] init];
-                 decry.Delegate = self;
-                 self.ServiceType = @"pwd";
-                 decry->tag = [NSNumber numberWithInteger:2];
-                 [decry getDecryptionL:@"GetDecryptedData" textString:[dictProfileinfo objectForKey:@"Password"]];
-             }
-         }*/
     }
 
     else  if ([self.ServiceType isEqualToString:@"firstname"]) // first name

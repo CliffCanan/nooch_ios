@@ -733,7 +733,7 @@ void addressBookChanged(ABAddressBookRef addressBook, CFDictionaryRef info, void
                                                  });
         NSLog(@"AB Not determined");
     }
-    
+
     [self GetFavorite];
 
     [self checkAllBannerStatuses];
@@ -741,20 +741,25 @@ void addressBookChanged(ABAddressBookRef addressBook, CFDictionaryRef info, void
     [[assist shared] setRequestMultiple:NO];
     [[assist shared] setArray:nil];
 
-    NSString * versionNumFromArtisan = [ARPowerHookManager getValueForHookById:@"versionNum"];
-    versionNumFromArtisan = [versionNumFromArtisan stringByReplacingOccurrencesOfString:@"1." withString:@""];
-    NSString * versionNumFromBundle = [[[NSBundle mainBundle] infoDictionary] objectForKey:@"CFBundleVersion"];
-    versionNumFromBundle = [versionNumFromBundle stringByReplacingOccurrencesOfString:@"1." withString:@""];
+    BOOL shouldDisplayVersionUpdateAlert = [[ARPowerHookManager getValueForHookById:@"NV_YorN"] boolValue];
 
-    float versionNumFromArtisanDouble = [versionNumFromArtisan floatValue];
-    float bundleVersionNumDouble = [versionNumFromBundle floatValue];
-
-    if (bundleVersionNumDouble < versionNumFromArtisanDouble &&
-        [[NSUserDefaults standardUserDefaults] boolForKey:@"VersionUpdateNoticeDisplayed"] == false )
+    if (shouldDisplayVersionUpdateAlert)
     {
-        [self displayVersionUpdateNotice];
-    }
+        NSString * versionNumFromArtisan = [ARPowerHookManager getValueForHookById:@"versionNum"];
+        versionNumFromArtisan = [versionNumFromArtisan stringByReplacingOccurrencesOfString:@"1." withString:@""];
 
+        NSString * versionNumFromBundle = [[[NSBundle mainBundle] infoDictionary] objectForKey:@"CFBundleVersion"];
+        versionNumFromBundle = [versionNumFromBundle stringByReplacingOccurrencesOfString:@"1." withString:@""];
+
+        float versionNumFromArtisanDouble = [versionNumFromArtisan floatValue];
+        float bundleVersionNumDouble = [versionNumFromBundle floatValue];
+
+        if (bundleVersionNumDouble < versionNumFromArtisanDouble &&
+            [[NSUserDefaults standardUserDefaults] boolForKey:@"VersionUpdateNoticeDisplayed"] == false )
+        {
+            [self displayVersionUpdateNotice];
+        }
+    }
     [ARProfileManager registerString:@"IsBankAttached" withValue:@"unknown"];
 
     if ([[[NSUserDefaults standardUserDefaults] objectForKey:@"IsBankAvailable"]isEqualToString:@"1"])
