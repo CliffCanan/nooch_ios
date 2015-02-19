@@ -32,15 +32,19 @@
     return self;
 }
 
--(void)viewWillAppear:(BOOL)animated{
+-(void)viewWillAppear:(BOOL)animated
+{
     [super viewWillAppear:animated];
     self.screenName = @"KnoxWeb Screen";
     self.artisanNameTag = @"Knox Webview Screen";
 }
--(void)viewDidDisappear:(BOOL)animated{
+
+-(void)viewDidDisappear:(BOOL)animated
+{
     [self.hud hide:YES];
     [super viewDidDisappear:animated];
 }
+
 - (void)viewDidLoad
 {
     [super viewDidLoad];
@@ -156,12 +160,20 @@
     imageShow.contentMode = UIViewContentModeScaleAspectFit;
 
     UIButton * btnLink = [UIButton buttonWithType:UIButtonTypeCustom];
-    [btnLink setStyleClass:@"button_green_welcome"];
+    [btnLink setStyleClass:@"button_LtBoxSm_left"];
     [btnLink setTitleShadowColor:Rgb2UIColor(26, 38, 19, 0.2) forState:UIControlStateNormal];
     btnLink.titleLabel.shadowOffset = CGSizeMake(0.0, -1.0);
     btnLink.frame = CGRectMake(10, mainView.frame.size.height - 56, 280, 50);
     [btnLink setTitle:@"Got It" forState:UIControlStateNormal];
     [btnLink addTarget:self action:@selector(close_lightBox) forControlEvents:UIControlEventTouchUpInside];
+
+    UIButton * btnHelp = [UIButton buttonWithType:UIButtonTypeCustom];
+    [btnHelp setStyleClass:@"button_LtBoxSm_right"];
+    [btnHelp setTitleShadowColor:Rgb2UIColor(26, 38, 19, 0.2) forState:UIControlStateNormal];
+    btnHelp.titleLabel.shadowOffset = CGSizeMake(0.0, -1.0);
+    btnHelp.frame = CGRectMake(10, mainView.frame.size.height - 56, 280, 50);
+    [btnHelp setTitle:@"Help!" forState:UIControlStateNormal];
+    [btnHelp addTarget:self action:@selector(close_lightBox) forControlEvents:UIControlEventTouchUpInside];
 
     if ([[UIScreen mainScreen] bounds].size.height < 500)
     {
@@ -184,6 +196,7 @@
 
     [mainView addSubview:btnClose_shell];
     [mainView addSubview:imageShow];
+    [mainView addSubview:btnLink];
     [mainView addSubview:btnLink];
     [overlay addSubview:mainView];
 
@@ -253,7 +266,7 @@
 
 - (void)resignView
 {
-    self.hud.labelText = @"Finishing up...";
+    self.hud.labelText = @"Finishing Up...";
     [self.hud show:YES];
 
     serve * obj = [serve new];

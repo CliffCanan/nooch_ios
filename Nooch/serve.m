@@ -1008,6 +1008,7 @@ NSString *amnt;
 -(void)getAptDetails:(NSString*) memberId
 {}*/
 
+// https://www.noochme.com/NoochService/NoochService.svc/GetMostFrequentFriends?MemberId=%@&accessToken=%@
 -(void)get_favorites
 {
     [[NSURLCache sharedURLCache] removeAllCachedResponses];
