@@ -1252,7 +1252,6 @@ void addressBookChanged(ABAddressBookRef addressBook, CFDictionaryRef info, void
 
 -(void)drawCarousel
 {
-    NSLog(@"drawCarousel called");
     if (bannerAlert == 1 && carouselTopValue != 75 )
     {
         carouselTopValue = 75;
@@ -1268,7 +1267,7 @@ void addressBookChanged(ABAddressBookRef addressBook, CFDictionaryRef info, void
         carouselTopValue = 48;
         topBtnTopValue = 260;
     }
-    
+
     [UIView animateKeyframesWithDuration:0.5
                                    delay:0
                                  options:2 << 16
@@ -1409,6 +1408,8 @@ void addressBookChanged(ABAddressBookRef addressBook, CFDictionaryRef info, void
 
 -(void)displayVersionUpdateNotice
 {
+    [ARTrackingManager trackEvent:@"VersionUpdateNotice_Displayed"];
+
     overlay = [[UIView alloc]init];
     overlay.frame = CGRectMake(0, 0, 320, [[UIScreen mainScreen] bounds].size.height);
     overlay.backgroundColor = [UIColor colorWithRed:0 green:0 blue:0 alpha:0.0];

@@ -9,8 +9,9 @@
 #import <UIKit/UIKit.h>
 #import "MBProgressHUD.h"
 #import "SpinKit/RTSpinKitView.h"
+#import <MessageUI/MessageUI.h>
 
-@interface knoxWeb : GAITrackedViewController<MBProgressHUDDelegate>
+@interface knoxWeb : GAITrackedViewController<MBProgressHUDDelegate,UIActionSheetDelegate,MFMailComposeViewControllerDelegate>
 {
     UIView*overlay,*mainView;
 }
