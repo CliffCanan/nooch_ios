@@ -819,14 +819,34 @@
             ![[loginResult objectForKey:@"Result"] isEqualToString:@"The password you have entered is incorrect."] &&
             ![[loginResult objectForKey:@"Result"] isEqualToString:@"Suspended"] &&
             [[loginResult objectForKey:@"Result"] rangeOfString:@"Your account has been temporarily blocked."].location == NSNotFound &&
-            loginResult != nil)
+            loginResult != nil && ![loginResult[@"Result"] isKindOfClass:[NSNull class]])
         {
             serve * getDetails = [serve new];
             getDetails.Delegate = self;
             getDetails.tagName = @"getMemberId";
             [getDetails getMemIdFromuUsername:email_fb];
         }
-
+        else if (  loginResult[@"Result"] != NULL &&
+                 ![loginResult[@"Result"] isKindOfClass:[NSNull class]])
+        {
+            if ([self.view.subviews containsObject:self.hud])
+            {
+                [self.hud hide:YES];
+            }
+            
+            [FBSession.activeSession close];
+            [FBSession setActiveSession:nil];
+            
+            UIAlertView * alert = [[UIAlertView alloc]initWithTitle:@"Unable to Login"
+                                                            message:@"We had trouble connecting to that Facebook account.  Please try signing up by entering your name and email."
+                                                           delegate:self
+                                                  cancelButtonTitle:@"Ok"
+                                                  otherButtonTitles: nil];
+            [alert show];
+            
+            [self.name_field becomeFirstResponder];
+            return;
+        }
         else if ( [loginResult objectForKey:@"Result"] &&
                  [[loginResult objectForKey:@"Result"] rangeOfString:@"Your account has been temporarily blocked."].location != NSNotFound &&
                  loginResult != nil)

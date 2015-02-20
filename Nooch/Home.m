@@ -530,7 +530,7 @@ void addressBookChanged(ABAddressBookRef addressBook, CFDictionaryRef info, void
         if (emailInfo) {
             CFRelease(emailInfo);
         }
-       
+
         if (contacName != NULL)
         {
             NSString * strippedNumber = [phone stringByReplacingOccurrencesOfString:@"[^0-9]" withString:@"" options:NSRegularExpressionSearch range:NSMakeRange(0, [phone length])];
@@ -540,6 +540,7 @@ void addressBookChanged(ABAddressBookRef addressBook, CFDictionaryRef info, void
             if (strippedNumber != NULL)
                 [curContact setObject:strippedNumber forKey:@"phoneNo"];
         }
+        //NSLog(@"Address_Book --> curContact is: %@",curContact[@"Name"]);
         [additions addObject:curContact];
         if (phoneNumber)
             CFRelease(phoneNumber);
@@ -551,18 +552,35 @@ void addressBookChanged(ABAddressBookRef addressBook, CFDictionaryRef info, void
     for (NSDictionary * person in additions)
     {
         NSMutableDictionary *person_input = [NSMutableDictionary new];
+
         [person_input setObject:@"" forKey:@"memberId"];
-        if (person[@"emailAddy"]) [person_input setObject:person[@"emailAddy"] forKey:@"emailAddy"];
-        else [person_input setObject:@"" forKey:@"emailAddy"];
-        if (person[@"phoneNo"]) [person_input setObject:person[@"phoneNo"] forKey:@"phoneNo"];
-        if (person[@"phoneNo2"]) [person_input setObject:person[@"phoneNo2"] forKey:@"phoneNo2"];
-        if (person[@"phoneNo3"]) [person_input setObject:person[@"phoneNo3"] forKey:@"phoneNo3"];
+
+        if (person[@"emailAddy"])
+        {
+            [person_input setObject:person[@"emailAddy"] forKey:@"emailAddy"];
+        }
+        else
+        {
+            [person_input setObject:@"" forKey:@"emailAddy"];
+        }
+        if (person[@"phoneNo"])
+        {
+            [person_input setObject:person[@"phoneNo"] forKey:@"phoneNo"];
+        }
+        if (person[@"phoneNo2"])
+        {
+            [person_input setObject:person[@"phoneNo2"] forKey:@"phoneNo2"];
+        }
+        if (person[@"phoneNo3"])
+        {
+            [person_input setObject:person[@"phoneNo3"] forKey:@"phoneNo3"];
+        }
         [get_ids_input addObject:person_input];
     }
 
     if (people)
     CFRelease(people);
-     if (addressBook)
+    if (addressBook)
     CFRelease(addressBook);
 }
 
@@ -1276,7 +1294,6 @@ void addressBookChanged(ABAddressBookRef addressBook, CFDictionaryRef info, void
 
     if ([self.view.subviews containsObject:_carousel])
     {
-        NSLog(@"drawCarousel called: carousel already in view");
         float duration = .35;
         short randNum = 0;
         
@@ -1308,7 +1325,6 @@ void addressBookChanged(ABAddressBookRef addressBook, CFDictionaryRef info, void
     }
     else
     {
-        NSLog(@"drawCarousel called: NO carousel in view");
         //NSLog(@"drawCarousel --> Banner count is: %d  and carouselTopValue is: %d  and topBtnTopValue is: %d",bannerAlert, carouselTopValue, topBtnTopValue);
 
         _carousel = [[iCarousel alloc] initWithFrame:CGRectMake(0, carouselTopValue, 320, 175)];
@@ -1362,8 +1378,6 @@ void addressBookChanged(ABAddressBookRef addressBook, CFDictionaryRef info, void
 
     if ([self.view.subviews containsObject:self.pending_requests])
     {
-        NSLog(@"Checkpoint Home viewDidDisappear & self.view contains Pending Banner");
-
         [self dismiss_requestsPendingBanner];
     }
 }
@@ -2355,11 +2369,15 @@ void addressBookChanged(ABAddressBookRef addressBook, CFDictionaryRef info, void
 
 -(void)FavoriteContactsProcessing
 {
-    for (int i = 0; i < [[[assist shared]assosAll] count]; i++)
+    //NSLog(@"FavoriteContactsProcessing fired");
+
+    shouldBreakLoop = false;
+
+    for (int i = 0; i < [[[assist shared] assosAll] count]; i++)
     {
-        if ([[[assist shared]assosAll] count] < 5)
+        if ([[[assist shared] assosAll] count] < 5)
         {
-             [favorites addObject:[[[assist shared]assosAll] objectAtIndex:i]];
+             [favorites addObject:[[[assist shared] assosAll] objectAtIndex:i]];
         }
         else
         {
@@ -2367,13 +2385,12 @@ void addressBookChanged(ABAddressBookRef addressBook, CFDictionaryRef info, void
             {
                 break;
             }
-            else if (i >= [[[assist shared]assosAll] count] - 1 && [[[assist shared]assosAll] count] > 5)
+            else if (i >= [[[assist shared] assosAll] count] - 1 && [[[assist shared] assosAll] count] > 5)
             {
                 i = 0;
             }
 
-            NSUInteger randomIndex = arc4random() % [[[assist shared]assosAll] count];
-            int loc = -1;
+            NSUInteger randomIndex = arc4random() % [[[assist shared] assosAll] count];
 
             for (int j = 0; j < [favorites count]; j++)
             {
@@ -2381,35 +2398,39 @@ void addressBookChanged(ABAddressBookRef addressBook, CFDictionaryRef info, void
                 if (  [[favorites objectAtIndex:j] valueForKey:@"eMailId"] &&
                     ![[[favorites objectAtIndex:j] valueForKey:@"eMailId"]isKindOfClass:[NSNull class]])
                 {
-                    if ([[[favorites objectAtIndex:j] valueForKey:@"eMailId"] isEqualToString:[[[[assist shared]assosAll] objectAtIndex:randomIndex]valueForKey:@"UserName"]])
+                    if ([[[favorites objectAtIndex:j] valueForKey:@"eMailId"] isEqualToString:[[[[assist shared] assosAll] objectAtIndex:randomIndex]valueForKey:@"UserName"]])
                     {
-                        loc = 0;
+                        shouldBreakLoop = true;
                     }
                 }
                 // In case of Address book
                 else if (  [[favorites objectAtIndex:j] valueForKey:@"UserName"] &&
                          ![[[favorites objectAtIndex:j] valueForKey:@"UserName"]isKindOfClass:[NSNull class]])
                 {
-                    if ([[[favorites objectAtIndex:j] valueForKey:@"UserName"] isEqualToString:[[[[assist shared]assosAll] objectAtIndex:randomIndex]valueForKey:@"UserName"]])
+                    if ([[[favorites objectAtIndex:j] valueForKey:@"UserName"] isEqualToString:[[[[assist shared] assosAll] objectAtIndex:randomIndex] valueForKey:@"UserName"]])
                     {
-                        loc = 0;
+                        shouldBreakLoop = true;
                     }
                 }
             }
-            // Continue outer loop
-            if (loc == 0)
+
+            if (shouldBreakLoop)
             {
+                // Continue outer loop (i.e. end this loop & don't add this iteration into Favorites below)
+
+                shouldBreakLoop = false;
                 continue;
             }
 
-            if (  [[[[assist shared]assosAll] objectAtIndex:randomIndex] valueForKey:@"UserName"] &&
-                ![[[[[assist shared]assosAll] objectAtIndex:randomIndex] valueForKey:@"UserName"]isEqualToString:@"(null)"] &&
-                ![[[[[assist shared]assosAll] objectAtIndex:randomIndex] valueForKey:@"UserName"]isKindOfClass:[NSNull class]])
+            if (  [[[[assist shared] assosAll] objectAtIndex:randomIndex] valueForKey:@"UserName"] &&
+                ![[[[[assist shared] assosAll] objectAtIndex:randomIndex] valueForKey:@"UserName"] isKindOfClass:[NSNull class]])
             {
-                [favorites addObject:[[[assist shared]assosAll] objectAtIndex:randomIndex]];
+                [favorites addObject:[[[assist shared] assosAll] objectAtIndex:randomIndex]];
             }
         }
     }
+
+    shouldBreakLoop = false;
 
     [_carousel reloadData];
 }

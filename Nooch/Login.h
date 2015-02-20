@@ -17,7 +17,6 @@
     float lon;
     BOOL isloginWithFB;
     CLLocationManager *locationManager;
-    UIAlertView *writeMemo;
 }
 @property (strong, nonatomic) IBOutlet UIView *inputAccessory;
 @end

@@ -710,20 +710,26 @@ static assist * _sharedInstance = nil;
     return unsortedArray;
 }
 #pragma mark - User objects
--(NSMutableDictionary*)usr{
+-(NSMutableDictionary*)usr
+{
     return usr;
 }
--(NSMutableArray*)hist{
+-(NSMutableArray *)hist
+{
     return histCache;
 }
--(NSMutableDictionary*)assos{
+-(NSMutableDictionary *)assos
+{
     return assosciateCache;
 }
--(NSMutableArray*)assosAll{
+-(NSMutableArray *)assosAll
+{
     return [ArrAllContacts mutableCopy];
 }
--(void)SaveAssos:(NSMutableArray*)additions{
-    ArrAllContacts=[additions copy];
+-(void)SaveAssos:(NSMutableArray*)additions
+{
+    ArrAllContacts = [[NSArray alloc] init];
+    ArrAllContacts = [additions copy];
 }
 -(void)addAssos:(NSMutableArray*)additions
 {
