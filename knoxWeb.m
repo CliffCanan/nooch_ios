@@ -10,6 +10,7 @@
 #import "ProfileInfo.h"
 #import "Home.h"
 #import "Welcome.h"
+#import "webView.h"
 
 @interface knoxWeb ()<serveD,UIWebViewDelegate>
 {
@@ -32,15 +33,19 @@
     return self;
 }
 
--(void)viewWillAppear:(BOOL)animated{
+-(void)viewWillAppear:(BOOL)animated
+{
     [super viewWillAppear:animated];
     self.screenName = @"KnoxWeb Screen";
     self.artisanNameTag = @"Knox Webview Screen";
 }
--(void)viewDidDisappear:(BOOL)animated{
+
+-(void)viewDidDisappear:(BOOL)animated
+{
     [self.hud hide:YES];
     [super viewDidDisappear:animated];
 }
+
 - (void)viewDidLoad
 {
     [super viewDidLoad];
@@ -155,13 +160,21 @@
     imageShow.image = [UIImage imageNamed:@"Knox_Infobox"];
     imageShow.contentMode = UIViewContentModeScaleAspectFit;
 
+    UIButton * btnHelp = [UIButton buttonWithType:UIButtonTypeCustom];
+    [btnHelp setStyleClass:@"button_LtBoxSm_left"];
+    [btnHelp setTitleShadowColor:Rgb2UIColor(26, 38, 19, 0.2) forState:UIControlStateNormal];
+    btnHelp.titleLabel.shadowOffset = CGSizeMake(0.0, -1.0);
+    btnHelp.frame = CGRectMake(10, mainView.frame.size.height - 56, 280, 50);
+    [btnHelp setTitle:@"Get Help!" forState:UIControlStateNormal];
+    [btnHelp addTarget:self action:@selector(getHelpPressed) forControlEvents:UIControlEventTouchUpInside];
+
     UIButton * btnLink = [UIButton buttonWithType:UIButtonTypeCustom];
-    [btnLink setStyleClass:@"button_green_welcome"];
+    [btnLink setStyleClass:@"button_LtBoxSm_right"];
     [btnLink setTitleShadowColor:Rgb2UIColor(26, 38, 19, 0.2) forState:UIControlStateNormal];
     btnLink.titleLabel.shadowOffset = CGSizeMake(0.0, -1.0);
     btnLink.frame = CGRectMake(10, mainView.frame.size.height - 56, 280, 50);
     [btnLink setTitle:@"Got It" forState:UIControlStateNormal];
-    [btnLink addTarget:self action:@selector(close_lightBox) forControlEvents:UIControlEventTouchUpInside];
+    [btnLink addTarget:self action:@selector(close_lightKnoxLtBox) forControlEvents:UIControlEventTouchUpInside];
 
     if ([[UIScreen mainScreen] bounds].size.height < 500)
     {
@@ -179,12 +192,13 @@
 
     UIButton * btnClose_shell = [UIButton buttonWithType:UIButtonTypeCustom];
     btnClose_shell.frame = CGRectMake(mainView.frame.size.width - 35, head_container.frame.origin.y - 21, 48, 46);
-    [btnClose_shell addTarget:self action:@selector(close_lightBox) forControlEvents:UIControlEventTouchUpInside];
+    [btnClose_shell addTarget:self action:@selector(close_lightKnoxLtBox) forControlEvents:UIControlEventTouchUpInside];
     [btnClose_shell addSubview:btnClose];
 
     [mainView addSubview:btnClose_shell];
     [mainView addSubview:imageShow];
     [mainView addSubview:btnLink];
+    [mainView addSubview:btnHelp];
     [overlay addSubview:mainView];
 
     [UIView animateKeyframesWithDuration:.55
@@ -215,7 +229,7 @@
      ];
 }
 
--(void)close_lightBox
+-(void)close_lightKnoxLtBox
 {
     [UIView animateKeyframesWithDuration:0.6
                                    delay:0
@@ -245,6 +259,120 @@
      ];
 }
 
+-(void)getHelpPressed
+{    
+    //contact support
+    UIActionSheet *actionSheetObject = [[UIActionSheet alloc] initWithTitle:@"Support Options"
+                                                                   delegate:self
+                                                          cancelButtonTitle:@"Cancel"
+                                                     destructiveButtonTitle:nil
+                                                          otherButtonTitles:@"My bank is not listed", @"View Nooch Support Center", @"Email Nooch Support", nil];
+    actionSheetObject.actionSheetStyle = UIActionSheetStyleDefault;
+    [actionSheetObject setTag:1];
+    [actionSheetObject showInView:self.view];
+}
+
+-(void)actionSheet:(UIActionSheet *)actionSheet clickedButtonAtIndex:(NSInteger)buttonIndex
+{
+    if ([actionSheet tag] == 1)
+    {
+        if (buttonIndex != 3)
+        {
+            [self close_lightKnoxLtBox];
+        }
+
+        if (buttonIndex == 0)
+        {
+            // 'My bank is not listed'
+            [ARTrackingManager trackEvent:@"AddBank_ActSheet_MyBankNotListed"];
+
+            // Email Support
+            UIAlertView * av = [[UIAlertView alloc] initWithTitle:@"Oh No!   \xF0\x9F\x98\xB1"
+                                                          message:@"Nooch works with more than 90% of checking accounts in the US, but we haven't gotten to them all yet.\n\nWe're always adding more banks and credit unions, so please let us know what bank you use.  We prioritize banks that users request and appreciate your feedback!"
+                                                         delegate:nil
+                                                cancelButtonTitle:@"OK"
+                                                otherButtonTitles: nil];
+            [av show];
+
+            if (![MFMailComposeViewController canSendMail])
+            {
+                [self cantSendMail];
+                return;
+            }
+            MFMailComposeViewController *mailComposer = [[MFMailComposeViewController alloc] init];
+            mailComposer.mailComposeDelegate = self;
+            mailComposer.navigationBar.tintColor=[UIColor whiteColor];
+            [mailComposer setSubject:[NSString stringWithFormat:@"Add My Bank!!"]];
+            [mailComposer setMessageBody:@"" isHTML:NO];
+            [mailComposer setToRecipients:[NSArray arrayWithObjects:@"Support@nooch.com", nil]];
+            [mailComposer setCcRecipients:[NSArray arrayWithObject:@""]];
+            [mailComposer setBccRecipients:[NSArray arrayWithObject:@""]];
+            [mailComposer setModalTransitionStyle:UIModalTransitionStyleCrossDissolve];
+            [self presentViewController:mailComposer animated:YES completion:nil];
+        }
+        else if (buttonIndex == 1)
+        {
+            // Go to Nooch Support Center in web view
+            webView * wb = [[webView alloc]init];
+            [nav_ctrl pushViewController:wb animated:NO];
+        }
+        else if (buttonIndex == 2)
+        {
+            // Email Support
+            if (![MFMailComposeViewController canSendMail])
+            {
+                [self cantSendMail];
+                return;
+            }
+            MFMailComposeViewController *mailComposer = [[MFMailComposeViewController alloc] init];
+            mailComposer.mailComposeDelegate = self;
+            mailComposer.navigationBar.tintColor=[UIColor whiteColor];
+            [mailComposer setSubject:[NSString stringWithFormat:@"Support Request: Version %@",[[[NSBundle mainBundle] infoDictionary] objectForKey:@"CFBundleVersion"]]];
+            [mailComposer setMessageBody:@"" isHTML:NO];
+            [mailComposer setToRecipients:[NSArray arrayWithObjects:@"Support@nooch.com", nil]];
+            [mailComposer setCcRecipients:[NSArray arrayWithObject:@""]];
+            [mailComposer setBccRecipients:[NSArray arrayWithObject:@""]];
+            [mailComposer setModalTransitionStyle:UIModalTransitionStyleCrossDissolve];
+            [self presentViewController:mailComposer animated:YES completion:nil];
+        }
+    }
+}
+
+-(void)cantSendMail
+{
+    if ([UIAlertController class]) // for iOS 8
+    {
+        UIAlertController * alert = [UIAlertController
+                                     alertControllerWithTitle:@"No Email Detected"
+                                     message:@"You don't have an email account configured for this device."
+                                     preferredStyle:UIAlertControllerStyleAlert];
+        
+        UIAlertAction * ok = [UIAlertAction
+                              actionWithTitle:@"OK"
+                              style:UIAlertActionStyleDefault
+                              handler:^(UIAlertAction * action)
+                              {
+                                  [alert dismissViewControllerAnimated:YES completion:nil];
+                              }];
+        [alert addAction:ok];
+        
+        [self presentViewController:alert animated:YES completion:nil];
+        return;
+    }
+    else
+    {
+        if (![MFMailComposeViewController canSendMail])
+        {
+            UIAlertView * av = [[UIAlertView alloc] initWithTitle:@"No Email Detected"
+                                                          message:@"You don't have an email account configured for this device."
+                                                         delegate:nil
+                                                cancelButtonTitle:@"OK"
+                                                otherButtonTitles: nil];
+            [av show];
+            return;
+        }
+    }
+}
 -(void)backToHome
 {
     [self.navigationItem setLeftBarButtonItem:nil];
@@ -253,7 +381,7 @@
 
 - (void)resignView
 {
-    self.hud.labelText = @"Finishing up...";
+    self.hud.labelText = @"Finishing Up...";
     [self.hud show:YES];
 
     serve * obj = [serve new];
@@ -321,6 +449,38 @@
             [self.navigationController popViewControllerAnimated:YES];
         }
     }
+}
+
+- (void) mailComposeController:(MFMailComposeViewController *)controller didFinishWithResult:(MFMailComposeResult)result error:(NSError *)error
+{
+    UIAlertView *alert = [[UIAlertView alloc] init];
+    [alert addButtonWithTitle:@"OK"];
+    [alert setDelegate:nil];
+    switch (result)
+    {
+        case MFMailComposeResultCancelled:
+            NSLog(@"Mail cancelled");
+            break;
+        case MFMailComposeResultSaved:
+            NSLog(@"Mail saved");
+            [alert setTitle:@"Mail saved"];
+            [alert show];
+            break;
+        case MFMailComposeResultSent:
+            NSLog(@"Mail sent");
+            [alert setTitle:@"Mail sent"];
+            [alert show];
+            break;
+        case MFMailComposeResultFailed:
+            [alert setTitle:[error localizedDescription]];
+            [alert show];
+            NSLog(@"Mail sent failure: %@", [error localizedDescription]);
+            break;
+        default:
+            break;
+    }
+    // Close the Mail Interface
+    [self dismissViewControllerAnimated:YES completion:NULL];
 }
 
 #pragma mark - webview delegation

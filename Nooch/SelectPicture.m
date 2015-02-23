@@ -211,7 +211,6 @@
     [self.view addSubview:slogan];
 
     UILabel * welcome = [[UILabel alloc] initWithFrame:CGRectMake(0, 115, 320, 35)];
-    //@"Hey %@!"
     [welcome setText:[NSString stringWithFormat:NSLocalizedString(@"SelPic_GreetingTxt", @"Select Picture screen 'Hey %@' Greeting Text"),[[self.user objectForKey:@"first_name" ] capitalizedString]]];
     [welcome setBackgroundColor:[UIColor clearColor]];
     [welcome setStyleClass:@"header_signupflow"];

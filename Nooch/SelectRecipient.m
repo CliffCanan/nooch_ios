@@ -2029,19 +2029,23 @@
         [cell.textLabel setText:name];
 
         NSString * miles;
-
+        
         if ([[temp objectForKey:@"Miles"] shortValue] < 1)
         {
-            if ([[temp objectForKey:@"Miles"] floatValue] > (150/5280))
+            float threshold = 150;
+            threshold /= 5280;
+
+            if ([[temp objectForKey:@"Miles"] floatValue] > threshold)
             {
                 miles = [NSString stringWithFormat:@"     %.0f feet",([[temp objectForKey:@"Miles"] floatValue] * 5280)];
             }
             else
             {
-                miles = @"     <  150 feet";
+                miles = @"     < 150 feet";
             }
         }
-        else {
+        else
+        {
             miles = [NSString stringWithFormat:@"     %.0f miles",[[temp objectForKey:@"Miles"] floatValue]];
         }
         [cell.detailTextLabel setText:miles];

@@ -368,7 +368,10 @@
     }
     else
     {
-        self.emptyLocBody.attributedText = [[NSAttributedString alloc] initWithString:NSLocalizedString(@"History_NoLocationAccess", @"History screen no location access text") attributes:shadowWhite];
+        if ([CLLocationManager authorizationStatus] != kCLAuthorizationStatusNotDetermined)
+        {
+            self.emptyLocBody.attributedText = [[NSAttributedString alloc] initWithString:NSLocalizedString(@"History_NoLocationAccess", @"History screen no location access text") attributes:shadowWhite];
+        }
     }
     [self.emptyLocBody setTextColor:kNoochGrayLight];
     [self.emptyLocBody setTextAlignment:NSTextAlignmentCenter];
@@ -384,12 +387,34 @@
 
     if (!isMapOpen && ![[assist shared] checkIfLocAllowed])
     {
-        UIAlertView * alert = [[UIAlertView alloc]initWithTitle:NSLocalizedString(@"History_NeedLocAlrtTitle", @"History screen need location access Alert Title")
-                                                        message:NSLocalizedString(@"History_NeedLocAlrtBody", @"History screen need location access Body Text")
-                                                       delegate:Nil
-                                              cancelButtonTitle:@"OK"
-                                              otherButtonTitles:Nil, nil];
-        [alert show];
+        if ([CLLocationManager authorizationStatus] == kCLAuthorizationStatusNotDetermined)
+        {
+            //location
+            locationManager = [[CLLocationManager alloc] init];
+            
+            locationManager.delegate = self;
+            locationManager.distanceFilter = kCLDistanceFilterNone; // whenever we move
+            locationManager.desiredAccuracy = kCLLocationAccuracyHundredMeters; // 100 m
+
+            if ([locationManager respondsToSelector:@selector(requestWhenInUseAuthorization)]) { // iOS8+
+                // Sending a message to avoid compile time error
+                
+                [[UIApplication sharedApplication] sendAction:@selector(requestWhenInUseAuthorization)
+                                                           to:locationManager
+                                                         from:self
+                                                     forEvent:nil];
+            }
+            [locationManager startUpdatingLocation];
+        }
+        else
+        {
+            UIAlertView * alert = [[UIAlertView alloc]initWithTitle:NSLocalizedString(@"History_NeedLocAlrtTitle", @"History screen need location access Alert Title")
+                                                            message:NSLocalizedString(@"History_NeedLocAlrtBody", @"History screen need location access Body Text")
+                                                           delegate:Nil
+                                                  cancelButtonTitle:@"OK"
+                                                  otherButtonTitles:Nil, nil];
+            [alert show];
+        }
     }
 
     [UIView beginAnimations:nil context:nil];
@@ -745,6 +770,10 @@
 - (void) completed_or_pending:(id)sender
 {
     listType = @"ALL";
+
+    if (isMapOpen) {
+        [self toggleMapByNavBtn];
+    }
 
     UISegmentedControl *segmentedControl = (UISegmentedControl *)sender;
     if ([segmentedControl selectedSegmentIndex] == 0)
@@ -1670,48 +1699,54 @@
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    [tableView deselectRowAtIndexPath:indexPath animated:YES];
-
-    if (self.completed_selected)
+    if (isMapOpen)
     {
-        if (indexPathForDeletion != nil) {
-            indexPathForDeletion = nil;
-        }
-
-        if (isLocalSearch)
-        {
-            NSDictionary *dictRecord = [histTempCompleted objectAtIndex:indexPath.row];
-            TransactionDetails *details = [[TransactionDetails alloc] initWithData:dictRecord];
-            [self.navigationController pushViewController:details animated:YES];
-            return;
-        }
-        if ([histShowArrayCompleted count] > indexPath.row)
-        {
-            NSDictionary * dictRecord = [histShowArrayCompleted objectAtIndex:indexPath.row];
-            NSLog(@"Selected Entry is: %@", dictRecord);
-            TransactionDetails *details = [[TransactionDetails alloc] initWithData:dictRecord];
-            [self.navigationController pushViewController:details animated:YES];
-        }
+        [self toggleMapByNavBtn];
     }
     else
     {
-        indexPathForDeletion = indexPath;
+        [tableView deselectRowAtIndexPath:indexPath animated:YES];
 
-        if (isLocalSearch)
+        if (self.completed_selected)
         {
-            NSDictionary * dictRecord = [histTempPending objectAtIndex:indexPath.row];
-            TransactionDetails * details = [[TransactionDetails alloc] initWithData:dictRecord];
-            [self.navigationController pushViewController:details animated:YES];
-            return;
+            if (indexPathForDeletion != nil) {
+                indexPathForDeletion = nil;
+            }
+
+            if (isLocalSearch)
+            {
+                NSDictionary *dictRecord = [histTempCompleted objectAtIndex:indexPath.row];
+                TransactionDetails *details = [[TransactionDetails alloc] initWithData:dictRecord];
+                [self.navigationController pushViewController:details animated:YES];
+                return;
+            }
+            if ([histShowArrayCompleted count] > indexPath.row)
+            {
+                NSDictionary * dictRecord = [histShowArrayCompleted objectAtIndex:indexPath.row];
+                NSLog(@"Selected Entry is: %@", dictRecord);
+                TransactionDetails *details = [[TransactionDetails alloc] initWithData:dictRecord];
+                [self.navigationController pushViewController:details animated:YES];
+            }
         }
-        if ([histShowArrayPending count] > indexPath.row)
+        else
         {
-            NSDictionary * dictRecord = [histShowArrayPending objectAtIndex:indexPath.row];
-            TransactionDetails * details = [[TransactionDetails alloc] initWithData:dictRecord];
-            [self.navigationController pushViewController:details animated:YES];
+            indexPathForDeletion = indexPath;
+
+            if (isLocalSearch)
+            {
+                NSDictionary * dictRecord = [histTempPending objectAtIndex:indexPath.row];
+                TransactionDetails * details = [[TransactionDetails alloc] initWithData:dictRecord];
+                [self.navigationController pushViewController:details animated:YES];
+                return;
+            }
+            if ([histShowArrayPending count] > indexPath.row)
+            {
+                NSDictionary * dictRecord = [histShowArrayPending objectAtIndex:indexPath.row];
+                TransactionDetails * details = [[TransactionDetails alloc] initWithData:dictRecord];
+                [self.navigationController pushViewController:details animated:YES];
+            }
         }
     }
-
 }
 
 - (void)swipeableTableViewCell:(SWTableViewCell *)cell didTriggerRightUtilityButtonWithIndex:(NSInteger)ind
@@ -2264,6 +2299,7 @@
         {
             isEnd = YES;
             [mapView_ removeFromSuperview];
+            [self displayEmptyMapArea];
         }
 
         if (isMapOpen) {
@@ -2276,11 +2312,14 @@
 
         if (!isLocalSearch)
         {
+            NSLog(@"Checkpoint #1");
             if (isEnd == YES)
             {
+                NSLog(@"Checkpoint #2");
                 if ((self.completed_selected && [histShowArrayCompleted count] == 0) ||
                    (!self.completed_selected && [histShowArrayPending count] == 0))
                 {
+                    NSLog(@"Checkpoint #3");
                     [self.list setStyleId:@"emptyTable"];
                     [_emptyPic setImage:[UIImage imageNamed:@"HistoryPending"]];
 
@@ -2324,12 +2363,13 @@
                     if (![self.list.subviews containsObject:_emptyPic] ||
                         ![self.list.subviews containsObject:_emptyText])
                     {
+                        NSLog(@"Checkpoint #4");
                         [self.list addSubview: _emptyPic];
                         [self.list addSubview: _emptyText];
 
                         [UIView animateKeyframesWithDuration:0.3
                                                        delay:0
-                                                     options:UIViewKeyframeAnimationOptionCalculationModeCubic
+                                                     options:0 << 16
                                                   animations:^{
                                                       [UIView addKeyframeWithRelativeStartTime:0 relativeDuration:1.0 animations:^{
                                                           [_emptyText setAlpha:1];
@@ -2337,6 +2377,7 @@
                                                       }];
                                                   } completion: nil
                          ];
+                        
                     }
 
                     [exportHistory removeFromSuperview];

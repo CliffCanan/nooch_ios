@@ -680,7 +680,6 @@
             break;
         case MFMailComposeResultSaved:
             NSLog(@"Mail saved");
-
             [alert setTitle:@"Mail saved"];
             [alert show];
             break;

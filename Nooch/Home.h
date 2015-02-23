@@ -52,6 +52,7 @@ BOOL shouldDisplayAptsSection;
     UIButton *top_button;
     int bannerAlert;
     short carouselTopValue, topBtnTopValue;
+    BOOL shouldBreakLoop;
 }
 -(void)hide;
 @end

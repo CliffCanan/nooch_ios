@@ -774,7 +774,7 @@ static SIAlertView *__si_alert_current_view;
     {
 		height += [self heightForTitleLabel];
 	}
-    NSLog(@"1.) SIAlertView height is: %f",height);
+    //NSLog(@"1.) SIAlertView height is: %f",height);
     if (self.message)
     {
         if (height > CONTENT_PADDING_TOP)
@@ -783,7 +783,7 @@ static SIAlertView *__si_alert_current_view;
         }
         height += [self heightForMessageLabel];
     }
-    NSLog(@"2.) SIAlertView height is: %f",height);
+    //NSLog(@"2.) SIAlertView height is: %f",height);
     if (self.items.count > 0)
     {
         if (height > CONTENT_PADDING_TOP)
@@ -802,7 +802,7 @@ static SIAlertView *__si_alert_current_view;
             }
         }
     }
-    NSLog(@"3.) SIAlertView height is: %f",height);
+    //NSLog(@"3.) SIAlertView height is: %f",height);
     height += CONTENT_PADDING_BOTTOM;
 	return height;
 }

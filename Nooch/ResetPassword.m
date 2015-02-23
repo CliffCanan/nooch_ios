@@ -137,28 +137,28 @@
     [forgot setStyleId:@"label_forgotpw"];
     [self.view addSubview:forgot];
 
-    self.pwValidator1 = [[UIView alloc] initWithFrame:CGRectMake(15, 171, 72, 4)];
+    self.pwValidator1 = [[UIView alloc] initWithFrame:CGRectMake(15, 172, 72, 4)];
     [self.pwValidator1 setBackgroundColor:Rgb2UIColor(188, 190, 192, .5)];
     [self.pwValidator1 setHidden:YES];
     [self.view addSubview:self.pwValidator1];
 
-    self.pwValidator2 = [[UIView alloc] initWithFrame:CGRectMake(89, 171, 72, 4)];
+    self.pwValidator2 = [[UIView alloc] initWithFrame:CGRectMake(89, 172, 72, 4)];
     [self.pwValidator2 setBackgroundColor:Rgb2UIColor(188, 190, 192, .5)];
     [self.pwValidator2 setHidden:YES];
     [self.view addSubview:self.pwValidator2];
 
-    self.pwValidator3 = [[UIView alloc] initWithFrame:CGRectMake(163, 171, 72, 4)];
+    self.pwValidator3 = [[UIView alloc] initWithFrame:CGRectMake(163, 172, 72, 4)];
     [self.pwValidator3 setBackgroundColor:Rgb2UIColor(188, 190, 192, .5)];
     [self.pwValidator3 setHidden:YES];
     [self.view addSubview:self.pwValidator3];
 
-    self.pwValidator4 = [[UIView alloc] initWithFrame:CGRectMake(237, 171, 72, 4)];
+    self.pwValidator4 = [[UIView alloc] initWithFrame:CGRectMake(237, 172, 72, 4)];
     [self.pwValidator4 setBackgroundColor:Rgb2UIColor(188, 190, 192, .5)];
     [self.pwValidator4 setHidden:YES];
     [self.view addSubview:self.pwValidator4];
 
     self.pwValidator = [UILabel new];
-    [self.pwValidator setFrame:CGRectMake(211, 175, 100, 13)];
+    [self.pwValidator setFrame:CGRectMake(211, 176, 100, 13)];
     [self.pwValidator setFont:[UIFont fontWithName:@"Roboto-regular" size:11]];
     [self.pwValidator setText:@"Very Weak"];
     [self.pwValidator setTextAlignment:NSTextAlignmentRight];

@@ -125,11 +125,12 @@ bool modal;
     [ARPowerHookManager registerHookWithId:@"HUDcolor" friendlyName:@"HUD Color" defaultValue:@"black"];
     [ARPowerHookManager registerHookWithId:@"reqCodeSetting" friendlyName:@"Require Invite Code" defaultValue:@"no"];
     [ARPowerHookManager registerHookWithId:@"refCode" friendlyName:@"Referral Code" defaultValue:@"NOCODE"];
-    [ARPowerHookManager registerHookWithId:@"versionNum" friendlyName:@"Most Recent Version Number" defaultValue:[[[NSBundle mainBundle] infoDictionary] objectForKey:@"CFBundleVersion"]];
     [ARPowerHookManager registerHookWithId:@"homeBtnClr" friendlyName:@"Home Button Color" defaultValue:@"green"];
     [ARPowerHookManager registerHookWithId:@"settingsCogIconPos" friendlyName:@"Settings Cog Icon Position" defaultValue:@"bottomBar"];
     [ARPowerHookManager registerHookWithId:@"DispApts" friendlyName:@"Display Apts Section" defaultValue:@"no"];
-    
+
+    [ARPowerHookManager registerHookWithId:@"versionNum" friendlyName:@"Most Recent Version Number" defaultValue:[[[[NSBundle mainBundle] infoDictionary] objectForKey:@"CFBundleVersion"] substringFromIndex:2]];
+    [ARPowerHookManager registerHookWithId:@"NV_YorN" friendlyName:@"New Version Alert - Should Display Y or N" defaultValue:@"no"];
     [ARPowerHookManager registerHookWithId:@"NV_HD" friendlyName:@"New Version Alert Header Txt" defaultValue:@"New Stuff Galore"];
     [ARPowerHookManager registerHookWithId:@"NV_BODY" friendlyName:@"New Version Alert Body Txt" defaultValue:@"Check out the latest updates and enhancements in the newest version of Nooch."];
     [ARPowerHookManager registerHookWithId:@"NV_IMG" friendlyName:@"New Version Alert Image URL" defaultValue:@"https://www.nooch.com/wp-content/uploads/2014/12/ReferralCode_NOCASH.gif"];
@@ -210,7 +211,7 @@ void exceptionHandler(NSException *exception){
 
 - (void)applicationWillEnterForeground:(UIApplication *)application
 {
-    NSLog(@"Checkpoint - applicationWillEnterForeground");
+    //NSLog(@"Checkpoint - applicationWillEnterForeground");
     // Called as part of the transition from the background to the inactive state; here you can undo many of the changes made on entering the background.
     NSTimeInterval timeAway = [inactiveDate timeIntervalSinceNow];
     [splashView removeFromSuperview];
@@ -241,7 +242,7 @@ void exceptionHandler(NSException *exception){
 
 - (void)applicationDidBecomeActive:(UIApplication *)application
 {
-    NSLog(@"CHECKPOINT - applicationDidBecomeActive");
+    //NSLog(@"CHECKPOINT - applicationDidBecomeActive");
     // Restart any tasks that were paused (or not yet started) while the application was inactive. If the application was previously in the background, optionally refresh the user interface.
 
     NSString * path = [[NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES) objectAtIndex:0] stringByAppendingPathComponent:[NSString stringWithFormat:@"autoLogin.plist"]];
@@ -260,7 +261,7 @@ void exceptionHandler(NSException *exception){
     [FBAppCall handleDidBecomeActive];
 }
 
-// This method will handle ALL the session state changes in the app
+// This method will handle ALL the FB session state changes in the app
 - (void)sessionStateChanged:(FBSession *)session state:(FBSessionState) state error:(NSError *)error
 {
     // If the session was opened successfully

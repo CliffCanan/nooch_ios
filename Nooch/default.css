@@ -425,6 +425,30 @@ view {
     border				: 1px solid #29A1DE;
     box-shadow          : 0 2px 3px rgba(18,26,32,.16);
 }
+.button_LtBoxSm_right {
+    left                : 155px;
+    width				: 142px;
+    height				: 44px;
+    color 				: white;
+    border-radius		: 5px;
+    font-family			: "Roboto";
+    font-weight         : light;
+    font-size			: 20px;
+    background-image	: linear-gradient(#7fd034, #6ab029);
+    border				: 1px solid #66AE3C;
+}
+.button_LtBoxSm_left {
+    left                : 9px;
+    width				: 142px;
+    height				: 44px;
+    color 				: white;
+    border-radius		: 5px;
+    font-family			: "Roboto";
+    font-weight         : light;
+    font-size			: 20px;
+    background-image	: linear-gradient(#e02d33, #d2232a);
+    border				: 1px solid #c81e23;
+}
 /****  Disabled GREEN GRADIENT  ****/
 .button_green:disabled {
     width				: 280px;
@@ -473,7 +497,7 @@ view {
     font-family			: "Roboto";
     font-weight         : light;
     font-size			: 21px;
-    background-image	: linear gradient(#e02d33, #d2232a); 
+    background-image	: linear gradient(#e02d33, #d2232a);
 }
 
 .button_green_sm {
@@ -2493,6 +2517,7 @@ table-view#emptyTable {
     row-height			: 200px;
     separator-color		: rgba(255,255,255,0);
     separator-style     : none;
+    box-shadow          : 2px 2px 3px rgba(64, 65, 66, 0.25);
 }
 
 /**  Profile Pic of other user  **/

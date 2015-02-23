@@ -365,21 +365,24 @@ static assist * _sharedInstance = nil;
     needsUpdating = NO;
     return sortedHist;
 }
--(void)getSettings{
+
+-(void)getSettings
+{
     serve *sets = [serve new];
     sets.Delegate = self;
     sets.tagName = @"sets";
     [sets getSettings];
 }
+
 -(void)getAcctInfo
 {
     if (!islogout)
     {
+        NSUserDefaults * defaults = [NSUserDefaults standardUserDefaults];
+
         serve * info = [serve new];
         info.Delegate = self;
         info.tagName = @"info";
-
-        NSUserDefaults * defaults = [NSUserDefaults standardUserDefaults];
         [info getDetails:[defaults valueForKey:@"MemberId"]];
     }
 }
@@ -408,8 +411,15 @@ static assist * _sharedInstance = nil;
     {
         NSError *error;
         NSMutableDictionary *setsResult = [NSJSONSerialization JSONObjectWithData:[result dataUsingEncoding:NSUTF8StringEncoding] options:0 error:&error];
-        
-        [usr setObject:setsResult forKey:@"sets"];
+
+        if (setsResult != NULL)
+        {
+            [usr setObject:setsResult forKey:@"sets"];
+        }
+        else
+        {
+            NSLog(@"assist.m --> 'sets' returned NULL from server");
+        }
     }
     else if ([tagName isEqualToString:@"info"])
     {
@@ -417,7 +427,15 @@ static assist * _sharedInstance = nil;
 
         NSMutableDictionary *loginResult = [NSJSONSerialization JSONObjectWithData:[result dataUsingEncoding:NSUTF8StringEncoding] options:0 error:&error];
 
-        NSLog(@"User Info: %@",loginResult);
+        if (loginResult != NULL)
+        {
+            NSLog(@"User Info: %@",loginResult);
+        }
+        else
+        {
+            NSLog(@"assist.m --> 'info' returned NULL from server");
+        }
+        
 
         if (  [loginResult valueForKey:@"Status"] != NULL &&
             ![[loginResult valueForKey:@"Status"] isKindOfClass:[NSNull class]])
@@ -427,11 +445,11 @@ static assist * _sharedInstance = nil;
 
             if ([[loginResult valueForKey:@"Status"] isEqualToString:@"Suspended"])
             {
-                [[assist shared]setSusPended:YES];
+                isUserSuspended = YES;
             }
             else
             {
-               [[assist shared]setSusPended:NO];
+               isUserSuspended = NO;
             }
 
             if ( [loginResult valueForKey:@"DateCreated"] &&
@@ -692,20 +710,26 @@ static assist * _sharedInstance = nil;
     return unsortedArray;
 }
 #pragma mark - User objects
--(NSMutableDictionary*)usr{
+-(NSMutableDictionary*)usr
+{
     return usr;
 }
--(NSMutableArray*)hist{
+-(NSMutableArray *)hist
+{
     return histCache;
 }
--(NSMutableDictionary*)assos{
+-(NSMutableDictionary *)assos
+{
     return assosciateCache;
 }
--(NSMutableArray*)assosAll{
+-(NSMutableArray *)assosAll
+{
     return [ArrAllContacts mutableCopy];
 }
--(void)SaveAssos:(NSMutableArray*)additions{
-    ArrAllContacts=[additions copy];
+-(void)SaveAssos:(NSMutableArray*)additions
+{
+    ArrAllContacts = [[NSArray alloc] init];
+    ArrAllContacts = [additions copy];
 }
 -(void)addAssos:(NSMutableArray*)additions
 {

@@ -879,7 +879,7 @@
         NSError * error;
         NSDictionary * loginResult = [NSJSONSerialization JSONObjectWithData:[result dataUsingEncoding:NSUTF8StringEncoding] options:0 error:&error];
 
-        //NSLog(@"Login -> loginResult is: %@",loginResult);
+        NSLog(@"Login -> loginResult is: %@",loginResult);
 
         if (  [loginResult objectForKey:@"Result"] &&
             ![[loginResult objectForKey:@"Result"] isEqualToString:@"Invalid user id or password."] &&
@@ -993,46 +993,68 @@
         NSError *error;
 
         NSDictionary *loginResult = [NSJSONSerialization JSONObjectWithData:[result dataUsingEncoding:NSUTF8StringEncoding] options:0 error:&error];
-        //NSLog(@"getMemberId JSON result is: %@",loginResult);
-        [[NSUserDefaults standardUserDefaults] setObject:[loginResult objectForKey:@"Result"] forKey:@"MemberId"];
 
-        if (isloginWithFB) {
-            [[NSUserDefaults standardUserDefaults] setObject:email_fb forKey:@"UserName"];
-        }
-        else
-            [[NSUserDefaults standardUserDefaults] setObject:[self.email.text lowercaseString] forKey:@"UserName"];
-        user = [NSUserDefaults standardUserDefaults];
-        
-        if (![self.stay_logged_in isOn])
+        if (  loginResult[@"Result"] != NULL &&
+            ![loginResult[@"Result"] isKindOfClass:[NSNull class]])
         {
-            [[NSFileManager defaultManager] removeItemAtPath:[self autoLogin] error:nil];
+            [[NSUserDefaults standardUserDefaults] setObject:[loginResult objectForKey:@"Result"] forKey:@"MemberId"];
+
+            if (isloginWithFB) {
+                [[NSUserDefaults standardUserDefaults] setObject:email_fb forKey:@"UserName"];
+            }
+            else
+                [[NSUserDefaults standardUserDefaults] setObject:[self.email.text lowercaseString] forKey:@"UserName"];
+            user = [NSUserDefaults standardUserDefaults];
+            
+            if (![self.stay_logged_in isOn])
+            {
+                [[NSFileManager defaultManager] removeItemAtPath:[self autoLogin] error:nil];
+            }
+            else
+            {
+                NSMutableDictionary * automatic = [[NSMutableDictionary alloc] init];
+                [automatic setObject:[[NSUserDefaults standardUserDefaults] valueForKey:@"MemberId"] forKey:@"MemberId"];
+                [automatic setObject:[[NSUserDefaults standardUserDefaults] valueForKey:@"UserName"] forKey:@"UserName"];
+                [automatic writeToFile:[self autoLogin] atomically:YES];
+            }
+            me = [core new];
+            [me birth];
+            
+            [[me usr] setObject:[loginResult objectForKey:@"Result"] forKey:@"MemberId"];
+            if (isloginWithFB) {
+                 [[me usr] setObject:email_fb forKey:@"UserName"];
+            }
+            else
+                [[me usr] setObject:[self.email.text lowercaseString] forKey:@"UserName"];
+            
+            serve * enc_user = [serve new];
+            [enc_user setDelegate:self];
+            [enc_user setTagName:@"username"];
+            if (isloginWithFB) {
+                [enc_user getEncrypt:email_fb];
+            }
+            else {
+                [enc_user getEncrypt:[self.email.text lowercaseString]];
+            }
         }
         else
         {
-            NSMutableDictionary * automatic = [[NSMutableDictionary alloc] init];
-            [automatic setObject:[[NSUserDefaults standardUserDefaults] valueForKey:@"MemberId"] forKey:@"MemberId"];
-            [automatic setObject:[[NSUserDefaults standardUserDefaults] valueForKey:@"UserName"] forKey:@"UserName"];
-            [automatic writeToFile:[self autoLogin] atomically:YES];
+            [self.hud hide:YES];
+
+            [FBSession.activeSession close];
+            [FBSession setActiveSession:nil];
+            
+            UIAlertView * alert = [[UIAlertView alloc]initWithTitle:@"Unable to Login"
+                                                            message:@"We could not find a Nooch account associated with that Facebook account.  Please try logging in with your email address and password."
+                                                           delegate:self
+                                                  cancelButtonTitle:@"Ok"
+                                                  otherButtonTitles: nil];
+            [alert show];
+
+            [self.email becomeFirstResponder];
+            return;
         }
-        me = [core new];
-        [me birth];
-        
-        [[me usr] setObject:[loginResult objectForKey:@"Result"] forKey:@"MemberId"];
-        if (isloginWithFB) {
-             [[me usr] setObject:email_fb forKey:@"UserName"];
-        }
-        else
-            [[me usr] setObject:[self.email.text lowercaseString] forKey:@"UserName"];
-        
-        serve * enc_user = [serve new];
-        [enc_user setDelegate:self];
-        [enc_user setTagName:@"username"];
-        if (isloginWithFB) {
-            [enc_user getEncrypt:email_fb];
-        }
-        else
-        [enc_user getEncrypt:[self.email.text lowercaseString]];
-    } 
+    }
 
     else if ([tagName isEqualToString:@"username"])
     {
