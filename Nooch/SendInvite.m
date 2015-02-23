@@ -341,8 +341,9 @@
     //Date from Time stamp
     start = [[dict valueForKey:@"DateCreated"] rangeOfString:@"("];
     end = [[dict valueForKey:@"DateCreated"] rangeOfString:@")"];
-    if (start.location != NSNotFound && end.location != NSNotFound && end.location > start.location) {
-        betweenBraces = [[dict valueForKey:@"DateCreated"] substringWithRange:NSMakeRange(start.location+1, end.location-(start.location+1))];
+    if (start.location != NSNotFound && end.location != NSNotFound && end.location > start.location)
+    {
+        betweenBraces = [[dict valueForKey:@"DateCreated"] substringWithRange:NSMakeRange(start.location + 1, end.location - (start.location + 1))];
     }
     newString = [betweenBraces substringToIndex:[betweenBraces length]-8];
 
@@ -361,7 +362,9 @@
     [seperatorlbl setBackgroundColor:[UIColor colorWithRed:234.0f/255.0f green:234.0f/255.0f blue:244.0f/255.0f alpha:1.0f]];
     [seperatorlbl setStyleClass:@"refer_seperator"];
     [cell.contentView addSubview:seperatorlbl];
-    cell.backgroundColor=[UIColor clearColor];
+    cell.backgroundColor = [UIColor clearColor];
+
+    [cell setSelectionStyle:UITableViewCellSelectionStyleNone];
 
     return cell;
 }
@@ -445,7 +448,7 @@
 
     [self setNavBarColor:[UIColor whiteColor] titleColor:kNoochGrayDark];
 
-    NSString * message = [NSString stringWithFormat:@"Heyo, you should check out Nooch, a great new free app for paying me back. Use my invite code: \"%@\" - download here: %@", code.text,@"http://bit.ly/1xdG2le"];
+    NSString * message = [NSString stringWithFormat:@"Hey! You should check out Nooch, a great new free app for paying me back. Use my invite code: \"%@\" - download here: %@", code.text,@"http://bit.ly/1xdG2le"];
     
     MFMessageComposeViewController * messageController = [[MFMessageComposeViewController alloc] init];
     messageController.messageComposeDelegate = self;
