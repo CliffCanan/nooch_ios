@@ -14,16 +14,13 @@
 #import <AddressBookUI/AddressBookUI.h>
 #import "SpinKit/RTSpinKitView.h"
 
-BOOL isphoneBook;
+BOOL isphoneBook, isAddRequest;
 NSMutableArray*arrRecipientsForRequest;
-BOOL isAddRequest;
 int screenLoadedTimes;
 
 @interface SelectRecipient : GAITrackedViewController<UITableViewDelegate,UITableViewDataSource,serveD,UISearchBarDelegate,ABPeoplePickerNavigationControllerDelegate,CLLocationManagerDelegate,UIActionSheetDelegate,MBProgressHUDDelegate>
 {
     NSMutableDictionary*facebook_info;
-    ACAccountStore*accountStore;
-    //ACAccount*facebookAccount;
     UIView*loader;
     NSString*searchString;
     BOOL searching, navIsUp, isRecentList;

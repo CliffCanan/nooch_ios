@@ -149,7 +149,6 @@
 		5C7C60C11A8FF0250071BA03 /* SelectRecipIntro.png in Resources */ = {isa = PBXBuildFile; fileRef = 5C7C60C01A8FF0250071BA03 /* SelectRecipIntro.png */; };
 		5C822EE41A5C8E8D00D12D20 /* (null) in Frameworks */ = {isa = PBXBuildFile; };
 		5C822EF41A639C8F00D12D20 /* Tour_stats_bg.png in Resources */ = {isa = PBXBuildFile; fileRef = 5C822EF11A639C8F00D12D20 /* Tour_stats_bg.png */; };
-		5C822EF61A64D77800D12D20 /* GameThrive.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5C822EF51A64D77700D12D20 /* GameThrive.framework */; };
 		5C83949719EC60C200EBEBA4 /* No-Internet-Full-Screen_medium@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 5C83949419EC60C200EBEBA4 /* No-Internet-Full-Screen_medium@2x.png */; };
 		5C83949819EC60C200EBEBA4 /* No-Internet-Full-Screen_sm@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 5C83949519EC60C200EBEBA4 /* No-Internet-Full-Screen_sm@2x.png */; };
 		5C83949919EC60C200EBEBA4 /* No-Internet-Full-Screen-lg@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 5C83949619EC60C200EBEBA4 /* No-Internet-Full-Screen-lg@2x.png */; };
@@ -162,8 +161,6 @@
 		5CAA41AA1A3FE12700899563 /* home-circled@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 5CAA41A41A3FE12700899563 /* home-circled@2x.png */; };
 		5CAA41AF1A3FE20200899563 /* Knox_Infobox.png in Resources */ = {isa = PBXBuildFile; fileRef = 5CAA41AD1A3FE20200899563 /* Knox_Infobox.png */; };
 		5CAA41B01A3FE20200899563 /* Knox_Infobox@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 5CAA41AE1A3FE20200899563 /* Knox_Infobox@2x.png */; };
-		5CAA41B41A44C55B00899563 /* ArtisanSDK.bundle in Resources */ = {isa = PBXBuildFile; fileRef = 5CAA41B21A44C55B00899563 /* ArtisanSDK.bundle */; };
-		5CAA41B51A44C55B00899563 /* ArtisanSDK.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5CAA41B31A44C55B00899563 /* ArtisanSDK.framework */; };
 		5CACE20619CFF86A004AD9C4 /* 1_connectBank_bg.png in Resources */ = {isa = PBXBuildFile; fileRef = 5CACE20319CFF86A004AD9C4 /* 1_connectBank_bg.png */; };
 		5CACE20819CFF86A004AD9C4 /* 3_howMuch_bg.png in Resources */ = {isa = PBXBuildFile; fileRef = 5CACE20519CFF86A004AD9C4 /* 3_howMuch_bg.png */; };
 		5CBC177519F4CE0000E1D095 /* clear_white@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 5CBC177419F4CE0000E1D095 /* clear_white@2x.png */; };
@@ -185,6 +182,9 @@
 		5CF1760C19C0178A004C7427 /* FontAwesome.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 5CF1760B19C0178A004C7427 /* FontAwesome.ttf */; };
 		5CF6A6D51A79A9BD006318C7 /* HowMuch_tour.png in Resources */ = {isa = PBXBuildFile; fileRef = 5CF6A6D31A79A9BD006318C7 /* HowMuch_tour.png */; };
 		5CF6A6D61A79A9BD006318C7 /* HowMuch_tour@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 5CF6A6D41A79A9BD006318C7 /* HowMuch_tour@2x.png */; };
+		5CF86F641AA5A11600D62C0E /* GameThrive.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5CF86F631AA5A11600D62C0E /* GameThrive.framework */; };
+		5CF86F681AA5B8C900D62C0E /* ArtisanSDK.bundle in Resources */ = {isa = PBXBuildFile; fileRef = 5CF86F661AA5B8C900D62C0E /* ArtisanSDK.bundle */; };
+		5CF86F691AA5B8C900D62C0E /* ArtisanSDK.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5CF86F671AA5B8C900D62C0E /* ArtisanSDK.framework */; };
 		5CFE3C7B1A899768005BEF45 /* flat_storyboard.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 5CFE3C7D1A899768005BEF45 /* flat_storyboard.storyboard */; };
 		5CFE3C841A899D27005BEF45 /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = 5CFE3C821A899D27005BEF45 /* Localizable.strings */; };
 		6B01F1B4179DA78B00E34C49 /* CoreText.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6B01F1B3179DA78B00E34C49 /* CoreText.framework */; };
@@ -557,7 +557,6 @@
 		5C7C60BF1A8C83AA0071BA03 /* es-MX */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = "es-MX"; path = "es-MX.lproj/InfoPlist.strings"; sourceTree = "<group>"; };
 		5C7C60C01A8FF0250071BA03 /* SelectRecipIntro.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = SelectRecipIntro.png; sourceTree = "<group>"; };
 		5C822EF11A639C8F00D12D20 /* Tour_stats_bg.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Tour_stats_bg.png; sourceTree = "<group>"; };
-		5C822EF51A64D77700D12D20 /* GameThrive.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = GameThrive.framework; sourceTree = "<group>"; };
 		5C83949419EC60C200EBEBA4 /* No-Internet-Full-Screen_medium@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "No-Internet-Full-Screen_medium@2x.png"; sourceTree = "<group>"; };
 		5C83949519EC60C200EBEBA4 /* No-Internet-Full-Screen_sm@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "No-Internet-Full-Screen_sm@2x.png"; sourceTree = "<group>"; };
 		5C83949619EC60C200EBEBA4 /* No-Internet-Full-Screen-lg@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "No-Internet-Full-Screen-lg@2x.png"; sourceTree = "<group>"; };
@@ -572,8 +571,6 @@
 		5CAA41A41A3FE12700899563 /* home-circled@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "home-circled@2x.png"; sourceTree = "<group>"; };
 		5CAA41AD1A3FE20200899563 /* Knox_Infobox.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Knox_Infobox.png; sourceTree = "<group>"; };
 		5CAA41AE1A3FE20200899563 /* Knox_Infobox@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Knox_Infobox@2x.png"; sourceTree = "<group>"; };
-		5CAA41B21A44C55B00899563 /* ArtisanSDK.bundle */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.plug-in"; path = ArtisanSDK.bundle; sourceTree = "<group>"; };
-		5CAA41B31A44C55B00899563 /* ArtisanSDK.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = ArtisanSDK.framework; sourceTree = "<group>"; };
 		5CACE20319CFF86A004AD9C4 /* 1_connectBank_bg.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = 1_connectBank_bg.png; sourceTree = "<group>"; };
 		5CACE20519CFF86A004AD9C4 /* 3_howMuch_bg.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = 3_howMuch_bg.png; sourceTree = "<group>"; };
 		5CBC177419F4CE0000E1D095 /* clear_white@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "clear_white@2x.png"; sourceTree = "<group>"; };
@@ -595,6 +592,9 @@
 		5CF1760B19C0178A004C7427 /* FontAwesome.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = FontAwesome.ttf; sourceTree = "<group>"; };
 		5CF6A6D31A79A9BD006318C7 /* HowMuch_tour.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = HowMuch_tour.png; sourceTree = "<group>"; };
 		5CF6A6D41A79A9BD006318C7 /* HowMuch_tour@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "HowMuch_tour@2x.png"; sourceTree = "<group>"; };
+		5CF86F631AA5A11600D62C0E /* GameThrive.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = GameThrive.framework; path = ../../Cocoa_Libraries/iOS_SDK/Framework/GameThrive.framework; sourceTree = "<group>"; };
+		5CF86F661AA5B8C900D62C0E /* ArtisanSDK.bundle */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.plug-in"; path = ArtisanSDK.bundle; sourceTree = "<group>"; };
+		5CF86F671AA5B8C900D62C0E /* ArtisanSDK.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = ArtisanSDK.framework; sourceTree = "<group>"; };
 		5CFE3C7C1A899768005BEF45 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/flat_storyboard.storyboard; sourceTree = "<group>"; };
 		5CFE3C7F1A89976B005BEF45 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/flat_storyboard.strings; sourceTree = "<group>"; };
 		5CFE3C811A89976D005BEF45 /* es-MX */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = "es-MX"; path = "es-MX.lproj/flat_storyboard.strings"; sourceTree = "<group>"; };
@@ -792,9 +792,10 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				5CF86F641AA5A11600D62C0E /* GameThrive.framework in Frameworks */,
+				6B30380715FA48F900056DAD /* MobileCoreServices.framework in Frameworks */,
 				5C822EE41A5C8E8D00D12D20 /* (null) in Frameworks */,
 				5C4A205319E77C0000D1A0EE /* StoreKit.framework in Frameworks */,
-				5CAA41B51A44C55B00899563 /* ArtisanSDK.framework in Frameworks */,
 				84830DD019B03DB400E29A4C /* MapKit.framework in Frameworks */,
 				6B30380215FA48F900056DAD /* AudioToolbox.framework in Frameworks */,
 				6B30380115FA48F900056DAD /* AddressBookUI.framework in Frameworks */,
@@ -811,7 +812,6 @@
 				6BF90A5F169B79C5009486E7 /* libsqlite3.0.dylib in Frameworks */,
 				6BC04A8E1677DD1B005C68D6 /* CoreTelephony.framework in Frameworks */,
 				6BD38F3316A476DE006B9AE1 /* libz.1.1.3.dylib in Frameworks */,
-				5C822EF61A64D77800D12D20 /* GameThrive.framework in Frameworks */,
 				6B5265FE16680D8F00E5341F /* OpenGLES.framework in Frameworks */,
 				6B5265FC16680D5200E5341F /* CoreVideo.framework in Frameworks */,
 				84BACAF519FF7A48001F796D /* FacebookSDK.framework in Frameworks */,
@@ -820,12 +820,12 @@
 				6B30385215FA597700056DAD /* Twitter.framework in Frameworks */,
 				6B3037FC15FA48F900056DAD /* CoreLocation.framework in Frameworks */,
 				6B3037FE15FA48F900056DAD /* CoreData.framework in Frameworks */,
+				5CF86F691AA5B8C900D62C0E /* ArtisanSDK.framework in Frameworks */,
 				6B3037FF15FA48F900056DAD /* SystemConfiguration.framework in Frameworks */,
 				6B30380315FA48F900056DAD /* Security.framework in Frameworks */,
 				5C10EB7D19F6D4DC0025EB7F /* PixateFreestyle.framework in Frameworks */,
 				6B30380515FA48F900056DAD /* QuartzCore.framework in Frameworks */,
 				6B30380615FA48F900056DAD /* CFNetwork.framework in Frameworks */,
-				6B30380715FA48F900056DAD /* MobileCoreServices.framework in Frameworks */,
 				6B30380815FA48F900056DAD /* libz.dylib in Frameworks */,
 				846C494619F0DC8400A860D4 /* libGoogleAnalyticsServices.a in Frameworks */,
 				6B30380915FA48F900056DAD /* UIKit.framework in Frameworks */,
@@ -1324,15 +1324,6 @@
 			name = "Paying Rent";
 			sourceTree = "<group>";
 		};
-		5CAA41B11A44C55B00899563 /* artisan-sdk-latestNEW */ = {
-			isa = PBXGroup;
-			children = (
-				5CAA41B21A44C55B00899563 /* ArtisanSDK.bundle */,
-				5CAA41B31A44C55B00899563 /* ArtisanSDK.framework */,
-			);
-			path = "artisan-sdk-latestNEW";
-			sourceTree = "<group>";
-		};
 		5CC183D41A19C6B600DADDC8 /* MagicPieLayer */ = {
 			isa = PBXGroup;
 			children = (
@@ -1345,6 +1336,15 @@
 				5CC183DB1A19C6B600DADDC8 /* PieLayer.m */,
 			);
 			path = MagicPieLayer;
+			sourceTree = "<group>";
+		};
+		5CF86F651AA5B8C900D62C0E /* artisan-sdk-latest */ = {
+			isa = PBXGroup;
+			children = (
+				5CF86F661AA5B8C900D62C0E /* ArtisanSDK.bundle */,
+				5CF86F671AA5B8C900D62C0E /* ArtisanSDK.framework */,
+			);
+			path = "artisan-sdk-latest";
 			sourceTree = "<group>";
 		};
 		6B1C157C16D4306000FBEFBB /* Custom Classes */ = {
@@ -1387,7 +1387,7 @@
 		6B30372415FA3FF300056DAD /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
-				5C822EF51A64D77700D12D20 /* GameThrive.framework */,
+				5CF86F631AA5A11600D62C0E /* GameThrive.framework */,
 				84BACAF619FF7A50001F796D /* FBUserSettingsViewResources.bundle */,
 				84BACAF419FF7A48001F796D /* FacebookSDK.framework */,
 				5C10EB7C19F6D4DC0025EB7F /* PixateFreestyle.framework */,
@@ -1461,7 +1461,7 @@
 		6B30372C15FA3FF300056DAD /* Supporting Files */ = {
 			isa = PBXGroup;
 			children = (
-				5CAA41B11A44C55B00899563 /* artisan-sdk-latestNEW */,
+				5CF86F651AA5B8C900D62C0E /* artisan-sdk-latest */,
 				5CC183D41A19C6B600DADDC8 /* MagicPieLayer */,
 				5C4A204B19E77B9600D1A0EE /* Appirater */,
 				5C69D06B19CA0F5B00EB406F /* EAIntroView */,
@@ -1799,11 +1799,11 @@
 				5CEFA0CB19CBE1A900991EEB /* (null) in Resources */,
 				5CEFA0CC19CBE1A900991EEB /* (null) in Resources */,
 				8420B39F187AC4BF00A77E2D /* pink-pin.png in Resources */,
-				5CAA41B41A44C55B00899563 /* ArtisanSDK.bundle in Resources */,
 				6BC5FEE11625F1B0007EAD7A /* Roboto-Medium.ttf in Resources */,
 				6BC5FEE31625F1B0007EAD7A /* Roboto-MediumItalic.ttf in Resources */,
 				6BC5FEE51625F1B0007EAD7A /* Roboto-Regular.ttf in Resources */,
 				5CFE3C841A899D27005BEF45 /* Localizable.strings in Resources */,
+				5CF86F681AA5B8C900D62C0E /* ArtisanSDK.bundle in Resources */,
 				5C11BE6D19F4A8D200A83B87 /* search_white.png in Resources */,
 				01C26DB61843BB22005179B7 /* memo-nonprofits.png in Resources */,
 				5CC1A77B19BA7A8A0000C2C7 /* Icon120.png in Resources */,
@@ -2179,7 +2179,8 @@
 					"$(inherited)",
 					"$(SRCROOT)",
 					"$(PROJECT_DIR)",
-					"$(PROJECT_DIR)/Nooch/artisan-sdk-latestNEW",
+					"$(PROJECT_DIR)/Nooch/GmThrv_iOS_SDK",
+					"$(PROJECT_DIR)/Nooch/artisan-sdk-latest",
 				);
 				GCC_OPTIMIZATION_LEVEL = s;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
@@ -2222,7 +2223,8 @@
 					"$(inherited)",
 					"$(SRCROOT)",
 					"$(PROJECT_DIR)",
-					"$(PROJECT_DIR)/Nooch/artisan-sdk-latestNEW",
+					"$(PROJECT_DIR)/Nooch/GmThrv_iOS_SDK",
+					"$(PROJECT_DIR)/Nooch/artisan-sdk-latest",
 				);
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "Nooch/Nooch-Prefix.pch";

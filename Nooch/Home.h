@@ -36,7 +36,7 @@ core *me;
 
 UINavigationController *nav_ctrl;
 NSUserDefaults *user;
-BOOL shouldDisplayAptsSection;
+BOOL shouldDisplayAptsSection, noRecentContacts;
 
 @interface Home : GAITrackedViewController<serveD,CLLocationManagerDelegate,MBProgressHUDDelegate,MFMailComposeViewControllerDelegate,iCarouselDataSource,iCarouselDelegate,UIAlertViewDelegate,UIActionSheetDelegate>
 {
@@ -51,7 +51,7 @@ BOOL shouldDisplayAptsSection;
     NSString * emailID, * firstNameAB, * lastNameAB;
     UIButton *top_button;
     int bannerAlert;
-    short carouselTopValue, topBtnTopValue;
+    short carouselTopValue, topBtnTopValue, loopIteration;
     BOOL shouldBreakLoop;
 }
 -(void)hide;

@@ -8,6 +8,7 @@
 #import "Login.h"
 #import "core.h"
 #import "Home.h"
+#import "Register.h"
 #import <QuartzCore/QuartzCore.h>
 #import "ECSlidingViewController.h"
 #import "InitSliding.h"
@@ -103,6 +104,8 @@
 
 -(void) BackClicked:(id) sender
 {
+//    Register * reg = [Register new];
+    NSLog(@"viewControllers are: %@",[self.navigationController viewControllers]);
     [self.navigationController popViewControllerAnimated:YES];
 }
 
@@ -278,7 +281,7 @@
     [forgot setBackgroundColor:[UIColor clearColor]];
     [forgot setTitle:NSLocalizedString(@"Login_ForgPwTxt", @"'Forgot Password?' Text") forState:UIControlStateNormal];
     [forgot setFrame:CGRectMake(190, 320, 120, 30)];
-    [forgot addTarget:self action:@selector(forgot_pass) forControlEvents:UIControlEventTouchUpInside];
+    [forgot addTarget:self action:@selector(forgot_pass_Login) forControlEvents:UIControlEventTouchUpInside];
     [forgot setStyleId:@"label_forgotpw"];
 
     UILabel *encryption; [encryption setStyleId:@"label_encryption"];
@@ -555,13 +558,13 @@
 }
 
 
-- (void)forgot_pass
+- (void)forgot_pass_Login
 {
     NSString * avTitle = NSLocalizedString(@"Login_ForgPwAlrtTtl", @"'Forgot Password' Alert Title");
     NSString * avMsg = NSLocalizedString(@"Login_ForgPwAlrtBody", @"'Please enter your email and we will send you a reset link.' Alert Body Text");
     NSString * avCancel = NSLocalizedString(@"Login_ForgPwAlrtCncl", @"'Cancel' Alert Button Text");
 
-    if ([UIAlertController class]) // for iOS 8
+    /*if ([UIAlertController class]) // for iOS 8
     {
         UIAlertController * alert = [UIAlertController
                                      alertControllerWithTitle:avTitle
@@ -570,18 +573,20 @@
 
         [alert addTextFieldWithConfigurationHandler:^(UITextField *textField)
         {
-             textField.placeholder = NSLocalizedString(@"Email Address", @"'Email' Field Placeholder");
-            [textField setText:self.email.text];
-            [textField setKeyboardType:UIKeyboardTypeEmailAddress];
-            [textField setStyleClass:@"customTextField_2"];
+            //textField.placeholder = NSLocalizedString(@"Email Address", @"'Email' Field Placeholder");
+            //[textField setText:self.email.text];
+            //[textField setKeyboardType:UIKeyboardTypeEmailAddress];
+            //[textField setStyleClass:@"customTextField_2"];
             textField.inputAccessoryView = [[UIView alloc] init];
         }];
 
         UIAlertAction * cancel = [UIAlertAction
                                   actionWithTitle:avCancel
                                   style:UIAlertActionStyleCancel
-                                  handler:^(UIAlertAction * action){
-                                      [alert dismissViewControllerAnimated:YES completion:nil];
+                                  handler:^(UIAlertAction *action)
+                                  {
+                                      NSLog(@"Cancel action");
+                                      [alert dismissViewControllerAnimated:NO completion:nil];
                                   }];
 
         UIAlertAction * ok = [UIAlertAction
@@ -635,7 +640,7 @@
         [self presentViewController:alert animated:YES completion:nil];
     }
     else // iOS 7 and prior
-    {
+    {*/
         UIAlertView * alert = [[UIAlertView alloc]initWithTitle:avTitle
                                                         message:avMsg
                                                        delegate:self
@@ -648,7 +653,7 @@
         [alert textFieldAtIndex:0].inputAccessoryView = [[UIView alloc] init];
         [alert setTag:22];
         [alert show];
-    }
+    //}
 }
 
 - (void)alertView:(UIAlertView *)actionSheet clickedButtonAtIndex:(NSInteger)buttonIndex
@@ -708,7 +713,7 @@
         [self emailNoochSupport];
     }
     else if (actionSheet.tag == 510 && buttonIndex == 1) {
-        [self forgot_pass];
+        [self forgot_pass_Login];
     }
 }
 
@@ -748,13 +753,13 @@
 {
     [self.hud hide:YES];
 
-    UIAlertView *alert = [[UIAlertView alloc]
+    /*UIAlertView *alert = [[UIAlertView alloc]
                           initWithTitle:NSLocalizedString(@"Login_CnctnErrAlrtTitle", @"Login screen 'Connection Error' Alert Text")
                           message:NSLocalizedString(@"Login_CnctnErrAlrtBody", @"Login screen Connection Error Alert Body Text")
                           delegate:nil
                           cancelButtonTitle:@"OK"
                           otherButtonTitles:nil];
-    [alert show];
+    [alert show];*/
 }
 
 -(void)listen:(NSString *)result tagName:(NSString *)tagName
@@ -959,7 +964,7 @@
                                                   handler:^(UIAlertAction * action)
                                                   {
                                                       [alert dismissViewControllerAnimated:YES completion:nil];
-                                                      [self forgot_pass];
+                                                      [self forgot_pass_Login];
                                                   }];
                 [alert addAction:ok];
                 [alert addAction:forgotPassword];

@@ -281,6 +281,7 @@
     _emptyText = [[UILabel alloc] initWithFrame:CGRectMake(15, 15, 290, 70)];
     _emptyPic = [[UIImageView alloc] initWithFrame:CGRectMake(33, 102, 253, 256)];
 
+    [ARTrackingManager trackEvent:@"HistoryMain_viewDidAppear_End"];
 
     indexPathForDeletion = nil;
 }
@@ -288,7 +289,7 @@
 -(void)viewWillAppear:(BOOL)animated
 {
     [self.navigationItem setTitle:NSLocalizedString(@"History_ScrnTitle", @"History screen title")];
-    
+
     [super viewWillAppear:animated];
     self.screenName = @"HistoryFlat Screen";
     self.artisanNameTag = @"History Screen";
@@ -436,7 +437,8 @@
     }
     [UIView commitAnimations];
     [self.view bringSubviewToFront:exportHistory];
-    
+
+    [ARTrackingManager trackEvent:@"History_tggleMapSlide"];
 }
 
 -(void)sideright:(id)sender

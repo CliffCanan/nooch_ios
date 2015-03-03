@@ -55,9 +55,7 @@ NSMutableURLRequest *request;
 {
     [super viewDidLoad];
 
-
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(applicationWillEnterFG_Home:) name:UIApplicationWillEnterForegroundNotification object:nil];
-
 
     ABAddressBookRef addressBook = ABAddressBookCreateWithOptions(nil, nil);
     ABAddressBookRegisterExternalChangeCallback(addressBook, addressBookChanged, (__bridge void *)(self));
@@ -142,6 +140,8 @@ NSMutableURLRequest *request;
 
     firstNameAB = @"";
     lastNameAB = @"";
+
+    noRecentContacts = false;
 }
 
 void addressBookChanged(ABAddressBookRef addressBook, CFDictionaryRef info, void *context)
@@ -516,7 +516,7 @@ void addressBookChanged(ABAddressBookRef addressBook, CFDictionaryRef info, void
             NSString * emailId = [[NSString stringWithFormat:@"%@", emailIdValue] stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceCharacterSet]];
 
             if ( emailId != NULL &&
-                [emailId rangeOfString:@"@facebook.com"].location == NSNotFound)
+                [emailId rangeOfString:@"facebook.com"].location == NSNotFound)
             {
                 [curContact setObject:emailId forKey:@"UserName"];
                 [curContact setObject:emailId forKey:[NSString stringWithFormat:@"emailAdday%d",j]];
@@ -526,7 +526,7 @@ void addressBookChanged(ABAddressBookRef addressBook, CFDictionaryRef info, void
                 CFRelease(emailIdValue);
             }
         }
-       
+
         if (emailInfo) {
             CFRelease(emailInfo);
         }
@@ -681,6 +681,10 @@ void addressBookChanged(ABAddressBookRef addressBook, CFDictionaryRef info, void
         if ([[assist shared] needsReload] &&
             [[[NSUserDefaults standardUserDefaults] valueForKey:@"ProfileComplete"]isEqualToString:@"YES"])
         {
+            NSDictionary * dictionary = @{@"MemberId": [[NSUserDefaults standardUserDefaults] valueForKey:@"MemberId"]};
+
+            [ARTrackingManager trackEvent:@"Home_ViewDidAppear_ReloadInitiated" parameters:dictionary];
+
             RTSpinKitView *spinner1 = [[RTSpinKitView alloc] initWithStyle:RTSpinKitViewStyleCircleFlip];
             spinner1.color = [UIColor clearColor];
             self.hud = [[MBProgressHUD alloc] initWithView:self.navigationController.view];
@@ -2147,7 +2151,20 @@ void addressBookChanged(ABAddressBookRef addressBook, CFDictionaryRef info, void
                                      JSONObjectWithData:[result dataUsingEncoding:NSUTF8StringEncoding]
                                      options:kNilOptions
                                      error:&error];
-        //NSLog(@"1a. favorites Result: %@",favorites);
+        //NSLog(@"1a. favorites Count is: %lu \n...and Fav Json is: %@", (unsigned long)[favorites count], favorites);
+
+        if ([favorites count] > 0)
+        {
+            //NSLog(@"noRecentContacts is now FALSE");
+            noRecentContacts = false;
+            [ARProfileManager registerNumber:@"Fav_Nooch_Friends"];
+            [ARProfileManager setNumberValue:[NSNumber numberWithDouble:[favorites count]] forVariable:@"Fav_Nooch_Friends"];
+        }
+        else if ([favorites count] == 0)
+        {
+            //NSLog(@"noRecentContacts is now TRUE");
+            noRecentContacts = true;
+        }
 
         if (favorites != NULL)
         {
@@ -2160,12 +2177,6 @@ void addressBookChanged(ABAddressBookRef addressBook, CFDictionaryRef info, void
             else
             {
                 [_carousel reloadData];
-            }
-
-            if ([favorites count] > 0)
-            {
-                [ARProfileManager registerNumber:@"Fav_Nooch_Friends"];
-                [ARProfileManager setNumberValue:[NSNumber numberWithDouble:[favorites count]] forVariable:@"Fav_Nooch_Friends"];
             }
         }
 
@@ -2370,37 +2381,73 @@ void addressBookChanged(ABAddressBookRef addressBook, CFDictionaryRef info, void
 
 -(void)FavoriteContactsProcessing
 {
-    //NSLog(@"FavoriteContactsProcessing fired");
+    //NSLog(@"FavoriteContactsProcessing fired. [[[assist shared] assosAll] count] is: %lu",(unsigned long)[[[assist shared] assosAll] count]);
 
     shouldBreakLoop = false;
+    loopIteration = 0;
 
-    for (int i = 0; i < [[[assist shared] assosAll] count]; i++)
+    NSMutableArray * AbContactsWithAnEmail = [[NSMutableArray alloc] init];
+
+    // This loop creates an Array of ONLY AB contacts that have an Email Address (as opposed to just a phone number)
+    for (int x = 0; x < [[[assist shared] assosAll] count]; x++)
     {
-        if ([[[assist shared] assosAll] count] < 5)
+        if (  [[[[assist shared] assosAll] objectAtIndex:x] valueForKey:@"UserName"] &&
+            ![[[[[assist shared] assosAll] objectAtIndex:x] valueForKey:@"UserName"] isKindOfClass:[NSNull class]])
         {
-             [favorites addObject:[[[assist shared] assosAll] objectAtIndex:i]];
+            [AbContactsWithAnEmail addObject:[[[assist shared] assosAll] objectAtIndex:x]];
         }
         else
         {
-            if ([favorites count] == 5)
+            continue;
+        }
+    }
+
+    NSLog(@"[AbContactsWithAnEmail count] is: %lu",(unsigned long)[AbContactsWithAnEmail count]);
+
+    for (int i = 0; i < [AbContactsWithAnEmail count]; i++)
+    {
+        NSLog(@"loopIteration is: %d and 'i' is: %d",loopIteration, i);
+        NSLog(@"[favorites count] is: %lu",(unsigned long)[favorites count]);
+        NSLog(@"FavContactsProcessing -> [AbContactsWithAnEmail EMAIL is: %@",[[AbContactsWithAnEmail objectAtIndex:i ] valueForKey:@"UserName"]);
+
+        loopIteration += 1;
+
+        if ([AbContactsWithAnEmail count] < 5)
+        {
+             [favorites addObject:[AbContactsWithAnEmail objectAtIndex:i]];
+        }
+        else if ([favorites count] == 5)
+        {
+                NSLog(@"FavContactsProcessing --> BREAKing b/c fav count == 5");
+                break;
+        }
+        else
+        {
+            if (loopIteration > 200 || i > 200)
             {
+                NSLog(@"Home -> FavContProc -> loopIteration > 200");
+                [ARTrackingManager trackEvent:@"Home_FavContProc_Over200_1"];
                 break;
             }
-            else if (i >= [[[assist shared] assosAll] count] - 1 && [[[assist shared] assosAll] count] > 5)
+            else if ( i >= [AbContactsWithAnEmail count] - 1 &&
+                     [AbContactsWithAnEmail count] > 5 )
             {
+                NSLog(@"FavContactsProcessing --> 'else if' that shouldn't ever be called");
                 i = 0;
             }
 
-            NSUInteger randomIndex = arc4random() % [[[assist shared] assosAll] count];
+            NSUInteger randomIndex = arc4random() % [AbContactsWithAnEmail count];
 
+            // CHECKING IF THE ADDRESS BOOK CONTACT IS ALREADY A NOOCHER'S FAV FROM SERVER
             for (int j = 0; j < [favorites count]; j++)
             {
                 // In case of Server Record
                 if (  [[favorites objectAtIndex:j] valueForKey:@"eMailId"] &&
                     ![[[favorites objectAtIndex:j] valueForKey:@"eMailId"]isKindOfClass:[NSNull class]])
                 {
-                    if ([[[favorites objectAtIndex:j] valueForKey:@"eMailId"] isEqualToString:[[[[assist shared] assosAll] objectAtIndex:randomIndex]valueForKey:@"UserName"]])
+                    if ([[[favorites objectAtIndex:j] valueForKey:@"eMailId"] isEqualToString:[[AbContactsWithAnEmail objectAtIndex:randomIndex]valueForKey:@"UserName"]])
                     {
+                        NSLog(@"***RandomAB Contact ('%@') matches Favorite Already on List From Server (%@)", [[favorites objectAtIndex:j] valueForKey:@"eMailId"], [[AbContactsWithAnEmail objectAtIndex:randomIndex]valueForKey:@"UserName"]);
                         shouldBreakLoop = true;
                     }
                 }
@@ -2408,25 +2455,34 @@ void addressBookChanged(ABAddressBookRef addressBook, CFDictionaryRef info, void
                 else if (  [[favorites objectAtIndex:j] valueForKey:@"UserName"] &&
                          ![[[favorites objectAtIndex:j] valueForKey:@"UserName"]isKindOfClass:[NSNull class]])
                 {
-                    if ([[[favorites objectAtIndex:j] valueForKey:@"UserName"] isEqualToString:[[[[assist shared] assosAll] objectAtIndex:randomIndex] valueForKey:@"UserName"]])
+                    if ([[[favorites objectAtIndex:j] valueForKey:@"UserName"] isEqualToString:[[AbContactsWithAnEmail objectAtIndex:randomIndex] valueForKey:@"UserName"]])
                     {
+                        NSLog(@"***RandomAB Contact ('%@') matches Favorite Already on List From AB (%@)", [[favorites objectAtIndex:j] valueForKey:@"UserName"], [[AbContactsWithAnEmail objectAtIndex:randomIndex]valueForKey:@"UserName"]);
                         shouldBreakLoop = true;
                     }
                 }
+
+                if (j > 6)
+                {
+                    NSLog(@"Home -> FavContProc -> Inner Loop: j > 6 -- BREAKing");
+                    [ARTrackingManager trackEvent:@"Home_FavContProc_jOver6"];
+                    break;
+                }
             }
 
+            // Continue outer loop (i.e. end this loop & DON'T add this iteration into Favorites below)
             if (shouldBreakLoop)
             {
-                // Continue outer loop (i.e. end this loop & don't add this iteration into Favorites below)
-
+                NSLog(@"Home -> FavContProc -> shouldBreakLoop = true -> CONTINUEing");
                 shouldBreakLoop = false;
                 continue;
             }
 
-            if (  [[[[assist shared] assosAll] objectAtIndex:randomIndex] valueForKey:@"UserName"] &&
-                ![[[[[assist shared] assosAll] objectAtIndex:randomIndex] valueForKey:@"UserName"] isKindOfClass:[NSNull class]])
+            // FINALLY, IF IT MAKES IT TO HERE, THEN ADD THE CONTACT TO THE FAVORITES ARRAY
+            else if ( [[AbContactsWithAnEmail objectAtIndex:randomIndex] valueForKey:@"UserName"] &&
+                    ![[[AbContactsWithAnEmail objectAtIndex:randomIndex] valueForKey:@"UserName"] isKindOfClass:[NSNull class]])
             {
-                [favorites addObject:[[[assist shared] assosAll] objectAtIndex:randomIndex]];
+                [favorites addObject:[AbContactsWithAnEmail objectAtIndex:randomIndex]];
             }
         }
     }

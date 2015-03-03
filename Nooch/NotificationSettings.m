@@ -47,11 +47,20 @@
     [super viewWillAppear:animated];
     self.screenName = @"Notification Settings Screen";
     self.artisanNameTag = @"Notification Settings Screen";
+    [ARTrackingManager trackEvent:@"History_tggleMapByNavBtn"];
 }
 
--(void)viewDidDisappear:(BOOL)animated{
+-(void)viewDidDisappear:(BOOL)animated
+{
     [self.hud hide:YES];
     [super viewDidDisappear:animated];
+}
+
+-(void)viewDidAppear:(BOOL)animated
+{
+    [super viewDidAppear:animated];
+
+    [ARTrackingManager trackEvent:@"Notifs_viewDidAppear"];
 }
 
 - (void)viewDidLoad

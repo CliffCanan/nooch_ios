@@ -387,6 +387,7 @@
      ];
 
     self.selected++;
+    [ARTrackingManager trackEvent:@"Stats_Go2ndFrm1st"];
 }
 
 -(void)go_3rd_panel_from_1st
@@ -418,6 +419,7 @@
                                   }];
                               } completion: ^(BOOL finished) {
                                   [self performSelector:@selector(animatePieChart) withObject:nil afterDelay:.1];
+                                  [ARTrackingManager trackEvent:@"Stats_Go3rdFrm1st"];
                               }
      ];
 }
@@ -446,6 +448,7 @@
                                   }];
                               } completion: ^(BOOL finished) {
                                   [self performSelector:@selector(animatePieChart) withObject:nil afterDelay:.05];
+                                  [ARTrackingManager trackEvent:@"Stats_Go3rdFrm2nd"];
                               }
      ];
 }
@@ -474,7 +477,9 @@
                                       frame.origin.x += 320;
                                       [self.back_donation setFrame:frame];
                                   }];
-                              } completion: nil
+                              } completion: ^(BOOL finished) {
+                                  [ARTrackingManager trackEvent:@"Stats_Go1stFrm2nd"];
+                              }
      ];
 }
 
@@ -500,7 +505,9 @@
                                       frame.origin.x += 320;
                                       [self.back_donation setFrame:frame];
                                   }];
-                              } completion: nil
+                              } completion: ^(BOOL finished) {
+                                  [ARTrackingManager trackEvent:@"Stats_Go2ndFrm3rd"];
+                              }
      ];
 }
 
@@ -528,7 +535,9 @@
                                       frame.origin.x += 640;
                                       [self.back_donation setFrame:frame];
                                   }];
-                              } completion: nil
+                              } completion: ^(BOOL finished) {
+                                  [ARTrackingManager trackEvent:@"Stats_Go1stFrm3rd"];
+                              }
      ];
 }
 
@@ -683,6 +692,8 @@
 
 -(void)goToHowMuch:(UIButton*)sender
 {
+    [ARTrackingManager trackEvent:@"Stats_goToHowMuch"];
+
     [sender setFrame:CGRectMake(252, 5, 37, 40)];
 
     short rownumber = sender.tag;
@@ -698,6 +709,8 @@
 
 -(void)goToReferFriend
 {
+    [ARTrackingManager trackEvent:@"Stats_goToReferScrn"];
+
     sentFromStatsScrn = true;
     SendInvite * referFriendScreen = [SendInvite new];
     [self.navigationController pushViewController:referFriendScreen animated:YES];
@@ -1149,7 +1162,7 @@
     if (pieSlice_count > 0)
     {
         int centerRadius = 45;
-        int pieRadius = 52;
+        int pieRadius = 53;
 
         self.pieLayer = [[PieLayer alloc] init];
         self.pieLayer.frame = CGRectMake(40, (160 - pieRadius) - 9, 220, (2 * pieRadius) + 18);

@@ -300,6 +300,8 @@
                               }
                               completion: nil
      ];
+
+    [ARTrackingManager trackEvent:@"Welcome_TellMeMore_Tapped"];
 }
 
 -(void)close_lightBox
