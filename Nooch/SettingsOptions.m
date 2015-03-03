@@ -50,6 +50,16 @@
     [self getBankInfo];
 }
 
+-(void)viewDidAppear:(BOOL)animated
+{
+    [super viewDidAppear:animated];
+    [ARTrackingManager trackEvent:@"Settings_viewDidAppear"];
+}
+
+-(void)viewDidDisappear:(BOOL)animated
+{
+    [super viewDidDisappear:animated];
+}
 - (void)viewDidLoad
 {
     [super viewDidLoad];
@@ -228,7 +238,7 @@
     }
     else
     {
-        [ARTrackingManager trackEvent:@"TappedAddBankAndGoingToKnoxWebview"];
+        [ARTrackingManager trackEvent:@"Settings_TappedAddBankGoToKnoxWbvw"];
         knoxWeb *knox = [knoxWeb new];
         [self.navigationController pushViewController:knox animated:YES];
     }
@@ -590,7 +600,7 @@
     {
         if (buttonIndex == 0)
         {
-            [ARTrackingManager trackEvent:@"TappedAddBankAndGoingToKnoxWebview_ReplacingBnk"];
+            [ARTrackingManager trackEvent:@"Settings_TappedAddBankGoToKnoxWbvw_ReplaceBnk"];
             knoxWeb *knox = [knoxWeb new];
             [self.navigationController pushViewController:knox animated:YES];
         }

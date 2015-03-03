@@ -175,9 +175,12 @@ static const CGFloat kDetailsLabelFontSize = 15.0f;
 
 #pragma mark - Lifecycle
 
-- (id)initWithFrame:(CGRect)frame {
+- (id)initWithFrame:(CGRect)frame
+{
 	self = [super initWithFrame:frame];
-	if (self) {
+
+	if (self)
+    {
 		// Set default values for properties
 		self.animationType = MBProgressHUDAnimationZoomOut;
 		self.mode = MBProgressHUDModeIndeterminate;
@@ -186,18 +189,18 @@ static const CGFloat kDetailsLabelFontSize = 15.0f;
 		self.opacity = 0.8f;
 
         NSString * colorFromArtisan = [ARPowerHookManager getValueForHookById:@"HUDcolor"];
-        NSLog(@"colorFromArtisan is: %@",colorFromArtisan);
+        //NSLog(@"colorFromArtisan is: %@",colorFromArtisan);
         if ([colorFromArtisan isEqualToString:@"darkBlue"])
         {
-            self.color = Rgb2UIColor(11, 12, 53, .73);
+            self.color = Rgb2UIColor(11, 12, 53, .71);
         }
         else if ([colorFromArtisan isEqualToString:@"Blue"])
         {
-            self.color = Rgb2UIColor(24, 158, 225, .76);
+            self.color = Rgb2UIColor(24, 158, 225, .75);
         }
         else
         {
-            self.color = Rgb2UIColor(4, 4, 12, .74);
+            self.color = Rgb2UIColor(4, 4, 12, .7);
         }
         //self.color = Rgb2UIColor(11, 12, 53, .76);
 		self.labelFont = [UIFont boldSystemFontOfSize:kLabelFontSize];
@@ -207,7 +210,7 @@ static const CGFloat kDetailsLabelFontSize = 15.0f;
 		self.xOffset = 0.0f;
 		self.yOffset = -30.0f;
 		self.dimBackground = NO;
-		self.margin = 14.0f;
+		self.margin = 16.0f;
         self.cornerRadius = 10.0f;
 		self.graceTime = 0.0f;
 		self.minShowTime = 0.75f;

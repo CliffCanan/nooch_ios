@@ -280,7 +280,7 @@
         [self.contacts setAlpha:0];
         [UIView commitAnimations];
 
-        NSLog(@"noRecentContacts is: %d",noRecentContacts);
+        //NSLog(@"noRecentContacts is: %d",noRecentContacts);
 
         if (noRecentContacts == true)
         {

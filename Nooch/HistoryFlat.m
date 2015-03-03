@@ -289,7 +289,7 @@
 -(void)viewWillAppear:(BOOL)animated
 {
     [self.navigationItem setTitle:NSLocalizedString(@"History_ScrnTitle", @"History screen title")];
-    
+
     [super viewWillAppear:animated];
     self.screenName = @"HistoryFlat Screen";
     self.artisanNameTag = @"History Screen";
@@ -437,7 +437,8 @@
     }
     [UIView commitAnimations];
     [self.view bringSubviewToFront:exportHistory];
-    
+
+    [ARTrackingManager trackEvent:@"History_tggleMapSlide"];
 }
 
 -(void)sideright:(id)sender

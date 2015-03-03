@@ -48,6 +48,7 @@
 
 -(void)viewWillAppear:(BOOL)animated
 {
+    //NSLog(@"viewWillAppear Fired");
     [super viewWillAppear:animated];
     self.screenName = @"Register Screen";
     self.artisanNameTag = @"Register Screen";
@@ -93,6 +94,8 @@
                                       }
                                   }];
                               } completion: nil];
+
+    [ARTrackingManager trackEvent:@"Register_viewDidAppear"];
 }
 
 - (void)viewDidLoad
@@ -589,6 +592,8 @@
     [UIView setAnimationDelegate:self];
     term.view.frame = self.view.frame;
     [UIView commitAnimations];
+
+    [ARTrackingManager trackEvent:@"OpenTerms_FrmRegisterScrn"];
 }
 
 -(void)removeChild:(UIViewController *) child

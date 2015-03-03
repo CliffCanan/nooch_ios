@@ -79,6 +79,8 @@
     [LimitsAndFeesView setDelegate:self];
     [LimitsAndFeesView setMultipleTouchEnabled:YES];
     [self.view addSubview:LimitsAndFeesView];
+
+    [ARTrackingManager trackEvent:@"LimitsFees_viewDidLoad"];
 }
 
 -(void)showMenu

@@ -125,6 +125,18 @@
 
 }
 
+-(void)viewDidDisappear:(BOOL)animated
+{
+    [super viewDidDisappear:animated];
+}
+
+-(void)viewDidAppear:(BOOL)animated
+{
+    [super viewDidAppear:animated];
+    
+    [ARTrackingManager trackEvent:@"SocSet_viewDidAppear"];
+}
+
 -(void)disconnect_fb
 {
     UIAlertView *av = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"SocSettings_DisconnectAlrtTitle", @"Social Settings FB disconnect Alert Title")

@@ -381,7 +381,7 @@
     {
         SLComposeViewController *fbSheet = [SLComposeViewController composeViewControllerForServiceType:SLServiceTypeFacebook];
 
-        [fbSheet setInitialText:[NSString stringWithFormat:@"Check out @NoochMoney, the simplest way to pay me back (and get paid by anyone - for free)! Use my invite code to sign up: \"%@\"",code.text]];
+        [fbSheet setInitialText:[NSString stringWithFormat:@"Check out @Nooch, the simplest way to pay me back (and get paid by anyone - for free)! Use my invite code to sign up: \"%@\"",[code.text uppercaseString]]];
         [fbSheet addURL:[NSURL URLWithString:@"https://itunes.apple.com/us/app/nooch/id917955306?mt=8"]];
         [self presentViewController:fbSheet animated:YES completion:nil];
 
@@ -391,17 +391,23 @@
              switch (result)
              {
                  case SLComposeViewControllerResultCancelled:
+                     [ARTrackingManager trackEvent:@"Refer_FBshare_Canc"];
                      break;
                  case SLComposeViewControllerResultDone:
                      output = @"Post Shared Successfully";
                      [self dismissViewControllerAnimated:YES completion:nil];
                      [self callService:@"FB"];
+                     [ARTrackingManager trackEvent:@"Refer_FBshare_Success"];
                      break;
                  default: break;
              }
              if ([output isEqualToString:@"Post Shared Successfully"])
              {
-                 UIAlertView * alert = [[UIAlertView alloc] initWithTitle:@"Facebook Message" message:output delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil];
+                 UIAlertView * alert = [[UIAlertView alloc] initWithTitle:@"Facebook Message"
+                                                                  message:output
+                                                                 delegate:nil
+                                                        cancelButtonTitle:@"OK"
+                                                        otherButtonTitles:nil];
                  [alert show];
              }
          }];
@@ -463,7 +469,7 @@
     if ([SLComposeViewController isAvailableForServiceType:SLServiceTypeTwitter])
     {
         SLComposeViewController *tweetSheet = [SLComposeViewController composeViewControllerForServiceType:SLServiceTypeTwitter];
-        [tweetSheet setInitialText:[NSString stringWithFormat:@"Check out @NoochMoney, the simplest free way to pay me back! Use my invite code to sign up: \"%@\"",code.text]];
+        [tweetSheet setInitialText:[NSString stringWithFormat:@"Check out @NoochMoney, the simplest free way to pay me back! Use my invite code to sign up: \"%@\"",[code.text uppercaseString]]];
         [tweetSheet addURL:[NSURL URLWithString:@"https://itunes.apple.com/us/app/nooch/id917955306?mt=8"]];
         [self presentViewController:tweetSheet animated:YES completion:nil];
 
@@ -473,15 +479,22 @@
              switch (result)
              {
                  case SLComposeViewControllerResultCancelled: output = @"Action Cancelled";
+                     [ARTrackingManager trackEvent:@"Refer_TwtShare_Canc"];
                      break;
-                 case SLComposeViewControllerResultDone: output = @"Tweet Posted"; [self dismissViewControllerAnimated:YES completion:nil];
+                 case SLComposeViewControllerResultDone: output = @"Tweet Posted";
+                     [self dismissViewControllerAnimated:YES completion:nil];
                      [self callService:@"TW"];
+                     [ARTrackingManager trackEvent:@"Refer_TwtShare_Success"];
                      break;
                  default: break;
              }
              if ([output isEqualToString:@"Tweet Posted"])
              {
-                 UIAlertView * alert = [[UIAlertView alloc] initWithTitle:@"Twitter Message" message:output delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil];
+                 UIAlertView * alert = [[UIAlertView alloc] initWithTitle:@"Twitter Message"
+                                                                  message:output
+                                                                 delegate:nil
+                                                        cancelButtonTitle:@"OK"
+                                                        otherButtonTitles:nil];
                  [alert show];
              }
         }];

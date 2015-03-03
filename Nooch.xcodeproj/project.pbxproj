@@ -76,8 +76,6 @@
 		5C11BE6B19F4A8D200A83B87 /* search_blue.png in Resources */ = {isa = PBXBuildFile; fileRef = 5C11BE6819F4A8D200A83B87 /* search_blue.png */; };
 		5C11BE6D19F4A8D200A83B87 /* search_white.png in Resources */ = {isa = PBXBuildFile; fileRef = 5C11BE6A19F4A8D200A83B87 /* search_white.png */; };
 		5C1F9DA01A6DEA90004081F6 /* selectRecipIntro_4.png in Resources */ = {isa = PBXBuildFile; fileRef = 5C1F9D9E1A6DEA90004081F6 /* selectRecipIntro_4.png */; };
-		5C35087E1AA4DEC9001D2423 /* ArtisanSDK.bundle in Resources */ = {isa = PBXBuildFile; fileRef = 5C35087C1AA4DEC9001D2423 /* ArtisanSDK.bundle */; };
-		5C35087F1AA4DEC9001D2423 /* ArtisanSDK.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5C35087D1AA4DEC9001D2423 /* ArtisanSDK.framework */; };
 		5C38468D19C56694002AEB15 /* check@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 5C38468C19C56694002AEB15 /* check@2x.png */; };
 		5C38468F19C566DE002AEB15 /* cross@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 5C38468E19C566DE002AEB15 /* cross@2x.png */; };
 		5C39FEC51A115CA600B2E2F4 /* nooch-logoSVCtest.svg in Resources */ = {isa = PBXBuildFile; fileRef = 5C39FEC41A115CA600B2E2F4 /* nooch-logoSVCtest.svg */; };
@@ -184,6 +182,9 @@
 		5CF1760C19C0178A004C7427 /* FontAwesome.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 5CF1760B19C0178A004C7427 /* FontAwesome.ttf */; };
 		5CF6A6D51A79A9BD006318C7 /* HowMuch_tour.png in Resources */ = {isa = PBXBuildFile; fileRef = 5CF6A6D31A79A9BD006318C7 /* HowMuch_tour.png */; };
 		5CF6A6D61A79A9BD006318C7 /* HowMuch_tour@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 5CF6A6D41A79A9BD006318C7 /* HowMuch_tour@2x.png */; };
+		5CF86F641AA5A11600D62C0E /* GameThrive.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5CF86F631AA5A11600D62C0E /* GameThrive.framework */; };
+		5CF86F681AA5B8C900D62C0E /* ArtisanSDK.bundle in Resources */ = {isa = PBXBuildFile; fileRef = 5CF86F661AA5B8C900D62C0E /* ArtisanSDK.bundle */; };
+		5CF86F691AA5B8C900D62C0E /* ArtisanSDK.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5CF86F671AA5B8C900D62C0E /* ArtisanSDK.framework */; };
 		5CFE3C7B1A899768005BEF45 /* flat_storyboard.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 5CFE3C7D1A899768005BEF45 /* flat_storyboard.storyboard */; };
 		5CFE3C841A899D27005BEF45 /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = 5CFE3C821A899D27005BEF45 /* Localizable.strings */; };
 		6B01F1B4179DA78B00E34C49 /* CoreText.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6B01F1B3179DA78B00E34C49 /* CoreText.framework */; };
@@ -437,8 +438,6 @@
 		5C11BE6819F4A8D200A83B87 /* search_blue.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = search_blue.png; sourceTree = "<group>"; };
 		5C11BE6A19F4A8D200A83B87 /* search_white.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = search_white.png; sourceTree = "<group>"; };
 		5C1F9D9E1A6DEA90004081F6 /* selectRecipIntro_4.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = selectRecipIntro_4.png; sourceTree = "<group>"; };
-		5C35087C1AA4DEC9001D2423 /* ArtisanSDK.bundle */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.plug-in"; path = ArtisanSDK.bundle; sourceTree = "<group>"; };
-		5C35087D1AA4DEC9001D2423 /* ArtisanSDK.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = ArtisanSDK.framework; sourceTree = "<group>"; };
 		5C38468C19C56694002AEB15 /* check@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "check@2x.png"; sourceTree = "<group>"; };
 		5C38468E19C566DE002AEB15 /* cross@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "cross@2x.png"; sourceTree = "<group>"; };
 		5C39FEC41A115CA600B2E2F4 /* nooch-logoSVCtest.svg */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xml; path = "nooch-logoSVCtest.svg"; sourceTree = "<group>"; };
@@ -593,6 +592,9 @@
 		5CF1760B19C0178A004C7427 /* FontAwesome.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = FontAwesome.ttf; sourceTree = "<group>"; };
 		5CF6A6D31A79A9BD006318C7 /* HowMuch_tour.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = HowMuch_tour.png; sourceTree = "<group>"; };
 		5CF6A6D41A79A9BD006318C7 /* HowMuch_tour@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "HowMuch_tour@2x.png"; sourceTree = "<group>"; };
+		5CF86F631AA5A11600D62C0E /* GameThrive.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = GameThrive.framework; path = ../../Cocoa_Libraries/iOS_SDK/Framework/GameThrive.framework; sourceTree = "<group>"; };
+		5CF86F661AA5B8C900D62C0E /* ArtisanSDK.bundle */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.plug-in"; path = ArtisanSDK.bundle; sourceTree = "<group>"; };
+		5CF86F671AA5B8C900D62C0E /* ArtisanSDK.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = ArtisanSDK.framework; sourceTree = "<group>"; };
 		5CFE3C7C1A899768005BEF45 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/flat_storyboard.storyboard; sourceTree = "<group>"; };
 		5CFE3C7F1A89976B005BEF45 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/flat_storyboard.strings; sourceTree = "<group>"; };
 		5CFE3C811A89976D005BEF45 /* es-MX */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = "es-MX"; path = "es-MX.lproj/flat_storyboard.strings"; sourceTree = "<group>"; };
@@ -790,6 +792,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				5CF86F641AA5A11600D62C0E /* GameThrive.framework in Frameworks */,
 				6B30380715FA48F900056DAD /* MobileCoreServices.framework in Frameworks */,
 				5C822EE41A5C8E8D00D12D20 /* (null) in Frameworks */,
 				5C4A205319E77C0000D1A0EE /* StoreKit.framework in Frameworks */,
@@ -816,8 +819,8 @@
 				6B5265F816680D2400E5341F /* AVFoundation.framework in Frameworks */,
 				6B30385215FA597700056DAD /* Twitter.framework in Frameworks */,
 				6B3037FC15FA48F900056DAD /* CoreLocation.framework in Frameworks */,
-				5C35087F1AA4DEC9001D2423 /* ArtisanSDK.framework in Frameworks */,
 				6B3037FE15FA48F900056DAD /* CoreData.framework in Frameworks */,
+				5CF86F691AA5B8C900D62C0E /* ArtisanSDK.framework in Frameworks */,
 				6B3037FF15FA48F900056DAD /* SystemConfiguration.framework in Frameworks */,
 				6B30380315FA48F900056DAD /* Security.framework in Frameworks */,
 				5C10EB7D19F6D4DC0025EB7F /* PixateFreestyle.framework in Frameworks */,
@@ -1137,15 +1140,6 @@
 			name = "venturepact ";
 			sourceTree = "<group>";
 		};
-		5C35087B1AA4DEC9001D2423 /* artisan-sdk-latestNEW */ = {
-			isa = PBXGroup;
-			children = (
-				5C35087C1AA4DEC9001D2423 /* ArtisanSDK.bundle */,
-				5C35087D1AA4DEC9001D2423 /* ArtisanSDK.framework */,
-			);
-			path = "artisan-sdk-latestNEW";
-			sourceTree = "<group>";
-		};
 		5C4A204B19E77B9600D1A0EE /* Appirater */ = {
 			isa = PBXGroup;
 			children = (
@@ -1344,6 +1338,15 @@
 			path = MagicPieLayer;
 			sourceTree = "<group>";
 		};
+		5CF86F651AA5B8C900D62C0E /* artisan-sdk-latest */ = {
+			isa = PBXGroup;
+			children = (
+				5CF86F661AA5B8C900D62C0E /* ArtisanSDK.bundle */,
+				5CF86F671AA5B8C900D62C0E /* ArtisanSDK.framework */,
+			);
+			path = "artisan-sdk-latest";
+			sourceTree = "<group>";
+		};
 		6B1C157C16D4306000FBEFBB /* Custom Classes */ = {
 			isa = PBXGroup;
 			children = (
@@ -1384,6 +1387,7 @@
 		6B30372415FA3FF300056DAD /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				5CF86F631AA5A11600D62C0E /* GameThrive.framework */,
 				84BACAF619FF7A50001F796D /* FBUserSettingsViewResources.bundle */,
 				84BACAF419FF7A48001F796D /* FacebookSDK.framework */,
 				5C10EB7C19F6D4DC0025EB7F /* PixateFreestyle.framework */,
@@ -1457,7 +1461,7 @@
 		6B30372C15FA3FF300056DAD /* Supporting Files */ = {
 			isa = PBXGroup;
 			children = (
-				5C35087B1AA4DEC9001D2423 /* artisan-sdk-latestNEW */,
+				5CF86F651AA5B8C900D62C0E /* artisan-sdk-latest */,
 				5CC183D41A19C6B600DADDC8 /* MagicPieLayer */,
 				5C4A204B19E77B9600D1A0EE /* Appirater */,
 				5C69D06B19CA0F5B00EB406F /* EAIntroView */,
@@ -1792,7 +1796,6 @@
 				6BC5FEDF1625F1B0007EAD7A /* Roboto-LightItalic.ttf in Resources */,
 				5C69CFF919C92F7400EB406F /* NotificationBackgroundError.png in Resources */,
 				844E3F8B19DC05E400A00411 /* icon2@2x.png in Resources */,
-				5C35087E1AA4DEC9001D2423 /* ArtisanSDK.bundle in Resources */,
 				5CEFA0CB19CBE1A900991EEB /* (null) in Resources */,
 				5CEFA0CC19CBE1A900991EEB /* (null) in Resources */,
 				8420B39F187AC4BF00A77E2D /* pink-pin.png in Resources */,
@@ -1800,6 +1803,7 @@
 				6BC5FEE31625F1B0007EAD7A /* Roboto-MediumItalic.ttf in Resources */,
 				6BC5FEE51625F1B0007EAD7A /* Roboto-Regular.ttf in Resources */,
 				5CFE3C841A899D27005BEF45 /* Localizable.strings in Resources */,
+				5CF86F681AA5B8C900D62C0E /* ArtisanSDK.bundle in Resources */,
 				5C11BE6D19F4A8D200A83B87 /* search_white.png in Resources */,
 				01C26DB61843BB22005179B7 /* memo-nonprofits.png in Resources */,
 				5CC1A77B19BA7A8A0000C2C7 /* Icon120.png in Resources */,
@@ -2175,7 +2179,8 @@
 					"$(inherited)",
 					"$(SRCROOT)",
 					"$(PROJECT_DIR)",
-					"$(PROJECT_DIR)/Nooch/artisan-sdk-latestNEW",
+					"$(PROJECT_DIR)/Nooch/GmThrv_iOS_SDK",
+					"$(PROJECT_DIR)/Nooch/artisan-sdk-latest",
 				);
 				GCC_OPTIMIZATION_LEVEL = s;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
@@ -2218,7 +2223,8 @@
 					"$(inherited)",
 					"$(SRCROOT)",
 					"$(PROJECT_DIR)",
-					"$(PROJECT_DIR)/Nooch/artisan-sdk-latestNEW",
+					"$(PROJECT_DIR)/Nooch/GmThrv_iOS_SDK",
+					"$(PROJECT_DIR)/Nooch/artisan-sdk-latest",
 				);
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "Nooch/Nooch-Prefix.pch";

@@ -56,7 +56,7 @@ bool modal;
     }
 
     // GAMETHRIVE (Push Notifications)
-/*    if (notifsEnabled)
+    if (notifsEnabled)
     {
         self.gameThrive = [[GameThrive alloc] initWithLaunchOptions:launchOptions handleNotification:^(NSString* message, NSDictionary* additionalData, BOOL isActive) {
             UIAlertView * alertView;
@@ -88,7 +88,7 @@ bool modal;
                 [alertView show];
         }];
     }
-*/
+
 /*    NSUUID *appID = [[NSUUID alloc] initWithUUIDString:@"d461a04a-bd1d-11e4-9d03-134e00000887"];
     self.layerClient = [LYRClient clientWithAppID:appID];
     [self.layerClient connectWithCompletion:^(BOOL success, NSError *error) {

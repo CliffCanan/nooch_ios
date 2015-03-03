@@ -227,6 +227,8 @@
                               }
                               completion: nil
      ];
+
+    [ARTrackingManager trackEvent:@"Knox_MoreInfoLtBx_Appear"];
 }
 
 -(void)close_lightKnoxLtBox
@@ -270,6 +272,8 @@
     actionSheetObject.actionSheetStyle = UIActionSheetStyleDefault;
     [actionSheetObject setTag:1];
     [actionSheetObject showInView:self.view];
+
+    [ARTrackingManager trackEvent:@"Knox_GetHelpTapped"];
 }
 
 -(void)actionSheet:(UIActionSheet *)actionSheet clickedButtonAtIndex:(NSInteger)buttonIndex
