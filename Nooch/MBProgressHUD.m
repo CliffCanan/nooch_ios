@@ -189,15 +189,15 @@ static const CGFloat kDetailsLabelFontSize = 15.0f;
         NSLog(@"colorFromArtisan is: %@",colorFromArtisan);
         if ([colorFromArtisan isEqualToString:@"darkBlue"])
         {
-            self.color = Rgb2UIColor(11, 12, 53, .76);
+            self.color = Rgb2UIColor(11, 12, 53, .73);
         }
         else if ([colorFromArtisan isEqualToString:@"Blue"])
         {
-            self.color = Rgb2UIColor(24, 158, 225, .82);
+            self.color = Rgb2UIColor(24, 158, 225, .76);
         }
         else
         {
-            self.color = Rgb2UIColor(4, 4, 15, .78);
+            self.color = Rgb2UIColor(4, 4, 12, .74);
         }
         //self.color = Rgb2UIColor(11, 12, 53, .76);
 		self.labelFont = [UIFont boldSystemFontOfSize:kLabelFontSize];

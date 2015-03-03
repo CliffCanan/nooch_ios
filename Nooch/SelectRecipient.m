@@ -244,51 +244,62 @@
 
     if (!emailEntry && !phoneNumEntry)
     {
+        [ARTrackingManager trackEvent:@"SelectRecip_viewWillAppear1"];
+
         if ([self.recents count] == 0)
         {
             //[self.contacts setHidden:YES];
             [self.view addSubview: self.noContact_img];
         }
-        
+
         [self.glyphEmail setAlpha: 0];
-        
+
         [self.recent_location setTintColor:kNoochBlue];
         [search setTintColor:kNoochBlue];
-        
+
         isphoneBook = NO;
         isUserByLocation = NO;
         isRecentList = YES;
         searching = NO;
-        
+
         search.text = @"";
         [search resignFirstResponder];
         search.searchBarStyle = UISearchBarStyleMinimal;
         [search setShowsCancelButton:NO animated:YES];
         [self.contacts setStyleId:@"select_recipient"];
-        
+
         if (navIsUp == YES) {
             navIsUp = NO;
             dispatch_async(dispatch_get_main_queue(), ^{
                 [self lowerNavBar];
             });
         }
-        
+
         [UIView beginAnimations:nil context:nil];
         [UIView setAnimationDuration:0.12];
         [self.contacts setAlpha:0];
         [UIView commitAnimations];
-        
-        RTSpinKitView * spinner1 = [[RTSpinKitView alloc] initWithStyle:RTSpinKitViewStyleArcAlt];
-        spinner1.color = [UIColor whiteColor];
-        self.hud.customView = spinner1;
-        self.hud.labelText = NSLocalizedString(@"SelectRecip_RecentLoading", @"Select Recipient Recent List Loading Text");
-        self.hud.detailsLabelText = nil;
-        [self.hud show:YES];
-        
-        serve * recents = [serve new];
-        [recents setTagName:@"recents"];
-        [recents setDelegate:self];
-        [recents getRecents];
+
+        NSLog(@"noRecentContacts is: %d",noRecentContacts);
+
+        if (noRecentContacts == true)
+        {
+            [self displayFirstTimeUserImg];
+        }
+        else
+        {
+            RTSpinKitView * spinner1 = [[RTSpinKitView alloc] initWithStyle:RTSpinKitViewStyleArcAlt];
+            spinner1.color = [UIColor whiteColor];
+            self.hud.customView = spinner1;
+            self.hud.labelText = NSLocalizedString(@"SelectRecip_RecentLoading", @"Select Recipient Recent List Loading Text");
+            self.hud.detailsLabelText = nil;
+            [self.hud show:YES];
+
+            serve * recents = [serve new];
+            [recents setTagName:@"recents"];
+            [recents setDelegate:self];
+            [recents getRecents];
+        }
     }
 }
 
@@ -1476,7 +1487,10 @@
 
     else if ([tagName isEqualToString:@"recents"])
     {
-        [self.hud hide:YES];
+        if ([self.view.subviews containsObject:self.hud])
+        {
+            [self.hud hide:YES];
+        }
 
         NSError * error;
         self.recents = [NSJSONSerialization
@@ -1592,43 +1606,7 @@
         }
         else
         {
-            if (IS_IPHONE_5)
-            {
-                self.noContact_img.frame = CGRectMake(0, 82, 320, 405);
-                self.noContact_img.image = [UIImage imageNamed:@"selectRecipIntro.png"];
-            }
-            else
-            {
-                self.noContact_img.frame = CGRectMake(3, 79, 314, 340);
-                self.noContact_img.image = [UIImage imageNamed:@"selectRecipIntro_4.png"];
-            }
-            [self.noContact_img setAlpha:0];
-            [self.view addSubview:self.noContact_img];
-
-            [UIView animateKeyframesWithDuration:.4
-                                           delay:0
-                                         options:UIViewKeyframeAnimationOptionCalculationModeCubic
-                                      animations:^{
-                                          [UIView addKeyframeWithRelativeStartTime:0 relativeDuration:.6 animations:^{
-                                              [self.backgroundImage setAlpha: 0];
-                                              [self.glyph_emptyLoc setAlpha:0];
-                                              [self.emptyLocHdr setAlpha:0];
-                                              [self.emptyLocBody setAlpha:0];
-                                              [search setHidden:NO];
-                                              [self.contacts setAlpha: 0];
-                                          }];
-                                          [UIView addKeyframeWithRelativeStartTime:.2 relativeDuration:.8 animations:^{
-                                              CGRect frame = self.contacts.frame;
-                                              frame.origin.y = 82;
-                                              frame.size.height = [[UIScreen mainScreen] bounds].size.height - 147;
-                                              [self.contacts setFrame:frame];
-
-                                              [self.noContact_img setAlpha:1];
-                                          }];
-                                      } completion: ^(BOOL finished){
-                                          //[self.contacts setHidden:YES];
-                                      }
-             ];
+            [self displayFirstTimeUserImg];
         }
     }
 
@@ -1878,6 +1856,47 @@
             [self.navigationController pushViewController:how_much animated:YES];
         }
     }
+}
+
+-(void)displayFirstTimeUserImg
+{
+    if (IS_IPHONE_5)
+    {
+        self.noContact_img.frame = CGRectMake(0, 82, 320, 405);
+        self.noContact_img.image = [UIImage imageNamed:@"SelectRecipIntro"];
+    }
+    else
+    {
+        self.noContact_img.frame = CGRectMake(3, 79, 314, 340);
+        self.noContact_img.image = [UIImage imageNamed:@"selectRecipIntro_4"];
+    }
+    [self.noContact_img setAlpha:0];
+    [self.view addSubview:self.noContact_img];
+    
+    [UIView animateKeyframesWithDuration:.4
+                                   delay:0
+                                 options:UIViewKeyframeAnimationOptionCalculationModeCubic
+                              animations:^{
+                                  [UIView addKeyframeWithRelativeStartTime:0 relativeDuration:.6 animations:^{
+                                      [self.backgroundImage setAlpha: 0];
+                                      [self.glyph_emptyLoc setAlpha:0];
+                                      [self.emptyLocHdr setAlpha:0];
+                                      [self.emptyLocBody setAlpha:0];
+                                      [search setHidden:NO];
+                                      [self.contacts setAlpha: 0];
+                                  }];
+                                  [UIView addKeyframeWithRelativeStartTime:.2 relativeDuration:.8 animations:^{
+                                      CGRect frame = self.contacts.frame;
+                                      frame.origin.y = 82;
+                                      frame.size.height = [[UIScreen mainScreen] bounds].size.height - 147;
+                                      [self.contacts setFrame:frame];
+                                      
+                                      [self.noContact_img setAlpha:1];
+                                  }];
+                              } completion: ^(BOOL finished){
+                                  //[self.contacts setHidden:YES];
+                              }
+     ];
 }
 
 -(void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex

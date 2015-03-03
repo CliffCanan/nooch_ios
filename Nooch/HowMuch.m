@@ -84,7 +84,7 @@
     [[assist shared] setTranferImage:nil];
 
     self.amnt = [@"" mutableCopy];
-    
+
     self.decimals = YES;
     [self.view setBackgroundColor:[UIColor whiteColor]];
     UIImageView *backgroundImage = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"SplashPageBckgrnd-568h@2x.png"]];
@@ -432,6 +432,7 @@
 
     transLimitFromArtisanString = [ARPowerHookManager getValueForHookById:@"transLimit"];
     transLimitFromArtisanInt = [transLimitFromArtisanString floatValue];
+    [ARTrackingManager trackEvent:@"HowMuch_viewDidLoad_End"];
 }
 
 -(void)viewDidAppear:(BOOL)animated

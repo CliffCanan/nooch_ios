@@ -56,7 +56,7 @@ bool modal;
     }
 
     // GAMETHRIVE (Push Notifications)
-    if (notifsEnabled)
+/*    if (notifsEnabled)
     {
         self.gameThrive = [[GameThrive alloc] initWithLaunchOptions:launchOptions handleNotification:^(NSString* message, NSDictionary* additionalData, BOOL isActive) {
             UIAlertView * alertView;
@@ -88,9 +88,28 @@ bool modal;
                 [alertView show];
         }];
     }
+*/
+/*    NSUUID *appID = [[NSUUID alloc] initWithUUIDString:@"d461a04a-bd1d-11e4-9d03-134e00000887"];
+    self.layerClient = [LYRClient clientWithAppID:appID];
+    [self.layerClient connectWithCompletion:^(BOOL success, NSError *error) {
+        if (!success) {
+            NSLog(@"Failed to connect to Layer: %@", error);
+        } else {
+            // For the purposes of this Quick Start project, let's authenticate as a user named 'Device'.  Alternatively, you can authenticate as a user named 'Simulator' if you're running on a Simulator.
+            NSString *userIDString = @"Device";
+            // Once connected, authenticate user.
+            // Check Authenticate step for authenticateLayerWithUserID source
+            [self authenticateLayerWithUserID:userIDString completion:^(BOOL success, NSError *error) {
+                if (!success) {
+                    NSLog(@"Failed Authenticating Layer Client with error:%@", error);
+                }
+            }];
+        }
+    }];
+*/
 
     //Google Analytics
-    [GAI sharedInstance].dispatchInterval = 20;
+    [GAI sharedInstance].dispatchInterval = 18;
     [GAI sharedInstance].trackUncaughtExceptions = YES;
     // Optional: set Logger to VERBOSE for debug information.
     [[[GAI sharedInstance] logger] setLogLevel:kGAILogLevelWarning];
@@ -120,7 +139,6 @@ bool modal;
     NSSetUncaughtExceptionHandler(&exceptionHandler);
 
     // ARTISAN SDK
-    // [ARPowerHookManager registerHookWithId:@"serverURL" friendlyName:@"Server URL To Use" defaultValue:@"https://www.noochme.com/NoochService/NoochService.svc"];
     [ARPowerHookManager registerHookWithId:@"slogan" friendlyName:@"Slogan" defaultValue:@"Money Made Simple"];
     [ARPowerHookManager registerHookWithId:@"HUDcolor" friendlyName:@"HUD Color" defaultValue:@"black"];
     [ARPowerHookManager registerHookWithId:@"reqCodeSetting" friendlyName:@"Require Invite Code" defaultValue:@"no"];
@@ -470,4 +488,95 @@ void exceptionHandler(NSException *exception){
     return YES;
 }
 
+/*
+- (void)authenticateLayerWithUserID:(NSString *)userID completion:(void (^)(BOOL success, NSError * error))completion
+{
+    // If the user is authenticated you don't need to re-authenticate.
+    if (self.layerClient.authenticatedUserID) {
+        NSLog(@"Layer Authenticated as User %@", self.layerClient.authenticatedUserID);
+        if (completion) completion(YES, nil);
+        return;
+    }
+    
+    ** 1. Request an authentication Nonce from Layer *
+    [self.layerClient requestAuthenticationNonceWithCompletion:^(NSString *nonce, NSError *error) {
+        if (!nonce) {
+            if (completion) {
+                completion(NO, error);
+            }
+            return;
+        }
+        
+        ** 2. Acquire identity Token from Layer Identity Service *
+        [self requestIdentityTokenForUserID:userID appID:[self.layerClient.appID UUIDString] nonce:nonce completion:^(NSString *identityToken, NSError *error) {
+            if (!identityToken) {
+                if (completion) {
+                    completion(NO, error);
+                }
+                return;
+            }
+            
+            ** 3. Submit identity token to Layer for validation *
+            [self.layerClient authenticateWithIdentityToken:identityToken completion:^(NSString *authenticatedUserID, NSError *error) {
+                if (authenticatedUserID) {
+                    if (completion) {
+                        completion(YES, nil);
+                    }
+                    NSLog(@"Layer Authenticated as User: %@", authenticatedUserID);
+                } else {
+                    completion(NO, error);
+                }
+            }];
+        }];
+    }];
+}
+
+- (void)requestIdentityTokenForUserID:(NSString *)userID appID:(NSString *)appID nonce:(NSString *)nonce completion:(void(^)(NSString *identityToken, NSError *error))completion
+{
+    NSParameterAssert(userID);
+    NSParameterAssert(appID);
+    NSParameterAssert(nonce);
+    NSParameterAssert(completion);
+    
+    NSURL *identityTokenURL = [NSURL URLWithString:@"https://layer-identity-provider.herokuapp.com/identity_tokens"];
+    NSMutableURLRequest *request = [NSMutableURLRequest requestWithURL:identityTokenURL];
+    request.HTTPMethod = @"POST";
+    [request setValue:@"application/json" forHTTPHeaderField:@"Content-Type"];
+    [request setValue:@"application/json" forHTTPHeaderField:@"Accept"];
+    
+    NSDictionary *parameters = @{ @"app_id": appID, @"user_id": userID, @"nonce": nonce };
+    NSData *requestBody = [NSJSONSerialization dataWithJSONObject:parameters options:0 error:nil];
+    request.HTTPBody = requestBody;
+    
+    NSURLSessionConfiguration *sessionConfiguration = [NSURLSessionConfiguration ephemeralSessionConfiguration];
+    NSURLSession *session = [NSURLSession sessionWithConfiguration:sessionConfiguration];
+    [[session dataTaskWithRequest:request completionHandler:^(NSData *data, NSURLResponse *response, NSError *error) {
+        if (error) {
+            completion(nil, error);
+            return;
+        }
+        
+        // Deserialize the response
+        NSDictionary *responseObject = [NSJSONSerialization JSONObjectWithData:data options:0 error:nil];
+        if(![responseObject valueForKey:@"error"])
+        {
+            NSString *identityToken = responseObject[@"identity_token"];
+            completion(identityToken, nil);
+        }
+        else
+        {
+            NSString *domain = @"layer-identity-provider.herokuapp.com";
+            NSInteger code = [responseObject[@"status"] integerValue];
+            NSDictionary *userInfo =
+            @{
+              NSLocalizedDescriptionKey: @"Layer Identity Provider Returned an Error.",
+              NSLocalizedRecoverySuggestionErrorKey: @"There may be a problem with your APPID."
+              };
+            
+            NSError *error = [[NSError alloc] initWithDomain:domain code:code userInfo:userInfo];
+            completion(nil, error);
+        }
+        
+    }] resume];
+}*/
 @end
