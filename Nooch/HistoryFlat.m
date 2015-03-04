@@ -21,7 +21,6 @@
     GMSMapView * mapView_;
     GMSCameraPosition *camera;
     GMSMarker *markerOBJ;
-    UIRefreshControl *refreshControl;
 }
 @property(nonatomic,strong) UISearchBar *search;
 @property(nonatomic,strong) UITableView *list;
@@ -31,12 +30,12 @@
 @property(nonatomic) BOOL completed_selected;
 @property(nonatomic,strong) NSDictionary *responseDict;
 @property(nonatomic,strong) UILabel * glyph_emptyTable;
-@property(strong, nonatomic) GMSMapView *mapView;
 @property(nonatomic, strong) UILabel * glyph_emptyLoc;
 @property(nonatomic, strong) UILabel * emptyLocBody;
 @property(nonatomic, strong) UILabel * emptyLocHdr;
 @property(nonatomic, strong) UILabel * emptyText;
 @property(nonatomic, strong) UIImageView * emptyPic;
+@property(nonatomic, strong) NSMutableArray * markers;
 
 @end
 
@@ -256,7 +255,7 @@
     [recognizer2 setDirection:(UISwipeGestureRecognizerDirectionLeft)];
     [self.view addGestureRecognizer:recognizer2];
     
-    mapArea = [[UIView alloc]initWithFrame:CGRectMake(0, 84, 320, self.view.frame.size.height)];
+    mapArea = [[UIView alloc]initWithFrame:CGRectMake(0, 84, 320, self.view.frame.size.height - 84)];
 
     // Google map
     if ([[assist shared] checkIfLocAllowed])
@@ -264,10 +263,14 @@
         [mapArea setBackgroundColor:[UIColor clearColor]];
         camera = [GMSCameraPosition cameraWithLatitude:39.952360
                                              longitude:-75.163602
-                                                  zoom:8];
-        mapView_ = [GMSMapView mapWithFrame:self.view.frame camera:camera];
+                                                  zoom:8
+                                               bearing:0
+                                          viewingAngle:30];
+
+        mapView_ = [GMSMapView mapWithFrame:CGRectMake(43, 0, 277, mapArea.frame.size.height + 50) camera:camera];
         mapView_.myLocationEnabled = YES;
         mapView_.delegate = self;
+        [mapView_ setMinZoom:5 maxZoom:16];
         [mapArea addSubview:mapView_];
     }
     else
@@ -386,41 +389,54 @@
         return;
     }
 
-    if (!isMapOpen && ![[assist shared] checkIfLocAllowed])
+    if (!isMapOpen)
     {
-        if ([CLLocationManager authorizationStatus] == kCLAuthorizationStatusNotDetermined)
+        if (![[assist shared] checkIfLocAllowed])
         {
-            //location
+            if ([CLLocationManager authorizationStatus] == kCLAuthorizationStatusNotDetermined)
+            {
+                //location
+                locationManager = [[CLLocationManager alloc] init];
+                
+                locationManager.delegate = self;
+                locationManager.distanceFilter = kCLDistanceFilterNone; // whenever we move
+                locationManager.desiredAccuracy = kCLLocationAccuracyHundredMeters; // 100 m
+
+                if ([locationManager respondsToSelector:@selector(requestWhenInUseAuthorization)]) { // iOS8+
+                    // Sending a message to avoid compile time error
+                    
+                    [[UIApplication sharedApplication] sendAction:@selector(requestWhenInUseAuthorization)
+                                                               to:locationManager
+                                                             from:self
+                                                         forEvent:nil];
+                }
+                [locationManager startUpdatingLocation];
+            }
+            else
+            {
+                UIAlertView * alert = [[UIAlertView alloc]initWithTitle:NSLocalizedString(@"History_NeedLocAlrtTitle", @"History screen need location access Alert Title")
+                                                                message:NSLocalizedString(@"History_NeedLocAlrtBody", @"History screen need location access Body Text")
+                                                               delegate:Nil
+                                                      cancelButtonTitle:@"OK"
+                                                      otherButtonTitles:Nil, nil];
+                [alert show];
+            }
+        }
+        else
+        {
             locationManager = [[CLLocationManager alloc] init];
-            
+
             locationManager.delegate = self;
             locationManager.distanceFilter = kCLDistanceFilterNone; // whenever we move
             locationManager.desiredAccuracy = kCLLocationAccuracyHundredMeters; // 100 m
 
-            if ([locationManager respondsToSelector:@selector(requestWhenInUseAuthorization)]) { // iOS8+
-                // Sending a message to avoid compile time error
-                
-                [[UIApplication sharedApplication] sendAction:@selector(requestWhenInUseAuthorization)
-                                                           to:locationManager
-                                                         from:self
-                                                     forEvent:nil];
-            }
             [locationManager startUpdatingLocation];
-        }
-        else
-        {
-            UIAlertView * alert = [[UIAlertView alloc]initWithTitle:NSLocalizedString(@"History_NeedLocAlrtTitle", @"History screen need location access Alert Title")
-                                                            message:NSLocalizedString(@"History_NeedLocAlrtBody", @"History screen need location access Body Text")
-                                                           delegate:Nil
-                                                  cancelButtonTitle:@"OK"
-                                                  otherButtonTitles:Nil, nil];
-            [alert show];
         }
     }
 
     [UIView beginAnimations:nil context:nil];
     [UIView setAnimationDelegate:self];
-    [UIView setAnimationDuration:0.45];
+    [UIView setAnimationDuration:0.4];
     if (!isMapOpen)
     {
         self.list.frame = CGRectMake(-276, 84, 320, self.view.frame.size.height);
@@ -441,20 +457,10 @@
     [ARTrackingManager trackEvent:@"History_tggleMapSlide"];
 }
 
--(void)sideright:(id)sender
+- (BOOL)mapView:(GMSMapView *)mapView didTapMarker:(GMSMarker *)marker
 {
-    if (!self.completed_selected) {
-        return;
-    }
-    [UIView beginAnimations:nil context:nil];
-    [UIView setAnimationDelegate:self];
-    [UIView setAnimationDuration:0.5];
-    self.list.frame=CGRectMake(0, 84, 320, self.view.frame.size.height);
-    [self.view bringSubviewToFront:self.list];
-    mapArea.frame=CGRectMake(0, 84,320,self.view.frame.size.height);
-    isMapOpen = NO;
-    [UIView commitAnimations];
-     [self.view bringSubviewToFront:exportHistory];
+    marker.zIndex += 20;
+    return NO;
 }
 
 - (void)mapView:(GMSMapView *)mapView didTapInfoWindowOfMarker:(GMSMarker *)marker
@@ -553,7 +559,7 @@
             statusstr = NSLocalizedString(@"History_PendingTxt", @"History screen 'Pending' Text");
             [lblloc setStyleClass:@"green_text"];
         }
-        
+
         if ([[user valueForKey:@"MemberId"] isEqualToString:[[histArrayCommon objectAtIndex:[[marker title]intValue]] valueForKey:@"RecepientId"]])
         {
             TransactionType = NSLocalizedString(@"History_RequestSentToTxt", @"History screen 'Request Sent To' Text");
@@ -621,50 +627,151 @@
 {
     if (self.completed_selected)
     {
-        if ([histShowArrayCompleted count] == 0) {
+        if ([histShowArrayCompleted count] == 0)
+        {
             [mapView_ clear];
-
             return;
         }
         histArrayCommon = [histShowArrayCompleted copy];
     }
     else
     {
-        if ([histShowArrayPending count] == 0) {
+        if ([histShowArrayPending count] == 0)
+        {
             [mapView_ clear];
-
             return;
         }
         histArrayCommon = [histShowArrayPending copy];
     }
     [mapView_ clear];
 
+    _markers = [[NSMutableArray alloc] init];
+    [_markers removeAllObjects];
+
     for (int i = 0; i < histArrayCommon.count; i++)
     {
         NSDictionary *tempDict = [histArrayCommon objectAtIndex:i];
+
         markerOBJ = [[GMSMarker alloc] init];
         markerOBJ.position = CLLocationCoordinate2DMake([[tempDict objectForKey:@"Latitude"] floatValue], [[tempDict objectForKey:@"Longitude"] floatValue]);
-        [markerOBJ setTitle:[NSString stringWithFormat:@"%d",i]];
-
-        if ( [[[histArrayCommon objectAtIndex:i] valueForKey:@"TransactionType"]isEqualToString:@"Transfer"] &&
-             [[user valueForKey:@"MemberId"] isEqualToString:[[histArrayCommon objectAtIndex:i] valueForKey:@"MemberId"]] )
-        {
-            markerOBJ.icon = [UIImage imageNamed:@"blue-pin.png"];
-        }
-        else if ([[[histArrayCommon objectAtIndex:i] valueForKey:@"TransactionType"]isEqualToString:@"Transfer"] &&
-                 [[user valueForKey:@"MemberId"] isEqualToString:[[histArrayCommon objectAtIndex:i] valueForKey:@"RecepientId"]])
-        {
-            markerOBJ.icon = [UIImage imageNamed:@"orange-pin.png"];
-        }
-        else if ([[[histArrayCommon objectAtIndex:i] valueForKey:@"TransactionType"]isEqualToString:@"Requested"])
-        {
-            markerOBJ.icon = [UIImage imageNamed:@"green-pin.png"];
-        }
-        else if ([[[histArrayCommon objectAtIndex:i] valueForKey:@"TransactionType"]isEqualToString:@"Donation"]) {
-            markerOBJ.icon=[UIImage imageNamed:@"red-pin.png"];
-        }
+        markerOBJ.infoWindowAnchor = CGPointMake(0.5, -0.05);
+        markerOBJ.appearAnimation = kGMSMarkerAnimationPop;
+        markerOBJ.zIndex = 10 + i;
         markerOBJ.map = mapView_;
+        markerOBJ.title = [NSString stringWithFormat:@"%d",i];
+
+        [_markers addObject:markerOBJ];
+
+        if ( [[[histArrayCommon objectAtIndex:i] valueForKey:@"TransactionType"]isEqualToString:@"Transfer"])
+        {
+            if ([[user valueForKey:@"MemberId"] isEqualToString:[[histArrayCommon objectAtIndex:i] valueForKey:@"RecepientId"]])
+            {
+                markerOBJ.icon = [GMSMarker markerImageWithColor:kNoochGreen];
+                markerOBJ.rotation = 11;
+            }
+            else
+            {
+                markerOBJ.icon = [GMSMarker markerImageWithColor:kNoochRed];
+                markerOBJ.rotation = -11;
+            }
+        }
+        else if ([[[histArrayCommon objectAtIndex:i] valueForKey:@"TransactionType"] isEqualToString:@"Request"])
+        {
+            markerOBJ.icon = [GMSMarker markerImageWithColor:kNoochBlue];
+            markerOBJ.rotation = -6;
+        }
+        else if ([[[histArrayCommon objectAtIndex:i] valueForKey:@"TransactionType"] isEqualToString:@"Disputed"])
+        {
+            markerOBJ.icon = [GMSMarker markerImageWithColor:kNoochGrayDark];
+            markerOBJ.rotation = 5;
+        }
+        else if ([[[histArrayCommon objectAtIndex:i] valueForKey:@"TransactionType"] isEqualToString:@"Invite"])
+        {
+            markerOBJ.icon = [GMSMarker markerImageWithColor:[UIColor whiteColor]];
+            markerOBJ.rotation = -4;
+        }
+        else
+        {
+            NSLog(@"Transaction Type is: %@", [[histArrayCommon objectAtIndex:i] valueForKey:@"TransactionType"]);
+            markerOBJ.rotation = 1;
+            //markerOBJ.icon=[UIImage imageNamed:@"n_Icon.png"];
+        }
     }
+}
+
+- (void)focusMapToShowAllMarkers
+{
+    if (locUpdateSuccessfully == true)
+    {
+        NSLog(@"locationUser is: %f,%f", lat_hist,lon_hist);
+    }
+    else
+    {
+        CLLocationDegrees latitude = 39.9515;
+        CLLocationDegrees longitude = -75.1636;
+        
+        CLLocationCoordinate2D defaultLocation = CLLocationCoordinate2DMake(latitude, longitude);
+        locationUser = defaultLocation;
+    }
+
+    GMSCoordinateBounds *bounds = [[GMSCoordinateBounds alloc] initWithCoordinate:locationUser coordinate:locationUser];
+
+    for (GMSMarker *marker in _markers)
+    {
+        if (marker.position.latitude != 0 &&
+            marker.position.longitude != 0)
+        {
+            bounds = [bounds includingCoordinate:marker.position];
+        }
+    }
+
+    [CATransaction begin];
+    [CATransaction setValue:[NSNumber numberWithFloat: 1.0f]
+                     forKey:kCATransactionAnimationDuration];
+    [CATransaction setValue:[CAMediaTimingFunction functionWithName:kCAMediaTimingFunctionEaseInEaseOut]
+                     forKey:kCATransactionAnimationTimingFunction];
+    // change the camera, set the zoom, whatever. Just make sure to call an animateTo* method.
+    [mapView_ animateWithCameraUpdate:[GMSCameraUpdate fitBounds:bounds withPadding:35]];
+    [mapView_ animateToViewingAngle:30];
+    [mapView_ animateToBearing:1];
+    [CATransaction commit];
+}
+
+# pragma mark - CLLocationManager Delegate Methods
+- (void)locationManager:(CLLocationManager *)manager
+     didUpdateLocations:(NSArray *)locations
+{
+    [locationManager stopUpdatingLocation];
+    
+    locationUser = manager.location.coordinate;
+    lat_hist = [[[NSString alloc] initWithFormat:@"%f",locationUser.latitude] floatValue];
+    lon_hist = [[[NSString alloc] initWithFormat:@"%f",locationUser.longitude] floatValue];
+    
+    //NSLog(@"Hist -DidUpdateLocation --> locationUser is: %f,%f", lat_hist,lon_hist);
+    locUpdateSuccessfully = true;
+    [self performSelector:@selector(focusMapToShowAllMarkers) withObject:nil afterDelay:0.4];
+
+    [[assist shared]setlocationAllowed:YES];
+    
+    serve * serveOBJ = [serve new];
+    [serveOBJ UpDateLatLongOfUser:[[NSString alloc] initWithFormat:@"%f",locationUser.latitude]
+                              lng:[[NSString alloc] initWithFormat:@"%f",locationUser.longitude]];
+}
+
+- (void)locationManager:(CLLocationManager *)manager
+       didFailWithError:(NSError *)error
+{
+    [[assist shared] setlocationAllowed:NO];
+
+    if ([error code] == kCLErrorDenied) {
+        NSLog(@"History --> Location Mgr Error: %@", error);
+    }
+    else {
+        NSLog(@"History --> Location Mgr Error: %@",error);
+    }
+
+    locUpdateSuccessfully = false;
+    [self performSelector:@selector(focusMapToShowAllMarkers) withObject:nil afterDelay:0.4];
 }
 
 -(void)move:(id)sender
@@ -695,6 +802,22 @@
     [UIView setAnimationDelegate:self];
     [[sender view] setCenter:CGPointMake(finalX, finalY)];
     [UIView commitAnimations];
+}
+
+-(void)sideright:(id)sender
+{
+    if (!self.completed_selected) {
+        return;
+    }
+    [UIView beginAnimations:nil context:nil];
+    [UIView setAnimationDelegate:self];
+    [UIView setAnimationDuration:0.5];
+    self.list.frame=CGRectMake(0, 84, 320, self.view.frame.size.height);
+    [self.view bringSubviewToFront:self.list];
+    mapArea.frame=CGRectMake(0, 84,320,self.view.frame.size.height);
+    isMapOpen = NO;
+    [UIView commitAnimations];
+    [self.view bringSubviewToFront:exportHistory];
 }
 
 -(void)FilterHistory:(id)sender
@@ -1686,17 +1809,18 @@
     return cell;
 }
 
-#pragma mark- Date From String
-- (NSDate*) dateFromString:(NSString*)aStr
-{   
-    NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
-    [dateFormatter setLocale:[[NSLocale alloc] initWithLocaleIdentifier:@"en_US_POSIX"]];
-    [dateFormatter setAMSymbol:@"AM"];
-    [dateFormatter setPMSymbol:@"PM"];
-    dateFormatter.dateFormat = @"M/dd/yyyy hh:mm:ss a";
+-(void)deleteTableRow:(NSIndexPath*)rowNumber
+{
+    short rowToRemove = rowNumber.row;
+    [histShowArrayPending removeObjectAtIndex:rowToRemove];
+    [self.list deleteRowsAtIndexPaths:@[rowNumber] withRowAnimation:UITableViewRowAnimationFade];
     
-    NSDate *aDate = [dateFormatter dateFromString:aStr];
-    return aDate;
+    serve * getPendingCount = [serve new];
+    [getPendingCount setDelegate:self];
+    [getPendingCount setTagName:@"getPendingTransfersCount"];
+    [getPendingCount getPendingTransfersCount];
+    
+    shouldDeletePendingRow = NO;
 }
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
@@ -1751,6 +1875,7 @@
     }
 }
 
+#pragma mark - SWTableView
 - (void)swipeableTableViewCell:(SWTableViewCell *)cell didTriggerRightUtilityButtonWithIndex:(NSInteger)ind
 {
     NSMutableArray *temp;
@@ -1910,11 +2035,23 @@
     }
 }
 
-#pragma mark - SWTableView
 - (BOOL)swipeableTableViewCellShouldHideUtilityButtonsOnSwipe:(SWTableViewCell *)cell
 {
     // allow just one cell's utility button to be open at once
     return YES;
+}
+
+#pragma mark- Date From String
+- (NSDate*) dateFromString:(NSString*)aStr
+{
+    NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
+    [dateFormatter setLocale:[[NSLocale alloc] initWithLocaleIdentifier:@"en_US_POSIX"]];
+    [dateFormatter setAMSymbol:@"AM"];
+    [dateFormatter setPMSymbol:@"PM"];
+    dateFormatter.dateFormat = @"M/dd/yyyy hh:mm:ss a";
+    
+    NSDate *aDate = [dateFormatter dateFromString:aStr];
+    return aDate;
 }
 
 #pragma mark - searching
@@ -2314,14 +2451,11 @@
 
         if (!isLocalSearch)
         {
-            NSLog(@"Checkpoint #1");
             if (isEnd == YES)
             {
-                NSLog(@"Checkpoint #2");
                 if ((self.completed_selected && [histShowArrayCompleted count] == 0) ||
                    (!self.completed_selected && [histShowArrayPending count] == 0))
                 {
-                    NSLog(@"Checkpoint #3");
                     [self.list setStyleId:@"emptyTable"];
                     [_emptyPic setImage:[UIImage imageNamed:@"HistoryPending"]];
 
@@ -2603,7 +2737,6 @@
 
 }
 
-#pragma mark Exporting History
 - (IBAction)ExportHistory:(id)sender
 {
     UIAlertView * alert = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"History_ExportAlrtTitle", @"History screen export transfer data Alert Title")
@@ -2780,20 +2913,6 @@
         [mailComposer setModalTransitionStyle:UIModalTransitionStyleCrossDissolve];
         [self presentViewController:mailComposer animated:YES completion:nil];
     }
-}
-
--(void)deleteTableRow:(NSIndexPath*)rowNumber
-{
-    short rowToRemove = rowNumber.row;
-    [histShowArrayPending removeObjectAtIndex:rowToRemove];
-    [self.list deleteRowsAtIndexPaths:@[rowNumber] withRowAnimation:UITableViewRowAnimationFade];
-
-    serve * getPendingCount = [serve new];
-    [getPendingCount setDelegate:self];
-    [getPendingCount setTagName:@"getPendingTransfersCount"];
-    [getPendingCount getPendingTransfersCount];
-
-    shouldDeletePendingRow = NO;
 }
 
 - (void) mailComposeController:(MFMailComposeViewController *)controller didFinishWithResult:(MFMailComposeResult)result error:(NSError *)error

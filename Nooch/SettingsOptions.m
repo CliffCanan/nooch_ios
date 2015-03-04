@@ -28,7 +28,6 @@
 }
 @property(atomic,weak)UIButton *logout;
 
-
 @end
 
 @implementation SettingsOptions

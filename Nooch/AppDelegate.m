@@ -109,11 +109,12 @@ bool modal;
 */
 
     //Google Analytics
-    [GAI sharedInstance].dispatchInterval = 18;
+    [GAI sharedInstance].dispatchInterval = 20;
     [GAI sharedInstance].trackUncaughtExceptions = YES;
     // Optional: set Logger to VERBOSE for debug information.
     [[[GAI sharedInstance] logger] setLogLevel:kGAILogLevelWarning];
     [[GAI sharedInstance] trackerWithTrackingId:@"UA-36976317-2"];
+    //tracker_.allowIDFACollection = YES;
 
     // Whenever a person opens the app, check for a cached FB session
     if (FBSession.activeSession.state == FBSessionStateCreatedTokenLoaded)

@@ -1200,7 +1200,7 @@
         double score = 0;
         NSString * textToCheck = [NSString stringWithFormat:@"%@%@", self.password_field.text, string];
 
-        if ([self.password_field.text length] > 5)
+        if ([textToCheck length] > 5)
         {
             pwLength = true;
         } else {
@@ -1235,7 +1235,6 @@
             score += 1.2;;
         }
 
-
         //NSLog(@"Score is: %f",score);
         if (pwLength && score > 4)
         {
@@ -1246,7 +1245,7 @@
             [self.pwValidator setText:NSLocalizedString(@"Rgstr_ExtrStrngTxt", @"Register screen 'Extremely Strong' PW Validator Text")];
             [self.pwValidator setTextColor:kNoochGreen];
         }
-        else if (pwLength && score > 2.3)
+        else if (pwLength && score > 2.9)
         {
             [self.pwValidator1 setBackgroundColor:kNoochGreen];
             [self.pwValidator2 setBackgroundColor:kNoochGreen];
@@ -1255,7 +1254,7 @@
             [self.pwValidator setTextColor:kNoochGreen];
             [self.pwValidator setText:NSLocalizedString(@"Rgstr_GoodTxt", @"Register screen 'Good' PW Validator Text")];
         }
-        else if (pwLength && score > 1)
+        else if (pwLength && score > 1.5)
         {
             [self.pwValidator1 setBackgroundColor:[UIColor orangeColor]];
             [self.pwValidator2 setBackgroundColor:[UIColor orangeColor]];
@@ -1275,7 +1274,8 @@
         }
         else
         {
-            if ([textToCheck length] > 0) {
+            if ([textToCheck length] > 0)
+            {
                 [self.pwValidator setText:NSLocalizedString(@"Rgstr_VrWeakTxt", @"Register screen 'Very Weak' PW Validator Text (2nd)")];
             }
             else {
