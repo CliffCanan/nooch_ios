@@ -146,7 +146,7 @@
     [link_bank setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
     [self.view addSubview:link_bank];
     
-    menu = [UITableView new];
+    menu = [[UITableView alloc] initWithFrame:CGRectMake(-1, 194, 322, 200) style:UITableViewStylePlain];
     [menu setStyleId:@"settings"];
     menu.layer.borderColor = Rgb2UIColor(188, 190, 192, 0.85).CGColor;
     menu.layer.borderWidth = 1;

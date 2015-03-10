@@ -45,7 +45,7 @@
     pinchangeProgress = 1;
     [self.view setBackgroundColor:[UIColor whiteColor]];
     UIImageView * backgroundImage = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"SplashPageBckgrnd-568h@2x.png"]];
-    backgroundImage.alpha = .4;
+    backgroundImage.alpha = .3;
     [self.view addSubview:backgroundImage];
 
     UIView * navBar = [[UIView alloc]initWithFrame:CGRectMake(0, 0, 320, 60)];
@@ -450,16 +450,13 @@
             break;
         case MFMailComposeResultSaved:
             NSLog(@"Mail saved");
-            
             [alert setTitle:@"Mail saved"];
             [alert show];
             break;
         case MFMailComposeResultSent:
             NSLog(@"Mail sent");
-            
-            [alert setTitle:@"Mail sent"];
+            [alert setTitle:@"\xF0\x9F\x93\xA4  Email Sent Successfully"];
             [alert show];
-            
             break;
         case MFMailComposeResultFailed:
             [alert setTitle:[error localizedDescription]];

@@ -72,6 +72,7 @@
 		01C83E8417FB1606009CABBF /* NavControl.m in Sources */ = {isa = PBXBuildFile; fileRef = 01C83E8317FB1606009CABBF /* NavControl.m */; };
 		01CABC5518A2BD9500BBB935 /* ECSlidingViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 01CABC5418A2BD9500BBB935 /* ECSlidingViewController.m */; };
 		16E4B1CA1870A2C90099D075 /* MessageUI.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 16E4B1C91870A2C90099D075 /* MessageUI.framework */; };
+		5C02949D1AABB4F00037595D /* LocalAuthentication.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5C02949C1AABB4F00037595D /* LocalAuthentication.framework */; settings = {ATTRIBUTES = (Weak, ); }; };
 		5C10EB7D19F6D4DC0025EB7F /* PixateFreestyle.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5C10EB7C19F6D4DC0025EB7F /* PixateFreestyle.framework */; };
 		5C11BE6B19F4A8D200A83B87 /* search_blue.png in Resources */ = {isa = PBXBuildFile; fileRef = 5C11BE6819F4A8D200A83B87 /* search_blue.png */; };
 		5C11BE6D19F4A8D200A83B87 /* search_white.png in Resources */ = {isa = PBXBuildFile; fileRef = 5C11BE6A19F4A8D200A83B87 /* search_white.png */; };
@@ -148,6 +149,7 @@
 		5C69D07019CA0F5B00EB406F /* EAIntroPage.m in Sources */ = {isa = PBXBuildFile; fileRef = 5C69D06D19CA0F5B00EB406F /* EAIntroPage.m */; };
 		5C69D07119CA0F5B00EB406F /* EAIntroView.m in Sources */ = {isa = PBXBuildFile; fileRef = 5C69D06F19CA0F5B00EB406F /* EAIntroView.m */; };
 		5C69D09819CA244C00EB406F /* tour.m in Sources */ = {isa = PBXBuildFile; fileRef = 5C69D09719CA244C00EB406F /* tour.m */; };
+		5C7946091AA7652800DC3F97 /* GameThrive.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5C7946081AA7652800DC3F97 /* GameThrive.framework */; };
 		5C7C60C11A8FF0250071BA03 /* SelectRecipIntro.png in Resources */ = {isa = PBXBuildFile; fileRef = 5C7C60C01A8FF0250071BA03 /* SelectRecipIntro.png */; };
 		5C822EE41A5C8E8D00D12D20 /* (null) in Frameworks */ = {isa = PBXBuildFile; };
 		5C822EF41A639C8F00D12D20 /* Tour_stats_bg.png in Resources */ = {isa = PBXBuildFile; fileRef = 5C822EF11A639C8F00D12D20 /* Tour_stats_bg.png */; };
@@ -427,6 +429,7 @@
 		01CABC5318A2BD9500BBB935 /* ECSlidingViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ECSlidingViewController.h; sourceTree = "<group>"; };
 		01CABC5418A2BD9500BBB935 /* ECSlidingViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ECSlidingViewController.m; sourceTree = "<group>"; };
 		16E4B1C91870A2C90099D075 /* MessageUI.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MessageUI.framework; path = System/Library/Frameworks/MessageUI.framework; sourceTree = SDKROOT; };
+		5C02949C1AABB4F00037595D /* LocalAuthentication.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = LocalAuthentication.framework; path = System/Library/Frameworks/LocalAuthentication.framework; sourceTree = SDKROOT; };
 		5C10EB7C19F6D4DC0025EB7F /* PixateFreestyle.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = PixateFreestyle.framework; sourceTree = "<group>"; };
 		5C11BE6819F4A8D200A83B87 /* search_blue.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = search_blue.png; sourceTree = "<group>"; };
 		5C11BE6A19F4A8D200A83B87 /* search_white.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = search_white.png; sourceTree = "<group>"; };
@@ -548,6 +551,7 @@
 		5C69D06F19CA0F5B00EB406F /* EAIntroView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = EAIntroView.m; sourceTree = "<group>"; };
 		5C69D09619CA244C00EB406F /* tour.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = tour.h; sourceTree = "<group>"; };
 		5C69D09719CA244C00EB406F /* tour.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = tour.m; sourceTree = "<group>"; };
+		5C7946081AA7652800DC3F97 /* GameThrive.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = GameThrive.framework; path = Nooch/GmThrv_iOS_SDK/Framework/GameThrive.framework; sourceTree = "<group>"; };
 		5C7C60BE1A8C83AA0071BA03 /* es-MX */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = "es-MX"; path = "Nooch/es-MX.lproj/Localizable.strings"; sourceTree = "<group>"; };
 		5C7C60BF1A8C83AA0071BA03 /* es-MX */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = "es-MX"; path = "es-MX.lproj/InfoPlist.strings"; sourceTree = "<group>"; };
 		5C7C60C01A8FF0250071BA03 /* SelectRecipIntro.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = SelectRecipIntro.png; sourceTree = "<group>"; };
@@ -779,6 +783,8 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				5C02949D1AABB4F00037595D /* LocalAuthentication.framework in Frameworks */,
+				5C7946091AA7652800DC3F97 /* GameThrive.framework in Frameworks */,
 				6B30380715FA48F900056DAD /* MobileCoreServices.framework in Frameworks */,
 				5C822EE41A5C8E8D00D12D20 /* (null) in Frameworks */,
 				5C4A205319E77C0000D1A0EE /* StoreKit.framework in Frameworks */,
@@ -1367,6 +1373,8 @@
 		6B30372415FA3FF300056DAD /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				5C02949C1AABB4F00037595D /* LocalAuthentication.framework */,
+				5C7946081AA7652800DC3F97 /* GameThrive.framework */,
 				5C44A6E71AA6C90A00D9572F /* GoogleMaps.bundle */,
 				5C44A6E51AA6C8BB00D9572F /* GoogleMaps.framework */,
 				5CF86F6A1AA666EC00D62C0E /* GameThrive.framework */,
@@ -2094,7 +2102,7 @@
 				IPHONEOS_DEPLOYMENT_TARGET = 7.0;
 				ONLY_ACTIVE_ARCH = YES;
 				"OTHER_CFLAGS[arch=*]" = "";
-				OTHER_LDFLAGS = "-ObjC";
+				OTHER_LDFLAGS = "";
 				PROVISIONING_PROFILE = "";
 				"PROVISIONING_PROFILE[sdk=*]" = "";
 				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "";
@@ -2132,7 +2140,7 @@
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				IPHONEOS_DEPLOYMENT_TARGET = 7.0;
 				OTHER_CFLAGS = "-DNS_BLOCK_ASSERTIONS=1";
-				OTHER_LDFLAGS = "-ObjC";
+				OTHER_LDFLAGS = "";
 				PROVISIONING_PROFILE = "15accd34-d5f7-4bc7-abf9-3e8fbb9129df";
 				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "15accd34-d5f7-4bc7-abf9-3e8fbb9129df";
 				SDKROOT = iphoneos;
@@ -2153,7 +2161,7 @@
 					"$(inherited)",
 					"$(SRCROOT)",
 					"$(PROJECT_DIR)",
-					"$(PROJECT_DIR)/Nooch/GmThrv_iOS_SDK",
+					"$(PROJECT_DIR)/Nooch/GmThrv_iOS_SDK/Framework",
 					"$(PROJECT_DIR)/Nooch/artisan-sdk-latest",
 				);
 				GCC_OPTIMIZATION_LEVEL = s;
@@ -2197,7 +2205,7 @@
 					"$(inherited)",
 					"$(SRCROOT)",
 					"$(PROJECT_DIR)",
-					"$(PROJECT_DIR)/Nooch/GmThrv_iOS_SDK",
+					"$(PROJECT_DIR)/Nooch/GmThrv_iOS_SDK/Framework",
 					"$(PROJECT_DIR)/Nooch/artisan-sdk-latest",
 				);
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;

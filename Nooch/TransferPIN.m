@@ -11,6 +11,7 @@
 #import "UIImageView+WebCache.h"
 #import "SelectRecipient.h"
 #import <AudioToolbox/AudioToolbox.h>
+#import <LocalAuthentication/LocalAuthentication.h>
 
 @interface TransferPIN ()<GetLocationDelegate>
 {
@@ -382,6 +383,66 @@
         trans_image.layer.borderColor = [UIColor whiteColor].CGColor;
         [trans_image setImage:[[assist shared] getTranferImage]];
         [self.view addSubview:trans_image];
+    }
+
+    if ([[user objectForKey:@"requiredTouchId"] boolValue] == YES)
+    {
+        LAContext *context = [[LAContext alloc] init];
+        
+        NSError *error = nil;
+
+        if ([context canEvaluatePolicy:LAPolicyDeviceOwnerAuthenticationWithBiometrics error:&error])
+        {
+            [context evaluatePolicy:LAPolicyDeviceOwnerAuthenticationWithBiometrics
+                    localizedReason:@"Are you the device owner?"
+                              reply:^(BOOL success, NSError *error) {
+                                  if (error)
+                                  {
+                                      UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Error"
+                                                                                      message:@"There was a problem verifying your identity."
+                                                                                     delegate:nil
+                                                                            cancelButtonTitle:@"Ok"
+                                                                            otherButtonTitles:nil];
+                                      [alert show];
+
+                                      [self backPressed:nil];
+                                      return;
+                                  }
+
+                                  if (success)
+                                  {
+                                      UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Success"
+                                                                                      message:@"You are the device owner!"
+                                                                                     delegate:nil
+                                                                            cancelButtonTitle:@"Ok"
+                                                                            otherButtonTitles:nil];
+                                      [alert show];
+                                      
+                                  }
+                                  else
+                                  {
+                                      UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Error"
+                                                                                      message:@"You are not the device owner."
+                                                                                     delegate:nil
+                                                                            cancelButtonTitle:@"Ok"
+                                                                            otherButtonTitles:nil];
+                                      [alert show];
+
+                                      [self backPressed:nil];
+                                  }
+                              }];
+        }
+        /*else
+        {
+            UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Error"
+                                                            message:@"Your device cannot authenticate using TouchID."
+                                                           delegate:nil
+                                                  cancelButtonTitle:@"Ok"
+                                                  otherButtonTitles:nil];
+            [alert show];
+
+            [self backPressed:nil];
+        }*/
     }
 
     [[assist shared] setneedsReload:YES];

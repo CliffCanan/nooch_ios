@@ -9,8 +9,10 @@
 #import <UIKit/UIKit.h>
 #import "serve.h"
 
-@interface PINSettings : GAITrackedViewController<serveD,UIAlertViewDelegate>
+@interface PINSettings : GAITrackedViewController<serveD,UIAlertViewDelegate,UITableViewDataSource,UITableViewDelegate>
 {
     NSDictionary*Dictresponse;
+    UIButton * tableRowArrow;
+    BOOL touch1selected, touch2selected;
 }
 @end

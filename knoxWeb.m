@@ -377,6 +377,7 @@
         }
     }
 }
+
 -(void)backToHome
 {
     [self.navigationItem setLeftBarButtonItem:nil];
@@ -398,12 +399,13 @@
     [obj saveMemberTransId:[dict mutableCopy]];
 }
 
--(void)Error:(NSError *)Error{
+-(void)Error:(NSError *)Error
+{
     [self.hud hide:YES];
     
     UIAlertView *alert = [[UIAlertView alloc]
-                          initWithTitle:@"Message"
-                          message:@"Error connecting to server"
+                          initWithTitle:@"Connection Trouble"
+                          message:@"Looks like we're having trouble finding an internet connection! Please check your connection and try again."
                           delegate:nil
                           cancelButtonTitle:@"OK"
                           otherButtonTitles:nil];
@@ -472,7 +474,7 @@
             break;
         case MFMailComposeResultSent:
             NSLog(@"Mail sent");
-            [alert setTitle:@"Mail sent"];
+            [alert setTitle:@"\xF0\x9F\x93\xA4  Email Sent Successfully"];
             [alert show];
             break;
         case MFMailComposeResultFailed:

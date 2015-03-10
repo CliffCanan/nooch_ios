@@ -83,6 +83,7 @@ NSString *histSearching;
 -(BOOL)islocationAllowed;
 -(void)setlocationAllowed:(BOOL)istrue;
 -(BOOL)checkIfLocAllowed;
+-(BOOL)checkIfTouchIdAvailable;
 -(BOOL)needsReload;
 -(void)setneedsReload:(BOOL)istrue;
 -(BOOL)getSuspended;

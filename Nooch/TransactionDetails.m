@@ -1659,6 +1659,7 @@
         [status setTextAlignment:NSTextAlignmentCenter];
         [status setTag:12];
 
+        NSLog(@"Transaction Date from server is: %@",[tranDetailResult objectForKey:@"TransactionDate"]);
         if ([tranDetailResult objectForKey:@"TransactionDate"] != NULL)
         {
             NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
@@ -1667,9 +1668,10 @@
             [dateFormatter setPMSymbol:@"PM"];
             dateFormatter.dateFormat = @"M/d/yyyy h:mm:ss a";
             
-            NSDate *yourDate = [dateFormatter dateFromString:[tranDetailResult valueForKey:@"TransactionDate"]];
+            NSDate *yourDate = [dateFormatter dateFromString:[tranDetailResult objectForKey:@"TransactionDate"]];
+            NSLog(@"1.) yourDate is: %@", yourDate);
             dateFormatter.dateFormat = @"dd-MMMM-yyyy";
-            [dateFormatter setTimeZone:[NSTimeZone localTimeZone]];
+            //[dateFormatter setTimeZone:[NSTimeZone localTimeZone]];
 
             NSString *statusstr;
 
@@ -1744,15 +1746,23 @@
             [status setText:statusstr];
             [self.view addSubview:status];
             
-            if ( [[self.trans valueForKey:@"DisputeId"] isKindOfClass:[NSNull class]] || [self.trans valueForKey:@"DisputeId"] == NULL )
+            if ([[self.trans valueForKey:@"DisputeId"] isKindOfClass:[NSNull class]] ||
+                 [self.trans valueForKey:@"DisputeId"] == NULL )
             {
-                NSArray *arrdate = [[dateFormatter stringFromDate:yourDate] componentsSeparatedByString:@"-"];
-                UILabel *datelbl = [[UILabel alloc] initWithFrame:CGRectMake(80, 190, 160, 30)];
-                [datelbl setTextAlignment:NSTextAlignmentCenter]; 
-                [datelbl setFont:[UIFont fontWithName:@"Roboto-Light" size:16]];
-                [datelbl setTextColor:kNoochGrayDark];
-                datelbl.text = [NSString stringWithFormat:@"%@ %@, %@",[arrdate objectAtIndex:1],[arrdate objectAtIndex:0],[arrdate objectAtIndex:2]];
-                [self.view addSubview:datelbl];
+                NSLog(@"2.) yourDate is: %@", yourDate);
+
+                if (![yourDate isKindOfClass:[NSNull class]] && yourDate != NULL)
+                {
+                    NSArray *arrdate = [[dateFormatter stringFromDate:yourDate] componentsSeparatedByString:@"-"];
+                    NSLog(@"arrdate is: %@", arrdate);
+
+                    UILabel *datelbl = [[UILabel alloc] initWithFrame:CGRectMake(80, 190, 160, 30)];
+                    [datelbl setTextAlignment:NSTextAlignmentCenter]; 
+                    [datelbl setFont:[UIFont fontWithName:@"Roboto-Light" size:16]];
+                    [datelbl setTextColor:kNoochGrayDark];
+                    datelbl.text = [NSString stringWithFormat:@"%@ %@, %@",[arrdate objectAtIndex:1],[arrdate objectAtIndex:0],[arrdate objectAtIndex:2]];
+                    [self.view addSubview:datelbl];
+                }
             }
         }
 

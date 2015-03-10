@@ -685,7 +685,7 @@
             break;
         case MFMailComposeResultSent:
             NSLog(@"Mail sent");
-            [alert setTitle:@"Mail sent"];
+            [alert setTitle:@"\xF0\x9F\x93\xA4  Email Sent Successfully"];
             [alert show];
             break;
         case MFMailComposeResultFailed:
