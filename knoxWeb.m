@@ -100,8 +100,12 @@
     self.hud.labelText = @"Preparing Secure Connection";
     [self.hud show:YES];
 
-    NSString *body = [NSString stringWithFormat: @"amount=%@&api_key=%@&api_password=%@&invoice_detail=%@&recurring=%@&information_request=%@&redirect_url=%@&partner=%@&label=%@", @"0.00",@"7068_59cd5c1f5a75c31",@"7068_da64134cc66a5f0",@"Onboard",@"ot",@"show_all",@"nooch://",@"nooch",@"wl"];
-	NSURL *url = [NSURL URLWithString: [NSString stringWithFormat:@"%@?%@",@"https://knoxpayments.com/pay/index.php",body]];
+    NSString * knoxBaseUrl = [ARPowerHookManager getValueForHookById:@"knox_Key"];
+    NSString * k_Key = [ARPowerHookManager getValueForHookById:@"knox_Key"];
+    NSString * k_pw = [ARPowerHookManager getValueForHookById:@"knox_Pw"];
+
+    NSString *body = [NSString stringWithFormat: @"amount=%@&api_key=%@&api_password=%@&invoice_detail=%@&recurring=%@&information_request=%@&redirect_url=%@&partner=%@&label=%@", @"0.00",k_Key,k_pw,@"Onboard",@"ot",@"show_all",@"nooch://",@"nooch",@"wl"];
+	NSURL *url = [NSURL URLWithString: [NSString stringWithFormat:@"%@?%@",knoxBaseUrl,body]];
 
     self.request = [[NSMutableURLRequest alloc]initWithURL: url];
     [self.request setHTTPMethod: @"GET"];

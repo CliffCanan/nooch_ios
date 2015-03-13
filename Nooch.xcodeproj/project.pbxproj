@@ -73,6 +73,9 @@
 		01CABC5518A2BD9500BBB935 /* ECSlidingViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 01CABC5418A2BD9500BBB935 /* ECSlidingViewController.m */; };
 		16E4B1CA1870A2C90099D075 /* MessageUI.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 16E4B1C91870A2C90099D075 /* MessageUI.framework */; };
 		5C02949D1AABB4F00037595D /* LocalAuthentication.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5C02949C1AABB4F00037595D /* LocalAuthentication.framework */; settings = {ATTRIBUTES = (Weak, ); }; };
+		5C02949F1AAF4F180037595D /* MobileAppTracker.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5C02949E1AAF4F180037595D /* MobileAppTracker.framework */; };
+		5C0294A11AAF4F3D0037595D /* AdSupport.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5C0294A01AAF4F3D0037595D /* AdSupport.framework */; };
+		5C0294A31AAF4F550037595D /* iAd.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5C0294A21AAF4F550037595D /* iAd.framework */; };
 		5C10EB7D19F6D4DC0025EB7F /* PixateFreestyle.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5C10EB7C19F6D4DC0025EB7F /* PixateFreestyle.framework */; };
 		5C11BE6B19F4A8D200A83B87 /* search_blue.png in Resources */ = {isa = PBXBuildFile; fileRef = 5C11BE6819F4A8D200A83B87 /* search_blue.png */; };
 		5C11BE6D19F4A8D200A83B87 /* search_white.png in Resources */ = {isa = PBXBuildFile; fileRef = 5C11BE6A19F4A8D200A83B87 /* search_white.png */; };
@@ -430,6 +433,9 @@
 		01CABC5418A2BD9500BBB935 /* ECSlidingViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ECSlidingViewController.m; sourceTree = "<group>"; };
 		16E4B1C91870A2C90099D075 /* MessageUI.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MessageUI.framework; path = System/Library/Frameworks/MessageUI.framework; sourceTree = SDKROOT; };
 		5C02949C1AABB4F00037595D /* LocalAuthentication.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = LocalAuthentication.framework; path = System/Library/Frameworks/LocalAuthentication.framework; sourceTree = SDKROOT; };
+		5C02949E1AAF4F180037595D /* MobileAppTracker.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = MobileAppTracker.framework; sourceTree = "<group>"; };
+		5C0294A01AAF4F3D0037595D /* AdSupport.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AdSupport.framework; path = System/Library/Frameworks/AdSupport.framework; sourceTree = SDKROOT; };
+		5C0294A21AAF4F550037595D /* iAd.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = iAd.framework; path = System/Library/Frameworks/iAd.framework; sourceTree = SDKROOT; };
 		5C10EB7C19F6D4DC0025EB7F /* PixateFreestyle.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = PixateFreestyle.framework; sourceTree = "<group>"; };
 		5C11BE6819F4A8D200A83B87 /* search_blue.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = search_blue.png; sourceTree = "<group>"; };
 		5C11BE6A19F4A8D200A83B87 /* search_white.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = search_white.png; sourceTree = "<group>"; };
@@ -783,6 +789,9 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				5C0294A31AAF4F550037595D /* iAd.framework in Frameworks */,
+				5C0294A11AAF4F3D0037595D /* AdSupport.framework in Frameworks */,
+				5C02949F1AAF4F180037595D /* MobileAppTracker.framework in Frameworks */,
 				5C02949D1AABB4F00037595D /* LocalAuthentication.framework in Frameworks */,
 				5C7946091AA7652800DC3F97 /* GameThrive.framework in Frameworks */,
 				6B30380715FA48F900056DAD /* MobileCoreServices.framework in Frameworks */,
@@ -1373,6 +1382,9 @@
 		6B30372415FA3FF300056DAD /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				5C0294A21AAF4F550037595D /* iAd.framework */,
+				5C0294A01AAF4F3D0037595D /* AdSupport.framework */,
+				5C02949E1AAF4F180037595D /* MobileAppTracker.framework */,
 				5C02949C1AABB4F00037595D /* LocalAuthentication.framework */,
 				5C7946081AA7652800DC3F97 /* GameThrive.framework */,
 				5C44A6E71AA6C90A00D9572F /* GoogleMaps.bundle */,
@@ -1703,7 +1715,7 @@
 		6B30371815FA3FF200056DAD /* Project object */ = {
 			isa = PBXProject;
 			attributes = {
-				LastUpgradeCheck = 0600;
+				LastUpgradeCheck = 0620;
 				ORGANIZATIONNAME = Nooch;
 				TargetAttributes = {
 					6B30372015FA3FF200056DAD = {
@@ -2070,7 +2082,6 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
-				ARCHS = armv7;
 				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
 				CLANG_ENABLE_OBJC_ARC = YES;
 				CLANG_WARN_BOOL_CONVERSION = YES;
@@ -2116,7 +2127,6 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
-				ARCHS = armv7;
 				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
 				CLANG_ENABLE_OBJC_ARC = YES;
 				CLANG_WARN_BOOL_CONVERSION = YES;
@@ -2141,8 +2151,8 @@
 				IPHONEOS_DEPLOYMENT_TARGET = 7.0;
 				OTHER_CFLAGS = "-DNS_BLOCK_ASSERTIONS=1";
 				OTHER_LDFLAGS = "";
-				PROVISIONING_PROFILE = "15accd34-d5f7-4bc7-abf9-3e8fbb9129df";
-				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "15accd34-d5f7-4bc7-abf9-3e8fbb9129df";
+				PROVISIONING_PROFILE = "b1a14ef0-1f58-43b5-8097-c76826e9f08a";
+				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "b1a14ef0-1f58-43b5-8097-c76826e9f08a";
 				SDKROOT = iphoneos;
 				TARGETED_DEVICE_FAMILY = "1,2";
 				VALIDATE_PRODUCT = YES;
@@ -2152,7 +2162,6 @@
 		6B30375815FA3FF600056DAD /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				ARCHS = "$(ARCHS_STANDARD)";
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
@@ -2196,7 +2205,6 @@
 		6B30375915FA3FF600056DAD /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				ARCHS = "$(ARCHS_STANDARD)";
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
 				CODE_SIGN_IDENTITY = "";
@@ -2226,8 +2234,8 @@
 					"-ObjC",
 				);
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				PROVISIONING_PROFILE = "15accd34-d5f7-4bc7-abf9-3e8fbb9129df";
-				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "15accd34-d5f7-4bc7-abf9-3e8fbb9129df";
+				PROVISIONING_PROFILE = "b1a14ef0-1f58-43b5-8097-c76826e9f08a";
+				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "b1a14ef0-1f58-43b5-8097-c76826e9f08a";
 				TARGETED_DEVICE_FAMILY = 1;
 				USER_HEADER_SEARCH_PATHS = "";
 				WRAPPER_EXTENSION = app;
