@@ -142,6 +142,12 @@ NSMutableURLRequest *request;
     lastNameAB = @"";
 
     noRecentContacts = false;
+    
+    NSTimeZone * timeZone = [NSTimeZone timeZoneWithName:@"America/New_York"];
+    [NSTimeZone setDefaultTimeZone:timeZone];
+
+    [ARProfileManager setSharedUserId:[user valueForKey:@"MemberId"]];
+    [ARProfileManager registerLocation:@"lastKnownLocation"];
 }
 
 void addressBookChanged(ABAddressBookRef addressBook, CFDictionaryRef info, void *context)
@@ -1101,8 +1107,6 @@ void addressBookChanged(ABAddressBookRef addressBook, CFDictionaryRef info, void
         [top_button setTitle:[NSString stringWithFormat:NSLocalizedString(@"HomeBtnTitle", @"Home Screen Btn Title")] forState:UIControlStateNormal];
         [top_button setTitleShadowColor:Rgb2UIColor(26, 38, 32, 0.2) forState:UIControlStateNormal];
         top_button.titleLabel.shadowOffset = CGSizeMake(0.0, -1.0);
-        [top_button addTarget:self action:@selector(stayPressed:) forControlEvents:UIControlEventTouchDown];
-        [top_button addTarget:self action:@selector(releasePress:) forControlEvents:UIControlEventTouchDragExit];
         [top_button addTarget:self action:@selector(send_request) forControlEvents:UIControlEventTouchUpInside];
         if ([homeBtnColorFromArtisan isEqualToString:@"blue"])
         {
@@ -1900,22 +1904,6 @@ void addressBookChanged(ABAddressBookRef addressBook, CFDictionaryRef info, void
     }
 }
 
--(void)stayPressed:(UIButton *) sender
-{
-    CGRect existing = top_button.frame;
-    existing.origin.y += 2;
-    [top_button setFrame:existing];
-}
-
--(void)releasePress:(UIButton *) sender
-{
-    NSLog(@"RELEASE PRESS METHOD");
-
-    if (bannerAlert == 0) {
-        [top_button setFrame:CGRectMake(20, 250, 280, 54)];
-    }
-}
-
 - (void) mailComposeController:(MFMailComposeViewController *)controller didFinishWithResult:(MFMailComposeResult)result error:(NSError *)error
 {
     UIAlertView *alert = [[UIAlertView alloc] init];
@@ -2085,6 +2073,8 @@ void addressBookChanged(ABAddressBookRef addressBook, CFDictionaryRef info, void
     serve * serveOBJ = [serve new];
     [serveOBJ UpDateLatLongOfUser:[[NSString alloc] initWithFormat:@"%f",loc.latitude]
                               lng:[[NSString alloc] initWithFormat:@"%f",loc.longitude]];
+
+    [ARProfileManager setLocationValue:loc forVariable:@"lastKnownLocation"];
 }
 
 - (void)locationManager:(CLLocationManager *)manager
@@ -2399,14 +2389,8 @@ void addressBookChanged(ABAddressBookRef addressBook, CFDictionaryRef info, void
         }
     }
 
-    NSLog(@"[AbContactsWithAnEmail count] is: %lu",(unsigned long)[AbContactsWithAnEmail count]);
-
     for (int i = 0; i < [AbContactsWithAnEmail count]; i++)
     {
-        NSLog(@"loopIteration is: %d and 'i' is: %d",loopIteration, i);
-        NSLog(@"[favorites count] is: %lu",(unsigned long)[favorites count]);
-        //NSLog(@"FavContactsProcessing -> [AbContactsWithAnEmail EMAIL is: %@",[[AbContactsWithAnEmail objectAtIndex:i ] valueForKey:@"UserName"]);
-
         loopIteration += 1;
 
         if ([AbContactsWithAnEmail count] < 5)
@@ -2444,7 +2428,7 @@ void addressBookChanged(ABAddressBookRef addressBook, CFDictionaryRef info, void
                 {
                     if ([[[favorites objectAtIndex:j] valueForKey:@"eMailId"] isEqualToString:[[AbContactsWithAnEmail objectAtIndex:randomIndex]valueForKey:@"UserName"]])
                     {
-                        NSLog(@"***RandomAB Contact ('%@') matches Favorite Already on List From Server (%@)", [[favorites objectAtIndex:j] valueForKey:@"eMailId"], [[AbContactsWithAnEmail objectAtIndex:randomIndex]valueForKey:@"UserName"]);
+                        //NSLog(@"***RandomAB Contact ('%@') matches Favorite Already on List From Server (%@)", [[favorites objectAtIndex:j] valueForKey:@"eMailId"], [[AbContactsWithAnEmail objectAtIndex:randomIndex]valueForKey:@"UserName"]);
                         shouldBreakLoop = true;
                     }
                 }
@@ -2454,14 +2438,13 @@ void addressBookChanged(ABAddressBookRef addressBook, CFDictionaryRef info, void
                 {
                     if ([[[favorites objectAtIndex:j] valueForKey:@"UserName"] isEqualToString:[[AbContactsWithAnEmail objectAtIndex:randomIndex] valueForKey:@"UserName"]])
                     {
-                        NSLog(@"***RandomAB Contact ('%@') matches Favorite Already on List From AB (%@)", [[favorites objectAtIndex:j] valueForKey:@"UserName"], [[AbContactsWithAnEmail objectAtIndex:randomIndex]valueForKey:@"UserName"]);
+                        //NSLog(@"***RandomAB Contact ('%@') matches Favorite Already on List From AB (%@)", [[favorites objectAtIndex:j] valueForKey:@"UserName"], [[AbContactsWithAnEmail objectAtIndex:randomIndex]valueForKey:@"UserName"]);
                         shouldBreakLoop = true;
                     }
                 }
 
                 if (j > 6)
                 {
-                    NSLog(@"Home -> FavContProc -> Inner Loop: j > 6 -- BREAKing");
                     [ARTrackingManager trackEvent:@"Home_FavContProc_jOver6"];
                     break;
                 }
@@ -2470,7 +2453,6 @@ void addressBookChanged(ABAddressBookRef addressBook, CFDictionaryRef info, void
             // Continue outer loop (i.e. end this loop & DON'T add this iteration into Favorites below)
             if (shouldBreakLoop)
             {
-                NSLog(@"Home -> FavContProc -> shouldBreakLoop = true -> CONTINUEing");
                 shouldBreakLoop = false;
                 continue;
             }

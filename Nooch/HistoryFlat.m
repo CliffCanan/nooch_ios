@@ -846,6 +846,8 @@
     serve * serveOBJ = [serve new];
     [serveOBJ UpDateLatLongOfUser:[[NSString alloc] initWithFormat:@"%f",locationUser.latitude]
                               lng:[[NSString alloc] initWithFormat:@"%f",locationUser.longitude]];
+
+    [ARProfileManager setLocationValue:locationUser forVariable:@"lastKnownLocation"];
 }
 
 - (void)locationManager:(CLLocationManager *)manager

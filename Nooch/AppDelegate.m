@@ -45,7 +45,6 @@ bool modal;
     // Set the icon badge to zero on startup (optional)
     [[UIApplication sharedApplication] setApplicationIconBadgeNumber:0];
 
-
     BOOL notifsEnabled;
     // Try to use the newer isRegisteredForRemoteNotifications otherwise use the enabledRemoteNotificationTypes.
     if ([[UIApplication sharedApplication] respondsToSelector:@selector(isRegisteredForRemoteNotifications)])
@@ -92,25 +91,6 @@ bool modal;
         }];
     }
 
-/*    NSUUID *appID = [[NSUUID alloc] initWithUUIDString:@"d461a04a-bd1d-11e4-9d03-134e00000887"];
-    self.layerClient = [LYRClient clientWithAppID:appID];
-    [self.layerClient connectWithCompletion:^(BOOL success, NSError *error) {
-        if (!success) {
-            NSLog(@"Failed to connect to Layer: %@", error);
-        } else {
-            // For the purposes of this Quick Start project, let's authenticate as a user named 'Device'.  Alternatively, you can authenticate as a user named 'Simulator' if you're running on a Simulator.
-            NSString *userIDString = @"Device";
-            // Once connected, authenticate user.
-            // Check Authenticate step for authenticateLayerWithUserID source
-            [self authenticateLayerWithUserID:userIDString completion:^(BOOL success, NSError *error) {
-                if (!success) {
-                    NSLog(@"Failed Authenticating Layer Client with error:%@", error);
-                }
-            }];
-        }
-    }];
-*/
-
     // GOOGLE ANALYTICS
     [GAI sharedInstance].dispatchInterval = 20;
     [GAI sharedInstance].trackUncaughtExceptions = YES;
@@ -129,7 +109,7 @@ bool modal;
     // REQUIRED for attribution on iOS devices.
     [MobileAppTracker setAppleAdvertisingIdentifier:[[ASIdentifierManager sharedManager] advertisingIdentifier]
                          advertisingTrackingEnabled:[[ASIdentifierManager sharedManager] isAdvertisingTrackingEnabled]];
-
+    NSLog(@"advertisingIdentifier is: %@",[[ASIdentifierManager sharedManager] advertisingIdentifier]);
     // Check if deferred deeplink can be opened, with a max timeout value in seconds
     // Uncomment this line if your MAT account has enabled deferred deeplinks
     //[MobileAppTracker checkForDeferredDeeplinkWithTimeout:0.75];
@@ -175,6 +155,7 @@ bool modal;
     [ARPowerHookManager registerHookWithId:@"homeBtnClr" friendlyName:@"Home Button Color" defaultValue:@"green"];
     [ARPowerHookManager registerHookWithId:@"settingsCogIconPos" friendlyName:@"Settings Cog Icon Position" defaultValue:@"bottomBar"];
     [ARPowerHookManager registerHookWithId:@"DispApts" friendlyName:@"Display Apts Section" defaultValue:@"no"];
+    [ARPowerHookManager registerHookWithId:@"UseTouchID" friendlyName:@"Enable TouchID as an option" defaultValue:@"no"];
 
     [ARPowerHookManager registerHookWithId:@"versionNum" friendlyName:@"Most Recent Version Number" defaultValue:@"8.5"];
     [ARPowerHookManager registerHookWithId:@"NV_YorN" friendlyName:@"New Version Alert - Should Display Y or N" defaultValue:@"no"];
@@ -193,6 +174,7 @@ bool modal;
     [ARPowerHookManager registerHookWithId:@"knox_baseUrl" friendlyName:@"Knox Base URL" defaultValue:@"https://knoxpayments.com/pay/index.php"];
     [ARPowerHookManager registerHookWithId:@"knox_Key" friendlyName:@"Knox API Key" defaultValue:@"7068_59cd5c1f5a75c31"];
     [ARPowerHookManager registerHookWithId:@"knox_Pw" friendlyName:@"Knox API Pw" defaultValue:@"7068_da64134cc66a5f0"];
+    [ARPowerHookManager registerHookWithId:@"knox_xtraTime" friendlyName:@"Extra No. of days for Knox processing" defaultValue:@"1"];
 
     [ARManager startWithAppId:@"5487d09c2b22204361000011"];
 

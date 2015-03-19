@@ -1188,44 +1188,6 @@
                                                       }
                                                   }];
     }
-
-    
-   /* SLComposeViewController *controller = [SLComposeViewController composeViewControllerForServiceType:SLServiceTypeFacebook];
-    [controller setInitialText:post_text];
-    [controller addURL:[NSURL URLWithString:@"http://bit.ly/1xdG2le"]];
-
-    if (datos != nil) {
-        [controller addImage:[UIImage imageWithData:datos]];
-    }
-    [self presentViewController:controller animated:YES completion:Nil];
-
-    SLComposeViewControllerCompletionHandler myBlock = ^(SLComposeViewControllerResult result)
-    {
-        NSString *output = nil;
-        switch (result) {
-            case SLComposeViewControllerResultCancelled:
-                output = @"Action Cancelled";
-                NSLog (@"cancelled");
-                break;
-            case SLComposeViewControllerResultDone:
-                output = @"Post To Facebook Succesfull";
-                NSLog (@"success");
-                break;
-            default:
-                break;
-        }
-        if ([output isEqualToString:@"Post To Facebook Successfull"])
-        {
-            UIAlertView *alert = [[UIAlertView alloc] initWithTitle:output
-                                                            message:@"\xF0\x9F\x91\x8D"
-                                                           delegate:nil
-                                                  cancelButtonTitle:@"OK"
-                                                  otherButtonTitles:nil];
-            [alert show];
-        }
-        [controller dismissViewControllerAnimated:YES completion:Nil];
-    };
-    controller.completionHandler = myBlock;*/
 }
 
 // A function for parsing URL parameters returned by the FB Feed Dialog.
@@ -1669,7 +1631,6 @@
             dateFormatter.dateFormat = @"M/d/yyyy h:mm:ss a";
             
             NSDate *yourDate = [dateFormatter dateFromString:[tranDetailResult objectForKey:@"TransactionDate"]];
-            NSLog(@"1.) yourDate is: %@", yourDate);
             dateFormatter.dateFormat = @"dd-MMMM-yyyy";
             //[dateFormatter setTimeZone:[NSTimeZone localTimeZone]];
 
@@ -1749,12 +1710,9 @@
             if ([[self.trans valueForKey:@"DisputeId"] isKindOfClass:[NSNull class]] ||
                  [self.trans valueForKey:@"DisputeId"] == NULL )
             {
-                NSLog(@"2.) yourDate is: %@", yourDate);
-
                 if (![yourDate isKindOfClass:[NSNull class]] && yourDate != NULL)
                 {
                     NSArray *arrdate = [[dateFormatter stringFromDate:yourDate] componentsSeparatedByString:@"-"];
-                    NSLog(@"arrdate is: %@", arrdate);
 
                     UILabel *datelbl = [[UILabel alloc] initWithFrame:CGRectMake(80, 190, 160, 30)];
                     [datelbl setTextAlignment:NSTextAlignmentCenter]; 

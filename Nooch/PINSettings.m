@@ -8,7 +8,7 @@
 #import "Home.h"
 #import "ResetPIN.h"
 #import "ResetPassword.h"
-//#import <LocalAuthentication/LocalAuthentication.h>
+#import <LocalAuthentication/LocalAuthentication.h>
 
 @interface PINSettings () {
     UIScrollView * scrollView;
@@ -195,6 +195,10 @@
         [touchIdMenu setScrollEnabled:NO];
         [scrollView addSubview:touchIdMenu];
     }
+    else if ([self.view.subviews containsObject:touchIdMenu])
+    {
+        [touchIdMenu removeFromSuperview];
+    }
 }
 
 -(void)viewWillAppear:(BOOL)animated
@@ -217,12 +221,10 @@
     }
     else if (tableView == touchIdMenu)
     {
-        //if ([[user objectForKey:@"requiredTouchId"] boolValue] == YES)
-        //{
+        //if ([[user objectForKey:@"requiredTouchId"] boolValue] == YES) {
             return 3;
         /*}
-        else
-        {
+        else {
             return 1;
         }*/
     }
@@ -358,7 +360,6 @@
 
     [cell.contentView addSubview:title];
 
-    
     return cell;
 }
 
@@ -418,7 +419,12 @@
 
 -(void)changepin
 {
-    NSLog(@"2222 Checkpoint!!!!");
+    ResetPIN * reset = [ResetPIN new];
+    [self.navigationController presentViewController:reset animated:YES completion:nil];
+}
+
+-(void)touchId_PinCheck
+{
     ResetPIN * reset = [ResetPIN new];
     [self.navigationController presentViewController:reset animated:YES completion:nil];
 }
@@ -454,37 +460,78 @@
 
 - (void)touchIdTapped
 {
-    if ([self.touchId isOn])
+    if ([[assist shared] checkIfTouchIdAvailable] &&
+        [[user objectForKey:@"requiredTouchId"] boolValue] == YES)
     {
-        [UIView beginAnimations:@"expandTable" context:nil];
-        [UIView setAnimationDuration:0.3];
-        [UIView setAnimationDelegate:self];
-        [scrollView setContentSize:CGSizeMake(320, 675)];
-        [touchIdMenu setFrame:CGRectMake(-1, touchIdMenu.frame.origin.y, 322, 150)];
-        [UIView commitAnimations];
+        LAContext *context = [[LAContext alloc] init];
+        
+        [context evaluatePolicy:LAPolicyDeviceOwnerAuthenticationWithBiometrics
+                localizedReason:@"Are you the device owner?"
+                          reply:^(BOOL success, NSError *error) {
+                              if (error)
+                              {
+                                  UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Error"
+                                                                                  message:@"There was a problem verifying your identity."
+                                                                                 delegate:nil
+                                                                        cancelButtonTitle:@"Ok"
+                                                                        otherButtonTitles:nil];
+                                  [alert show];
+                                  
+                                  return;
+                              }
+                              
+                              if (success)
+                              {
+                                  UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Success"
+                                                                                  message:@"You are the device owner!"
+                                                                                 delegate:nil
+                                                                        cancelButtonTitle:@"Ok"
+                                                                        otherButtonTitles:nil];
+                                  [alert show];
 
-        [user setObject:@"YES" forKey:@"requiredTouchId"];
+                                  if ([self.touchId isOn])
+                                  {
+                                      [UIView beginAnimations:@"expandTable" context:nil];
+                                      [UIView setAnimationDuration:0.3];
+                                      [UIView setAnimationDelegate:self];
+                                      [scrollView setContentSize:CGSizeMake(320, 675)];
+                                      [touchIdMenu setFrame:CGRectMake(-1, touchIdMenu.frame.origin.y, 322, 150)];
+                                      [UIView commitAnimations];
 
-        NSMutableArray * rows = [[NSMutableArray alloc] init];
+                                      [user setObject:@"YES" forKey:@"requiredTouchId"];
 
-        NSIndexPath * row1 = [NSIndexPath indexPathForRow:1 inSection:0];
-        NSIndexPath * row2 = [NSIndexPath indexPathForRow:2 inSection:0];
-        [rows addObject:row1];
-        [rows addObject:row2];
+                                      NSMutableArray * rows = [[NSMutableArray alloc] init];
 
-        //[touchIdMenu reloadRowsAtIndexPaths:rows withRowAnimation:UITableViewRowAnimationFade];
-        //[touchIdMenu reloadData];
-    }
-    else
-    {
-        [UIView beginAnimations:@"contractTable" context:nil];
-        [UIView setAnimationDuration:0.3];
-        [UIView setAnimationDelegate:self];
-        [scrollView setContentSize:CGSizeMake(320, 630)];
-        [touchIdMenu setFrame:CGRectMake(-1, touchIdMenu.frame.origin.y, 322, 50)];
-        [UIView commitAnimations];
+                                      NSIndexPath * row1 = [NSIndexPath indexPathForRow:1 inSection:0];
+                                      NSIndexPath * row2 = [NSIndexPath indexPathForRow:2 inSection:0];
+                                      [rows addObject:row1];
+                                      [rows addObject:row2];
 
-        [user setObject:@"NO" forKey:@"requiredTouchId"];
+                                      //[touchIdMenu reloadRowsAtIndexPaths:rows withRowAnimation:UITableViewRowAnimationFade];
+                                      //[touchIdMenu reloadData];
+                                  }
+                                  else
+                                  {
+                                      [UIView beginAnimations:@"contractTable" context:nil];
+                                      [UIView setAnimationDuration:0.3];
+                                      [UIView setAnimationDelegate:self];
+                                      [scrollView setContentSize:CGSizeMake(320, 630)];
+                                      [touchIdMenu setFrame:CGRectMake(-1, touchIdMenu.frame.origin.y, 322, 50)];
+                                      [UIView commitAnimations];
+
+                                      [user setObject:@"NO" forKey:@"requiredTouchId"];
+                                  }
+                              }
+                              else
+                              {
+                                  UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Error"
+                                                                                  message:@"You are not the device owner."
+                                                                                 delegate:nil
+                                                                        cancelButtonTitle:@"Ok"
+                                                                        otherButtonTitles:nil];
+                                  [alert show];
+                              }
+                          }];
     }
 }
 

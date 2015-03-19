@@ -12,8 +12,6 @@
 #import "Reachability.h"
 #import <FacebookSDK/FacebookSDK.h>
 #import <GameThrive/GameThrive.h>
-//#import <LayerKit/LayerKit.h>
-
 
 UIImageView *splashView;
 bool rainbows;
@@ -28,7 +26,6 @@ bool inBack;
 @property (nonatomic,retain) id<GAITracker> tracker;
 @property (nonatomic,retain) NSDate *inactiveDate;
 @property (strong, nonatomic) GameThrive *gameThrive;
-//@property (strong, nonatomic) LYRClient * layerClient;
 
 - (void)sessionStateChanged:(FBSession *)session state:(FBSessionState) state error:(NSError *)error;
 - (void)userLoggedIn;

@@ -300,7 +300,7 @@
         title.text = NSLocalizedString(@"Settings_TableRowLbl3", @"Settings Screen table label row 3 - 'Security Settings'");
         [glyph setText:[NSString fontAwesomeIconStringForIconIdentifier:@"fa-bell"]];
     }
-    else if(indexPath.row == 3) {
+    else if (indexPath.row == 3) {
         title.text = NSLocalizedString(@"Settings_TableRowLbl4", @"Settings Screen table label row 4 - 'Social Settings'");
         [glyph setText:[NSString fontAwesomeIconStringForIconIdentifier:@"fa-facebook"]];
     }

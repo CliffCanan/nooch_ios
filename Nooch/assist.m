@@ -107,6 +107,13 @@ static assist * _sharedInstance = nil;
 }
 -(BOOL)checkIfTouchIdAvailable
 {
+    NSString * useTouchId = [ARPowerHookManager getValueForHookById:@"UseTouchID"];
+
+    if ([[useTouchId lowercaseString] isEqualToString:@"no"])
+    {
+        return NO;
+    }
+
     LAContext *context = [[LAContext alloc] init];
     NSError *error = nil;
     if ([context canEvaluatePolicy:LAPolicyDeviceOwnerAuthenticationWithBiometrics error:&error])

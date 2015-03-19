@@ -75,8 +75,10 @@
     self.pin = [UITextField new];
     [self.pin setKeyboardType:UIKeyboardTypeNumberPad];
     self.pin.inputAccessoryView = [[UIView alloc] init];
-    [self.pin setDelegate:self]; [self.pin setFrame:CGRectMake(800, 800, 20, 20)];
-    [self.view addSubview:self.pin]; [self.pin becomeFirstResponder];
+    [self.pin setDelegate:self];
+    [self.pin setFrame:CGRectMake(800, 800, 20, 20)];
+    [self.view addSubview:self.pin];
+    [self.pin becomeFirstResponder];
     
     //[self.navigationItem setTitle:@"Reset PIN "];
 
@@ -367,17 +369,17 @@
                                                 delegate:self
                                        cancelButtonTitle:@"OK"
                                        otherButtonTitles:NSLocalizedString(@"ResetPIN_SuspAlrtBtn", @"Reset PIN Failed account suspended Alert 'Contact Support' Btn"),nil];
-    [av setTag:202320];
+    [av setTag:202];
     [av show];
 }
 
 -(void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex
 {
-    if (alertView.tag == 202320 && buttonIndex==0)
+    if (alertView.tag == 202 && buttonIndex==0)
     {
         [nav_ctrl popToRootViewControllerAnimated:YES];
     }
-    else if (alertView.tag == 202320 && buttonIndex == 1)
+    else if (alertView.tag == 202 && buttonIndex == 1)
     {
         if (![MFMailComposeViewController canSendMail])
         {

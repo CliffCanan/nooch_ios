@@ -385,64 +385,48 @@
         [self.view addSubview:trans_image];
     }
 
-    if ([[user objectForKey:@"requiredTouchId"] boolValue] == YES)
+    if ([[assist shared] checkIfTouchIdAvailable] &&
+        [[user objectForKey:@"requiredTouchId"] boolValue] == YES)
     {
         LAContext *context = [[LAContext alloc] init];
-        
-        NSError *error = nil;
 
-        if ([context canEvaluatePolicy:LAPolicyDeviceOwnerAuthenticationWithBiometrics error:&error])
-        {
-            [context evaluatePolicy:LAPolicyDeviceOwnerAuthenticationWithBiometrics
-                    localizedReason:@"Are you the device owner?"
-                              reply:^(BOOL success, NSError *error) {
-                                  if (error)
-                                  {
-                                      UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Error"
-                                                                                      message:@"There was a problem verifying your identity."
-                                                                                     delegate:nil
-                                                                            cancelButtonTitle:@"Ok"
-                                                                            otherButtonTitles:nil];
-                                      [alert show];
+        [context evaluatePolicy:LAPolicyDeviceOwnerAuthenticationWithBiometrics
+                localizedReason:@"Are you the device owner?"
+                          reply:^(BOOL success, NSError *error) {
+                              if (error)
+                              {
+                                  UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Error"
+                                                                                  message:@"There was a problem verifying your identity."
+                                                                                 delegate:nil
+                                                                        cancelButtonTitle:@"Ok"
+                                                                        otherButtonTitles:nil];
+                                  [alert show];
 
-                                      [self backPressed:nil];
-                                      return;
-                                  }
+                                  [self backPressed:nil];
+                                  return;
+                              }
 
-                                  if (success)
-                                  {
-                                      UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Success"
-                                                                                      message:@"You are the device owner!"
-                                                                                     delegate:nil
-                                                                            cancelButtonTitle:@"Ok"
-                                                                            otherButtonTitles:nil];
-                                      [alert show];
-                                      
-                                  }
-                                  else
-                                  {
-                                      UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Error"
-                                                                                      message:@"You are not the device owner."
-                                                                                     delegate:nil
-                                                                            cancelButtonTitle:@"Ok"
-                                                                            otherButtonTitles:nil];
-                                      [alert show];
+                              if (success)
+                              {
+                                  UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Success"
+                                                                                  message:@"You are the device owner!"
+                                                                                 delegate:nil
+                                                                        cancelButtonTitle:@"Ok"
+                                                                        otherButtonTitles:nil];
+                                  [alert show];
+                              }
+                              else
+                              {
+                                  UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Error"
+                                                                                  message:@"You are not the device owner."
+                                                                                 delegate:nil
+                                                                        cancelButtonTitle:@"Ok"
+                                                                        otherButtonTitles:nil];
+                                  [alert show];
 
-                                      [self backPressed:nil];
-                                  }
-                              }];
-        }
-        /*else
-        {
-            UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Error"
-                                                            message:@"Your device cannot authenticate using TouchID."
-                                                           delegate:nil
-                                                  cancelButtonTitle:@"Ok"
-                                                  otherButtonTitles:nil];
-            [alert show];
-
-            [self backPressed:nil];
-        }*/
+                                  [self backPressed:nil];
+                              }
+                          }];
     }
 
     [[assist shared] setneedsReload:YES];
@@ -625,7 +609,7 @@
     {
         self.first_num.layer.borderColor = self.second_num.layer.borderColor = self.third_num.layer.borderColor = self.fourth_num.layer.borderColor = kNoochGreen.CGColor;
     }
-    else if([self.type isEqualToString:@"request"] || [self.type isEqualToString:@"requestRespond"])
+    else if ([self.type isEqualToString:@"request"] || [self.type isEqualToString:@"requestRespond"])
     {
         self.first_num.layer.borderColor = self.second_num.layer.borderColor = self.third_num.layer.borderColor = self.fourth_num.layer.borderColor = kNoochBlue.CGColor;
     }
@@ -659,7 +643,7 @@
         if ([self.type isEqualToString:@"send"] || [self.type isEqualToString:@"requestRespond"]) {
             color = kNoochGreen;
         }
-        else if([self.type isEqualToString:@"request"] ){
+        else if ([self.type isEqualToString:@"request"] ){
             color = kNoochBlue;
         }
 
@@ -703,7 +687,7 @@
         spinner1.color = [UIColor whiteColor];
         self.hud = [[MBProgressHUD alloc] initWithView:self.navigationController.view];
         [self.navigationController.view addSubview:self.hud];
-        
+
         self.hud.mode = MBProgressHUDModeCustomView;
         self.hud.customView = spinner1;
         self.hud.delegate = self;
@@ -1303,7 +1287,6 @@
             }
             NSLog(@"Input: %@",input);
 
-            NSLog(@"TransferPIN -> nav_ctrl.viewControllers is: %@", nav_ctrl.viewControllers);
             NSMutableArray * arrNav = [nav_ctrl.viewControllers mutableCopy];
             
             for (short i = [arrNav count]; i > 1; i--)
@@ -1801,73 +1784,114 @@ NSString * calculateArrivalDate()
     NSDate *date = [NSDate date];
     
     NSDateFormatter *dateFormat = [[NSDateFormatter alloc] init];
+    dateFormat.timeZone = [NSTimeZone timeZoneWithName:@"America/New_York"];
     [dateFormat setDateFormat:@"E"];
     NSString * dateString = [dateFormat stringFromDate:date];
     
     NSDateFormatter * timeFormat = [[NSDateFormatter alloc] init];
+    timeFormat.timeZone = [NSTimeZone timeZoneWithName:@"America/New_York"];
     [timeFormat setDateFormat:@"k"];
     short timeOfDay = [[timeFormat stringFromDate:date] intValue];
     
-    NSLog(@"Today's Day of Week: %@", dateString);
-    NSLog(@"Time of Day: %d", timeOfDay);
+    //NSLog(@"Today's Day of Week: %@", dateString);
+    NSLog(@"Time of Day (Hour) is: %d", timeOfDay);
     
     NSDateComponents *offsetComponents = [[NSDateComponents alloc] init];
-    
+    short knoxXtraDays = [[ARPowerHookManager getValueForHookById:@"knox_xtraTime"] intValue];
+
     if ([dateString isEqualToString:@"Mon"] ||
         [dateString isEqualToString:@"Tues"] ||
         [dateString isEqualToString:@"Wed"])
     {
         if (timeOfDay < 15) // its BEFORE 3:00pm EST
         {
-            [offsetComponents setDay:2];
+            [offsetComponents setDay: (1 + knoxXtraDays)];
         }
         else // its AFTER 3:00pm EST
         {
             if ([dateString isEqualToString:@"Mon"] ||
                 [dateString isEqualToString:@"Tues"])
             {
-                [offsetComponents setDay:3];
+                [offsetComponents setDay:(2 + knoxXtraDays)];
             }
             else if ([dateString isEqualToString:@"Wed"])
             {
-                [offsetComponents setDay:5];
+                if (knoxXtraDays == 0)
+                {
+                    [offsetComponents setDay:2]; // arrive by Friday
+                }
+                else if (knoxXtraDays == 1)
+                {
+                    [offsetComponents setDay:5]; // arrive by Monday
+                }
+                else
+                {
+                    [offsetComponents setDay:(5 + knoxXtraDays)];
+                }
             }
         }
     }
-    else if ([dateString isEqualToString:@"Thurs"] ||
-             [dateString isEqualToString:@"Fri"])
+    else if ([dateString isEqualToString:@"Thurs"])
     {
         if (timeOfDay < 15) // its BEFORE 3:00pm EST
         {
-            [offsetComponents setDay:4];
+            if (knoxXtraDays == 0)
+            {
+                [offsetComponents setDay:1]; // arrive by Friday
+            }
+            else if (knoxXtraDays == 1)
+            {
+                [offsetComponents setDay:4]; // arrive by Monday
+            }
+            else
+            {
+                [offsetComponents setDay:(4 + knoxXtraDays)];
+            }
         }
         else // its AFTER 3:00pm EST
         {
-            [offsetComponents setDay:4];
+            [offsetComponents setDay:(4 + knoxXtraDays)];
+        }
+    }
+    else if ([dateString isEqualToString:@"Fri"])
+    {
+        if (timeOfDay < 15) // its BEFORE 3:00pm EST
+        {
+            [offsetComponents setDay:(3 + knoxXtraDays)];
+        }
+        else // its AFTER 3:00pm EST
+        {
+            [offsetComponents setDay:(4 + knoxXtraDays)];
         }
     }
     else if ([dateString isEqualToString:@"Sat"])
     {
-        [offsetComponents setDay:4];
+        [offsetComponents setDay:(3 + knoxXtraDays)];
     }
     else if ([dateString isEqualToString:@"Sun"])
     {
-        [offsetComponents setDay:3];
+        [offsetComponents setDay:(2 + knoxXtraDays)];
     }
-    
+
     NSDate * arrivalDate = [[[NSCalendar alloc]
                              initWithCalendarIdentifier:NSGregorianCalendar] dateByAddingComponents:offsetComponents
                             toDate:date options:0];
-    
-    
-    NSString *formatString = [NSDateFormatter dateFormatFromTemplate:@"EEEEdMMMM" options:0 // e.g.: "Monday, March 15"
+
+    NSString *formatString = [NSDateFormatter dateFormatFromTemplate:@"EEEEdMMMM" // e.g.: "Monday, March 15"
+                                                             options:0
                                                               locale:[NSLocale currentLocale]];
-    NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
-    [dateFormatter setDateFormat:formatString];
+    NSDateFormatter * finalDateFormatter = [[NSDateFormatter alloc] init];
+    finalDateFormatter.timeZone = [NSTimeZone timeZoneWithName:@"America/New_York"];
+    [finalDateFormatter setDateFormat:formatString];
+
+    NSString * arrivalDateFormatted = [finalDateFormatter stringFromDate:arrivalDate];
     
-    NSString * arrivalDateFormatted = [dateFormatter stringFromDate:arrivalDate];
-    
-    NSLog(@"NEW todayString: %@", arrivalDateFormatted);
+
+
+    NSTimeZone * systimeZone = [NSTimeZone systemTimeZone];
+    NSString * timeZoneString = [systimeZone localizedName:NSTimeZoneNameStyleGeneric locale:[NSLocale currentLocale]];
+
+    [ARProfileManager registerString:@"Time_Zone" withValue:timeZoneString];
 
     return arrivalDateFormatted;
 }

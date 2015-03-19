@@ -280,8 +280,8 @@
     [self.view addSubview:self.pwValidator];
 
     UILabel * checkbox_box = [UILabel new];
-    [checkbox_box setFrame:CGRectMake(36, 385, 21, 20)];
-    [checkbox_box setFont:[UIFont fontWithName:@"FontAwesome" size:20]];
+    [checkbox_box setFrame:CGRectMake(35, 385, 21, 20)];
+    [checkbox_box setFont:[UIFont fontWithName:@"FontAwesome" size:19]];
     [checkbox_box setTextAlignment:NSTextAlignmentCenter];
     [checkbox_box setText:[NSString fontAwesomeIconStringForIconIdentifier:@"fa-square-o"]];
     [checkbox_box setTextColor:kNoochGreen];
@@ -290,7 +290,7 @@
     UIButton * checkbox_dot = [UIButton buttonWithType:UIButtonTypeRoundedRect];
     [checkbox_dot setBackgroundColor:[UIColor clearColor]];
     [checkbox_dot setTitle:@"  " forState:UIControlStateNormal];
-    [checkbox_dot setFrame:CGRectMake(31, 380, 31, 30)];
+    [checkbox_dot setFrame:CGRectMake(33, 377, 31, 30)];
     [checkbox_dot setStyleId:@"checkbox_dot"];
     [checkbox_dot addTarget:self action:@selector(termsAndConditions:) forControlEvents:UIControlEventTouchUpInside];
     isTermsChecked = NO;
@@ -571,7 +571,7 @@
     else
     {
         isTermsChecked = YES;
-        [sender setTitle:[NSString fontAwesomeIconStringForIconIdentifier:@"fa-circle"] forState:UIControlStateNormal];
+        [sender setTitle:[NSString fontAwesomeIconStringForIconIdentifier:@"fa-check"] forState:UIControlStateNormal];
         [sender setStyleId:@"checkbox_dot"];
     }
 }

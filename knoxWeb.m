@@ -100,7 +100,7 @@
     self.hud.labelText = @"Preparing Secure Connection";
     [self.hud show:YES];
 
-    NSString * knoxBaseUrl = [ARPowerHookManager getValueForHookById:@"knox_Key"];
+    NSString * knoxBaseUrl = [ARPowerHookManager getValueForHookById:@"knox_baseUrl"];
     NSString * k_Key = [ARPowerHookManager getValueForHookById:@"knox_Key"];
     NSString * k_pw = [ARPowerHookManager getValueForHookById:@"knox_Pw"];
 
