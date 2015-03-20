@@ -395,8 +395,9 @@
                           reply:^(BOOL success, NSError *error) {
                               if (error)
                               {
-                                  UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Error"
-                                                                                  message:@"There was a problem verifying your identity."
+                                  NSLog(@"TouchID Error is: %@",error);
+                                  UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"TouchID Error"
+                                                                                  message:@"There was a problem verifying your identity.\n\nYou have TouchID turned on for making payments. To turn this off, please go to Nooch's settings and select \"Security Settings\"."
                                                                                  delegate:nil
                                                                         cancelButtonTitle:@"Ok"
                                                                         otherButtonTitles:nil];
@@ -417,8 +418,17 @@
                               }
                               else
                               {
-                                  UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Error"
-                                                                                  message:@"You are not the device owner."
+                                  NSString * alertBody;
+                                  if ([[user objectForKey:@"requiredTouchId"] boolValue] == YES)
+                                  {
+                                      alertBody = @"You have TouchID turned on for making payments. To turn this off, please go to Nooch's settings and select \"Security Settings\".";
+                                  }
+                                  else
+                                  {
+                                      alertBody = @"You are not the device owner.";
+                                  }
+                                  UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"TouchID Error"
+                                                                                  message:alertBody
                                                                                  delegate:nil
                                                                         cancelButtonTitle:@"Ok"
                                                                         otherButtonTitles:nil];

@@ -122,7 +122,7 @@ static assist * _sharedInstance = nil;
     }
     else
     {
-        return YES;
+        return NO;
     }
 }
 -(BOOL)needsReload

@@ -2960,7 +2960,17 @@ table-view#emptyTable {
     font-size   : 20px;
     color       : #3fabe1;
     text-align: center;
-}	
+}
+.table_glyph_sm {
+    left        : 14px;
+    top         : 21px;
+    width       : 22px;
+    height      : 18px;
+    font-family : "FontAwesome";
+    font-size   : 13px;
+    color       : #72bf44;
+    text-align: center;
+}
 .table_arrow {
     left        : 290px;
     top         : 10px;
@@ -2971,7 +2981,11 @@ table-view#emptyTable {
     font-size   : 24px;
     text-align  : right;
 }
-
+#table_glyph_touchID {
+    font-size:19px;
+    top:3px;
+    height:31px;
+}
 .background_gray { background-color: #efeff4; }
 
 #account_background {
@@ -3088,6 +3102,17 @@ table-view#settings_resetpw {
     font-family	: "Roboto";
     font-weight	: regular;
     font-size	: 17px;
+    text-align	: left;
+}
+.settings_table_label_smaller {
+    width		: 250px;
+    height		: 50px;
+    top			: 0px;
+    left		: 50px;
+    color		: #313233;
+    font-family	: "Roboto";
+    font-weight	: light;
+    font-size	: 16px;
     text-align	: left;
 }
 /**  Gray Signout Button. **/

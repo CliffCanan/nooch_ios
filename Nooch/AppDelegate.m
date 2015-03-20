@@ -12,7 +12,6 @@
 #import "ReEnterPin.h"
 #import "ProfileInfo.h"
 #import "Appirater.h"
-#import <MobileAppTracker/MobileAppTracker.h>
 #import <AdSupport/AdSupport.h>
 
 @implementation AppDelegate
@@ -110,6 +109,9 @@ bool modal;
     [MobileAppTracker setAppleAdvertisingIdentifier:[[ASIdentifierManager sharedManager] advertisingIdentifier]
                          advertisingTrackingEnabled:[[ASIdentifierManager sharedManager] isAdvertisingTrackingEnabled]];
     NSLog(@"advertisingIdentifier is: %@",[[ASIdentifierManager sharedManager] advertisingIdentifier]);
+    [MobileAppTracker setDelegate:self];
+    // enable MAT debug mode
+    [MobileAppTracker setDebugMode:NO];
     // Check if deferred deeplink can be opened, with a max timeout value in seconds
     // Uncomment this line if your MAT account has enabled deferred deeplinks
     //[MobileAppTracker checkForDeferredDeeplinkWithTimeout:0.75];
@@ -123,6 +125,8 @@ bool modal;
     //if (isExistingUser) {
     //    [MobileAppTracker setExistingUser:YES];
     //}
+    [MobileAppTracker measureSession];
+
 
     // Whenever a person opens the app, check for a cached FB session
     if (FBSession.activeSession.state == FBSessionStateCreatedTokenLoaded)
@@ -273,16 +277,16 @@ void exceptionHandler(NSException *exception){
 
 - (void)applicationDidBecomeActive:(UIApplication *)application
 {
+    NSLog(@"applicationDidBecomeActive fired");
     // Restart any tasks that were paused (or not yet started) while the application was inactive. If the application was previously in the background, optionally refresh the user interface.
 
     NSString * path = [[NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES) objectAtIndex:0] stringByAppendingPathComponent:[NSString stringWithFormat:@"autoLogin.plist"]];
 
     if ([[NSFileManager defaultManager] fileExistsAtPath:path])
     {
-        [MobileAppTracker setExistingUser:YES];
+        //[MobileAppTracker setExistingUser:YES];
         [[assist shared] getAcctInfo];
     }
-    [MobileAppTracker measureSession];
 
     // Call the 'activateApp' method to log an app event for use in analytics and advertising reporting.
     [FBAppEvents activateApp];
@@ -476,125 +480,52 @@ void exceptionHandler(NSException *exception){
         return YES;
     }
 
-    [MobileAppTracker applicationDidOpenURL:[url absoluteString] sourceApplication:sourceApplication];
+    if ([[url absoluteString] rangeOfString:@"knox"].location != NSNotFound)
+    {
+        //Get the Response from Knox and parse it
+        NSString *response = [[url absoluteString]stringByReplacingPercentEscapesUsingEncoding:NSUTF8StringEncoding];
+        NSArray *URLParse = [response componentsSeparatedByString:@"?"];
+        NSLog(@"%@",URLParse);
+        NSString *responseBody = URLParse[1];
+        NSLog(@"%@",responseBody);
+        NSArray *responseParse = [responseBody componentsSeparatedByString:@"&"];
+        
+        //Parse the components of the response
+        NSLog(@"%@",responseParse);
+        NSArray * isPaid = [responseParse[0] componentsSeparatedByString:@"pst="][1];
+        NSLog(@"%@",isPaid);
+        NSString * paymentID = [responseParse[2] componentsSeparatedByString:@"pay_id="][1];
 
-    //Get the Response from Knox and parse it
-    NSString *response = [[url absoluteString]stringByReplacingPercentEscapesUsingEncoding:NSUTF8StringEncoding];
-    NSArray *URLParse = [response componentsSeparatedByString:@"?"];
-    NSLog(@"%@",URLParse);
-    NSString *responseBody = URLParse[1];
-    NSLog(@"%@",responseBody);
-    NSArray *responseParse = [responseBody componentsSeparatedByString:@"&"];
-    
-    //Parse the components of the response
-    NSLog(@"%@",responseParse);
-    NSArray * isPaid = [responseParse[0] componentsSeparatedByString:@"pst="][1];
-    NSLog(@"%@",isPaid);
-    NSString * paymentID = [responseParse[2] componentsSeparatedByString:@"pay_id="][1];
+        //Components of response are Logged here
+        NSLog(@"fired in Delegate - URL Encoded --> IsPaid: %@   paymentID: %@", isPaid, paymentID);
+        NSUserDefaults * defaults = [NSUserDefaults standardUserDefaults];
+        [defaults setObject:isPaid forKey:@"isPaid"];
+        [defaults setObject:paymentID forKey:@"paymentID"];
 
-    //Components of response are Logged here
-    NSLog(@"fired in Delegate - URL Encoded --> IsPaid: %@   paymentID: %@", isPaid, paymentID);
-    NSUserDefaults * defaults = [NSUserDefaults standardUserDefaults];
-    [defaults setObject:isPaid forKey:@"isPaid"];
-    [defaults setObject:paymentID forKey:@"paymentID"];
+        [defaults synchronize];
+        
+        //Send Notification to WebView so it can resign itself and to the parent view if desired to handle response and give success notification etc.
+        [[NSNotificationCenter defaultCenter]
+        postNotificationName:@"KnoxResponse" object:self];
+    }
+    else
+    {
+        [MobileAppTracker applicationDidOpenURL:[url absoluteString] sourceApplication:sourceApplication];
+    }
 
-    [defaults synchronize];
-    
-    //Send Notification to WebView so it can resign itself and to the parent view if desired to handle response and give success notification etc.
-    [[NSNotificationCenter defaultCenter]
-    postNotificationName:@"KnoxResponse" object:self];
     return YES;
 }
 
-/*
-- (void)authenticateLayerWithUserID:(NSString *)userID completion:(void (^)(BOOL success, NSError * error))completion
+// MAT measurement request success callback
+- (void)mobileAppTrackerDidSucceedWithData:(id)data
 {
-    // If the user is authenticated you don't need to re-authenticate.
-    if (self.layerClient.authenticatedUserID) {
-        NSLog(@"Layer Authenticated as User %@", self.layerClient.authenticatedUserID);
-        if (completion) completion(YES, nil);
-        return;
-    }
-    
-    ** 1. Request an authentication Nonce from Layer *
-    [self.layerClient requestAuthenticationNonceWithCompletion:^(NSString *nonce, NSError *error) {
-        if (!nonce) {
-            if (completion) {
-                completion(NO, error);
-            }
-            return;
-        }
-        
-        ** 2. Acquire identity Token from Layer Identity Service *
-        [self requestIdentityTokenForUserID:userID appID:[self.layerClient.appID UUIDString] nonce:nonce completion:^(NSString *identityToken, NSError *error) {
-            if (!identityToken) {
-                if (completion) {
-                    completion(NO, error);
-                }
-                return;
-            }
-            
-            ** 3. Submit identity token to Layer for validation *
-            [self.layerClient authenticateWithIdentityToken:identityToken completion:^(NSString *authenticatedUserID, NSError *error) {
-                if (authenticatedUserID) {
-                    if (completion) {
-                        completion(YES, nil);
-                    }
-                    NSLog(@"Layer Authenticated as User: %@", authenticatedUserID);
-                } else {
-                    completion(NO, error);
-                }
-            }];
-        }];
-    }];
+    NSString *response = [[NSString alloc] initWithData:data encoding:NSUTF8StringEncoding];
+    NSLog(@"MAT.success: %@", response);
+}
+// MAT measurement request failure callback
+- (void)mobileAppTrackerDidFailWithError:(NSError *)error
+{
+    NSLog(@"MAT.failure: %@", error);
 }
 
-- (void)requestIdentityTokenForUserID:(NSString *)userID appID:(NSString *)appID nonce:(NSString *)nonce completion:(void(^)(NSString *identityToken, NSError *error))completion
-{
-    NSParameterAssert(userID);
-    NSParameterAssert(appID);
-    NSParameterAssert(nonce);
-    NSParameterAssert(completion);
-    
-    NSURL *identityTokenURL = [NSURL URLWithString:@"https://layer-identity-provider.herokuapp.com/identity_tokens"];
-    NSMutableURLRequest *request = [NSMutableURLRequest requestWithURL:identityTokenURL];
-    request.HTTPMethod = @"POST";
-    [request setValue:@"application/json" forHTTPHeaderField:@"Content-Type"];
-    [request setValue:@"application/json" forHTTPHeaderField:@"Accept"];
-    
-    NSDictionary *parameters = @{ @"app_id": appID, @"user_id": userID, @"nonce": nonce };
-    NSData *requestBody = [NSJSONSerialization dataWithJSONObject:parameters options:0 error:nil];
-    request.HTTPBody = requestBody;
-    
-    NSURLSessionConfiguration *sessionConfiguration = [NSURLSessionConfiguration ephemeralSessionConfiguration];
-    NSURLSession *session = [NSURLSession sessionWithConfiguration:sessionConfiguration];
-    [[session dataTaskWithRequest:request completionHandler:^(NSData *data, NSURLResponse *response, NSError *error) {
-        if (error) {
-            completion(nil, error);
-            return;
-        }
-        
-        // Deserialize the response
-        NSDictionary *responseObject = [NSJSONSerialization JSONObjectWithData:data options:0 error:nil];
-        if(![responseObject valueForKey:@"error"])
-        {
-            NSString *identityToken = responseObject[@"identity_token"];
-            completion(identityToken, nil);
-        }
-        else
-        {
-            NSString *domain = @"layer-identity-provider.herokuapp.com";
-            NSInteger code = [responseObject[@"status"] integerValue];
-            NSDictionary *userInfo =
-            @{
-              NSLocalizedDescriptionKey: @"Layer Identity Provider Returned an Error.",
-              NSLocalizedRecoverySuggestionErrorKey: @"There may be a problem with your APPID."
-              };
-            
-            NSError *error = [[NSError alloc] initWithDomain:domain code:code userInfo:userInfo];
-            completion(nil, error);
-        }
-        
-    }] resume];
-}*/
 @end

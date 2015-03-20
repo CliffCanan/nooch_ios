@@ -12,12 +12,13 @@
 #import "Reachability.h"
 #import <FacebookSDK/FacebookSDK.h>
 #import <GameThrive/GameThrive.h>
+#import <MobileAppTracker/MobileAppTracker.h>
 
 UIImageView *splashView;
 bool rainbows;
 bool inBack;
 
-@interface AppDelegate : UIResponder <UIApplicationDelegate>{
+@interface AppDelegate : UIResponder <UIApplicationDelegate, MobileAppTrackerDelegate>{
     UIImageView * noConnectionView;
     Reachability * hostReach;
     Reachability * internetReach;

@@ -573,7 +573,7 @@ NSString *amnt;
                 [nav_ctrl performSelector:@selector(disable)];
                 [nav_ctrl performSelector:@selector(reset)];
 
-                NSLog(@"Serve -> nav_ctrl.viewControllers is: %@", nav_ctrl.viewControllers);
+                //NSLog(@"Serve -> nav_ctrl.viewControllers is: %@", nav_ctrl.viewControllers);
                 NSMutableArray * arrNav = [nav_ctrl.viewControllers mutableCopy];
 
                 for (short i = [arrNav count]; i > 1; i--)

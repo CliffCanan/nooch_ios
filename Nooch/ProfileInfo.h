@@ -16,7 +16,8 @@
 BOOL isProfileOpenFromSideBar, sentFromHomeScrn, isFromSettingsOptions;
 @interface ProfileInfo : GAITrackedViewController<UINavigationControllerDelegate,UITextFieldDelegate,UITableViewDataSource,UITableViewDelegate,serveD,DecryptionDelegate,UIActionSheetDelegate,UIImagePickerControllerDelegate,UIScrollViewDelegate,MBProgressHUDDelegate,UIAlertViewDelegate>
 {
-    int down,option,rowHeight,numberOfRowsToDisplay,heightOfTopSection;
+    short down,option,numberOfRowsToDisplay,heightOfTopSection;
+    short hdrHt,rowHeight;
     NSString *recoverMail;
     NSString *timezoneStandard;
     NSString*getEncryptedPasswordValue;

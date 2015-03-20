@@ -13,6 +13,6 @@
 {
     NSDictionary*Dictresponse;
     UIButton * tableRowArrow;
-    BOOL touch1selected, touch2selected;
+    BOOL touch1selected, touchForPayments;
 }
 @end

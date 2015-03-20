@@ -64,19 +64,6 @@
 
     [self.navigationItem setLeftBarButtonItem:backBtn];
 
-    /*LAContext *context = [[LAContext alloc] init];
-    NSError *error = nil;
-
-    if ([context canEvaluatePolicy:LAPolicyDeviceOwnerAuthenticationWithBiometrics error:&error])
-    {
-        hasTouchIdAvailable = true;
-    }
-    else
-    {
-        hasTouchIdAvailable = false;
-    }*/
-
-
     scrollView = [[UIScrollView alloc] initWithFrame:CGRectMake(0, 0,
                                                             [[UIScreen mainScreen] bounds].size.width, [[UIScreen mainScreen] bounds].size.height)];
     [scrollView setDelegate:self];
@@ -84,7 +71,7 @@
     if ([[assist shared] checkIfTouchIdAvailable] &&
         [[user objectForKey:@"requiredTouchId"] boolValue] == YES)
     {
-        [scrollView setContentSize:CGSizeMake(320, 675)];
+        [scrollView setContentSize:CGSizeMake(320, 668)];
     }
     else if ([[assist shared] checkIfTouchIdAvailable] &&
              [[user objectForKey:@"requiredTouchId"] boolValue] == NO)
@@ -181,11 +168,14 @@
         touchIdMenu = [UITableView new];
         if ([[user objectForKey:@"requiredTouchId"] boolValue] == YES)
         {
-            [touchIdMenu setFrame:CGRectMake(-1, 442, 322, 150)];
+            [touchIdMenu setFrame:CGRectMake(-1, 442, 322, 100)];
+            touchForPayments = YES;
         }
         else
         {
             [touchIdMenu setFrame:CGRectMake(-1, 442, 322, 50)];
+            [user setObject:@"NO" forKey:@"requiredTouchId"];
+            touchForPayments = NO;
         }
         [touchIdMenu setStyleId:@"settings"];
         touchIdMenu.layer.borderColor = Rgb2UIColor(188, 190, 192, 0.85).CGColor;
@@ -195,7 +185,7 @@
         [touchIdMenu setScrollEnabled:NO];
         [scrollView addSubview:touchIdMenu];
     }
-    else if ([self.view.subviews containsObject:touchIdMenu])
+    else if ([scrollView.subviews containsObject:touchIdMenu])
     {
         [touchIdMenu removeFromSuperview];
     }
@@ -221,12 +211,7 @@
     }
     else if (tableView == touchIdMenu)
     {
-        //if ([[user objectForKey:@"requiredTouchId"] boolValue] == YES) {
-            return 3;
-        /*}
-        else {
-            return 1;
-        }*/
+        return 2;
     }
     return 1;
 }
@@ -322,30 +307,26 @@
             {
                 [self.touchId setOn:YES animated:YES];
             }
+            else
+            {
+                [self.touchId setOn:NO animated:YES];
+            }
             [cell.contentView addSubview:self.touchId];
-            [cell setAccessoryType:UITableViewCellAccessoryNone];
-            [cell setSelectionStyle:UITableViewCellSelectionStyleNone];
         }
         else if (indexPath.row == 1)
         {
-            [title setStyleClass:@"settings_table_label_unIndented"];
-            title.text = @"Require For Logging In";
+            [glyph setStyleId:@"table_glyph_touchID"];
+            [glyph setText:[NSString fontAwesomeIconStringForIconIdentifier:@"fa-share"]];
 
-            if (touch1selected == YES)
-            {
-                cell.accessoryType = UITableViewCellAccessoryCheckmark;
-            }
-            else
-            {
-                cell.accessoryType = UITableViewCellAccessoryNone;
-            }
-        }
-        else if (indexPath.row == 2)
-        {
-            [title setStyleClass:@"settings_table_label_unIndented"];
+            UILabel *glyph2 = [UILabel new];
+            [glyph2 setStyleClass:@"table_glyph_sm"];
+            [glyph2 setText:[NSString fontAwesomeIconStringForIconIdentifier:@"fa-usd"]];
+            [cell.contentView addSubview:glyph2];
+
+            [title setStyleClass:@"settings_table_label_smaller"];
             title.text = @"Require For Making Payments";
 
-            if (touch2selected == YES)
+            if (touchForPayments == YES)
             {
                 cell.accessoryType = UITableViewCellAccessoryCheckmark;
             }
@@ -354,8 +335,23 @@
                 cell.accessoryType = UITableViewCellAccessoryNone;
             }
         }
+        /*else if (indexPath.row == 1)
+         {
+         [title setStyleClass:@"settings_table_label_unIndented"];
+         title.text = @"Require For Logging In";
+         
+         if (touch1selected == YES)
+         {
+         cell.accessoryType = UITableViewCellAccessoryCheckmark;
+         }
+         else
+         {
+         cell.accessoryType = UITableViewCellAccessoryNone;
+         }
+         }*/
 
         [cell.contentView addSubview:glyph];
+        [cell setSelectionStyle:UITableViewCellSelectionStyleNone];
     }
 
     [cell.contentView addSubview:title];
@@ -383,20 +379,24 @@
     }
     else if (tableView == touchIdMenu)
     {
-        if (indexPath.row == 1)
+        /*if (indexPath.row == 1)
         {
             if (touch1selected == YES)
                 touch1selected = NO;
             else
                 touch1selected = YES;
         }
-        if (indexPath.row == 2)
+        if (indexPath.row == 1)
         {
-            if (touch2selected == YES)
-                touch2selected = NO;
+            if (touchForPayments == YES)
+            {
+                touchForPayments = NO;
+            }
             else
-                touch2selected = YES;
-        }
+            {
+                touchForPayments = YES;
+            }
+        }*/
         if (indexPath.row != 0)
         {
             [tableView reloadRowsAtIndexPaths:[NSArray arrayWithObject:indexPath]
@@ -418,12 +418,6 @@
 }
 
 -(void)changepin
-{
-    ResetPIN * reset = [ResetPIN new];
-    [self.navigationController presentViewController:reset animated:YES completion:nil];
-}
-
--(void)touchId_PinCheck
 {
     ResetPIN * reset = [ResetPIN new];
     [self.navigationController presentViewController:reset animated:YES completion:nil];
@@ -460,13 +454,14 @@
 
 - (void)touchIdTapped
 {
-    if ([[assist shared] checkIfTouchIdAvailable] &&
-        [[user objectForKey:@"requiredTouchId"] boolValue] == YES)
+    NSLog(@"touchIdTapped meathod started");
+
+    if (![[assist shared] checkIfTouchIdAvailable])
     {
         LAContext *context = [[LAContext alloc] init];
         
         [context evaluatePolicy:LAPolicyDeviceOwnerAuthenticationWithBiometrics
-                localizedReason:@"Are you the device owner?"
+                localizedReason:@"Are you the owner of this device?"
                           reply:^(BOOL success, NSError *error) {
                               if (error)
                               {
@@ -476,51 +471,13 @@
                                                                         cancelButtonTitle:@"Ok"
                                                                         otherButtonTitles:nil];
                                   [alert show];
-                                  
+                                  [self resetTouchIdSwitch];
                                   return;
                               }
-                              
+
                               if (success)
                               {
-                                  UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Success"
-                                                                                  message:@"You are the device owner!"
-                                                                                 delegate:nil
-                                                                        cancelButtonTitle:@"Ok"
-                                                                        otherButtonTitles:nil];
-                                  [alert show];
-
-                                  if ([self.touchId isOn])
-                                  {
-                                      [UIView beginAnimations:@"expandTable" context:nil];
-                                      [UIView setAnimationDuration:0.3];
-                                      [UIView setAnimationDelegate:self];
-                                      [scrollView setContentSize:CGSizeMake(320, 675)];
-                                      [touchIdMenu setFrame:CGRectMake(-1, touchIdMenu.frame.origin.y, 322, 150)];
-                                      [UIView commitAnimations];
-
-                                      [user setObject:@"YES" forKey:@"requiredTouchId"];
-
-                                      NSMutableArray * rows = [[NSMutableArray alloc] init];
-
-                                      NSIndexPath * row1 = [NSIndexPath indexPathForRow:1 inSection:0];
-                                      NSIndexPath * row2 = [NSIndexPath indexPathForRow:2 inSection:0];
-                                      [rows addObject:row1];
-                                      [rows addObject:row2];
-
-                                      //[touchIdMenu reloadRowsAtIndexPaths:rows withRowAnimation:UITableViewRowAnimationFade];
-                                      //[touchIdMenu reloadData];
-                                  }
-                                  else
-                                  {
-                                      [UIView beginAnimations:@"contractTable" context:nil];
-                                      [UIView setAnimationDuration:0.3];
-                                      [UIView setAnimationDelegate:self];
-                                      [scrollView setContentSize:CGSizeMake(320, 630)];
-                                      [touchIdMenu setFrame:CGRectMake(-1, touchIdMenu.frame.origin.y, 322, 50)];
-                                      [UIView commitAnimations];
-
-                                      [user setObject:@"NO" forKey:@"requiredTouchId"];
-                                  }
+                                  [self toggleTableExpandContract];
                               }
                               else
                               {
@@ -530,8 +487,106 @@
                                                                         cancelButtonTitle:@"Ok"
                                                                         otherButtonTitles:nil];
                                   [alert show];
+                                  [self resetTouchIdSwitch];
                               }
+                              return;
                           }];
+    }
+    else
+    {
+        UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Error"
+                                                        message:@"TouchID is not available on this device \n(...which makes one wonder how you would even see this message)."
+                                                       delegate:self
+                                              cancelButtonTitle:@"Ok"
+                                              otherButtonTitles:nil];
+        [alert setTag:11];
+        [alert show];
+
+        if (![self.touchId isOn])
+        {
+            [user setObject:@"YES" forKey:@"requiredTouchId"];
+            [self toggleTableExpandContract];
+        }
+        else
+        {
+            [self resetTouchIdSwitch];
+        }
+    }
+}
+
+-(void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex
+{
+    NSLog(@"Checkpoint #1");
+    if (alertView.tag == 11)
+    {
+        NSLog(@"Checkpoint #2");
+        if ([scrollView.subviews containsObject:touchIdMenu])
+        {
+            NSLog(@"Checkpoint #3");
+            [touchIdMenu removeFromSuperview];
+            [user setObject:@"NO" forKey:@"requiredTouchId"];
+        }
+    }
+}
+
+-(void)toggleTableExpandContract
+{
+    NSString * alertBody;
+    if ([[user objectForKey:@"requiredTouchId"] boolValue] == YES)
+    {
+        [UIView beginAnimations:@"contractTable" context:nil];
+        [UIView setAnimationDuration:0.3];
+        [UIView setAnimationDelegate:self];
+        [scrollView setContentSize:CGSizeMake(320, 630)];
+        [touchIdMenu setFrame:CGRectMake(-1, touchIdMenu.frame.origin.y, 322, 50)];
+        [UIView commitAnimations];
+        
+        [user setObject:@"NO" forKey:@"requiredTouchId"];
+        
+        alertBody = @"TouchID is now turned OFF for your Nooch account.";
+    }
+    else
+    {
+        [UIView beginAnimations:@"expandTable" context:nil];
+        [UIView setAnimationDuration:0.3];
+        [UIView setAnimationDelegate:self];
+        [scrollView setContentSize:CGSizeMake(320, 675)];
+        [touchIdMenu setFrame:CGRectMake(-1, touchIdMenu.frame.origin.y, 322, 100)];
+        [UIView commitAnimations];
+        
+        [user setObject:@"YES" forKey:@"requiredTouchId"];
+        
+        NSMutableArray * rows = [[NSMutableArray alloc] init];
+        
+        NSIndexPath * row1 = [NSIndexPath indexPathForRow:1 inSection:0];
+        NSIndexPath * row2 = [NSIndexPath indexPathForRow:2 inSection:0];
+        [rows addObject:row1];
+        [rows addObject:row2];
+        
+        alertBody = @"TouchID is now turned ON for your Nooch account.";
+        
+        //[touchIdMenu reloadRowsAtIndexPaths:rows withRowAnimation:UITableViewRowAnimationFade];
+        //[touchIdMenu reloadData];
+    }
+    UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Success"
+                                                    message:alertBody
+                                                   delegate:nil
+                                          cancelButtonTitle:@"Ok"
+                                          otherButtonTitles:nil];
+    [alert show];
+
+    [self resetTouchIdSwitch];
+}
+
+-(void)resetTouchIdSwitch
+{
+    if ([[user objectForKey:@"requiredTouchId"] boolValue] == YES)
+    {
+        [self.touchId setOn:YES animated:YES];
+    }
+    else
+    {
+        [self.touchId setOn:NO animated:YES];
     }
 }
 
