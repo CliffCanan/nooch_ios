@@ -42,7 +42,7 @@
     self = [super initWithNibName:nil bundle:nil];
     if (self)
     {
-        NSLog(@"PIN: self.receiver is: %@", receiver);
+        //NSLog(@"PIN: self.receiver is: %@", receiver);
         // Custom initialization
         if ([receiver valueForKey:@"FirstName"])
         {
@@ -391,50 +391,81 @@
         LAContext *context = [[LAContext alloc] init];
 
         [context evaluatePolicy:LAPolicyDeviceOwnerAuthenticationWithBiometrics
-                localizedReason:@"Are you the device owner?"
+                localizedReason:@"Are you the owner of this device?"
                           reply:^(BOOL success, NSError *error) {
-                              if (error)
-                              {
-                                  NSLog(@"TouchID Error is: %@",error);
-                                  UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"TouchID Error"
-                                                                                  message:@"There was a problem verifying your identity.\n\nYou have TouchID turned on for making payments. To turn this off, please go to Nooch's settings and select \"Security Settings\"."
-                                                                                 delegate:nil
-                                                                        cancelButtonTitle:@"Ok"
-                                                                        otherButtonTitles:nil];
-                                  [alert show];
-
-                                  [self backPressed:nil];
-                                  return;
-                              }
-
                               if (success)
                               {
-                                  UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Success"
-                                                                                  message:@"You are the device owner!"
-                                                                                 delegate:nil
-                                                                        cancelButtonTitle:@"Ok"
-                                                                        otherButtonTitles:nil];
-                                  [alert show];
+                                  dispatch_async(dispatch_get_main_queue(), ^{
+                                      UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Success"
+                                                                                      message:@"You are the device owner!"
+                                                                                     delegate:nil
+                                                                            cancelButtonTitle:@"Ok"
+                                                                            otherButtonTitles:nil];
+                                      [alert show];
+                                  });
+                              }
+                              else if (error)
+                              {
+                                  NSLog(@"TouchID Error is: %ld",(long)error.code);
+                                  dispatch_async(dispatch_get_main_queue(), ^{
+                                      NSString * alertBody, * alertTitle;
+                                      if (error.code == LAErrorUserCancel || error.code == LAErrorSystemCancel)
+                                      {
+                                          alertTitle = @"TouchID Cancelled";
+                                          alertBody = @"You have TouchID turned on for making payments. To turn this off, please go to Nooch's settings and select \"Security Settings\".";
+                                      }
+                                      else if (error.code == LAErrorTouchIDNotAvailable)
+                                      {
+                                          alertTitle = @"TouchID Not Available";
+                                          alertBody = @"";
+                                      }
+                                      else if (error.code == LAErrorUserFallback)
+                                      {
+                                          alertTitle = @"TouchID Password Not Set";
+                                          alertBody = @"You have TouchID turned on for making payments. To turn this off, please go to Nooch's settings and select \"Security Settings\".";
+                                      }
+                                      else if (error.code == LAErrorAuthenticationFailed)
+                                      {
+                                          alertTitle = @"Oh No!";
+                                          alertBody = @"It seems like you are not the device owner! Please try verifying your fingerprint again.\n\nTo turn this off, please go to Nooch's settings and select \"Security Settings\".";
+                                      }
+                                      else
+                                      {
+                                          alertTitle = @"TouchID Error";
+                                          alertBody = @"There was a problem verifying your identity.\n\nYou have TouchID turned on for making payments. To turn this off, please go to Nooch's settings and select \"Security Settings\".";
+                                      }
+                                      UIAlertView *alert = [[UIAlertView alloc] initWithTitle:alertTitle
+                                                                                      message:alertBody
+                                                                                     delegate:nil
+                                                                            cancelButtonTitle:@"Ok"
+                                                                            otherButtonTitles:nil];
+                                      [alert show];
+                                      
+                                      [self backPressed:nil];
+                                  });
+                                  return;
                               }
                               else
                               {
-                                  NSString * alertBody;
-                                  if ([[user objectForKey:@"requiredTouchId"] boolValue] == YES)
-                                  {
-                                      alertBody = @"You have TouchID turned on for making payments. To turn this off, please go to Nooch's settings and select \"Security Settings\".";
-                                  }
-                                  else
-                                  {
-                                      alertBody = @"You are not the device owner.";
-                                  }
-                                  UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"TouchID Error"
-                                                                                  message:alertBody
-                                                                                 delegate:nil
-                                                                        cancelButtonTitle:@"Ok"
-                                                                        otherButtonTitles:nil];
-                                  [alert show];
+                                  dispatch_async(dispatch_get_main_queue(), ^{
+                                      NSString * alertBody;
+                                      if ([[user objectForKey:@"requiredTouchId"] boolValue] == YES)
+                                      {
+                                          alertBody = @"You have TouchID turned on for making payments. To turn this off, please go to Nooch's settings and select \"Security Settings\".";
+                                      }
+                                      else
+                                      {
+                                          alertBody = @"You are not the device owner.";
+                                      }
+                                      UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"TouchID Error"
+                                                                                      message:alertBody
+                                                                                     delegate:nil
+                                                                            cancelButtonTitle:@"Ok"
+                                                                            otherButtonTitles:nil];
+                                      [alert show];
 
-                                  [self backPressed:nil];
+                                      [self backPressed:nil];
+                                  });
                               }
                           }];
     }

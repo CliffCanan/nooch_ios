@@ -456,51 +456,88 @@
 {
     NSLog(@"touchIdTapped meathod started");
 
-    if (![[assist shared] checkIfTouchIdAvailable])
+    if ([[assist shared] checkIfTouchIdAvailable])
     {
         LAContext *context = [[LAContext alloc] init];
         
         [context evaluatePolicy:LAPolicyDeviceOwnerAuthenticationWithBiometrics
-                localizedReason:@"Are you the owner of this device?"
+                localizedReason:@"Just making sure you the owner of this device!"
                           reply:^(BOOL success, NSError *error) {
-                              if (error)
+                              if (success)
                               {
-                                  UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Error"
-                                                                                  message:@"There was a problem verifying your identity."
-                                                                                 delegate:nil
-                                                                        cancelButtonTitle:@"Ok"
-                                                                        otherButtonTitles:nil];
-                                  [alert show];
-                                  [self resetTouchIdSwitch];
+                                  dispatch_async(dispatch_get_main_queue(), ^{
+                                      [self toggleTableExpandContract];
+                                  });
+                              }
+                              else if (error)
+                              {
+                                  NSLog(@"PinSettings -> TouchID Error is: %ld",(long)error.code);
+                                  dispatch_async(dispatch_get_main_queue(), ^{
+                                      NSString * alertBody, * alertTitle;
+                                      if (error.code == LAErrorUserCancel || error.code == LAErrorSystemCancel)
+                                      {
+                                          alertTitle = @"TouchID Cancelled";
+                                          alertBody = @"You have TouchID turned on for making payments. To turn this off, please go to Nooch's settings and select \"Security Settings\".";
+                                      }
+                                      else if (error.code == LAErrorTouchIDNotAvailable)
+                                      {
+                                          alertTitle = @"TouchID Not Available";
+                                          alertBody = @"";
+                                      }
+                                      else if (error.code == LAErrorUserFallback)
+                                      {
+                                          alertTitle = @"TouchID Password Not Set";
+                                          alertBody = @"Please try verifying your fingerprint again.";
+                                      }
+                                      else if (error.code == LAErrorAuthenticationFailed)
+                                      {
+                                          alertTitle = @"Oh No!";
+                                          alertBody = @"It seems like you are not the device owner!\n\nPlease try verifying your fingerprint again.";
+                                      }
+                                      else
+                                      {
+                                          alertTitle = @"TouchID Error";
+                                          alertBody = @"There was a problem verifying your identity. Please try again!";
+                                      }
+
+                                      UIAlertView *alert = [[UIAlertView alloc] initWithTitle:alertTitle
+                                                                                      message:alertBody
+                                                                                     delegate:nil
+                                                                            cancelButtonTitle:@"Ok"
+                                                                            otherButtonTitles:nil];
+                                      [alert show];
+                                      [self resetTouchIdSwitch];
+                                  });
                                   return;
                               }
 
-                              if (success)
-                              {
-                                  [self toggleTableExpandContract];
-                              }
+                              
                               else
                               {
-                                  UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Error"
-                                                                                  message:@"You are not the device owner."
-                                                                                 delegate:nil
-                                                                        cancelButtonTitle:@"Ok"
-                                                                        otherButtonTitles:nil];
-                                  [alert show];
-                                  [self resetTouchIdSwitch];
+                                  dispatch_async(dispatch_get_main_queue(), ^{
+                                      UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Uh Oh"
+                                                                                      message:@"You are not the device owner."
+                                                                                     delegate:nil
+                                                                            cancelButtonTitle:@"Ok"
+                                                                            otherButtonTitles:nil];
+                                      [alert show];
+                                      [self resetTouchIdSwitch];
+                                  });
                               }
                               return;
                           }];
     }
     else
     {
-        UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Error"
-                                                        message:@"TouchID is not available on this device \n(...which makes one wonder how you would even see this message)."
-                                                       delegate:self
-                                              cancelButtonTitle:@"Ok"
-                                              otherButtonTitles:nil];
-        [alert setTag:11];
-        [alert show];
+        dispatch_async(dispatch_get_main_queue(), ^{
+            UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Error"
+                                                            message:@"TouchID does not seem to be available on this device \n(...which makes one wonder how you would even see this message)."
+                                                           delegate:self
+                                                  cancelButtonTitle:@"Ok"
+                                                  otherButtonTitles:nil];
+            [alert setTag:11];
+            [alert show];
+        });
 
         if (![self.touchId isOn])
         {

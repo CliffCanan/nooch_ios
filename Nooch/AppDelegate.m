@@ -109,9 +109,9 @@ bool modal;
     [MobileAppTracker setAppleAdvertisingIdentifier:[[ASIdentifierManager sharedManager] advertisingIdentifier]
                          advertisingTrackingEnabled:[[ASIdentifierManager sharedManager] isAdvertisingTrackingEnabled]];
     NSLog(@"advertisingIdentifier is: %@",[[ASIdentifierManager sharedManager] advertisingIdentifier]);
-    [MobileAppTracker setDelegate:self];
     // enable MAT debug mode
-    [MobileAppTracker setDebugMode:NO];
+    //[MobileAppTracker setDelegate:self];
+    //[MobileAppTracker setDebugMode:NO];
     // Check if deferred deeplink can be opened, with a max timeout value in seconds
     // Uncomment this line if your MAT account has enabled deferred deeplinks
     //[MobileAppTracker checkForDeferredDeeplinkWithTimeout:0.75];
@@ -126,7 +126,6 @@ bool modal;
     //    [MobileAppTracker setExistingUser:YES];
     //}
     [MobileAppTracker measureSession];
-
 
     // Whenever a person opens the app, check for a cached FB session
     if (FBSession.activeSession.state == FBSessionStateCreatedTokenLoaded)
