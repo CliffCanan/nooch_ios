@@ -45,7 +45,7 @@
     pinchangeProgress = 1;
     [self.view setBackgroundColor:[UIColor whiteColor]];
     UIImageView * backgroundImage = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"SplashPageBckgrnd-568h@2x.png"]];
-    backgroundImage.alpha = .4;
+    backgroundImage.alpha = .3;
     [self.view addSubview:backgroundImage];
 
     UIView * navBar = [[UIView alloc]initWithFrame:CGRectMake(0, 0, 320, 60)];
@@ -75,8 +75,10 @@
     self.pin = [UITextField new];
     [self.pin setKeyboardType:UIKeyboardTypeNumberPad];
     self.pin.inputAccessoryView = [[UIView alloc] init];
-    [self.pin setDelegate:self]; [self.pin setFrame:CGRectMake(800, 800, 20, 20)];
-    [self.view addSubview:self.pin]; [self.pin becomeFirstResponder];
+    [self.pin setDelegate:self];
+    [self.pin setFrame:CGRectMake(800, 800, 20, 20)];
+    [self.view addSubview:self.pin];
+    [self.pin becomeFirstResponder];
     
     //[self.navigationItem setTitle:@"Reset PIN "];
 
@@ -367,17 +369,17 @@
                                                 delegate:self
                                        cancelButtonTitle:@"OK"
                                        otherButtonTitles:NSLocalizedString(@"ResetPIN_SuspAlrtBtn", @"Reset PIN Failed account suspended Alert 'Contact Support' Btn"),nil];
-    [av setTag:202320];
+    [av setTag:202];
     [av show];
 }
 
 -(void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex
 {
-    if (alertView.tag == 202320 && buttonIndex==0)
+    if (alertView.tag == 202 && buttonIndex==0)
     {
         [nav_ctrl popToRootViewControllerAnimated:YES];
     }
-    else if (alertView.tag == 202320 && buttonIndex == 1)
+    else if (alertView.tag == 202 && buttonIndex == 1)
     {
         if (![MFMailComposeViewController canSendMail])
         {
@@ -450,16 +452,13 @@
             break;
         case MFMailComposeResultSaved:
             NSLog(@"Mail saved");
-            
             [alert setTitle:@"Mail saved"];
             [alert show];
             break;
         case MFMailComposeResultSent:
             NSLog(@"Mail sent");
-            
-            [alert setTitle:@"Mail sent"];
+            [alert setTitle:@"\xF0\x9F\x93\xA4  Email Sent Successfully"];
             [alert show];
-            
             break;
         case MFMailComposeResultFailed:
             [alert setTitle:[error localizedDescription]];

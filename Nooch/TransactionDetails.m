@@ -1188,44 +1188,6 @@
                                                       }
                                                   }];
     }
-
-    
-   /* SLComposeViewController *controller = [SLComposeViewController composeViewControllerForServiceType:SLServiceTypeFacebook];
-    [controller setInitialText:post_text];
-    [controller addURL:[NSURL URLWithString:@"http://bit.ly/1xdG2le"]];
-
-    if (datos != nil) {
-        [controller addImage:[UIImage imageWithData:datos]];
-    }
-    [self presentViewController:controller animated:YES completion:Nil];
-
-    SLComposeViewControllerCompletionHandler myBlock = ^(SLComposeViewControllerResult result)
-    {
-        NSString *output = nil;
-        switch (result) {
-            case SLComposeViewControllerResultCancelled:
-                output = @"Action Cancelled";
-                NSLog (@"cancelled");
-                break;
-            case SLComposeViewControllerResultDone:
-                output = @"Post To Facebook Succesfull";
-                NSLog (@"success");
-                break;
-            default:
-                break;
-        }
-        if ([output isEqualToString:@"Post To Facebook Successfull"])
-        {
-            UIAlertView *alert = [[UIAlertView alloc] initWithTitle:output
-                                                            message:@"\xF0\x9F\x91\x8D"
-                                                           delegate:nil
-                                                  cancelButtonTitle:@"OK"
-                                                  otherButtonTitles:nil];
-            [alert show];
-        }
-        [controller dismissViewControllerAnimated:YES completion:Nil];
-    };
-    controller.completionHandler = myBlock;*/
 }
 
 // A function for parsing URL parameters returned by the FB Feed Dialog.
@@ -1659,6 +1621,7 @@
         [status setTextAlignment:NSTextAlignmentCenter];
         [status setTag:12];
 
+        NSLog(@"Transaction Date from server is: %@",[tranDetailResult objectForKey:@"TransactionDate"]);
         if ([tranDetailResult objectForKey:@"TransactionDate"] != NULL)
         {
             NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
@@ -1667,9 +1630,9 @@
             [dateFormatter setPMSymbol:@"PM"];
             dateFormatter.dateFormat = @"M/d/yyyy h:mm:ss a";
             
-            NSDate *yourDate = [dateFormatter dateFromString:[tranDetailResult valueForKey:@"TransactionDate"]];
+            NSDate *yourDate = [dateFormatter dateFromString:[tranDetailResult objectForKey:@"TransactionDate"]];
             dateFormatter.dateFormat = @"dd-MMMM-yyyy";
-            [dateFormatter setTimeZone:[NSTimeZone localTimeZone]];
+            //[dateFormatter setTimeZone:[NSTimeZone localTimeZone]];
 
             NSString *statusstr;
 
@@ -1744,15 +1707,20 @@
             [status setText:statusstr];
             [self.view addSubview:status];
             
-            if ( [[self.trans valueForKey:@"DisputeId"] isKindOfClass:[NSNull class]] || [self.trans valueForKey:@"DisputeId"] == NULL )
+            if ([[self.trans valueForKey:@"DisputeId"] isKindOfClass:[NSNull class]] ||
+                 [self.trans valueForKey:@"DisputeId"] == NULL )
             {
-                NSArray *arrdate = [[dateFormatter stringFromDate:yourDate] componentsSeparatedByString:@"-"];
-                UILabel *datelbl = [[UILabel alloc] initWithFrame:CGRectMake(80, 190, 160, 30)];
-                [datelbl setTextAlignment:NSTextAlignmentCenter]; 
-                [datelbl setFont:[UIFont fontWithName:@"Roboto-Light" size:16]];
-                [datelbl setTextColor:kNoochGrayDark];
-                datelbl.text = [NSString stringWithFormat:@"%@ %@, %@",[arrdate objectAtIndex:1],[arrdate objectAtIndex:0],[arrdate objectAtIndex:2]];
-                [self.view addSubview:datelbl];
+                if (![yourDate isKindOfClass:[NSNull class]] && yourDate != NULL)
+                {
+                    NSArray *arrdate = [[dateFormatter stringFromDate:yourDate] componentsSeparatedByString:@"-"];
+
+                    UILabel *datelbl = [[UILabel alloc] initWithFrame:CGRectMake(80, 190, 160, 30)];
+                    [datelbl setTextAlignment:NSTextAlignmentCenter]; 
+                    [datelbl setFont:[UIFont fontWithName:@"Roboto-Light" size:16]];
+                    [datelbl setTextColor:kNoochGrayDark];
+                    datelbl.text = [NSString stringWithFormat:@"%@ %@, %@",[arrdate objectAtIndex:1],[arrdate objectAtIndex:0],[arrdate objectAtIndex:2]];
+                    [self.view addSubview:datelbl];
+                }
             }
         }
 

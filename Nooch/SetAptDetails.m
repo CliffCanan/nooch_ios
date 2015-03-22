@@ -1333,16 +1333,13 @@
             break;
         case MFMailComposeResultSaved:
             NSLog(@"Mail saved");
-            
             [alert setTitle:@"Mail saved"];
             [alert show];
             break;
         case MFMailComposeResultSent:
             NSLog(@"Mail sent");
-            
-            [alert setTitle:@"Mail sent"];
+            [alert setTitle:@"\xF0\x9F\x93\xA4  Email Sent Successfully"];
             [alert show];
-            
             break;
         case MFMailComposeResultFailed:
             [alert setTitle:[error localizedDescription]];

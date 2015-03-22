@@ -331,10 +331,15 @@ UIImageView *picture;
                               @"Atlantic Standard Time",@"GMT-04:00",
                               nil];
 
-    self.sectionHeaderBg = [[UIView alloc] initWithFrame:CGRectMake(0, pictureRadius + 16, 320, 26)];
+    hdrHt = 30;
+    if ([[UIScreen mainScreen] bounds].size.height == 480)
+    {
+        hdrHt = 26;
+    }
+    self.sectionHeaderBg = [[UIView alloc] initWithFrame:CGRectMake(0, pictureRadius + 16, 320, hdrHt)];
     self.sectionHeaderBg.backgroundColor = Rgb2UIColor(230, 231, 232, .4);
 
-    UILabel * sectionHeaderTxt = [[UILabel alloc] initWithFrame:CGRectMake(20, 0, 200, 26)];
+    UILabel * sectionHeaderTxt = [[UILabel alloc] initWithFrame:CGRectMake(20, 0, 200, self.sectionHeaderBg.frame.size.height)];
     sectionHeaderTxt.backgroundColor = [UIColor clearColor];
     sectionHeaderTxt.textColor = [UIColor darkGrayColor];
     sectionHeaderTxt.font = [UIFont fontWithName:@"Roboto-light" size:15];
@@ -387,10 +392,10 @@ UIImageView *picture;
         smsVerifyRowIsShowing = true;
     }
 
-    self.sectionHeaderBg2 = [[UIView alloc] initWithFrame:CGRectMake(0, (pictureRadius + 43 + self.list.frame.size.height), 320, 26)];
+    self.sectionHeaderBg2 = [[UIView alloc] initWithFrame:CGRectMake(0, (self.list.frame.origin.y + self.list.frame.size.height), 320, self.sectionHeaderBg.frame.size.height)];
     self.sectionHeaderBg2.backgroundColor = Rgb2UIColor(230, 231, 232, .4);
 
-    UILabel * sectionHeaderTxt2 = [[UILabel alloc] initWithFrame:CGRectMake(20, 0, 200, 26)];
+    UILabel * sectionHeaderTxt2 = [[UILabel alloc] initWithFrame:CGRectMake(20, 0, 200, self.sectionHeaderBg2.frame.size.height)];
     sectionHeaderTxt2.backgroundColor = [UIColor clearColor];
     sectionHeaderTxt2.textColor = [UIColor darkGrayColor];
     sectionHeaderTxt2.font = [UIFont fontWithName:@"Roboto-light" size:15];
@@ -400,7 +405,7 @@ UIImageView *picture;
     [scrollView addSubview:self.sectionHeaderBg2];
 
     self.list2 = [UITableView new];
-    [self.list2 setFrame:CGRectMake(0, self.sectionHeaderBg2.frame.origin.y + 25, 320, (rowHeight * 4) + 15)];
+    [self.list2 setFrame:CGRectMake(0, self.sectionHeaderBg2.frame.origin.y + self.sectionHeaderBg2.frame.size.height, 320, (rowHeight * 4) + 15)];
     [self.list2 setDelegate:self];
     [self.list2 setDataSource:self];
     [self.list2 setRowHeight:rowHeight];
@@ -1377,7 +1382,7 @@ UIImageView *picture;
     [UIView setAnimationDuration:0.4];
     [UIView setAnimationDelegate:self];
     [self.list setFrame:CGRectMake(0, self.list.frame.origin.y, 320, rowHeight * numberOfRowsToDisplay)];
-    [self.sectionHeaderBg2 setFrame:CGRectMake(0, self.sectionHeaderBg2.frame.origin.y - rowHeight, 320, 26)];
+    [self.sectionHeaderBg2 setFrame:CGRectMake(0, self.sectionHeaderBg2.frame.origin.y - rowHeight, 320, hdrHt)];
     [self.list2 setFrame:CGRectMake(0, self.list2.frame.origin.y - rowHeight, 320, (rowHeight * 4) + 5)];
     [UIView commitAnimations];
 }
@@ -1398,8 +1403,8 @@ UIImageView *picture;
     if (textField == self.address_one || textField == self.address_two || textField == self.city || textField == self.zip)
     {
         self.sectionHeaderBg.alpha = 0;
-        [self.sectionHeaderBg2 setFrame:CGRectMake(0, 54, 320, 26)];
-        [self.list2 setFrame:CGRectMake(0, self.sectionHeaderBg2.frame.origin.y + 26, 320, (rowHeight * 4) + 5)];
+        [self.sectionHeaderBg2 setFrame:CGRectMake(0, 54, 320, hdrHt)];
+        [self.list2 setFrame:CGRectMake(0, self.sectionHeaderBg2.frame.origin.y + hdrHt, 320, (rowHeight * 4) + 5)];
     }
 
     [UIView commitAnimations];
@@ -1433,8 +1438,8 @@ UIImageView *picture;
     shadowUnder.alpha = 1;
     picture.alpha = 1;
     self.sectionHeaderBg.alpha = 1;
-    [self.sectionHeaderBg2 setFrame:CGRectMake(0, (38 + 43 + self.list.frame.size.height), 320, 26)];
-    [self.list2 setFrame:CGRectMake(0, self.sectionHeaderBg2.frame.origin.y + 26, 320, (rowHeight * 4) + 5)];
+    [self.sectionHeaderBg2 setFrame:CGRectMake(0, (self.list.frame.origin.y + self.list.frame.size.height), 320, hdrHt)];
+    [self.list2 setFrame:CGRectMake(0, self.sectionHeaderBg2.frame.origin.y + hdrHt, 320, (rowHeight * 4) + 5)];
     [self.member_since_back setFrame:CGRectMake(0, 0, 320, heightOfTopSection)];
     [scrollView setFrame:CGRectMake(0, heightOfTopSection, 320, [[UIScreen mainScreen] bounds].size.height - heightOfTopSection - 64)];
     [scrollView setContentOffset:CGPointZero animated:YES];

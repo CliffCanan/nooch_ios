@@ -11,6 +11,7 @@
 #import "UIImageView+WebCache.h"
 #import "SelectRecipient.h"
 #import <AudioToolbox/AudioToolbox.h>
+#import <LocalAuthentication/LocalAuthentication.h>
 
 @interface TransferPIN ()<GetLocationDelegate>
 {
@@ -41,7 +42,7 @@
     self = [super initWithNibName:nil bundle:nil];
     if (self)
     {
-        NSLog(@"PIN: self.receiver is: %@", receiver);
+        //NSLog(@"PIN: self.receiver is: %@", receiver);
         // Custom initialization
         if ([receiver valueForKey:@"FirstName"])
         {
@@ -384,6 +385,91 @@
         [self.view addSubview:trans_image];
     }
 
+    if ([[assist shared] checkIfTouchIdAvailable] &&
+        [[user objectForKey:@"requiredTouchId"] boolValue] == YES)
+    {
+        LAContext *context = [[LAContext alloc] init];
+
+        [context evaluatePolicy:LAPolicyDeviceOwnerAuthenticationWithBiometrics
+                localizedReason:@"Are you the owner of this device?"
+                          reply:^(BOOL success, NSError *error) {
+                              if (success)
+                              {
+                                  dispatch_async(dispatch_get_main_queue(), ^{
+                                      UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Success"
+                                                                                      message:@"You are the device owner!"
+                                                                                     delegate:nil
+                                                                            cancelButtonTitle:@"Ok"
+                                                                            otherButtonTitles:nil];
+                                      [alert show];
+                                  });
+                              }
+                              else if (error)
+                              {
+                                  NSLog(@"TouchID Error is: %ld",(long)error.code);
+                                  dispatch_async(dispatch_get_main_queue(), ^{
+                                      NSString * alertBody, * alertTitle;
+                                      if (error.code == LAErrorUserCancel || error.code == LAErrorSystemCancel)
+                                      {
+                                          alertTitle = @"TouchID Cancelled";
+                                          alertBody = @"You have TouchID turned on for making payments. To turn this off, please go to Nooch's settings and select \"Security Settings\".";
+                                      }
+                                      else if (error.code == LAErrorTouchIDNotAvailable)
+                                      {
+                                          alertTitle = @"TouchID Not Available";
+                                          alertBody = @"";
+                                      }
+                                      else if (error.code == LAErrorUserFallback)
+                                      {
+                                          alertTitle = @"TouchID Password Not Set";
+                                          alertBody = @"You have TouchID turned on for making payments. To turn this off, please go to Nooch's settings and select \"Security Settings\".";
+                                      }
+                                      else if (error.code == LAErrorAuthenticationFailed)
+                                      {
+                                          alertTitle = @"Oh No!";
+                                          alertBody = @"It seems like you are not the device owner! Please try verifying your fingerprint again.\n\nTo turn this off, please go to Nooch's settings and select \"Security Settings\".";
+                                      }
+                                      else
+                                      {
+                                          alertTitle = @"TouchID Error";
+                                          alertBody = @"There was a problem verifying your identity.\n\nYou have TouchID turned on for making payments. To turn this off, please go to Nooch's settings and select \"Security Settings\".";
+                                      }
+                                      UIAlertView *alert = [[UIAlertView alloc] initWithTitle:alertTitle
+                                                                                      message:alertBody
+                                                                                     delegate:nil
+                                                                            cancelButtonTitle:@"Ok"
+                                                                            otherButtonTitles:nil];
+                                      [alert show];
+                                      
+                                      [self backPressed:nil];
+                                  });
+                                  return;
+                              }
+                              else
+                              {
+                                  dispatch_async(dispatch_get_main_queue(), ^{
+                                      NSString * alertBody;
+                                      if ([[user objectForKey:@"requiredTouchId"] boolValue] == YES)
+                                      {
+                                          alertBody = @"You have TouchID turned on for making payments. To turn this off, please go to Nooch's settings and select \"Security Settings\".";
+                                      }
+                                      else
+                                      {
+                                          alertBody = @"You are not the device owner.";
+                                      }
+                                      UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"TouchID Error"
+                                                                                      message:alertBody
+                                                                                     delegate:nil
+                                                                            cancelButtonTitle:@"Ok"
+                                                                            otherButtonTitles:nil];
+                                      [alert show];
+
+                                      [self backPressed:nil];
+                                  });
+                              }
+                          }];
+    }
+
     [[assist shared] setneedsReload:YES];
 }
 
@@ -564,7 +650,7 @@
     {
         self.first_num.layer.borderColor = self.second_num.layer.borderColor = self.third_num.layer.borderColor = self.fourth_num.layer.borderColor = kNoochGreen.CGColor;
     }
-    else if([self.type isEqualToString:@"request"] || [self.type isEqualToString:@"requestRespond"])
+    else if ([self.type isEqualToString:@"request"] || [self.type isEqualToString:@"requestRespond"])
     {
         self.first_num.layer.borderColor = self.second_num.layer.borderColor = self.third_num.layer.borderColor = self.fourth_num.layer.borderColor = kNoochBlue.CGColor;
     }
@@ -598,7 +684,7 @@
         if ([self.type isEqualToString:@"send"] || [self.type isEqualToString:@"requestRespond"]) {
             color = kNoochGreen;
         }
-        else if([self.type isEqualToString:@"request"] ){
+        else if ([self.type isEqualToString:@"request"] ){
             color = kNoochBlue;
         }
 
@@ -642,7 +728,7 @@
         spinner1.color = [UIColor whiteColor];
         self.hud = [[MBProgressHUD alloc] initWithView:self.navigationController.view];
         [self.navigationController.view addSubview:self.hud];
-        
+
         self.hud.mode = MBProgressHUDModeCustomView;
         self.hud.customView = spinner1;
         self.hud.delegate = self;
@@ -1242,7 +1328,6 @@
             }
             NSLog(@"Input: %@",input);
 
-            NSLog(@"TransferPIN -> nav_ctrl.viewControllers is: %@", nav_ctrl.viewControllers);
             NSMutableArray * arrNav = [nav_ctrl.viewControllers mutableCopy];
             
             for (short i = [arrNav count]; i > 1; i--)
@@ -1333,6 +1418,10 @@
 
 -(void)errorAlerts:(NSString *)referenceNumber
 {
+    NSDictionary * dictionary = @{@"MemberId": [[NSUserDefaults standardUserDefaults] valueForKey:@"MemberId"],
+                                  @"errorAlertNumber": referenceNumber};
+    [ARTrackingManager trackEvent:@"TrnsfrPIN_ErrorAlert_Displayed" parameters:dictionary];
+
     UIAlertView *av = [[UIAlertView alloc] initWithTitle:[NSString stringWithFormat:NSLocalizedString(@"EnterPIN_ErrorAlrtTitle", @"Enter PIN Screen error Alert Title"),referenceNumber]
                                                  message:[NSString stringWithFormat:@"\xF0\x9F\x98\xB3\n%@", NSLocalizedString(@"EnterPIN_ErrorAlrtBody", @"Enter PIN Screen error alert Body Text")]
                                                 delegate:self
@@ -1352,7 +1441,8 @@
                          options:kNilOptions
                          error:&error];
 
-    NSLog(@"This is the response:  %@",responseString);
+    NSLog(@"TransferPIN --> This is the response:  %@",responseString);
+
     if ([self.receiver valueForKey:@"nonuser"])
     {
         if ([[[dictResultTransfer valueForKey:@"TransferMoneyToNonNoochUserUsingKnoxResult"] valueForKey:@"Result"]isEqualToString:@"Your cash was sent successfully"] ||
@@ -1440,122 +1530,129 @@
         UIAlertView *av;
         NSString * alertTitleFromArtisan = [ARPowerHookManager getValueForHookById:@"transSuccessAlertTitle"];
         NSString * alertMsgFromArtisan = [ARPowerHookManager getValueForHookById:@"transSuccessAlertMsg"];
+
+        NSString * arrivalDateAlone = calculateArrivalDate();
+        NSString * arrivalDateForAlert = [NSString stringWithFormat:@"This payment will arrive by:\n%@", arrivalDateAlone];
+        NSLog(@"arrivalDateForAlert is: %@", arrivalDateForAlert);
+
         switch (randNum) {
             case 0:
                 av = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"EnterPIN_SuccessAlrt1", @"Enter PIN Screen success alert title - Nice Work")
-                                                message:[NSString stringWithFormat:@"\xF0\x9F\x98\x8E\nYou just sent money to %@, and you did it with style… and class.",[receiverFirst capitalizedString]]
+                                                message:[NSString stringWithFormat:@"\xF0\x9F\x98\x8E\nYou just sent money to %@, and you did it with style… and class.\n\n%@",[receiverFirst capitalizedString], arrivalDateForAlert]
                                                delegate:self
                                       cancelButtonTitle:@"OK"
                                       otherButtonTitles:NSLocalizedString(@"EnterPIN_SuccessAlrtViewDetails", @"Enter PIN Screen success alert button for View Details"),nil];
                 break;
             case 1:
                 av = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"EnterPIN_SuccessAlrt2", @"Enter PIN Screen success alert title - Payment Sent")
-                                                message:[NSString stringWithFormat:@"\xF0\x9F\x92\xB8\nYour money has successfully been digitalized into pixie dust and is currently floating over our heads in a million pieces on its way to %@.",[receiverFirst capitalizedString]]
+                                                message:[NSString stringWithFormat:@"\xF0\x9F\x92\xB8\nYour money has successfully been digitalized into pixie dust and is currently floating over our heads in a million pieces on its way to %@.\n\n%@",[receiverFirst capitalizedString], arrivalDateForAlert]
                                                delegate:self
                                       cancelButtonTitle:@"OK"
                                       otherButtonTitles:NSLocalizedString(@"EnterPIN_SuccessAlrtViewDetails", @"Enter PIN Screen success alert button for View Details"),nil];
                 break;
             case 2:
                 av = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"EnterPIN_SuccessAlrt3", @"Enter PIN Screen success alert title - Success")
-                                                message:[NSString stringWithFormat:@"\xF0\x9F\x98\x89\nYou have officially 'Nooched' %@. That's right, it's a verb.",[receiverFirst capitalizedString]]
+                                                message:[NSString stringWithFormat:@"\xF0\x9F\x98\x89\nYou have officially 'Nooched' %@. That's right, it's a verb.\n\n%@",[receiverFirst capitalizedString], arrivalDateForAlert]
                                                delegate:self
                                       cancelButtonTitle:@"OK"
                                       otherButtonTitles:NSLocalizedString(@"EnterPIN_SuccessAlrtViewDetails", @"Enter PIN Screen success alert button for View Details") ,nil];
                 break;
             case 3:
                 av = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"EnterPIN_SuccessAlrt4", @"Enter PIN Screen success alert title - Congratulations")
-                                                message:@"\xE2\x98\xBA\nYou now have less money. Eh, it's just money."
+                                                message:[NSString stringWithFormat:@"\xE2\x98\xBA\nYou now have less money. Eh, it's just money.\n\n%@", arrivalDateForAlert]
                                                delegate:self
                                       cancelButtonTitle:@"OK"
                                       otherButtonTitles:NSLocalizedString(@"EnterPIN_SuccessAlrtViewDetails", @"Enter PIN Screen success alert button for View Details"),nil];
                 break;
             case 4:
                 av = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"EnterPIN_SuccessAlrt4", @"Enter PIN Screen success alert title - Congratulations")
-                                                message:@"\xF0\x9F\x91\x8F\nYour debt burden has been lifted!"
+                                                message:[NSString stringWithFormat:@"\xF0\x9F\x91\x8F\nYour debt burden has been lifted!\n\n%@", arrivalDateForAlert]
                                                delegate:self
                                       cancelButtonTitle:@"OK"
                                       otherButtonTitles:NSLocalizedString(@"EnterPIN_SuccessAlrtViewDetails", @"Enter PIN Screen success alert button for View Details"),nil];
                 break;
             case 5:
                 av = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"EnterPIN_SuccessAlrt5", @"Enter PIN Screen success alert title - Money Sent")
-                                                message:[NSString stringWithFormat:@"\xF0\x9F\x98\x87\nNo need to thank us, it's our job.\n\n%@ should probably thank you though.",[receiverFirst capitalizedString]]
+                                                message:[NSString stringWithFormat:@"\xF0\x9F\x98\x87\nNo need to thank us, it's our job.\n\n%@ should probably thank you though.\n\n%@",[receiverFirst capitalizedString], arrivalDateForAlert]
                                                delegate:self
                                       cancelButtonTitle:@"OK"
                                       otherButtonTitles:NSLocalizedString(@"EnterPIN_SuccessAlrtViewDetails", @"Enter PIN Screen success alert button for View Details"),nil];
                 break;
             case 6:
                 av = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"EnterPIN_SuccessAlrt6", @"Enter PIN Screen success alert title - Payment Sent")
-                                                message:@"\xF0\x9F\x91\x8D\nYou are now free to close Nooch and put your phone away. You're good to go." delegate:self
+                                                message:[NSString stringWithFormat:@"\xF0\x9F\x91\x8D\nYou are now free to close Nooch and put your phone away. You're good to go.\n\n%@", arrivalDateForAlert]
+                                               delegate:self
                                       cancelButtonTitle:@"OK"
                                       otherButtonTitles:NSLocalizedString(@"EnterPIN_SuccessAlrtViewDetails", @"Enter PIN Screen success alert button for View Details"),nil];
                 break;
             case 7:
                 av = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"EnterPIN_SuccessAlrt7", @"Enter PIN Screen success alert title - Payment Sent")
-                                                message:[NSString stringWithFormat:@"\xF0\x9F\x91\x8C\nThat was some good Nooching. Money sent to %@.",[receiverFirst capitalizedString]]
+                                                message:[NSString stringWithFormat:@"\xF0\x9F\x91\x8C\nThat was some good Nooching. Money sent to %@.\n\n%@",[receiverFirst capitalizedString], arrivalDateForAlert]
                                                delegate:self
                                       cancelButtonTitle:@"OK"
                                       otherButtonTitles:NSLocalizedString(@"EnterPIN_SuccessAlrtViewDetails", @"Enter PIN Screen success alert button for View Details"),nil];
                 break;
             case 8:
                 av = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"EnterPIN_SuccessAlrt8", @"Enter PIN Screen success alert title - Great Scott")
-                                                message:@"\xE2\x9A\xA1\nThis sucker generated 1.21 gigawatts and sent your money, even without plutonium."
+                                                message:[NSString stringWithFormat:@"\xE2\x9A\xA1\nThis sucker generated 1.21 gigawatts and sent your money, even without plutonium.\n\n%@", arrivalDateForAlert]
                                                delegate:self
                                       cancelButtonTitle:@"OK"
                                       otherButtonTitles:NSLocalizedString(@"EnterPIN_SuccessAlrtViewDetails", @"Enter PIN Screen success alert button for View Details"), nil];
                 break;
             case 9:
                 av = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"EnterPIN_SuccessAlrt9", @"Enter PIN Screen success alert title - Knowledge Is Power")
-                                                message:@"You know how easy Nooch is. But with great power, comes great responsibility..."
+                                                message:[NSString stringWithFormat:@"You know how easy Nooch is. But with great power, comes great responsibility...\n\n%@", arrivalDateForAlert]
                                                delegate:self
                                       cancelButtonTitle:@"OK"
                                       otherButtonTitles:NSLocalizedString(@"EnterPIN_SuccessAlrtViewDetails", @"Enter PIN Screen success alert button for View Details"),nil];
                 break;
             case 10:
                 av = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"EnterPIN_SuccessAlrt10", @"Enter PIN Screen success alert title - Humpty Dumpty")
-                                                message:@"And processed Nooch transfers."
+                                                message:[NSString stringWithFormat:@"And processed Nooch transfers.\n\n%@", arrivalDateForAlert]
                                                delegate:self
                                       cancelButtonTitle:@"OK"
                                       otherButtonTitles:NSLocalizedString(@"EnterPIN_SuccessAlrtViewDetails", @"Enter PIN Screen success alert button for View Details"), nil];
                 break;
             case 11:
                 av = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"EnterPIN_SuccessAlrt11", @"Enter PIN Screen success alert title - Nooch Haiku")
-                                                message:@"Nooch application.\nEasy, Simple, Convenient.\nGetting the job done." delegate:self
+                                                message:[NSString stringWithFormat:@"Nooch application.\nEasy, Simple, Convenient.\nGetting the job done.\n\n%@", arrivalDateForAlert]
+                                               delegate:self
                                       cancelButtonTitle:@"OK"
                                       otherButtonTitles:NSLocalizedString(@"EnterPIN_SuccessAlrtViewDetails", @"Enter PIN Screen success alert button for View Details"),nil];
                 break;
             case 12:
                 av = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"EnterPIN_SuccessAlrt12", @"Enter PIN Screen success alert title - Nooch Loves You")
-                                                message:@"\xF0\x9F\x92\x99\nThat is all. Pay it forward.\n\n...and yes, Nooch's heart is actually blue."
+                                                message:[NSString stringWithFormat:@"\xF0\x9F\x92\x99\nThat is all. Pay it forward.\n\n...and yes, Nooch's heart is actually blue.\n\n%@", arrivalDateForAlert]
                                                delegate:self
                                       cancelButtonTitle:@"OK"
                                       otherButtonTitles:NSLocalizedString(@"EnterPIN_SuccessAlrtViewDetails", @"Enter PIN Screen success alert button for View Details"),nil];
                 break;
             case 13:
                 av = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"EnterPIN_SuccessAlrt13", @"Enter PIN Screen success alert title - Easy As Pie")
-                                                message:[NSString stringWithFormat:@"\xF0\x9F\x8D\xB0\nWasn't that easier than lugging to an ATM and forking over colored pieces of paper to %@?",[receiverFirst capitalizedString]]
+                                                message:[NSString stringWithFormat:@"\xF0\x9F\x8D\xB0\nWasn't that easier than lugging to an ATM and forking over colored pieces of paper to %@?\n\n%@",[receiverFirst capitalizedString], arrivalDateForAlert]
                                                delegate:self
                                       cancelButtonTitle:@"OK"
                                       otherButtonTitles:NSLocalizedString(@"EnterPIN_SuccessAlrtViewDetails", @"Enter PIN Screen success alert button for View Details"),nil];
                 break;
             case 14:
                 av = [[UIAlertView alloc] initWithTitle:alertTitleFromArtisan
-                                                message:alertMsgFromArtisan
+                                                message:[NSString stringWithFormat:@"%@\n\n%@", alertMsgFromArtisan, arrivalDateForAlert]
                                                delegate:self
                                       cancelButtonTitle:@"OK"
                                       otherButtonTitles:NSLocalizedString(@"EnterPIN_SuccessAlrtViewDetails", @"Enter PIN Screen success alert button for View Details"),nil];
                 break;
             default:
                 av = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"EnterPIN_SuccessAlrt1", @"Enter PIN Screen success alert title - Nice Work")
-                                                message:[NSString stringWithFormat:@"\xF0\x9F\x92\xB8\nYour cash was sent successfully to %@.",[receiverFirst capitalizedString]]
+                                                message:[NSString stringWithFormat:@"\xF0\x9F\x92\xB8\nYour cash was sent successfully to %@.\n\n%@",[receiverFirst capitalizedString], arrivalDateForAlert]
                                                delegate:self cancelButtonTitle:@"OK"
                                       otherButtonTitles:NSLocalizedString(@"EnterPIN_SuccessAlrtViewDetails", @"Enter PIN Screen success alert button for View Details"),nil];
                 break;
         }
+
         [av show];
         transferFinished = YES;
         sendingMoney = NO;
         [av setTag:1];
-        
     }
     else if ([[[dictResultTransfer objectForKey:@"HandleRequestMoneyResult"] objectForKey:@"Result"] isEqualToString:@"Request processed successfully."])
     {
@@ -1563,8 +1660,11 @@
         UIImage * imgempty = [UIImage imageNamed:@""];
         [[assist shared] setTranferImage:imgempty];
 
+        NSString * arrivalDateAlone = calculateArrivalDate();
+        NSString * arrivalDateForAlert = [NSString stringWithFormat:@"This payment will arrive by:\n%@", arrivalDateAlone];
+
         UIAlertView * av = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"EnterPIN_RequestFulfilledAlertTitle", @"Enter PIN Screen request fulfilled successfully Alert Title")
-                                                      message:[NSString stringWithFormat:@"\xF0\x9F\x91\x8D\nYou successfully fulfilled %@'s request for $%.02f.",[receiverFirst capitalizedString],self.amnt]
+                                                      message:[NSString stringWithFormat:@"\xF0\x9F\x91\x8D\nYou successfully fulfilled %@'s request for $%.02f.\n\n%@",[receiverFirst capitalizedString],self.amnt,arrivalDateForAlert]
                                                      delegate:self
                                             cancelButtonTitle:nil
                                             otherButtonTitles:@"OK",nil];
@@ -1655,7 +1755,7 @@
         [suspendedAlert show];
         [suspendedAlert setTag:9];
     }
-    else if ([[resultValueTransfer valueForKey:@"Result"]isEqual:@"Your account has been suspended for 24 hours from now. Please contact admin or send a mail to support@nooch.com if you need to reset your PIN number immediately."]
+    else if ([[resultValueTransfer valueForKey:@"Result"] isEqual:@"Your account has been suspended for 24 hours from now. Please contact admin or send a mail to support@nooch.com if you need to reset your PIN number immediately."]
             || [[[dictResultTransfer objectForKey:@"HandleRequestMoneyResult"] objectForKey:@"Result"] isEqualToString:@"Your account has been suspended for 24 hours from now. Please contact admin or send a mail to support@nooch.com if you need to reset your PIN number immediately."]
             || [[[dictResultTransfer objectForKey:@"RequestMoneyResult"] objectForKey:@"Result"] isEqualToString:@"Your account has been suspended for 24 hours from now. Please contact admin or send a mail to support@nooch.com if you need to reset your PIN number immediately."])
     {
@@ -1683,7 +1783,7 @@
         [suspendedAlert setTag:50];
         [suspendedAlert show];
     }
-    else if ([[resultValueTransfer valueForKey:@"Result"]isEqual:@"Receiver does not exist."]
+    else if ([[resultValueTransfer valueForKey:@"Result"] isEqual:@"Receiver does not exist."]
              || [[[dictResultTransfer objectForKey:@"HandleRequestMoneyResult"] objectForKey:@"Result"] isEqualToString:@"Receiver does not exist."]
              || [[[dictResultTransfer objectForKey:@"RequestMoneyResult"] objectForKey:@"Result"] isEqualToString:@"Receiver does not exist."])
     {
@@ -1718,6 +1818,123 @@
         transferFinished = YES;
         sendingMoney = NO;
     }
+}
+
+NSString * calculateArrivalDate()
+{
+    NSDate *date = [NSDate date];
+    
+    NSDateFormatter *dateFormat = [[NSDateFormatter alloc] init];
+    dateFormat.timeZone = [NSTimeZone timeZoneWithName:@"America/New_York"];
+    [dateFormat setDateFormat:@"E"];
+    NSString * dateString = [dateFormat stringFromDate:date];
+    
+    NSDateFormatter * timeFormat = [[NSDateFormatter alloc] init];
+    timeFormat.timeZone = [NSTimeZone timeZoneWithName:@"America/New_York"];
+    [timeFormat setDateFormat:@"k"];
+    short timeOfDay = [[timeFormat stringFromDate:date] intValue];
+    
+    //NSLog(@"Today's Day of Week: %@", dateString);
+    NSLog(@"Time of Day (Hour) is: %d", timeOfDay);
+    
+    NSDateComponents *offsetComponents = [[NSDateComponents alloc] init];
+    short knoxXtraDays = [[ARPowerHookManager getValueForHookById:@"knox_xtraTime"] intValue];
+
+    if ([dateString isEqualToString:@"Mon"] ||
+        [dateString isEqualToString:@"Tues"] ||
+        [dateString isEqualToString:@"Wed"])
+    {
+        if (timeOfDay < 15) // its BEFORE 3:00pm EST
+        {
+            [offsetComponents setDay: (1 + knoxXtraDays)];
+        }
+        else // its AFTER 3:00pm EST
+        {
+            if ([dateString isEqualToString:@"Mon"] ||
+                [dateString isEqualToString:@"Tues"])
+            {
+                [offsetComponents setDay:(2 + knoxXtraDays)];
+            }
+            else if ([dateString isEqualToString:@"Wed"])
+            {
+                if (knoxXtraDays == 0)
+                {
+                    [offsetComponents setDay:2]; // arrive by Friday
+                }
+                else if (knoxXtraDays == 1)
+                {
+                    [offsetComponents setDay:5]; // arrive by Monday
+                }
+                else
+                {
+                    [offsetComponents setDay:(5 + knoxXtraDays)];
+                }
+            }
+        }
+    }
+    else if ([dateString isEqualToString:@"Thurs"])
+    {
+        if (timeOfDay < 15) // its BEFORE 3:00pm EST
+        {
+            if (knoxXtraDays == 0)
+            {
+                [offsetComponents setDay:1]; // arrive by Friday
+            }
+            else if (knoxXtraDays == 1)
+            {
+                [offsetComponents setDay:4]; // arrive by Monday
+            }
+            else
+            {
+                [offsetComponents setDay:(4 + knoxXtraDays)];
+            }
+        }
+        else // its AFTER 3:00pm EST
+        {
+            [offsetComponents setDay:(4 + knoxXtraDays)];
+        }
+    }
+    else if ([dateString isEqualToString:@"Fri"])
+    {
+        if (timeOfDay < 15) // its BEFORE 3:00pm EST
+        {
+            [offsetComponents setDay:(3 + knoxXtraDays)];
+        }
+        else // its AFTER 3:00pm EST
+        {
+            [offsetComponents setDay:(4 + knoxXtraDays)];
+        }
+    }
+    else if ([dateString isEqualToString:@"Sat"])
+    {
+        [offsetComponents setDay:(3 + knoxXtraDays)];
+    }
+    else if ([dateString isEqualToString:@"Sun"])
+    {
+        [offsetComponents setDay:(2 + knoxXtraDays)];
+    }
+
+    NSDate * arrivalDate = [[[NSCalendar alloc]
+                             initWithCalendarIdentifier:NSGregorianCalendar] dateByAddingComponents:offsetComponents
+                            toDate:date options:0];
+
+    NSString *formatString = [NSDateFormatter dateFormatFromTemplate:@"EEEEdMMMM" // e.g.: "Monday, March 15"
+                                                             options:0
+                                                              locale:[NSLocale currentLocale]];
+    NSDateFormatter * finalDateFormatter = [[NSDateFormatter alloc] init];
+    finalDateFormatter.timeZone = [NSTimeZone timeZoneWithName:@"America/New_York"];
+    [finalDateFormatter setDateFormat:formatString];
+
+    NSString * arrivalDateFormatted = [finalDateFormatter stringFromDate:arrivalDate];
+    
+
+
+    NSTimeZone * systimeZone = [NSTimeZone systemTimeZone];
+    NSString * timeZoneString = [systimeZone localizedName:NSTimeZoneNameStyleGeneric locale:[NSLocale currentLocale]];
+
+    [ARProfileManager registerString:@"Time_Zone" withValue:timeZoneString];
+
+    return arrivalDateFormatted;
 }
 
 - (BOOL)connection:(NSURLConnection *)connection canAuthenticateAgainstProtectionSpace:(NSURLProtectionSpace *)protectionSpace {

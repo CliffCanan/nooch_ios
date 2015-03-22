@@ -12,6 +12,8 @@
 #import "Register.h"
 #import <AddressBook/AddressBook.h>
 #import <AddressBookUI/AddressBookUI.h>
+#import <LocalAuthentication/LocalAuthentication.h>
+
 @implementation assist
 @synthesize arrRecordsCheck;
 
@@ -38,6 +40,7 @@ static assist * _sharedInstance = nil;
 {
     return imageOBJFortransfer;
 }
+
 -(BOOL)getSuspended
 {
     return isUserSuspended;
@@ -102,7 +105,26 @@ static assist * _sharedInstance = nil;
     }
     return NO;
 }
+-(BOOL)checkIfTouchIdAvailable
+{
+    NSString * useTouchId = [ARPowerHookManager getValueForHookById:@"UseTouchID"];
 
+    if ([[useTouchId lowercaseString] isEqualToString:@"no"])
+    {
+        return NO;
+    }
+
+    LAContext *context = [[LAContext alloc] init];
+    NSError *error = nil;
+    if ([context canEvaluatePolicy:LAPolicyDeviceOwnerAuthenticationWithBiometrics error:&error])
+    {
+        return YES;
+    }
+    else
+    {
+        return NO;
+    }
+}
 -(BOOL)needsReload
 {
     return isNeed;

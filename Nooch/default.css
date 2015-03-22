@@ -49,7 +49,7 @@ view {
 #checkbox_dot {
     color       : #41abe1;
     font-family : "FontAwesome";
-    font-size   : 12px;
+    font-size   : 20px;
 }
 .animate_prelogin_slogan {
     animation-name: fade_slogan;
@@ -64,7 +64,7 @@ view {
     width : 48px;
     position : 136px 48px;
 }
-    
+
 .lightbox_title {
     font-family: "Roboto";
     font-weight: regular;
@@ -2460,28 +2460,29 @@ segmented-control#donatededication {
     border-color		: #7e7e7e;
     font-family			: "Roboto";
     font-weight			: light;
-
 }
-#history_search {background-color : #dcddde;}
-
+#history_search {background-color: #dcddde;}
+#historyMap_CustView_shadow {
+    box-shadow: 1px 2px 3px rgba(9, 10, 11, 0.5);
+}
 .historyMap_marker_name {
     font-family: "Roboto";
     font-weight: regular;
-    font-size: 18px;
+    font-size: 19px;
     color: white;
     text-align: center;
 }
 .historyMap_marker_title {
     font-family: "Roboto";
     font-weight: light;
-    font-size: 12px;
+    font-size: 13px;
     color: white;
     text-align: center;
 }
 .historyMap_marker_amnt {
     font-family: "Roboto";
     font-weight: medium;
-    font-size: 24px;
+    font-size: 26px;
     text-align: center;
 }
 .historyMap_marker_memo {
@@ -2493,13 +2494,13 @@ segmented-control#donatededication {
 .historyMap_marker_dateIntro {
     font-family: "Roboto";
     font-weight: regular;
-    font-size: 12px;
+    font-size: 13px;
     text-align: center;
 }
 .historyMap_marker_date {
     font-family: "Roboto";
     font-weight: regular;
-    font-size: 12px;
+    font-size: 13px;
     text-align: center;
 }
 
@@ -2511,13 +2512,14 @@ table-view#history {
     row-height			: 80px;
     separator-style 	: single-line;
     separator-color		: rgba(188,190,192,.6);
+    /*box-shadow          : 2px 4px 3px rgba(32, 33, 34, 0.4);*/
 }
 
 table-view#emptyTable {
     row-height			: 200px;
     separator-color		: rgba(255,255,255,0);
     separator-style     : none;
-    box-shadow          : 2px 2px 3px rgba(64, 65, 66, 0.25);
+    box-shadow          : 2px 2px 3px rgba(64, 65, 66, 0.3);
 }
 
 /**  Profile Pic of other user  **/
@@ -2952,24 +2954,38 @@ table-view#emptyTable {
 .table_glyph {
     left        : 15px;
     top         : 10px;
-    width      : 22px;
+    width       : 22px;
     height      : 30px;
     font-family : "FontAwesome";
-    font-size       : 20px;
+    font-size   : 20px;
     color       : #3fabe1;
     text-align: center;
-}	
+}
+.table_glyph_sm {
+    left        : 14px;
+    top         : 21px;
+    width       : 22px;
+    height      : 18px;
+    font-family : "FontAwesome";
+    font-size   : 13px;
+    color       : #72bf44;
+    text-align: center;
+}
 .table_arrow {
-    left        : 280px;
+    left        : 290px;
     top         : 10px;
     width       : 20px;
     height      : 30px;
-    color       :  rgba(63,171,225,.8);
+    color       : rgba(88,90,92,.6);
     font-family : "FontAwesome";
-    font-size       : 23px;
-    text-align: right;
+    font-size   : 24px;
+    text-align  : right;
 }
-
+#table_glyph_touchID {
+    font-size:19px;
+    top:3px;
+    height:31px;
+}
 .background_gray { background-color: #efeff4; }
 
 #account_background {
@@ -3032,8 +3048,8 @@ table-view#emptyTable {
 }
 table-view#settings {
     width			: 322px;
-    height			: 200px;
-    top				: 194px;
+/*  height			: 200px;
+    top				: 194px;*/
     left			: -1px;
     background-color: white;
     row-height		: 50px;
@@ -3074,7 +3090,29 @@ table-view#settings_resetpw {
     color		: #313233;
     font-family	: "Roboto";
     font-weight	: regular;
-    font-size	: 18px;
+    font-size	: 17px;
+    text-align	: left;
+}
+.settings_table_label_unIndented {
+    width		: 250px;
+    height		: 50px;
+    top			: 0px;
+    left		: 15px;
+    color		: #313233;
+    font-family	: "Roboto";
+    font-weight	: regular;
+    font-size	: 17px;
+    text-align	: left;
+}
+.settings_table_label_smaller {
+    width		: 250px;
+    height		: 50px;
+    top			: 0px;
+    left		: 50px;
+    color		: #313233;
+    font-family	: "Roboto";
+    font-weight	: light;
+    font-size	: 16px;
     text-align	: left;
 }
 /**  Gray Signout Button. **/
@@ -3203,7 +3241,7 @@ table-view#settings_resetpw {
     left			: 15px;
     width			: 250px;
     height			: 24px;
-    color			: #313233;
+    color			: #747779;
     font-family		: "Roboto";
     font-weight		: regular;
     font-size		: 17px;

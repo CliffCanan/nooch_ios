@@ -59,14 +59,12 @@
 
     UILabel * title = [[UILabel alloc] initWithFrame:CGRectMake(15, 16, 250, 25)];
     [title setStyleClass:@"refer_header"];
-    //@"Linked Social Networks"
     [title setText:NSLocalizedString(@"SocSettings_LnkdNtwrksHdr", @"Social Settings linked networks header")];
     [self.view addSubview:title];
 
     self.facebook = [UIButton buttonWithType:UIButtonTypeRoundedRect];
     [self.facebook setTitleShadowColor:Rgb2UIColor(19, 32, 38, 0.19) forState:UIControlStateNormal];
     self.facebook.titleLabel.shadowOffset = CGSizeMake(0.0, -1.0);
-    //@"    Connect To Facebook"
     [self.facebook setTitle:NSLocalizedString(@"SocSettings_FbBtn1", @"Social Settings FB Btn not connected text") forState:UIControlStateNormal];
     [self.facebook setFrame:CGRectMake(20, 60, 280, 50)];
     [self.facebook setStyleClass:@"button_blue"];
@@ -94,7 +92,6 @@
     else if ( ([user valueForKey:@"facebook_id"] && [[user valueForKey:@"facebook_id"] length] > 2) ||
               (FBSession.activeSession.state == FBSessionStateOpen || FBSession.activeSession.state == FBSessionStateOpenTokenExtended) )
     {
-        //@"       Facebook Connected"
         [self.facebook setTitle:NSLocalizedString(@"SocSettings_FbBtn2", @"Social Settings FB Btn connected text") forState:UIControlStateNormal];
 
         UILabel * glyphFB = [UILabel new];

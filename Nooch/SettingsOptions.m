@@ -28,7 +28,6 @@
 }
 @property(atomic,weak)UIButton *logout;
 
-
 @end
 
 @implementation SettingsOptions
@@ -147,7 +146,7 @@
     [link_bank setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
     [self.view addSubview:link_bank];
     
-    menu = [UITableView new];
+    menu = [[UITableView alloc] initWithFrame:CGRectMake(-1, 194, 322, 200) style:UITableViewStylePlain];
     [menu setStyleId:@"settings"];
     menu.layer.borderColor = Rgb2UIColor(188, 190, 192, 0.85).CGColor;
     menu.layer.borderWidth = 1;
@@ -301,7 +300,7 @@
         title.text = NSLocalizedString(@"Settings_TableRowLbl3", @"Settings Screen table label row 3 - 'Security Settings'");
         [glyph setText:[NSString fontAwesomeIconStringForIconIdentifier:@"fa-bell"]];
     }
-    else if(indexPath.row == 3) {
+    else if (indexPath.row == 3) {
         title.text = NSLocalizedString(@"Settings_TableRowLbl4", @"Settings Screen table label row 4 - 'Social Settings'");
         [glyph setText:[NSString fontAwesomeIconStringForIconIdentifier:@"fa-facebook"]];
     }

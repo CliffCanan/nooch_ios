@@ -28,26 +28,25 @@ serveD,FPPopoverControllerDelegate,UISearchBarDelegate,SWTableViewCellDelegate,M
     NSMutableArray *histShowArrayCompleted;
     NSMutableArray *histShowArrayPending;
     BOOL ishistLoading;
-    BOOL isEnd;
-    BOOL isStart;
+    BOOL isEnd, isStart;
     int totalDisplayedTransfers_completed,index;
-    BOOL isFilter;
-    BOOL isSearch;
+    BOOL isFilter, isSearch, isLocalSearch, isMapOpen;
     FPPopoverController*fp;
     NSString*SearchString;
     UIView*mapArea;
     float firstX,firstY;
-    BOOL isMapOpen;
+    float lat_hist,lon_hist;
+    BOOL locUpdateSuccessfully;
     NSArray*histArrayCommon;
     UIButton*exportHistory;
     NSMutableArray*histTempCompleted;
     NSMutableArray*histTempPending;
-    BOOL isLocalSearch;
     NSString*subTypestr;
     NSDate*ServerDate;
     UILabel * emptyText_localSearch;
     NSIndexPath * indexPathForDeletion;
     CLLocationManager*locationManager;
+    CLLocationCoordinate2D locationUser;
 }
 @property(nonatomic,strong) MBProgressHUD *hud;
 @end
