@@ -14,6 +14,7 @@
 #import "ReEnterPin.h"
 #import "ProfileInfo.h"
 #import "HistoryFlat.h"
+#import "SendInvite.h"
 #import "serve.h"
 #import "iCarousel.h"
 #import "SIAlertView.h"
@@ -84,6 +85,8 @@ NSMutableURLRequest *request;
     NSMutableDictionary * loadInfo;
     if ([core isAlive:[self autoLogin]])
     {
+        [[assist shared] setisloggedout:NO];
+
         if ([[[NSUserDefaults standardUserDefaults] objectForKey:@"NotificationPush"]intValue] == 1)
         {
             ProfileInfo *prof = [ProfileInfo new];
@@ -114,7 +117,7 @@ NSMutableURLRequest *request;
         [nav_ctrl pushViewController:reg animated:NO];
 
         [ARProfileManager clearProfile];
-
+        [[assist shared] setisloggedout:YES];
         return;
     }
 
@@ -713,12 +716,17 @@ void addressBookChanged(ABAddressBookRef addressBook, CFDictionaryRef info, void
 
             NSLog(@"Home: Reload Initiated");
         }
+        [[assist shared] setisloggedout:NO];
     }
     else
     {
+        [[assist shared] setisloggedout:YES];
+
         Register *reg = [Register new];
         [nav_ctrl pushViewController:reg animated:YES];
+
         me = [core new];
+
         [ARProfileManager clearProfile];
         return;
     }
@@ -795,7 +803,10 @@ void addressBookChanged(ABAddressBookRef addressBook, CFDictionaryRef info, void
 
 - (void)applicationWillEnterFG_Home:(NSNotification *)notification
 {
-    [self checkAllBannerStatuses];
+    if ([[assist shared] isloggedout] == false)
+    {
+        [self checkAllBannerStatuses];
+    }
 }
 
 -(void)checkAllBannerStatuses
@@ -1596,6 +1607,14 @@ void addressBookChanged(ABAddressBookRef addressBook, CFDictionaryRef info, void
 {
     NSString *iTunesLink = @"https://itunes.apple.com/us/app/nooch/id917955306?mt=8&uo=4";
     [[UIApplication sharedApplication] openURL:[NSURL URLWithString:iTunesLink]];
+}
+
+-(void)goToReferFriend
+{
+    sentFromStatsScrn = false;
+
+    SendInvite *inv = [SendInvite new];
+    [self.navigationController pushViewController:inv animated:YES];
 }
 
 #pragma mark - iCarousel methods

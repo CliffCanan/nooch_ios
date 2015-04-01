@@ -121,7 +121,7 @@
 
     self.btn_glyphPush_1 = [UIButton buttonWithType:UIButtonTypeCustom];
     self.btn_glyphPush_1.frame = CGRectMake(260, 0, 50, 39);
-    [self.btn_glyphPush_1 setStyleClass:@"font-awesome_22px"];
+    [self.btn_glyphPush_1 setStyleClass:@"fontAwesome_bigger"];
     [self.btn_glyphPush_1 setTitle:[NSString fontAwesomeIconStringForIconIdentifier:@"fa-mobile"] forState:UIControlStateNormal];
     [self.btn_glyphPush_1 setTitleColor:kNoochGreen forState:UIControlStateHighlighted];
     [self.btn_glyphPush_1 addTarget:self action:@selector(toggle_section:) forControlEvents:UIControlEventTouchUpInside];
@@ -137,7 +137,7 @@
 
     self.btn_glyphPush_2 = [UIButton buttonWithType:UIButtonTypeCustom];
     self.btn_glyphPush_2.frame = CGRectMake(260, 177, 50, 39);
-    [self.btn_glyphPush_2 setStyleClass:@"font-awesome_22px"];
+    [self.btn_glyphPush_2 setStyleClass:@"fontAwesome_bigger"];
     [self.btn_glyphPush_2 setTitle:[NSString fontAwesomeIconStringForIconIdentifier:@"fa-mobile"] forState:UIControlStateNormal];
     [self.btn_glyphPush_2 setTitleColor:kNoochGreen forState:UIControlStateHighlighted];
     [self.btn_glyphPush_2 addTarget:self action:@selector(toggle_section:) forControlEvents:UIControlEventTouchUpInside];

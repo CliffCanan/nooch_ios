@@ -261,7 +261,7 @@ void exceptionHandler(NSException *exception){
                 [[UIApplication sharedApplication].keyWindow.rootViewController presentViewController:pin animated:YES completion:^{
                 }];
             }
-            else if([[[NSUserDefaults standardUserDefaults] objectForKey:@"requiredImmediately"] boolValue])
+            else if ([[[NSUserDefaults standardUserDefaults] objectForKey:@"requiredImmediately"] boolValue])
             {
                 [[NSUserDefaults standardUserDefaults] setObject:@"1" forKey:@"pincheck"];
                 ReEnterPin *pin = [ReEnterPin new];
@@ -479,38 +479,33 @@ void exceptionHandler(NSException *exception){
         return YES;
     }
 
-    if ([[url absoluteString] rangeOfString:@"knox"].location != NSNotFound)
-    {
-        //Get the Response from Knox and parse it
-        NSString *response = [[url absoluteString]stringByReplacingPercentEscapesUsingEncoding:NSUTF8StringEncoding];
-        NSArray *URLParse = [response componentsSeparatedByString:@"?"];
-        NSLog(@"%@",URLParse);
-        NSString *responseBody = URLParse[1];
-        NSLog(@"%@",responseBody);
-        NSArray *responseParse = [responseBody componentsSeparatedByString:@"&"];
-        
-        //Parse the components of the response
-        NSLog(@"%@",responseParse);
-        NSArray * isPaid = [responseParse[0] componentsSeparatedByString:@"pst="][1];
-        NSLog(@"%@",isPaid);
-        NSString * paymentID = [responseParse[2] componentsSeparatedByString:@"pay_id="][1];
+    //Get the Response from Knox and parse it
+    NSString *response = [[url absoluteString]stringByReplacingPercentEscapesUsingEncoding:NSUTF8StringEncoding];
+    NSArray *URLParse = [response componentsSeparatedByString:@"?"];
+    NSLog(@"%@",URLParse);
+    NSString *responseBody = URLParse[1];
+    NSLog(@"%@",responseBody);
+    NSArray *responseParse = [responseBody componentsSeparatedByString:@"&"];
+    
+    //Parse the components of the response
+    NSLog(@"%@",responseParse);
+    NSArray * isPaid = [responseParse[0] componentsSeparatedByString:@"pst="][1];
+    NSLog(@"%@",isPaid);
+    NSString * paymentID = [responseParse[2] componentsSeparatedByString:@"pay_id="][1];
 
-        //Components of response are Logged here
-        NSLog(@"fired in Delegate - URL Encoded --> IsPaid: %@   paymentID: %@", isPaid, paymentID);
-        NSUserDefaults * defaults = [NSUserDefaults standardUserDefaults];
-        [defaults setObject:isPaid forKey:@"isPaid"];
-        [defaults setObject:paymentID forKey:@"paymentID"];
+    //Components of response are Logged here
+    NSLog(@"fired in Delegate - URL Encoded --> IsPaid: %@   paymentID: %@", isPaid, paymentID);
+    NSUserDefaults * defaults = [NSUserDefaults standardUserDefaults];
+    [defaults setObject:isPaid forKey:@"isPaid"];
+    [defaults setObject:paymentID forKey:@"paymentID"];
 
-        [defaults synchronize];
-        
-        //Send Notification to WebView so it can resign itself and to the parent view if desired to handle response and give success notification etc.
-        [[NSNotificationCenter defaultCenter]
-        postNotificationName:@"KnoxResponse" object:self];
-    }
-    else
-    {
-        [MobileAppTracker applicationDidOpenURL:[url absoluteString] sourceApplication:sourceApplication];
-    }
+    [defaults synchronize];
+    
+    //Send Notification to WebView so it can resign itself and to the parent view if desired to handle response and give success notification etc.
+    [[NSNotificationCenter defaultCenter]
+    postNotificationName:@"KnoxResponse" object:self];
+
+    [MobileAppTracker applicationDidOpenURL:[url absoluteString] sourceApplication:sourceApplication];
 
     return YES;
 }

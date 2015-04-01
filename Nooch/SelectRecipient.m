@@ -673,7 +673,7 @@
         self.hud.labelText = NSLocalizedString(@"SelectRecip_LoadingLocation", @"Select Recipient Find By Location Loading Text");
         self.hud.detailsLabelText = nil;
         [self.hud show:YES];
-
+ 
         if ([[assist shared] checkIfLocAllowed])
         {
             NSString * searchRadiusString = [ARPowerHookManager getValueForHookById:@"srchRds"];

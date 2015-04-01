@@ -68,11 +68,8 @@ NSString *responseString;
 @synthesize Delegate,tagName,responseData;
 
 NSString * const ServerUrl = @"https://www.noochme.com/NoochService/NoochService.svc";
-
-//NSString * const ServerUrl = @"https://192.203.102.254/NoochService/NoochService.svc"; //development server
+//NSString * const ServerUrl = @"https://54.68.252.238/NoochService/NoochService.svc";// dev server
 //NSString * const ServerUrl = @"https://172.17.60.150/NoochService/NoochService.svc";
-//NSString * const ServerUrl = @"https://10.200.1.40/noochservice/NoochService.svc";
-//NSString * const ServerUrl = @"http://noochweb.venturepact.com/NoochService.svc"; //testing server Venturepact isCheckValidation;
 
 bool locationUpdate;
 NSString *tranType;
@@ -563,7 +560,7 @@ NSString *amnt;
                 Home * home1 = [Home new];
                 [home1 hide];
 
-                [[assist shared]setIsloginFromOther:YES];
+                [[assist shared] setIsloginFromOther:YES];
 
                 [[NSFileManager defaultManager] removeItemAtPath:[self autoLogin] error:nil];
                 [[NSUserDefaults standardUserDefaults] removeObjectForKey:@"UserName"];

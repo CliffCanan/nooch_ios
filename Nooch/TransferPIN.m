@@ -1334,13 +1334,13 @@
             {
                 [arrNav removeLastObject];
             }
-
+            
             HistoryFlat * mainHistoryScreen = [HistoryFlat new];
             [arrNav addObject: mainHistoryScreen];
             [nav_ctrl setViewControllers:arrNav animated:NO];
-
+            
             //NSLog(@"TransferPIN -> nav_ctrl.viewControllers is: %@", nav_ctrl.viewControllers);
-
+            
             TransactionDetails *td = [[TransactionDetails alloc] initWithData:input];
             [nav_ctrl pushViewController:td animated:YES];
         }
@@ -1841,7 +1841,7 @@ NSString * calculateArrivalDate()
     short knoxXtraDays = [[ARPowerHookManager getValueForHookById:@"knox_xtraTime"] intValue];
 
     if ([dateString isEqualToString:@"Mon"] ||
-        [dateString isEqualToString:@"Tues"] ||
+        [dateString isEqualToString:@"Tue"] ||
         [dateString isEqualToString:@"Wed"])
     {
         if (timeOfDay < 15) // its BEFORE 3:00pm EST
@@ -1851,7 +1851,7 @@ NSString * calculateArrivalDate()
         else // its AFTER 3:00pm EST
         {
             if ([dateString isEqualToString:@"Mon"] ||
-                [dateString isEqualToString:@"Tues"])
+                [dateString isEqualToString:@"Tue"])
             {
                 [offsetComponents setDay:(2 + knoxXtraDays)];
             }
@@ -1872,7 +1872,7 @@ NSString * calculateArrivalDate()
             }
         }
     }
-    else if ([dateString isEqualToString:@"Thurs"])
+    else if ([dateString isEqualToString:@"Thu"])
     {
         if (timeOfDay < 15) // its BEFORE 3:00pm EST
         {

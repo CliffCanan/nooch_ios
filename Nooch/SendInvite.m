@@ -186,6 +186,8 @@
     serveOBJ.tagName = @"GetReffereduser";
     [serveOBJ setDelegate:self];
     [serveOBJ getInvitedMemberList:[[NSUserDefaults standardUserDefaults] objectForKey:@"MemberId"]];
+
+    [ARTrackingManager trackEvent:@"Refer_ViewDidLoad_End"];
 }
 
 #pragma mark - file paths

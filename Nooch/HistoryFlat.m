@@ -298,7 +298,7 @@
         mapView_.myLocationEnabled = NO;
     }
         mapView_.delegate = self;
-        [mapView_ setMinZoom:5 maxZoom:16];
+        [mapView_ setMinZoom:3 maxZoom:17];
         [mapArea addSubview:mapView_];
     /*}
     else
@@ -2397,6 +2397,21 @@
 {
     [searchBar becomeFirstResponder];
     [searchBar setShowsCancelButton:YES];
+
+    if (isMapOpen)
+    {
+        [UIView beginAnimations:nil context:nil];
+        [UIView setAnimationDelegate:self];
+        [UIView setAnimationDuration:0.35];
+
+        self.tableShadow.frame = CGRectMake(0, 84, 320, self.view.frame.size.height);
+        self.list.frame = CGRectMake(0, 84, 320, self.view.frame.size.height);
+        [self.view bringSubviewToFront:self.list];
+        mapArea.frame = CGRectMake(0, 84, 320, self.view.frame.size.height);
+        isMapOpen = NO;
+
+        [UIView commitAnimations];
+    }
 }
 
 -(BOOL)searchBar:(UISearchBar *)searchBar shouldChangeTextInRange:(NSRange)range replacementText:(NSString *)text{

@@ -512,7 +512,7 @@
                                                                            delegate:self
                                                                   cancelButtonTitle:@"Cancel"
                                                              destructiveButtonTitle:nil
-                                                                  otherButtonTitles:NSLocalizedString(@"LSidebar_SupportActShtBug", @"Left Sidebar contact support Action Sheet - 'Report a Bug'"), NSLocalizedString(@"LSidebar_SupportActShtEmail", @"Left Sidebar contact support Action Sheet - 'Email Nooch Support'"), NSLocalizedString(@"LSidebar_SupportActShtSupprtCtr", @"Left Sidebar contact support Action Sheet - 'Go to Support Center'"), nil];
+                                                                  otherButtonTitles:NSLocalizedString(@"LSidebar_SupportActShtSupprtCtr", @"Left Sidebar contact support Action Sheet - 'Go to Support Center'"), NSLocalizedString(@"LSidebar_SupportActShtBug", @"Left Sidebar contact support Action Sheet - 'Report a Bug'"), NSLocalizedString(@"LSidebar_SupportActShtEmail", @"Left Sidebar contact support Action Sheet - 'Email Nooch Support'"), nil];
             actionSheetObject.actionSheetStyle = UIActionSheetStyleDefault;
             [actionSheetObject setTag:1];
             [actionSheetObject showInView:self.view];
@@ -545,6 +545,13 @@
     if ([actionSheet tag] == 1)
     {
         if (buttonIndex == 0)
+        {
+            //support center
+            webView * wb = [[webView alloc]init];
+            [nav_ctrl pushViewController:wb animated:NO];
+            [self.slidingViewController resetTopView];
+        }
+        else if (buttonIndex == 1)
         {
             //report bug
             if (![MFMailComposeViewController canSendMail])
@@ -594,7 +601,7 @@
             [mailComposer setModalTransitionStyle:UIModalTransitionStyleCrossDissolve];
             [self presentViewController:mailComposer animated:YES completion:nil];
         }
-        else if (buttonIndex == 1)
+        else if (buttonIndex == 2)
         {
             //email support
             if (![MFMailComposeViewController canSendMail])
@@ -642,13 +649,6 @@
             [mailComposer setBccRecipients:[NSArray arrayWithObject:@""]];
             [mailComposer setModalTransitionStyle:UIModalTransitionStyleCrossDissolve];
             [self presentViewController:mailComposer animated:YES completion:nil];
-        }
-        else if (buttonIndex == 2)
-        {
-            //support center
-            webView * wb = [[webView alloc]init];
-            [nav_ctrl pushViewController:wb animated:NO];
-            [self.slidingViewController resetTopView];
         }
     }
     else if ([actionSheet tag] == 2)
