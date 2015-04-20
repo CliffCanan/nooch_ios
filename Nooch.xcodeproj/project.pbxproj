@@ -1715,7 +1715,7 @@
 		6B30371815FA3FF200056DAD /* Project object */ = {
 			isa = PBXProject;
 			attributes = {
-				LastUpgradeCheck = 0620;
+				LastUpgradeCheck = 0630;
 				ORGANIZATIONNAME = Nooch;
 				TargetAttributes = {
 					6B30372015FA3FF200056DAD = {

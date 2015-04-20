@@ -137,7 +137,8 @@
     shadow.shadowOffset = CGSizeMake(0, 1);
     NSDictionary * textAttributes = @{NSShadowAttributeName: shadow };
     
-    if ( [[self.trans valueForKey:@"TransactionType"]isEqualToString:@"Transfer"] ||
+    if ( [[self.trans valueForKey:@"TransactionType"] isEqualToString:@"Transfer"] ||
+         [[self.trans valueForKey:@"TransactionType"] isEqualToString:@"Reward"] ||
         ([[self.trans valueForKey:@"TransactionType"] isEqualToString:@"Invite"] &&
          [[self.trans valueForKey:@"InvitationSentTo"] isEqualToString:[user valueForKey:@"UserName"]]))
     {
@@ -194,7 +195,7 @@
         else
             [memo setText:[NSString stringWithFormat:@"\"%@\"",[self.trans valueForKey:@"Memo"]]];
     }
-    else  {
+    else {
         memo.text = NSLocalizedString(@"TransDeets_NoMemoTxt2", @"Transfer Details 'No memo attached' text (2nd)");
     }
 
@@ -375,7 +376,8 @@
     }
 
     else if (([[self.trans valueForKey:@"TransactionType"] isEqualToString:@"Transfer"] ||
-              [[self.trans valueForKey:@"TransactionType"] isEqualToString:@"Invite"] ) &&
+              [[self.trans valueForKey:@"TransactionType"] isEqualToString:@"Invite"]   ||
+              [[self.trans valueForKey:@"TransactionType"] isEqualToString:@"Reward"]) &&
               [[self.trans valueForKey:@"TransactionStatus"] isEqualToString:@"Success"])
     {
         if ([[self.trans objectForKey:@"MemberId"] isEqualToString:[user objectForKey:@"MemberId"]])
@@ -1657,8 +1659,9 @@
                 [status setStyleClass:@"green_text"];
             }
             else if ([[tranDetailResult valueForKey:@"TransactionType"] isEqualToString:@"Sent"]     ||
-                     [[tranDetailResult valueForKey:@"TransactionType"] isEqualToString:@"Received"]  ||
-                     [[tranDetailResult valueForKey:@"TransactionType"] isEqualToString:@"Transfer"])
+                     [[tranDetailResult valueForKey:@"TransactionType"] isEqualToString:@"Received"] ||
+                     [[tranDetailResult valueForKey:@"TransactionType"] isEqualToString:@"Transfer"] ||
+                     [[tranDetailResult valueForKey:@"TransactionType"] isEqualToString:@"Reward"])
             {
                 statusstr = NSLocalizedString(@"TransDeets_CmpltTxt", @"'Complete' Status Text");
                 [status setStyleClass:@"green_text"];

@@ -1615,7 +1615,7 @@
     UITextField * textField = [alert textFieldAtIndex:0];
     textField.text = [[NSUserDefaults standardUserDefaults] objectForKey:@"UserName"];
     textField.textAlignment = NSTextAlignmentCenter;
-    textField.KeyboardType = UIKeyboardTypeEmailAddress;
+    textField.keyboardType = UIKeyboardTypeEmailAddress;
     [alert show];
 }
 

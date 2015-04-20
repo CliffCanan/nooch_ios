@@ -799,6 +799,15 @@ void addressBookChanged(ABAddressBookRef addressBook, CFDictionaryRef info, void
     {
         [ARProfileManager setStringValue:@"NO" forVariable:@"IsBankAttached"];
     }
+    dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
+        NSURL *theURL = [[NSURL alloc] initWithString:@"http://ip-api.com/line/?fields=query"];
+        NSString* myIP = [[NSString alloc] initWithData:[NSData dataWithContentsOfURL:theURL] encoding:NSUTF8StringEncoding];
+        
+        dispatch_async(dispatch_get_main_queue(), ^{
+            // Manipulate the ip on the main queue
+            NSLog(@"IP: %@",myIP);
+        });
+    });
 }
 
 - (void)applicationWillEnterFG_Home:(NSNotification *)notification
@@ -2289,7 +2298,7 @@ void addressBookChanged(ABAddressBookRef addressBook, CFDictionaryRef info, void
                                          options:UIViewKeyframeAnimationOptionCalculationModeCubic
                                       animations:^{
                                           [UIView addKeyframeWithRelativeStartTime:0 relativeDuration:.9 animations:^{
-                                              top_button.Alpha = 0;
+                                              top_button.alpha = 0;
                                               top_button.transform = CGAffineTransformMakeScale(.1, .1);
                                           }];
                                           

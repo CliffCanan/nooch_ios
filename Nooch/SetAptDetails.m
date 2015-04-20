@@ -151,7 +151,7 @@
 
     UILabel * glyphEmail = [[UILabel alloc] initWithFrame:CGRectMake(3, 0, 21, 25)];
     [glyphEmail setFont:[UIFont fontWithName:@"FontAwesome" size: 14]];
-    glyphEmail.AttributedText = [[NSAttributedString alloc] initWithString:[NSString fontAwesomeIconStringForIconIdentifier:@"fa-envelope-o"] attributes:textShadow];
+    glyphEmail.attributedText = [[NSAttributedString alloc] initWithString:[NSString fontAwesomeIconStringForIconIdentifier:@"fa-envelope-o"] attributes:textShadow];
     [glyphEmail setTextAlignment:NSTextAlignmentCenter];
     [glyphEmail setTextColor:[UIColor whiteColor]];
     [emailApt addSubview:glyphEmail];

@@ -1276,7 +1276,8 @@
                     [statusIndicator setText:[NSString fontAwesomeIconStringForIconIdentifier:@"fa-times"]];
                     [statusIndicator setTextColor:kNoochRed];
                 }
-                else if ([[dictRecord valueForKey:@"TransactionStatus"]isEqualToString:@"Success"]) {
+                else if ([[dictRecord valueForKey:@"TransactionStatus"]isEqualToString:@"Success"] ||
+                         [[dictRecord valueForKey:@"TransactionStatus"]isEqualToString:@"Reward"]) {
                     [statusIndicator setText:[NSString fontAwesomeIconStringForIconIdentifier:@"fa-check"]];
                     [statusIndicator setTextColor:kNoochGreen];
                 }
@@ -1286,6 +1287,7 @@
                 NSString * invitationSentTo = [NSString stringWithFormat:@"%@",[dictRecord valueForKey:@"InvitationSentTo"]];
 
                 if ( [[dictRecord valueForKey:@"TransactionType"]isEqualToString:@"Transfer"] ||
+                     [[dictRecord valueForKey:@"TransactionType"]isEqualToString:@"Reward"] ||
                     ([[dictRecord valueForKey:@"TransactionType"]isEqualToString:@"Invite"] &&
                      invitationSentTo != NULL && ![invitationSentTo isEqualToString:username] &&
                     ![[dictRecord valueForKey:@"Name"] isEqualToString:fullName]))
@@ -1294,7 +1296,6 @@
                     {
                         // Sent Transfer
                         [amount setStyleClass:@"history_transferamount_neg"];
-                        //@"Transfer to"
                         [transferTypeLabel setText:NSLocalizedString(@"History_TransferToTxt", @"History screen 'Transfer To' Text")];
 						[transferTypeLabel setBackgroundColor:kNoochRed];
                         [name setText:[NSString stringWithFormat:@"%@",[[dictRecord valueForKey:@"Name"] capitalizedString]]];
@@ -1305,7 +1306,6 @@
                     {
                         // Received Transfer
                         [amount setStyleClass:@"history_transferamount_pos"];
-                        //@"Transfer from"
                         [transferTypeLabel setText:NSLocalizedString(@"History_TransferFromTxt", @"History screen 'Transfer From' Text")];
                         [transferTypeLabel setBackgroundColor:kNoochGreen];
                         [name setText:[NSString stringWithFormat:@"%@ ",[[dictRecord valueForKey:@"Name"] capitalizedString]]];
@@ -1445,7 +1445,6 @@
                 else if ([[dictRecord valueForKey:@"TransactionStatus"]isEqualToString:@"Success"] &&
                          [[dictRecord valueForKey:@"TransactionType"]isEqualToString:@"Request"] )
                 {
-                    //@"Paid"
                     [updated_balance setText:NSLocalizedString(@"History_PaidTxt", @"History screen 'Paid' Text")];
                     [updated_balance setTextColor:kNoochGreen];
                     [cell.contentView addSubview:updated_balance];
@@ -1453,7 +1452,6 @@
                 else if ([[dictRecord valueForKey:@"TransactionStatus"]isEqualToString:@"Success"] &&
                          [[dictRecord valueForKey:@"TransactionType"]isEqualToString:@"Invite"] )
                 {
-                    //@"Accepted"
                     [updated_balance setText:NSLocalizedString(@"History_AcceptedTxt", @"History screen 'Accepted' Text")];
                     [updated_balance setTextColor:kNoochGreen];
                     [cell.contentView addSubview:updated_balance];
@@ -1461,7 +1459,6 @@
                 else if ([[dictRecord valueForKey:@"TransactionType"]isEqualToString:@"Disputed"] &&
                          [[dictRecord valueForKey:@"DisputeStatus"]isEqualToString:@"Resolved"])
                 {
-                    //@"Resolved"
                     [updated_balance setText:NSLocalizedString(@"History_ResolvedTxt", @"History screen 'Resolved' Text")];
                     [updated_balance setTextColor:kNoochGreen];
                     [cell.contentView addSubview:updated_balance];
@@ -2873,7 +2870,7 @@
     UITextField *textField = [alert textFieldAtIndex:0];
     textField.text = [[NSUserDefaults standardUserDefaults] objectForKey:@"UserName"];
     textField.textAlignment = NSTextAlignmentCenter;
-    textField.KeyboardType = UIKeyboardTypeEmailAddress;
+    textField.keyboardType = UIKeyboardTypeEmailAddress;
     [alert show];
 }
 
