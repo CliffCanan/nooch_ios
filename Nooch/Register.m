@@ -614,7 +614,32 @@
 #pragma mark - navigation
 - (void)continue_to_signup
 {
-    if ([[[self.name_field.text componentsSeparatedByString:@" "] objectAtIndex:0]length] < 2)
+    if (([self.password_field.text length] == 0) || ([self.name_field.text length] == 0) || ([self.email_field.text length] == 0))
+    {
+        UIAlertView *av = [[UIAlertView alloc] initWithTitle:@"Eager Beaver"
+                                                     message:@"You have not filled out the sign up form!"
+                                                    delegate:nil
+                                           cancelButtonTitle:@"OK"
+                                           otherButtonTitles:nil];
+        [av show];
+        [self.name_field becomeFirstResponder];
+        return;
+    }
+
+    else if ([self.name_field.text rangeOfString:@" "].location == NSNotFound)
+    {
+        UIAlertView * alert =[[UIAlertView alloc]initWithTitle:@"Need a Full Name"
+                                                       message:@"For security, we ask all Nooch users sign up with a full name (first and last name)."
+                                                      delegate:nil
+                                             cancelButtonTitle:@"OK"
+                                             otherButtonTitles:nil, nil];
+        [alert show];
+        [self.name_field becomeFirstResponder];
+        return;
+    }
+
+    else if ([[[self.name_field.text componentsSeparatedByString:@" "] objectAtIndex:0]length] < 2 ||
+             [[[self.name_field.text componentsSeparatedByString:@" "] objectAtIndex:1]length] < 2)
     {
         UIAlertView * alert =[[UIAlertView alloc]initWithTitle:@"Need a Full Name"
                                                        message:@"Nooch is currently only able to handle names greater than 3 letters.\n\nIf your first or last name has fewer than 3, please contact us and we'll be happy to manually create your account."
@@ -625,16 +650,17 @@
         [self.name_field becomeFirstResponder];
         return;
     }
-
-    if (([self.password_field.text length] == 0) || ([self.name_field.text length] == 0) || ([self.email_field.text length] == 0))
+    else
     {
-        UIAlertView *av = [[UIAlertView alloc] initWithTitle:@"Eager Beaver"
-                                                     message:@"You have not filled out the sign up form!"
-                                                    delegate:nil
-                                           cancelButtonTitle:@"OK"
-                                           otherButtonTitles:nil];
-        [av show];
-        [self.name_field becomeFirstResponder];
+        if ([self checkNameForNumsAndSpecChars] == false)
+        {
+            return;
+        }
+    }
+
+    // CHECK IF EMAIL IS ONE OF THE SHADY DOMAINS
+    if ([self checkEmailForShadyDomain] == false)
+    {
         return;
     }
 
@@ -749,7 +775,7 @@
     [self.hud hide:YES];
     UIAlertView *alert = [[UIAlertView alloc]
                           initWithTitle:NSLocalizedString(@"Rgstr_CnctnErrAlrtTitle", @"Register screen 'Connection Error' Alert Text")
-                          message:NSLocalizedString(@"Rgstr_CnctnErrAlrtBody", @"Register screen Connection Error Alert Body Text")//@"Looks like we're having trouble finding an internet connection! Please try again."
+                          message:NSLocalizedString(@"Rgstr_CnctnErrAlrtBody", @"Register screen Connection Error Alert Body Text")
                           delegate:nil
                           cancelButtonTitle:@"OK"
                           otherButtonTitles:nil];
@@ -1326,43 +1352,7 @@
             }
             else
             {
-                BOOL containsPunctuation = NSNotFound != [self.name_field.text rangeOfCharacterFromSet:NSCharacterSet.punctuationCharacterSet].location;
-                BOOL containsNumber = NSNotFound != [self.name_field.text rangeOfCharacterFromSet:NSCharacterSet.decimalDigitCharacterSet].location;
-                BOOL containsSymbols = NSNotFound != [self.name_field.text rangeOfCharacterFromSet:NSCharacterSet.symbolCharacterSet].location;
-                NSMutableCharacterSet *characterSet = [NSMutableCharacterSet characterSetWithCharactersInString:@"'.-"];
-                BOOL containsDash = NSNotFound != [self.name_field.text rangeOfCharacterFromSet:characterSet].location;
-
-                if (containsNumber)
-                {
-                    [self.nameValidator setHidden:NO];
-                    [self.name_field becomeFirstResponder];
-
-                    UIAlertView *av = [[UIAlertView alloc] initWithTitle:[NSString stringWithFormat:@"\xF0\x9F\x98\x8F  %@", NSLocalizedString(@"Rgstr_ReallyAlrtTtl1", @"Register screen Really Alert Title")]
-                                                                 message:NSLocalizedString(@"Rgstr_ReallyAlrtBody1", @"Register screen Really Alert Body Text")
-                                                                delegate:self
-                                                       cancelButtonTitle:@"OK"
-                                                       otherButtonTitles:nil];
-                    [av show];
-                }
-                else if ((containsSymbols || containsPunctuation) &&
-                         !containsDash)
-                {
-                    [self.nameValidator setHidden:NO];
-                    [self.name_field becomeFirstResponder];
-                        
-                    UIAlertView *av = [[UIAlertView alloc] initWithTitle:[NSString stringWithFormat:@"\xF0\x9F\x98\x8F  %@", NSLocalizedString(@"Rgstr_ReallyAlrtTtl2", @"Register screen Really Alert Title")]
-                                                                 message:NSLocalizedString(@"Rgstr_ReallyAlrtBody2", @"Register screen Really Alert Body (2nd - symbol)")
-                                                                delegate:self
-                                                       cancelButtonTitle:@"OK"
-                                                       otherButtonTitles:nil];
-                    [av show];
-                }
-                else
-                {
-                    [self.fullNameInstruc setHidden:YES];
-                    [self.nameValidator setHidden:YES];
-                    [self.email_field becomeFirstResponder];
-                }
+                [self checkNameForNumsAndSpecChars];
             }
             break;
         case 2:
@@ -1396,6 +1386,114 @@
             break;
     }
     return YES;
+}
+
+-(BOOL)checkNameForNumsAndSpecChars
+{
+    BOOL containsPunctuation = NSNotFound != [self.name_field.text rangeOfCharacterFromSet:NSCharacterSet.punctuationCharacterSet].location;
+    BOOL containsNumber = NSNotFound != [self.name_field.text rangeOfCharacterFromSet:NSCharacterSet.decimalDigitCharacterSet].location;
+    BOOL containsSymbols = NSNotFound != [self.name_field.text rangeOfCharacterFromSet:NSCharacterSet.symbolCharacterSet].location;
+    NSMutableCharacterSet *characterSet = [NSMutableCharacterSet characterSetWithCharactersInString:@"'.-"];
+    BOOL containsDash = NSNotFound != [self.name_field.text rangeOfCharacterFromSet:characterSet].location;
+    
+    if (containsNumber)
+    {
+        [self.nameValidator setHidden:NO];
+        [self.name_field becomeFirstResponder];
+        
+        UIAlertView *av = [[UIAlertView alloc] initWithTitle:[NSString stringWithFormat:@"\xF0\x9F\x98\x8F  %@", NSLocalizedString(@"Rgstr_ReallyAlrtTtl1", @"Register screen Really Alert Title")]
+                                                     message:NSLocalizedString(@"Rgstr_ReallyAlrtBody1", @"Register screen Really Alert Body Text")
+                                                    delegate:self
+                                           cancelButtonTitle:@"OK"
+                                           otherButtonTitles:nil];
+        [av show];
+        return false;
+    }
+    else if ((containsSymbols || containsPunctuation) &&
+             !containsDash)
+    {
+        [self.nameValidator setHidden:NO];
+        [self.name_field becomeFirstResponder];
+        
+        UIAlertView *av = [[UIAlertView alloc] initWithTitle:[NSString stringWithFormat:@"\xF0\x9F\x98\x8F  %@", NSLocalizedString(@"Rgstr_ReallyAlrtTtl2", @"Register screen Really Alert Title")]
+                                                     message:NSLocalizedString(@"Rgstr_ReallyAlrtBody2", @"Register screen Really Alert Body (2nd - symbol)")
+                                                    delegate:self
+                                           cancelButtonTitle:@"OK"
+                                           otherButtonTitles:nil];
+        [av show];
+        return false;
+    }
+    else
+    {
+        [self.fullNameInstruc setHidden:YES];
+        [self.nameValidator setHidden:YES];
+
+        if ([self.email_field.text length] < 2)
+        {
+            [self.email_field becomeFirstResponder];
+        }
+        return true;
+    }
+}
+
+-(bool)checkEmailForShadyDomain
+{
+    NSString * emailToCheck = self.email_field.text;
+
+    if ([emailToCheck rangeOfString:@"sharklasers"].location != NSNotFound ||
+        [emailToCheck rangeOfString:@"grr.la"].location != NSNotFound ||
+        [emailToCheck rangeOfString:@"guerrillamail"].location != NSNotFound ||
+        [emailToCheck rangeOfString:@"spam4"].location != NSNotFound ||
+        [emailToCheck rangeOfString:@"anonymousemail"].location != NSNotFound ||
+        [emailToCheck rangeOfString:@"anonemail"].location != NSNotFound ||
+        [emailToCheck rangeOfString:@"hmamail.com"].location != NSNotFound || // "hideMyAss.com"
+        [emailToCheck rangeOfString:@"mailinator"].location != NSNotFound ||
+        [emailToCheck rangeOfString:@"mailinater"].location != NSNotFound ||
+        [emailToCheck rangeOfString:@"sendspamhere"].location != NSNotFound ||
+        [emailToCheck rangeOfString:@"sogetthis"].location != NSNotFound ||
+        [emailToCheck rangeOfString:@"mt2014.com"].location != NSNotFound ||  // "myTrashMail.com"
+        [emailToCheck rangeOfString:@"hushmail"].location != NSNotFound ||
+        [emailToCheck rangeOfString:@"mailnesia"].location != NSNotFound)
+    {
+        [self.emailValidator setHidden:NO];
+        [self.emailValidator setText:[NSString fontAwesomeIconStringForIconIdentifier:@"fa-times"]];
+        [self.emailValidator setTextColor:kNoochRed];
+        
+        [self.email_field becomeFirstResponder];
+        
+        if ([UIAlertController class]) // for iOS 8
+        {
+            UIAlertController * alert = [UIAlertController
+                                         alertControllerWithTitle:@"Try A Different Email"
+                                         message:@"\xF0\x9F\x93\xA7\nTo protect all Nooch accounts, we ask that you please use a regular email address to create your account."
+                                         preferredStyle:UIAlertControllerStyleAlert];
+            
+            UIAlertAction * ok = [UIAlertAction
+                                  actionWithTitle:@"OK"
+                                  style:UIAlertActionStyleDefault
+                                  handler:^(UIAlertAction * action)
+                                  {
+                                      [alert dismissViewControllerAnimated:YES completion:nil];
+                                  }];
+            [alert addAction:ok];
+            
+            [self presentViewController:alert animated:YES completion:nil];
+        }
+        else  // for iOS 7 and prior
+        {
+            UIAlertView *av = [[UIAlertView alloc] initWithTitle:@"Try A Different Email"
+                                                         message:@"To protect all Nooch accounts, we ask that you please use a regular email address to create your account."
+                                                        delegate:self
+                                               cancelButtonTitle:@"OK"
+                                               otherButtonTitles:nil];
+            [av show];
+        }
+        return false;
+    }
+    else
+    {
+        return true;
+    }
 }
 
 - (void)textFieldDidEndEditing:(UITextField *)textField

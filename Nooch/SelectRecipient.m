@@ -498,7 +498,14 @@
             NSString * emailId = [[NSString stringWithFormat:@"%@", emailIdValue] stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceCharacterSet]];
             
             if ( emailId != NULL &&
-                [emailId rangeOfString:@"@facebook.com"].location == NSNotFound )
+                [emailId rangeOfString:@"@facebook.com"].location == NSNotFound &&
+                [emailId rangeOfString:@"hushmail.com"].location == NSNotFound &&
+                [emailId rangeOfString:@"mailinator."].location == NSNotFound &&
+                [emailId rangeOfString:@"mailinater."].location == NSNotFound &&
+                [emailId rangeOfString:@"hmamail.com"].location == NSNotFound &&
+                [emailId rangeOfString:@"guerrillamail"].location == NSNotFound &&
+                [emailId rangeOfString:@"sharklasers"].location == NSNotFound &&
+                [emailId rangeOfString:@"anonymousemail"].location == NSNotFound)
             {
                 [curContact setObject:emailId forKey:@"UserName"];
                 [curContact setObject:emailId forKey:[NSString stringWithFormat:@"emailAdday%d",j]];
@@ -611,6 +618,12 @@
     } 
     else
     {
+        [self.glyph_recent setTextColor:kNoochBlue];
+        [self.glyph_location setTextColor: [UIColor whiteColor]];
+        
+        self.location = YES;
+        [search setHidden:YES];
+
         if ([self.view.subviews containsObject:self.noContact_img])
         {
             [UIView animateKeyframesWithDuration:.3
@@ -626,8 +639,21 @@
              ];
         }
 
-        [self.glyph_recent setTextColor:kNoochBlue];
-        [self.glyph_location setTextColor: [UIColor whiteColor]];
+        [UIView animateKeyframesWithDuration:.3
+                                       delay:0
+                                     options:1 << 16
+                                  animations:^{
+                                      [UIView addKeyframeWithRelativeStartTime:0 relativeDuration:1 animations:^{
+                                          CGRect frame = self.contacts.frame;
+                                          frame.origin.y = 44;
+                                          frame.size.height = [[UIScreen mainScreen] bounds].size.height - 108;
+                                          [self.contacts setFrame:frame];
+                                      }];
+                                  } completion: ^(BOOL finished){
+                                      
+                                  }
+         ];
+        
 
         //location
         locationManager = [[CLLocationManager alloc] init];
@@ -638,6 +664,7 @@
 
         if ([CLLocationManager authorizationStatus] == kCLAuthorizationStatusNotDetermined)
         {
+            locationUpdateDelay = 0.6; // Setting the time for a delay so the server can receive the location and update the DB before trying to caluculate nearby users (otherwise it will not have time and may just use "0,0")
             if ([locationManager respondsToSelector:@selector(requestWhenInUseAuthorization)]) { // iOS8+
                 // Sending a message to avoid compile time error
                 
@@ -648,47 +675,6 @@
             }
             [locationManager startUpdatingLocation];
         }
-        else if ([CLLocationManager authorizationStatus] == kCLAuthorizationStatusAuthorized  ||
-                 [CLLocationManager authorizationStatus] == kCLAuthorizationStatusAuthorizedWhenInUse)
-        {
-            [locationManager startUpdatingLocation];
-        }
-
-        self.location = YES;
-
-        [UIView beginAnimations:nil context:nil];
-        [UIView setAnimationDuration:0.4];
-
-        CGRect frame = self.contacts.frame;
-        frame.origin.y = 40;
-        frame.size.height = [[UIScreen mainScreen] bounds].size.height - 104;
-        [self.contacts setFrame:frame];
-        [UIView commitAnimations];
-
-        [search setHidden:YES];
-
-        RTSpinKitView * spinner2 = [[RTSpinKitView alloc] initWithStyle:RTSpinKitViewStyleWordPress];
-        spinner2.color = [UIColor whiteColor];
-        self.hud.customView = spinner2;
-        self.hud.labelText = NSLocalizedString(@"SelectRecip_LoadingLocation", @"Select Recipient Find By Location Loading Text");
-        self.hud.detailsLabelText = nil;
-        [self.hud show:YES];
- 
-        if ([[assist shared] checkIfLocAllowed])
-        {
-            NSString * searchRadiusString = [ARPowerHookManager getValueForHookById:@"srchRds"];
-            short searchRadiusInt = [searchRadiusString integerValue];
-
-            if (searchRadiusInt < 2) // Just in case value from Artisan is unavailable for some reason, we'll use a default of 12M
-            {
-                searchRadiusString = @"12";
-            }
-
-            serve * ser = [serve new];
-            ser.tagName = @"searchByLocation";
-            [ser setDelegate:self];
-            [ser getLocationBasedSearch:searchRadiusString];
-        }
         else if ([CLLocationManager authorizationStatus] == kCLAuthorizationStatusDenied)
         {
             UIAlertView * alert = [[UIAlertView alloc]initWithTitle:NSLocalizedString(@"SelectRecip_NoLocAlertTitle", @"Select Recipient No Location Alert Title")
@@ -697,12 +683,25 @@
                                                   cancelButtonTitle:@"OK"
                                                   otherButtonTitles:Nil, nil];
             [alert show];
-
+            
             [self displayEmpty_SearchByLocation];
         }
-        else
+        else if ([CLLocationManager authorizationStatus] == kCLAuthorizationStatusAuthorized  ||
+                 [CLLocationManager authorizationStatus] == kCLAuthorizationStatusAuthorizedWhenInUse)
         {
-            [self.hud hide:YES];
+            locationUpdateDelay = 0;
+
+            [self.recents removeAllObjects];
+            [self.contacts reloadData];
+
+            RTSpinKitView * spinner2 = [[RTSpinKitView alloc] initWithStyle:RTSpinKitViewStyleWordPress];
+            spinner2.color = [UIColor whiteColor];
+            self.hud.customView = spinner2;
+            self.hud.labelText = NSLocalizedString(@"SelectRecip_LoadingLocation", @"Select Recipient Find By Location Loading Text");
+            self.hud.detailsLabelText = nil;
+            [self.hud show:YES];
+
+            [locationManager startUpdatingLocation];
         }
     }
 }
@@ -710,6 +709,7 @@
 -(void)displayEmpty_SearchByLocation
 {
     [self.hud hide:YES];
+
     self.backgroundImage = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"SplashPageBckgrnd-568h@2x.png"]];
     [self.backgroundImage setAlpha:0];
     [self.view addSubview:self.backgroundImage];
@@ -777,12 +777,26 @@
     [locationManager stopUpdatingLocation];
 
     CLLocationCoordinate2D loc = manager.location.coordinate;
-    
-    [[assist shared]setlocationAllowed:YES];
-    
+
+    [[assist shared] setlocationAllowed:YES];
+
     serve * serveOBJ = [serve new];
     [serveOBJ UpDateLatLongOfUser:[[NSString alloc] initWithFormat:@"%f",loc.latitude]
                               lng:[[NSString alloc] initWithFormat:@"%f",loc.longitude]];
+
+
+    NSString * searchRadiusString = [ARPowerHookManager getValueForHookById:@"srchRds"];
+    short searchRadiusInt = [searchRadiusString integerValue];
+
+    if (searchRadiusInt < 2) // Just in case value from Artisan is unavailable for some reason, we'll use a default of 12M
+    {
+        searchRadiusString = @"12";
+    }
+
+    serve * ser = [serve new];
+    ser.tagName = @"searchByLocation";
+    [ser setDelegate:self];
+    [ser performSelector:@selector(getLocationBasedSearch:) withObject:searchRadiusString afterDelay:locationUpdateDelay];
 }
 
 - (void)locationManager:(CLLocationManager *)manager
@@ -2451,14 +2465,17 @@
             [search.text rangeOfString:@"."].location < search.text.length - 2 &&
             [search.text rangeOfString:@"."].location != NSNotFound)
         {
-            RTSpinKitView * spinner2 = [[RTSpinKitView alloc] initWithStyle:RTSpinKitViewStyleWave];
-            spinner2.color = [UIColor whiteColor];
-            self.hud.customView = spinner2;
-            self.hud.labelText = @"Checking that email address...";
-            self.hud.detailsLabelText = nil;
-            [self.hud show:YES];
+            if ([self checkEmailForShadyDomainSelectRecip] == true)
+            {
+                RTSpinKitView * spinner2 = [[RTSpinKitView alloc] initWithStyle:RTSpinKitViewStyleWave];
+                spinner2.color = [UIColor whiteColor];
+                self.hud.customView = spinner2;
+                self.hud.labelText = @"Checking that email address...";
+                self.hud.detailsLabelText = nil;
+                [self.hud show:YES];
 
-            [self getMemberIdByUsingUserName];
+                [self getMemberIdByUsingUserName];
+            }
         }
         else
         {
@@ -2652,6 +2669,62 @@
 
         HowMuch * how_much = [[HowMuch alloc] initWithReceiver:receiver];
         [self.navigationController pushViewController:how_much animated:YES];
+    }
+}
+
+-(bool)checkEmailForShadyDomainSelectRecip
+{
+    NSString * emailToCheck = search.text;
+    
+    if ([emailToCheck rangeOfString:@"sharklasers"].location != NSNotFound ||
+        [emailToCheck rangeOfString:@"grr.la"].location != NSNotFound ||
+        [emailToCheck rangeOfString:@"guerrillamail"].location != NSNotFound ||
+        [emailToCheck rangeOfString:@"spam4"].location != NSNotFound ||
+        [emailToCheck rangeOfString:@"anonymousemail"].location != NSNotFound ||
+        [emailToCheck rangeOfString:@"anonemail"].location != NSNotFound ||
+        [emailToCheck rangeOfString:@"hmamail.com"].location != NSNotFound || // "hideMyAss.com"
+        [emailToCheck rangeOfString:@"mailinator"].location != NSNotFound ||
+        [emailToCheck rangeOfString:@"mailinater"].location != NSNotFound ||
+        [emailToCheck rangeOfString:@"sendspamhere"].location != NSNotFound ||
+        [emailToCheck rangeOfString:@"sogetthis"].location != NSNotFound ||
+        [emailToCheck rangeOfString:@"mt2014.com"].location != NSNotFound ||  // "myTrashMail.com"
+        [emailToCheck rangeOfString:@"hushmail"].location != NSNotFound ||
+        [emailToCheck rangeOfString:@"mailnesia"].location != NSNotFound)
+    {
+        [search becomeFirstResponder];
+        
+        if ([UIAlertController class]) // for iOS 8
+        {
+            UIAlertController * alert = [UIAlertController
+                                         alertControllerWithTitle:@"Try A Different Email"
+                                         message:@"\xF0\x9F\x93\xA7\nTo protect all Nooch accounts, we ask that you please only make payments to a regular (not anonymous) email address."
+                                         preferredStyle:UIAlertControllerStyleAlert];
+            
+            UIAlertAction * ok = [UIAlertAction
+                                  actionWithTitle:@"OK"
+                                  style:UIAlertActionStyleDefault
+                                  handler:^(UIAlertAction * action)
+                                  {
+                                      [alert dismissViewControllerAnimated:YES completion:nil];
+                                  }];
+            [alert addAction:ok];
+            
+            [self presentViewController:alert animated:YES completion:nil];
+        }
+        else  // for iOS 7 and prior
+        {
+            UIAlertView *av = [[UIAlertView alloc] initWithTitle:@"Try A Different Email"
+                                                         message:@"\xF0\x9F\x93\xA7\nTo protect all Nooch accounts, we ask that you please only make payments to a regular (not anonymous) email address."
+                                                        delegate:self
+                                               cancelButtonTitle:@"OK"
+                                               otherButtonTitles:nil];
+            [av show];
+        }
+        return false;
+    }
+    else
+    {
+        return true;
     }
 }
 

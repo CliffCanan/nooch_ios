@@ -400,22 +400,19 @@
                               animations:^{
                                   [UIView addKeyframeWithRelativeStartTime:0 relativeDuration:1 animations:^{
                                       [self.exportHistory setFrame:CGRectMake(60, 570, 200, 38)];
-                                      
-                                      self.selected += 2;
-                                      
+
                                       CGRect frame;
                                       frame = self.back_profile.frame;
                                       frame.origin.x -= 640;
                                       [self.back_profile setFrame:frame];
-                                      
+
                                       frame = self.back_transfer.frame;
                                       frame.origin.x -= 640;
                                       [self.back_transfer setFrame:frame];
-                                      
+
                                       frame = self.back_donation.frame;
                                       frame.origin.x -= 640;
                                       [self.back_donation setFrame:frame];
-                                      
                                   }];
                               } completion: ^(BOOL finished) {
                                   [self performSelector:@selector(animatePieChart) withObject:nil afterDelay:.1];
@@ -463,16 +460,16 @@
                               animations:^{
                                   [UIView addKeyframeWithRelativeStartTime:0 relativeDuration:1 animations:^{
                                       [self.exportHistory setFrame:CGRectMake(60, 448, 200, 38)];
-                                      
+
                                       CGRect frame;
                                       frame = self.back_profile.frame;
                                       frame.origin.x += 320;
                                       [self.back_profile setFrame:frame];
-                                      
+
                                       frame = self.back_transfer.frame;
                                       frame.origin.x += 320;
                                       [self.back_transfer setFrame:frame];
-                                      
+
                                       frame = self.back_donation.frame;
                                       frame.origin.x += 320;
                                       [self.back_donation setFrame:frame];
@@ -496,11 +493,11 @@
                                       frame = self.back_profile.frame;
                                       frame.origin.x += 320;
                                       [self.back_profile setFrame:frame];
-                                      
+
                                       frame = self.back_transfer.frame;
                                       frame.origin.x += 320;
                                       [self.back_transfer setFrame:frame];
-                                      
+
                                       frame = self.back_donation.frame;
                                       frame.origin.x += 320;
                                       [self.back_donation setFrame:frame];
@@ -526,11 +523,11 @@
                                       frame = self.back_profile.frame;
                                       frame.origin.x += 640;
                                       [self.back_profile setFrame:frame];
-                                      
+
                                       frame = self.back_transfer.frame;
                                       frame.origin.x += 640;
                                       [self.back_transfer setFrame:frame];
-                                      
+
                                       frame = self.back_donation.frame;
                                       frame.origin.x += 640;
                                       [self.back_donation setFrame:frame];
@@ -547,7 +544,7 @@
     [UIView setAnimationDuration:0.4];
 
     CGRect frame;
-    
+
     if (slide.direction == UISwipeGestureRecognizerDirectionLeft)
     {
         if (self.selected == 0)

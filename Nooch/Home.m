@@ -246,6 +246,7 @@ void addressBookChanged(ABAddressBookRef addressBook, CFDictionaryRef info, void
             phone3 = [phone3 stringByReplacingOccurrencesOfString:@"[^0-9]" withString:@"" options:NSRegularExpressionSearch range:NSMakeRange(0, [phone3 length])];
             [curContact setObject:phone3 forKey:@"phoneNo3"];
         }
+
         //Get emailInfo Ref
         for (int j = 0; j < ABMultiValueGetCount(emailInfo); j++)
         {
@@ -253,7 +254,14 @@ void addressBookChanged(ABAddressBookRef addressBook, CFDictionaryRef info, void
             NSString * emailId = [[NSString stringWithFormat:@"%@", emailIdValue] stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceCharacterSet]];
             
             if ( emailId != NULL &&
-                [emailId rangeOfString:@"@facebook.com"].location == NSNotFound)
+                [emailId rangeOfString:@"@facebook.com"].location == NSNotFound &&
+                [emailId rangeOfString:@"hushmail.com"].location == NSNotFound &&
+                [emailId rangeOfString:@"mailinator."].location == NSNotFound &&
+                [emailId rangeOfString:@"mailinater."].location == NSNotFound &&
+                [emailId rangeOfString:@"hmamail.com"].location == NSNotFound &&
+                [emailId rangeOfString:@"guerrillamail"].location == NSNotFound &&
+                [emailId rangeOfString:@"sharklasers"].location == NSNotFound &&
+                [emailId rangeOfString:@"anonymousemail"].location == NSNotFound)
             {
                 [curContact setObject:emailId forKey:@"UserName"];
                 [curContact setObject:emailId forKey:[NSString stringWithFormat:@"emailAdday%d",j]];
@@ -511,8 +519,8 @@ void addressBookChanged(ABAddressBookRef addressBook, CFDictionaryRef info, void
         {
             CFTypeRef phoneValue = ABMultiValueCopyValueAtIndex(phoneNumber, 2);
             phone3 = [[NSString stringWithFormat:@"%@", phoneValue] stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceCharacterSet]];
-             if (phoneValue)
-            CFRelease(phoneValue);
+            if (phoneValue)
+                CFRelease(phoneValue);
             
             phone3 = [phone3 stringByReplacingOccurrencesOfString:@"[^0-9]" withString:@"" options:NSRegularExpressionSearch range:NSMakeRange(0, [phone3 length])];
             [curContact setObject:phone3 forKey:@"phoneNo3"];
@@ -525,7 +533,14 @@ void addressBookChanged(ABAddressBookRef addressBook, CFDictionaryRef info, void
             NSString * emailId = [[NSString stringWithFormat:@"%@", emailIdValue] stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceCharacterSet]];
 
             if ( emailId != NULL &&
-                [emailId rangeOfString:@"facebook.com"].location == NSNotFound)
+                [emailId rangeOfString:@"facebook.com"].location == NSNotFound &&
+                [emailId rangeOfString:@"hushmail.com"].location == NSNotFound &&
+                [emailId rangeOfString:@"mailinator."].location == NSNotFound &&
+                [emailId rangeOfString:@"mailinater."].location == NSNotFound &&
+                [emailId rangeOfString:@"hmamail.com"].location == NSNotFound &&
+                [emailId rangeOfString:@"guerrillamail"].location == NSNotFound &&
+                [emailId rangeOfString:@"sharklasers"].location == NSNotFound &&
+                [emailId rangeOfString:@"anonymousemail"].location == NSNotFound)
             {
                 [curContact setObject:emailId forKey:@"UserName"];
                 [curContact setObject:emailId forKey:[NSString stringWithFormat:@"emailAdday%d",j]];
