@@ -15,7 +15,6 @@
 #import "ProfileInfo.h"
 #import "HistoryFlat.h"
 #import "SendInvite.h"
-#import "serve.h"
 #import "iCarousel.h"
 #import "SIAlertView.h"
 #import "UIImageView+WebCache.h"
@@ -725,12 +724,13 @@ void addressBookChanged(ABAddressBookRef addressBook, CFDictionaryRef info, void
             //location
             [self checkIfLocAllowed];
 
-            serve * serveOBJ = [serve new];
-            [serveOBJ setTagName:@"sets"];
-            [serveOBJ getSettings];
-
             NSLog(@"Home: Reload Initiated");
         }
+
+        serve * serveOBJ = [serve new];
+        [serveOBJ setTagName:@"sets"];
+        [serveOBJ getSettings];
+
         [[assist shared] setisloggedout:NO];
     }
     else
@@ -804,32 +804,57 @@ void addressBookChanged(ABAddressBookRef addressBook, CFDictionaryRef info, void
             [self displayVersionUpdateNotice];
         }
     }
-    [ARProfileManager registerString:@"IsBankAttached" withValue:@"unknown"];
 
-    if ([[[NSUserDefaults standardUserDefaults] objectForKey:@"IsBankAvailable"]isEqualToString:@"1"])
-    {
-        [ARProfileManager setStringValue:@"YES" forVariable:@"IsBankAttached"];
-    }
-    else
-    {
-        [ARProfileManager setStringValue:@"NO" forVariable:@"IsBankAttached"];
-    }
     dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
-        NSURL *theURL = [[NSURL alloc] initWithString:@"http://ip-api.com/line/?fields=query"];
-        NSString* myIP = [[NSString alloc] initWithData:[NSData dataWithContentsOfURL:theURL] encoding:NSUTF8StringEncoding];
-        
-        dispatch_async(dispatch_get_main_queue(), ^{
-            // Manipulate the ip on the main queue
-            NSLog(@"IP: %@",myIP);
-        });
+        [ARProfileManager registerString:@"IsBankAttached" withValue:@"unknown"];
+        [ARProfileManager registerString:@"IPaddress" withValue:@"unknown"];
+
+        if ([[[NSUserDefaults standardUserDefaults] objectForKey:@"IsBankAvailable"]isEqualToString:@"1"])
+        {
+            [ARProfileManager setStringValue:@"YES" forVariable:@"IsBankAttached"];
+        }
+        else
+        {
+            [ARProfileManager setStringValue:@"NO" forVariable:@"IsBankAttached"];
+        }
     });
+
+    NSURL * theURL = [[NSURL alloc] initWithString:@"http://ip-api.com/line/?fields=query"];
+    NSString * myIP = [[NSString alloc] initWithData:[NSData dataWithContentsOfURL:theURL] encoding:NSUTF8StringEncoding];
+    
+    if ([myIP length] < 16)
+    {
+        [self saveIpAddress:myIP];
+    }
+}
+
+-(void)saveIpAddress:(NSString*)Ip
+{
+    if ([Ip rangeOfString:@"\n"].location != NSNotFound)
+    {
+        Ip = [Ip substringWithRange: NSMakeRange(0, [Ip rangeOfString: @"\n"].location)];
+    }
+    NSLog(@"IP: %@", Ip);
+
+    serve * saveIP = [serve new];
+    [saveIP setTagName:@"saveIpAddress"];
+    [saveIP setDelegate:self];
+    [saveIP saveUserIpAddress:Ip];
+
+    [ARProfileManager setStringValue:Ip forVariable:@"IPaddress"];
 }
 
 - (void)applicationWillEnterFG_Home:(NSNotification *)notification
 {
+    //NSLog(@"Home -> ApplicationWillEnterFG fired");
+
     if ([[assist shared] isloggedout] == false)
     {
-        [self checkAllBannerStatuses];
+        serve * serveOBJ = [serve new];
+        [serveOBJ setTagName:@"sets"];
+        [serveOBJ getSettings];
+
+        [self performSelector:@selector(checkAllBannerStatuses) withObject:nil afterDelay:1];
     }
 }
 
@@ -1016,24 +1041,24 @@ void addressBookChanged(ABAddressBookRef addressBook, CFDictionaryRef info, void
             [em setStyleClass:@"banner_header"];
             em.attributedText = [[NSAttributedString alloc] initWithString:NSLocalizedString(@"PhoneUnverifiedTitle", @"Home Screen Phone Unverified Title") attributes:textAttributes];
             [self.phone_incomplete addSubview:em];
-            
+
             UILabel * em_exclaim = [UILabel new];
             [em_exclaim setStyleClass:@"banner_alert_glyph"];
             [em_exclaim setText:[NSString fontAwesomeIconStringForIconIdentifier:@"fa-phone"]];
             [self.phone_incomplete addSubview:em_exclaim];
-            
+
             UILabel * glyph_phone = [UILabel new];
             [glyph_phone setStyleClass:@"banner_alert_glyph_sm"];
             [glyph_phone setText:[NSString fontAwesomeIconStringForIconIdentifier:@"fa-exclamation"]];
             [self.phone_incomplete addSubview:glyph_phone];
-            
+
             UILabel * em_info = [UILabel new];
             [em_info setStyleClass:@"banner_info"];
             [em_info setNumberOfLines:0];
             em_info.attributedText = [[NSAttributedString alloc] initWithString:NSLocalizedString(@"PhoneUnverifiedBodyTxt", @"Home Screen Phone Unregistered Body Text")
                                                                      attributes:textAttributes];
             [self.phone_incomplete addSubview:em_info];
-            
+
             UIButton * go = [UIButton buttonWithType:UIButtonTypeRoundedRect];
             [go setStyleClass:@"go_now_text"];
             [go setTitle:NSLocalizedString(@"PhoneUnverifiedActionTxt", @"Home Screen Phone Unverified Action Text") forState:UIControlStateNormal];
@@ -1041,7 +1066,7 @@ void addressBookChanged(ABAddressBookRef addressBook, CFDictionaryRef info, void
             go.titleLabel.shadowOffset = CGSizeMake(0.0, 1.0);
             [go addTarget:self action:@selector(go_profileFromHome) forControlEvents:UIControlEventTouchUpInside];
             [self.phone_incomplete addSubview:go];
-            
+
             UIButton * dis = [UIButton buttonWithType:UIButtonTypeCustom];
             [dis setStyleClass:@"dismiss_banner"];
             [dis setTitle:[NSString fontAwesomeIconStringForIconIdentifier:@"fa-times-circle"] forState:UIControlStateNormal];
@@ -1049,11 +1074,11 @@ void addressBookChanged(ABAddressBookRef addressBook, CFDictionaryRef info, void
             [dis setTitleColor:[Helpers hexColor:@"F49593"] forState:UIControlStateHighlighted];
             dis.titleLabel.shadowOffset = CGSizeMake(0.0, 1.0);
             [dis addTarget:self action:@selector(dismiss_phone_unvalidated) forControlEvents:UIControlEventTouchUpInside];
-            
+
             [self.phone_incomplete addSubview:dis];
-            
+
             [self.view addSubview:self.phone_incomplete];
-            
+
             [UIView animateKeyframesWithDuration:.4
                                            delay:0
                                          options:2 << 16
@@ -1157,19 +1182,19 @@ void addressBookChanged(ABAddressBookRef addressBook, CFDictionaryRef info, void
         }
     }
     top_button.alpha = .01;
-    
+
     NSShadow * shadow = [[NSShadow alloc] init];
     shadow.shadowColor = Rgb2UIColor(26, 38, 32, .2);
     shadow.shadowOffset = CGSizeMake(0, -1);
     NSDictionary * textAttributes1 = @{NSShadowAttributeName: shadow };
-    
+
     UILabel * glyph_search = [UILabel new];
     [glyph_search setFont:[UIFont fontWithName:@"FontAwesome" size:16]];
     glyph_search.attributedText = [[NSAttributedString alloc] initWithString:[NSString fontAwesomeIconStringForIconIdentifier:@"fa-search"] attributes:textAttributes1];
     [glyph_search setFrame:CGRectMake(17, 0, 15, 52)];
     [glyph_search setTextColor:[UIColor whiteColor]];
     [top_button addSubview:glyph_search];
-    
+
     [self.view addSubview:top_button];
 
     if ([self.navigationController.view.subviews containsObject:self.hud])
@@ -2344,7 +2369,7 @@ void addressBookChanged(ABAddressBookRef addressBook, CFDictionaryRef info, void
         }
     }
 
-    else if([tagName isEqualToString:@"getMemberDetails"])
+    else if ([tagName isEqualToString:@"getMemberDetails"])
     {
         NSError * error;
 
@@ -2402,6 +2427,21 @@ void addressBookChanged(ABAddressBookRef addressBook, CFDictionaryRef info, void
             NSLog(@"Home -> Server response error for StoreFB: %@  & Error: %@", temp, error);
         }
     }
+
+    else if ([tagName isEqualToString:@"saveIpAddress"])
+    {
+        NSError *error;
+        NSMutableDictionary *dict = [NSJSONSerialization
+                                     JSONObjectWithData:[result dataUsingEncoding:NSUTF8StringEncoding]
+                                     options:kNilOptions
+                                     error:&error];
+        NSLog(@"Home -> SERVER RESPONSE for saveIpAddress: %@", dict);
+        if ([error isKindOfClass:[NSNull class]])
+        {
+            NSLog(@"Home -> Server response error for saveIpAddress: %@  & Error: %@", dict, error);
+        }
+    }
+
 }
 
 -(void)hide

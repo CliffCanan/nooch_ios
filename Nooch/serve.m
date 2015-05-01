@@ -648,6 +648,7 @@ NSString *amnt;
                         options:kNilOptions
                         error:&error];
 
+        //NSLog(@"SETS RESPONSE IS:  %@",Dictresponse);
         if (Dictresponse != NULL)
         {
             if ([[Dictresponse valueForKey:@"IsValidProfile"] intValue]) {
@@ -657,14 +658,14 @@ NSString *amnt;
             {
                 [defaults setObject:@"0" forKey:@"FullyVerified"];
             }
-            if ([[Dictresponse valueForKey:@"IsVerifiedPhone"] intValue]) {
+            if ([[Dictresponse valueForKey:@"IsVerifiedPhone"] intValue])
+            {
                 [defaults setObject:@"YES" forKey:@"IsVerifiedPhone"];
             }
             else
             {
                 [defaults setObject:@"NO" forKey:@"IsVerifiedPhone"];
             }
-            //[defaults synchronize];
 
             if (  [Dictresponse valueForKey:@"ContactNumber"] &&
                 ![[Dictresponse valueForKey:@"ContactNumber"] isKindOfClass:[NSNull class]])
@@ -692,7 +693,6 @@ NSString *amnt;
     else if ([tagName isEqualToString:@"login"] ||
              [tagName isEqualToString:@"loginwithFB"])
     {
-        //converting the result into Dictionary
         NSError * error;
         NSDictionary * result = [NSJSONSerialization
                                 JSONObjectWithData:[responseString dataUsingEncoding:NSUTF8StringEncoding]
@@ -1005,7 +1005,6 @@ NSString *amnt;
 -(void)getAptDetails:(NSString*) memberId
 {}*/
 
-// https://www.noochme.com/NoochService/NoochService.svc/GetMostFrequentFriends?MemberId=%@&accessToken=%@
 -(void)get_favorites
 {
     [[NSURLCache sharedURLCache] removeAllCachedResponses];
@@ -1175,7 +1174,6 @@ NSString *amnt;
         
         NSLog(@"connect error");
 }
-
 
 -(void)histMore:(NSString*)type sPos:(NSInteger)sPos len:(NSInteger)len subType:(NSString*)subType
 {
@@ -1542,7 +1540,7 @@ NSString *amnt;
     self.responseData = [[NSMutableData alloc] init];
     [[NSURLCache sharedURLCache] removeAllCachedResponses];
 
-    NSString * urlString = [NSString stringWithFormat:@"%@/SaveMemberTransId",ServerUrl];
+    NSString * urlString = [NSString stringWithFormat:@"%@/SaveM2emberTransId",ServerUrl];
     NSURL * url = [NSURL URLWithString:urlString];
 
     dictInv = [[NSMutableDictionary alloc]init];
@@ -1555,8 +1553,8 @@ NSString *amnt;
     postDataInv = [NSJSONSerialization dataWithJSONObject:dictInv
                                                   options:NSJSONWritingPrettyPrinted error:&error];
     postLengthInv = [NSString stringWithFormat:@"%lu", (unsigned long)[postDataInv length]];
-    requestInv = [[NSMutableURLRequest alloc] initWithURL:url];
 
+    requestInv = [[NSMutableURLRequest alloc] initWithURL:url];
     [requestInv setHTTPMethod:@"POST"];
     [requestInv setValue:postLengthInv forHTTPHeaderField:@"Content-Length"];
     [requestInv setValue:@"application/json" forHTTPHeaderField:@"Content-Type"];
@@ -1628,4 +1626,41 @@ NSString *amnt;
         NSLog(@"connect error");
 }
 
+-(void)saveUserIpAddress:(NSString*)IpAddress
+{
+    self.responseData = [[NSMutableData alloc] init];
+    [[NSURLCache sharedURLCache] removeAllCachedResponses];
+
+    NSString *urlString = [NSString stringWithFormat:@"%@/UdateMemberIPAddress",ServerUrl];
+    NSURL *url = [NSURL URLWithString:urlString];
+
+    NSUserDefaults * defaults = [NSUserDefaults standardUserDefaults];
+
+    dictInv = [[NSMutableDictionary alloc] init];
+    [dictInv setObject:[defaults objectForKey:@"MemberId"] forKey:@"MemberId"];
+    [dictInv setObject:[defaults valueForKey:@"OAuthToken"] forKey:@"AccessToken"];
+    [dictInv setObject:IpAddress forKey:@"IpAddress"];
+
+    NSMutableDictionary * entry = [[NSMutableDictionary alloc] init];
+    [entry setObject:dictInv forKey:@"member"];
+
+    NSError *error;
+
+    postDataInv = [NSJSONSerialization dataWithJSONObject:entry
+                                                  options:NSJSONWritingPrettyPrinted error:&error];
+
+    postLengthInv = [NSString stringWithFormat:@"%lu", (unsigned long)[postDataInv length]];
+
+    requestInv = [[NSMutableURLRequest alloc] initWithURL:url];
+    [requestInv setHTTPMethod:@"POST"];
+    [requestInv setValue:postLengthInv forHTTPHeaderField:@"Content-Length"];
+    [requestInv setValue:@"application/json" forHTTPHeaderField:@"Content-Type"];
+    [requestInv setValue:@"charset" forHTTPHeaderField:@"UTF-8"];
+    [requestInv setHTTPBody:postDataInv];
+
+    connectionInv = [[NSURLConnection alloc] initWithRequest:requestInv delegate:self];
+    
+    if (!connectionInv)
+        NSLog(@"connect error");
+}
 @end
