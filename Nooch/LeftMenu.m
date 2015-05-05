@@ -598,7 +598,7 @@
             [mailComposer setToRecipients:[NSArray arrayWithObjects:@"bugs@nooch.com",nil]];
             [mailComposer setCcRecipients:[NSArray arrayWithObject:@""]];
             [mailComposer setBccRecipients:[NSArray arrayWithObject:@""]];
-            [mailComposer setModalTransitionStyle:UIModalTransitionStyleCrossDissolve];
+            [mailComposer setModalTransitionStyle:UIModalTransitionStyleCoverVertical];
             [self presentViewController:mailComposer animated:YES completion:nil];
         }
         else if (buttonIndex == 2)
@@ -647,7 +647,7 @@
             [mailComposer setToRecipients:[NSArray arrayWithObjects:@"support@nooch.com", nil]];
             [mailComposer setCcRecipients:[NSArray arrayWithObject:@""]];
             [mailComposer setBccRecipients:[NSArray arrayWithObject:@""]];
-            [mailComposer setModalTransitionStyle:UIModalTransitionStyleCrossDissolve];
+            [mailComposer setModalTransitionStyle:UIModalTransitionStyleCoverVertical];
             [self presentViewController:mailComposer animated:YES completion:nil];
         }
     }

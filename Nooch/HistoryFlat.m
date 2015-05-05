@@ -2053,18 +2053,18 @@
             { //accept
                 NSUserDefaults * defaults = [NSUserDefaults standardUserDefaults];
 
-                if ([[assist shared]getSuspended])
+                if ([[assist shared] getSuspended])
                 {
                     UIAlertView * alert = [[UIAlertView alloc]initWithTitle:@"Account Suspended"
-                                                                    message:@"Your account has been suspended for 24 hours from now. Please email support@nooch.com if you believe this was a mistake and we will be glad to help."
+                                                                    message:@"\xF0\x9F\x98\xA7\nYour account has been suspended pending a security review. We apologize for the inconvenience - our top priority is keeping Nooch safe for all users.\n\nPlease email support@nooch.com if you believe this was a mistake and we will be glad to help."
                                                                    delegate:self
                                                           cancelButtonTitle:@"OK"
                                                           otherButtonTitles:@"Contact Support", nil];
                     [alert setTag:50];
                     [alert show];
-                    return; 
+                    return;
                 }
-                else if (![[user valueForKey:@"Status"]isEqualToString:@"Active"])
+                else if ([[user valueForKey:@"Status"]isEqualToString:@"Registered"])
                 {
                     UIAlertView * alert = [[UIAlertView alloc]initWithTitle:@"Email Verification Needed"
                                                                     message:@"Please click the link we emailed you to verify your email address."
@@ -2072,6 +2072,16 @@
                                                           cancelButtonTitle:@"OK"
                                                           otherButtonTitles:@"Resend", nil];
                     [alert setTag:51];
+                    [alert show];
+                    return;
+                }
+                else if (![[defaults valueForKey:@"IsVerifiedPhone"]isEqualToString:@"YES"] )
+                {
+                    UIAlertView * alert = [[UIAlertView alloc]initWithTitle:@"Phone Not Verified"
+                                                                    message:@"To keep Nooch safe, we ask all users to verify a phone number before sending money.\n\nIf you've already added your phone number, just respond 'Go' to the text message we sent."
+                                                                   delegate:self
+                                                          cancelButtonTitle:@"Later"
+                                                          otherButtonTitles:@"Go Now" , nil];
                     [alert show];
                     return;
                 }
@@ -3030,7 +3040,7 @@
         [mailComposer setToRecipients:[NSArray arrayWithObjects:@"support@nooch.com", nil]];
         [mailComposer setCcRecipients:[NSArray arrayWithObject:@""]];
         [mailComposer setBccRecipients:[NSArray arrayWithObject:@""]];
-        [mailComposer setModalTransitionStyle:UIModalTransitionStyleCrossDissolve];
+        [mailComposer setModalTransitionStyle:UIModalTransitionStyleCoverVertical];
         [self presentViewController:mailComposer animated:YES completion:nil];
     }
 }

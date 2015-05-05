@@ -174,6 +174,10 @@ bool modal;
     [ARPowerHookManager registerHookWithId:@"transSuccessAlertTitle" friendlyName:@"Alert Title After Transfer Success" defaultValue:@"Nice Work"];
     [ARPowerHookManager registerHookWithId:@"transSuccessAlertMsg" friendlyName:@"Alert Message After Transfer Success" defaultValue:@"\xF0\x9F\x92\xB8\nYour cash was sent successfully."];
 
+    [ARPowerHookManager registerHookWithId:@"knox_OnOff" friendlyName:@"Knox On or Off" defaultValue:@"on"];
+    [ARPowerHookManager registerHookWithId:@"synps_OnOff" friendlyName:@"Synapse On or Off" defaultValue:@"on"];
+    [ARPowerHookManager registerHookWithId:@"synps_baseUrl" friendlyName:@"Synapse Base URL" defaultValue:@"http://54.201.43.89/noochweb/MyAccounts/Add-Bank.aspx"];
+
     [ARPowerHookManager registerHookWithId:@"knox_baseUrl" friendlyName:@"Knox Base URL" defaultValue:@"https://knoxpayments.com/pay/index.php"];
     [ARPowerHookManager registerHookWithId:@"knox_Key" friendlyName:@"Knox API Key" defaultValue:@"7068_59cd5c1f5a75c31"];
     [ARPowerHookManager registerHookWithId:@"knox_Pw" friendlyName:@"Knox API Pw" defaultValue:@"7068_da64134cc66a5f0"];

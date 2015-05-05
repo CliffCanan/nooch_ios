@@ -119,45 +119,55 @@ view {
  /***************************/
  /****		NAV BAR		*****/
  /***************************/
-    navigation-bar title {
-        font-family		: "Roboto";
-        font-weight		: regular;
-        font-size		: 20px;
-        color			: #fff;
-        text-align		: center;
-        width			: 190px;	
-        left			: 65px;
-    }
-    .fontAwesomeFont {
-        font-family : "FontAwesome";
-        font-size   : 38px;
-        top         : 1px;
-    }
-    #navbar_back {
-        left		: 10px;
-        top         : 0px;
-        height      : 40px;
-        width		: 30px;
-        color       : #fff
-        font-family : "FontAwesome";
-        font-size   : 37px;
-        text-align  : left;
-    }
-    #navbar_hamburger {
-        width       : 30px;
-        height      : 30px;
-        font-family : "FontAwesome";
-        font-size   : 24px;
-        color       : #fff
-    }
-    .navbar_rightside_icon {
-        width       : 30px;
-        height      : 30px;
-        color       : #fff
-        font-family : "FontAwesome";
-        font-size   : 22px;
-        text-align  : center;
-    }
+navigation-bar title {
+    font-family		: "Roboto";
+    font-weight		: regular;
+    font-size		: 20px;
+    color			: #fff;
+    text-align		: center;
+    width			: 190px;	
+    left			: 65px;
+}
+.fontAwesomeFont {
+    font-family : "FontAwesome";
+    font-size   : 38px;
+    top         : 1px;
+}
+#navbar_back {
+    left		: 10px;
+    top         : 0px;
+    height      : 40px;
+    width		: 30px;
+    color       : #fff
+    font-family : "FontAwesome";
+    font-size   : 37px;
+    text-align  : left;
+}
+#navbar_backSm {
+    left		: 11px;
+    top         : 0px;
+    height      : 38px;
+    width		: 24px;
+    color       : #fff
+    font-family : "FontAwesome";
+    font-size   : 24px;
+    text-align  : left;
+}
+#navbar_hamburger {
+    width       : 30px;
+    height      : 30px;
+    font-family : "FontAwesome";
+    font-size   : 24px;
+    color       : #fff
+}
+.navbar_rightside_icon {
+    width       : 30px;
+    height      : 30px;
+    color       : #fff
+    font-family : "FontAwesome";
+    font-size   : 22px;
+    text-align  : center;
+}
 
  /******************************/
  /******	 BANNERS	********/

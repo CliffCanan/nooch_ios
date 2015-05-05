@@ -714,32 +714,46 @@
     
     if (len == 4)
     {
-        NSString * textLoading=@"";
-        if ([self.type isEqualToString:@"send"] || [self.type isEqualToString:@"requestRespond"])
+        if ([[assist shared] getSuspended])
         {
-            textLoading = NSLocalizedString(@"EnterPIN_HUDlblSend", @"Enter PIN Screen HUD label text for sending a payment");
+            UIAlertView * alert = [[UIAlertView alloc]initWithTitle:@"Account Suspended"
+                                                            message:@"Your account has been suspended pending a review. Please email support@nooch.com if you believe this was a mistake and we will be glad to help."
+                                                           delegate:self
+                                                  cancelButtonTitle:@"OK"
+                                                  otherButtonTitles:@"Contact Support", nil];
+            [alert setTag:53];
+            [alert show];
         }
-        else if ([self.type isEqualToString:@"request"])
+
+        else
         {
-            textLoading = NSLocalizedString(@"EnterPIN_HUDlblRequest", @"Enter PIN Screen HUD label text for sending a request");
+            NSString * textLoading=@"";
+            if ([self.type isEqualToString:@"send"] || [self.type isEqualToString:@"requestRespond"])
+            {
+                textLoading = NSLocalizedString(@"EnterPIN_HUDlblSend", @"Enter PIN Screen HUD label text for sending a payment");
+            }
+            else if ([self.type isEqualToString:@"request"])
+            {
+                textLoading = NSLocalizedString(@"EnterPIN_HUDlblRequest", @"Enter PIN Screen HUD label text for sending a request");
+            }
+
+            RTSpinKitView *spinner1 = [[RTSpinKitView alloc] initWithStyle:RTSpinKitViewStyleThreeBounce];
+            spinner1.color = [UIColor whiteColor];
+            self.hud = [[MBProgressHUD alloc] initWithView:self.navigationController.view];
+            [self.navigationController.view addSubview:self.hud];
+
+            self.hud.mode = MBProgressHUDModeCustomView;
+            self.hud.customView = spinner1;
+            self.hud.delegate = self;
+            self.hud.labelText = textLoading;
+            self.hud.detailsLabelText = nil;
+            [self.hud show:YES];
+
+            serve * pin = [serve new];
+            pin.Delegate = self;
+            pin.tagName = @"ValidatePinNumber";
+            [pin getEncrypt:[NSString stringWithFormat:@"%@%@",textField.text,string]];
         }
-
-        RTSpinKitView *spinner1 = [[RTSpinKitView alloc] initWithStyle:RTSpinKitViewStyleThreeBounce];
-        spinner1.color = [UIColor whiteColor];
-        self.hud = [[MBProgressHUD alloc] initWithView:self.navigationController.view];
-        [self.navigationController.view addSubview:self.hud];
-
-        self.hud.mode = MBProgressHUDModeCustomView;
-        self.hud.customView = spinner1;
-        self.hud.delegate = self;
-        self.hud.labelText = textLoading;
-        self.hud.detailsLabelText = nil;
-        [self.hud show:YES];
-
-        serve * pin = [serve new];
-        pin.Delegate = self;
-        pin.tagName = @"ValidatePinNumber";
-        [pin getEncrypt:[NSString stringWithFormat:@"%@%@",textField.text,string]];
     }
     return YES;
 }
@@ -911,7 +925,6 @@
                         urlStrTranfer = [urlStrTranfer stringByAppendingFormat:@"/%@", @"TransferMoneyToNonNoochUserThroughPhoneUsingKnox"];
                     }
                 }
-
 
                 urlTransfer = [NSURL URLWithString:urlStrTranfer];
                 requestTransfer = [[NSMutableURLRequest alloc] initWithURL:urlTransfer];
@@ -1345,7 +1358,8 @@
             [nav_ctrl pushViewController:td animated:YES];
         }
     }
-    else if ((alertView.tag == 50 || alertView.tag == 51 || alertView.tag == 52) && buttonIndex == 1)
+    else if ((alertView.tag == 50 || alertView.tag == 51 ||
+              alertView.tag == 52 || alertView.tag == 53) && buttonIndex == 1)
     {
         if (![MFMailComposeViewController canSendMail])
         {
@@ -1390,7 +1404,7 @@
         [mailComposer setToRecipients:[NSArray arrayWithObjects:@"support@nooch.com", nil]];
         [mailComposer setCcRecipients:[NSArray arrayWithObject:@""]];
         [mailComposer setBccRecipients:[NSArray arrayWithObject:@""]];
-        [mailComposer setModalTransitionStyle:UIModalTransitionStyleCrossDissolve];
+        [mailComposer setModalTransitionStyle:UIModalTransitionStyleCoverVertical];
         [self presentViewController:mailComposer animated:YES completion:nil];
     }
     else if (alertView.tag == 50 && buttonIndex == 1)

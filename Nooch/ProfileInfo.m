@@ -137,7 +137,7 @@ UIImageView *picture;
     scrollView.contentSize = CGSizeMake(320, [[UIScreen mainScreen] bounds].size.height);
 
     self.member_since_back = [[UIView alloc] initWithFrame:CGRectMake(0, 0, 320, heightOfTopSection)];
-    if (![[user valueForKey:@"Status"]isEqualToString:@"Active"])
+    if ([[assist shared] isProfileCompleteAndValidated])
     {
         [self.member_since_back setBackgroundColor:Rgb2UIColor(214, 25, 21, .55)];
         [self.member_since_back setStyleId:@"profileTopSectionBg_susp"];
@@ -356,19 +356,21 @@ UIImageView *picture;
     [self.list setAllowsSelection:YES];
     [self.list setScrollEnabled:NO];
     [self.list setBackgroundColor:[UIColor whiteColor]];
-    
-    if (![[user valueForKey:@"Status"] isEqualToString:@"Registered"] &&
-        [[[NSUserDefaults standardUserDefaults] valueForKey:@"IsVerifiedPhone"]isEqualToString:@"YES"])
+
+    NSUserDefaults * defaults = [NSUserDefaults standardUserDefaults];
+
+    if (![[defaults valueForKey:@"Status"] isEqualToString:@"Registered"] &&
+         [[defaults valueForKey:@"IsVerifiedPhone"]isEqualToString:@"YES"])
     {
         [self.list setFrame:CGRectMake(0, pictureRadius + 18 + self.sectionHeaderBg.frame.size.height, 320, rowHeight * 2)];
         numberOfRowsToDisplay = 2;
         emailVerifyRowIsShowing = false;
         smsVerifyRowIsShowing = false;
     }
-    else if ((![[user valueForKey:@"Status"] isEqualToString:@"Registered"] &&
-              ![[[NSUserDefaults standardUserDefaults] valueForKey:@"IsVerifiedPhone"]isEqualToString:@"YES"]) ||
-             ( [[user valueForKey:@"Status"] isEqualToString:@"Registered"] &&
-              [[[NSUserDefaults standardUserDefaults] valueForKey:@"IsVerifiedPhone"]isEqualToString:@"YES"]) )
+    else if ((![[defaults valueForKey:@"Status"] isEqualToString:@"Registered"] &&
+              ![[defaults valueForKey:@"IsVerifiedPhone"]isEqualToString:@"YES"]) ||
+             ( [[defaults valueForKey:@"Status"] isEqualToString:@"Registered"] &&
+               [[defaults valueForKey:@"IsVerifiedPhone"]isEqualToString:@"YES"]) )
     {
         numberOfRowsToDisplay = 3;
         [self.list setFrame:CGRectMake(0, pictureRadius + 18 + self.sectionHeaderBg.frame.size.height, 320, rowHeight * 3)];
@@ -382,8 +384,8 @@ UIImageView *picture;
             smsVerifyRowIsShowing = true;
         }
     }
-    else if (![[user valueForKey:@"Status"] isEqualToString:@"Active"] &&
-             ![[[NSUserDefaults standardUserDefaults] valueForKey:@"IsVerifiedPhone"]isEqualToString:@"YES"])
+    else if (![[defaults valueForKey:@"Status"] isEqualToString:@"Active"] &&
+             ![[defaults valueForKey:@"IsVerifiedPhone"]isEqualToString:@"YES"])
     {
         numberOfRowsToDisplay = 4;
         [self.list setFrame:CGRectMake(0, pictureRadius + 18 + self.sectionHeaderBg.frame.size.height, 320, rowHeight * 4)];
@@ -501,11 +503,6 @@ UIImageView *picture;
         [self.navigationController.view addGestureRecognizer:self.navigationController.slidingViewController.panGesture];
         isSignup = NO;
     }
-    else if (isFromSettingsOptions)
-    {
-        SettingsOptions *sets = [SettingsOptions new];
-        [nav_ctrl pushViewController:sets animated:YES];
-    }
     else {
         [self.navigationController popViewControllerAnimated:YES];
     }
@@ -513,7 +510,7 @@ UIImageView *picture;
 
 - (void)goToSettings1
 {
-    if (isProfileOpenFromSideBar || sentFromHomeScrn)
+    if (isProfileOpenFromSideBar || sentFromHomeScrn || isFromTransDetails)
     {
         SettingsOptions *sets = [SettingsOptions new];
         [nav_ctrl pushViewController:sets animated:YES];
@@ -522,18 +519,6 @@ UIImageView *picture;
     {
         [self.navigationController popViewControllerAnimated:YES];
     }
-}
-
--(void)SaveAlert1
-{
-    UIAlertView * alert = [[UIAlertView alloc]initWithTitle:NSLocalizedString(@"Profile_SaveAlrtTitle1", @"Profile 'Save Changes' Alert Title")
-                                                    message:NSLocalizedString(@"Profile_SaveAlrtBody1", @"Profile Save Changes Alert Body Text")
-                                                   delegate:self
-                                          cancelButtonTitle:NSLocalizedString(@"Profile_AlrtBtnYes1", @"Profile 'Yes' Button Text")
-                                          otherButtonTitles:NSLocalizedString(@"Profile_AlrtBtnNo1", @"Profile 'No' Button Text"), nil];
-    [alert setTag:5021];
-    [alert show];
-    return;
 }
 
 -(void)savePrompt2
@@ -545,7 +530,13 @@ UIImageView *picture;
          (self.city.text.length > 2 && ![[dictSavedInfo valueForKey:@"City"]isEqualToString:self.city.text]) ||
          (self.phone.text.length > 3 && ![[dictSavedInfo valueForKey:@"phoneno"]isEqualToString:self.phone.text]) )
     {
-        [self SaveAlert1];
+        UIAlertView * alert = [[UIAlertView alloc]initWithTitle:NSLocalizedString(@"Profile_SaveAlrtTitle1", @"Profile 'Save Changes' Alert Title")
+                                                        message:NSLocalizedString(@"Profile_SaveAlrtBody1", @"Profile Save Changes Alert Body Text")
+                                                       delegate:self
+                                              cancelButtonTitle:NSLocalizedString(@"Profile_AlrtBtnYes1", @"Profile 'Yes' Button Text")
+                                              otherButtonTitles:NSLocalizedString(@"Profile_AlrtBtnNo1", @"Profile 'No' Button Text"), nil];
+        [alert setTag:5021];
+        [alert show];
     }
     else
     {
@@ -654,7 +645,7 @@ UIImageView *picture;
     return [emailTest evaluateWithObject:emailStr];
 }
 
-- (void) save_changes
+-(void)save_changes
 {
     [self.name resignFirstResponder];
     [self.email resignFirstResponder];
@@ -685,7 +676,7 @@ UIImageView *picture;
     {
         [self.email becomeFirstResponder];
         UIAlertView * alert = [[UIAlertView alloc]initWithTitle:NSLocalizedString(@"Profile_InvldEmlAlrtTtl", @"Profile 'Invalid Email Address' Alert Title")
-                                                        message:NSLocalizedString(@"Profile_InvldEmlAlrtTtl", @"Profile 'Invalid Email Address' Alert Title")//@"Hmm... please double check that you have entered a valid email address."
+                                                        message:NSLocalizedString(@"Profile_InvldEmlAlrtBdy", @"Profile 'Invalid Email Address' Alert Body Text")
                                                        delegate:nil
                                               cancelButtonTitle:@"OK"
                                               otherButtonTitles:nil, nil];
@@ -693,10 +684,10 @@ UIImageView *picture;
         return;
     }
 
-    /* if ([self.address_one.text length] == 0)
+    if ([self.address_one.text length] == 0)
     {
         UIAlertView * alert = [[UIAlertView alloc]initWithTitle:@"Missing An Address"
-                                                        message:@"Please enter your address to validate your profile."
+                                                        message:@"To keep Nooch safe, we ask all users to provide an address as part of our ID verification process.\n\n(We never share your personal info with anyone.)"
                                                        delegate:nil
                                               cancelButtonTitle:@"OK"
                                               otherButtonTitles:nil, nil];
@@ -704,18 +695,17 @@ UIImageView *picture;
         [self.address_one becomeFirstResponder];
         return;
     }
-
-    if ([self.city.text length] == 0)
+    else if ([self.city.text length] == 0)
     {
         UIAlertView * alert = [[UIAlertView alloc]initWithTitle:@"How Bout A City"
-                                                        message:@"It would be fantastic if you entered a city!\n\xF0\x9F\x98\x89"
+                                                        message:@"\xF0\x9F\x98\x89\nIt would be fantastic if you entered a city!\n\n(We only ask to help make sure people use their real identity so Nooch stays safe for everyone.)"
                                                        delegate:nil
                                               cancelButtonTitle:@"OK"
                                               otherButtonTitles:nil, nil];
         [alert show];
         [self.city becomeFirstResponder];
         return;
-    } */
+    }
 
     [self.save setEnabled:NO];
     [self.save setUserInteractionEnabled:NO];
@@ -838,10 +828,9 @@ UIImageView *picture;
     req.Delegate = self;
     req.tagName = @"MySettingsResult";
     [req setSets:transaction];
-
 }
 
-- (void)change_pic
+-(void)change_pic
 {
     UIActionSheet * actionSheetObject = [[UIActionSheet alloc] initWithTitle:@"Add A Profile Picture"
                                                                     delegate:self
@@ -921,7 +910,7 @@ UIImageView *picture;
 }
 
 #pragma mark-ImagePicker
-- (void)imagePickerController:(UIImagePickerController *)picker1 didFinishPickingMediaWithInfo:(NSDictionary *)info
+-(void)imagePickerController:(UIImagePickerController *)picker1 didFinishPickingMediaWithInfo:(NSDictionary *)info
 {
     option = 1;
     UIImage * image = [info objectForKey:UIImagePickerControllerEditedImage];
@@ -943,11 +932,11 @@ UIImageView *picture;
     [self dismissViewControllerAnimated:YES completion:Nil];
 }
 
-- (void)imagePickerControllerDidCancel:(UIImagePickerController *)picker1{
+-(void)imagePickerControllerDidCancel:(UIImagePickerController *)picker1{
     [self dismissViewControllerAnimated:YES completion:Nil];
 }
 
-- (void)toggleFacebookLogin
+-(void)toggleFacebookLogin
 {
     // If the session state is any of the two "open" states when the button is clicked
     if (FBSession.activeSession.state == FBSessionStateOpen || FBSession.activeSession.state == FBSessionStateOpenTokenExtended)
@@ -968,7 +957,7 @@ UIImageView *picture;
     }
 }
 
-- (void)sessionStateChanged:(FBSession *)session state:(FBSessionState) state error:(NSError *)error
+-(void)sessionStateChanged:(FBSession *)session state:(FBSessionState) state error:(NSError *)error
 {
     // If the session was opened successfully
     if (!error && state == FBSessionStateOpen)
@@ -1033,13 +1022,13 @@ UIImageView *picture;
 }
 
 // Facebook: Show the user the logged-out UI
-- (void)userLoggedOut
+-(void)userLoggedOut
 {
     [picture setImage:[UIImage imageNamed:@"silhouette.png"]];
 }
 
 // Facebook: Show the user the logged-in UI
-- (void)userLoggedIn
+-(void)userLoggedIn
 {
     [FBRequestConnection startForMeWithCompletionHandler:^(FBRequestConnection *connection, id result, NSError *error)
     {

@@ -1086,7 +1086,7 @@
     }
 }
 
--(void)attach_bank
+-(void)attach_bank2
 {
     if (isBankAttached)
     {
@@ -1152,7 +1152,7 @@
     [mailComposer setToRecipients:[NSArray arrayWithObjects:@"apartment@nooch.com",nil]];
     [mailComposer setCcRecipients:[NSArray arrayWithObject:@""]];
     [mailComposer setBccRecipients:[NSArray arrayWithObject:@"propertysupport@nooch.com"]];
-    [mailComposer setModalTransitionStyle:UIModalTransitionStyleCrossDissolve];
+    [mailComposer setModalTransitionStyle:UIModalTransitionStyleCoverVertical];
     [self presentViewController:mailComposer animated:YES completion:nil];
 }
 

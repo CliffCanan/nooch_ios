@@ -94,6 +94,7 @@ NSMutableURLRequest *request;
 
             isFromSettingsOptions = NO;
             isProfileOpenFromSideBar = NO;
+            isFromTransDetails = NO;
             sentFromHomeScrn = YES;
         }
 
@@ -655,7 +656,7 @@ void addressBookChanged(ABAddressBookRef addressBook, CFDictionaryRef info, void
     [mailComposer setToRecipients:[NSArray arrayWithObjects:@"support@nooch.com", nil]];
     [mailComposer setCcRecipients:[NSArray arrayWithObject:@""]];
     [mailComposer setBccRecipients:[NSArray arrayWithObject:@""]];
-    [mailComposer setModalTransitionStyle:UIModalTransitionStyleCrossDissolve];
+    [mailComposer setModalTransitionStyle:UIModalTransitionStyleCoverVertical];
     [self presentViewController:mailComposer animated:YES completion:nil];
 }
 
@@ -664,6 +665,7 @@ void addressBookChanged(ABAddressBookRef addressBook, CFDictionaryRef info, void
     sentFromHomeScrn = YES;
     isFromSettingsOptions = NO;
     isProfileOpenFromSideBar = NO;
+    isFromTransDetails = NO;
 
     ProfileInfo *info = [ProfileInfo new];
     [self.navigationController pushViewController:info animated:YES];
@@ -876,8 +878,7 @@ void addressBookChanged(ABAddressBookRef addressBook, CFDictionaryRef info, void
     shadowRed.shadowOffset = CGSizeMake(0, 1);
     NSDictionary * textAttributes = @{NSShadowAttributeName: shadowRed };
 
-    if ([[user objectForKey:@"Status"] isEqualToString:@"Suspended"] ||
-        [[user objectForKey:@"Status"] isEqualToString:@"Temporarily_Blocked"])
+    if ([[assist shared] getSuspended])
     {
         if ([self.view.subviews containsObject:self.pending_requests]) {
             [self dismiss_requestsPendingBanner];
@@ -1951,6 +1952,7 @@ void addressBookChanged(ABAddressBookRef addressBook, CFDictionaryRef info, void
         isFromSettingsOptions = NO;
         isProfileOpenFromSideBar = NO;
         sentFromHomeScrn = YES;
+        isFromTransDetails = NO;
 
         ProfileInfo *prof = [ProfileInfo new];
         [nav_ctrl pushViewController:prof animated:YES];
@@ -1970,35 +1972,6 @@ void addressBookChanged(ABAddressBookRef addressBook, CFDictionaryRef info, void
     {
         [self contact_support];
     }
-}
-
-- (void) mailComposeController:(MFMailComposeViewController *)controller didFinishWithResult:(MFMailComposeResult)result error:(NSError *)error
-{
-    UIAlertView *alert = [[UIAlertView alloc] init];
-    [alert addButtonWithTitle:@"OK"];
-    [alert setDelegate:nil];
-    switch (result)
-    {
-        case MFMailComposeResultCancelled:
-            NSLog(@"Mail cancelled");
-            break;
-        case MFMailComposeResultSaved:
-            NSLog(@"Mail saved");
-            break;
-        case MFMailComposeResultSent:
-            NSLog(@"Mail sent");
-            break;
-        case MFMailComposeResultFailed:
-            [alert setTitle:[error localizedDescription]];
-            [alert show];
-            NSLog(@"Mail sent failure: %@", [error localizedDescription]);
-            break;
-        default:
-            break;
-    }
-    
-    // Close the Mail Interface
-    [self dismissViewControllerAnimated:YES completion:NULL];
 }
 
 - (void)send_request
@@ -2038,31 +2011,13 @@ void addressBookChanged(ABAddressBookRef addressBook, CFDictionaryRef info, void
 {
     NSUserDefaults * defaults = [NSUserDefaults standardUserDefaults];
 
-    if ([[assist shared]getSuspended] || [[user objectForKey:@"Status"] isEqualToString:@"Temporarily_Blocked"])
+    if ([[assist shared] getSuspended])
     {
-        SIAlertView * alertView = [[SIAlertView alloc] initWithTitle:@"Account Temporarily Suspended" andMessage:@"\xE2\x9B\x94\nFor security your account has been suspended for 24 hours.\n\nWe really apologize for the inconvenience and ask for your patience. Our top priority is keeping Nooch safe and secure.\n \nPlease contact us at support@nooch.com for more information."];
+        SIAlertView * alertView = [[SIAlertView alloc] initWithTitle:@"Account Suspended" andMessage:@"\xF0\x9F\x98\xA7\nFor security your account has been suspended pending a review.\n\nWe really apologize for the inconvenience and ask for your patience. Our top priority is keeping Nooch safe and secure.\n\nPlease contact us at support@nooch.com if this is a mistake or for more information."];
         [alertView addButtonWithTitle:@"OK" type:SIAlertViewButtonTypeCancel handler:nil];
         [alertView addButtonWithTitle:@"Contact Nooch" type:SIAlertViewButtonTypeDefault
                               handler:^(SIAlertView *alert) {
                                   [self contact_support];
-                              }];
-        [[SIAlertView appearance] setButtonColor:kNoochBlue];
-        
-        alertView.transitionStyle = SIAlertViewTransitionStyleDropDown;
-        alertView.buttonsListStyle = SIAlertViewButtonsListStyleNormal;
-        [alertView show];
-        return NO;
-    }
-
-    else if ( ![[[NSUserDefaults standardUserDefaults] objectForKey:@"IsBankAvailable"]isEqualToString:@"1"])
-    {
-        SIAlertView *alertView = [[SIAlertView alloc] initWithTitle:@"Connect A Funding Source \xF0\x9F\x92\xB0" andMessage:@"\xE2\x9A\xA1\nAdding a bank account to fund Nooch payments is lightning quick.\n\n• No routing or account number needed\n• Bank-grade encryption keeps your info safe\n\nWould you like to take care of this now?"];
-        [alertView addButtonWithTitle:@"Later" type:SIAlertViewButtonTypeCancel handler:nil];
-        [alertView addButtonWithTitle:@"Go Now" type:SIAlertViewButtonTypeDefault
-                              handler:^(SIAlertView *alert) {
-                                  knoxWeb *knox = [knoxWeb new];
-                                  [nav_ctrl pushViewController:knox animated:YES];
-                                  [self.slidingViewController resetTopView];
                               }];
         [[SIAlertView appearance] setButtonColor:kNoochBlue];
         
@@ -2111,9 +2066,28 @@ void addressBookChanged(ABAddressBookRef addressBook, CFDictionaryRef info, void
                                   isFromSettingsOptions = NO;
                                   isProfileOpenFromSideBar = NO;
                                   sentFromHomeScrn = YES;
+                                  isFromTransDetails = NO;
                                   
                                   ProfileInfo * prof = [ProfileInfo new];
                                   [nav_ctrl pushViewController:prof animated:YES];
+                                  [self.slidingViewController resetTopView];
+                              }];
+        [[SIAlertView appearance] setButtonColor:kNoochBlue];
+
+        alertView.transitionStyle = SIAlertViewTransitionStyleDropDown;
+        alertView.buttonsListStyle = SIAlertViewButtonsListStyleNormal;
+        [alertView show];
+        return NO;
+    }
+
+    else if (![[[NSUserDefaults standardUserDefaults] objectForKey:@"IsBankAvailable"]isEqualToString:@"1"])
+    {
+        SIAlertView *alertView = [[SIAlertView alloc] initWithTitle:@"Connect A Funding Source \xF0\x9F\x92\xB0" andMessage:@"\xE2\x9A\xA1\nAdding a bank account to fund Nooch payments is lightning quick.\n\n• No routing or account number needed\n• Bank-grade encryption keeps your info safe\n\nWould you like to take care of this now?"];
+        [alertView addButtonWithTitle:@"Later" type:SIAlertViewButtonTypeCancel handler:nil];
+        [alertView addButtonWithTitle:@"Go Now" type:SIAlertViewButtonTypeDefault
+                              handler:^(SIAlertView *alert) {
+                                  knoxWeb *knox = [knoxWeb new];
+                                  [nav_ctrl pushViewController:knox animated:YES];
                                   [self.slidingViewController resetTopView];
                               }];
         [[SIAlertView appearance] setButtonColor:kNoochBlue];
@@ -2123,6 +2097,7 @@ void addressBookChanged(ABAddressBookRef addressBook, CFDictionaryRef info, void
         [alertView show];
         return NO;
     }
+
     return YES;
 }
 
@@ -2157,7 +2132,6 @@ void addressBookChanged(ABAddressBookRef addressBook, CFDictionaryRef info, void
         NSLog(@"Home --> Location Mgr Error: %@",error);
     }
 }
-
 
 -(void)Error:(NSError *)Error
 {
@@ -2435,13 +2409,42 @@ void addressBookChanged(ABAddressBookRef addressBook, CFDictionaryRef info, void
                                      JSONObjectWithData:[result dataUsingEncoding:NSUTF8StringEncoding]
                                      options:kNilOptions
                                      error:&error];
-        NSLog(@"Home -> SERVER RESPONSE for saveIpAddress: %@", dict);
+        //NSLog(@"Home -> SERVER RESPONSE for saveIpAddress: %@", dict);
         if ([error isKindOfClass:[NSNull class]])
         {
             NSLog(@"Home -> Server response error for saveIpAddress: %@  & Error: %@", dict, error);
         }
     }
 
+}
+
+- (void) mailComposeController:(MFMailComposeViewController *)controller didFinishWithResult:(MFMailComposeResult)result error:(NSError *)error
+{
+    UIAlertView *alert = [[UIAlertView alloc] init];
+    [alert addButtonWithTitle:@"OK"];
+    [alert setDelegate:nil];
+    switch (result)
+    {
+        case MFMailComposeResultCancelled:
+            NSLog(@"Mail cancelled");
+            break;
+        case MFMailComposeResultSaved:
+            NSLog(@"Mail saved");
+            break;
+        case MFMailComposeResultSent:
+            NSLog(@"Mail sent");
+            break;
+        case MFMailComposeResultFailed:
+            [alert setTitle:[error localizedDescription]];
+            [alert show];
+            NSLog(@"Mail sent failure: %@", [error localizedDescription]);
+            break;
+        default:
+            break;
+    }
+    
+    // Close the Mail Interface
+    [self dismissViewControllerAnimated:YES completion:NULL];
 }
 
 -(void)hide
@@ -2482,7 +2485,7 @@ void addressBookChanged(ABAddressBookRef addressBook, CFDictionaryRef info, void
         }
         else if ([favorites count] == 5)
         {
-                NSLog(@"FavContactsProcessing --> BREAK (fav count == 5)");
+                //NSLog(@"FavContactsProcessing --> BREAK (fav count == 5)");
                 break;
         }
         else

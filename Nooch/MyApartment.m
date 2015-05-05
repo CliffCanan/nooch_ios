@@ -279,6 +279,7 @@
 
 -(void)attach_bank
 {
+    NSLog(@"My APARTMENT.M --> ATTACH BANK");
     if (isBankAttached)
     {
         UIAlertView *av = [[UIAlertView alloc] initWithTitle:@"Attach New Bank Account"

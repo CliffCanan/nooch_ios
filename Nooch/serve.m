@@ -598,19 +598,19 @@ NSString *amnt;
     else if ([tagName isEqualToString:@"info"])
     {
         NSUserDefaults * defaults = [NSUserDefaults standardUserDefaults];
-        
+
         NSError* error;
         Dictresponse = [NSJSONSerialization
                         JSONObjectWithData:[responseString dataUsingEncoding:NSUTF8StringEncoding]
                         options:kNilOptions
                         error:&error];
 
+        //NSLog(@"\n\nSERVE.M INFO DICTRESPONSE IS:  %@",Dictresponse);
         if (![[Dictresponse objectForKey:@"LastLocationLat"] isKindOfClass:[NSNull class]] &&
             ![[Dictresponse objectForKey:@"LastLocationLng"] isKindOfClass:[NSNull class]])
         {
             [defaults setObject:[Dictresponse objectForKey:@"LastLocationLat"] forKey:@"LastLat"];
             [defaults setObject:[Dictresponse objectForKey:@"LastLocationLng"] forKey:@"LastLng"];
-            [defaults synchronize];
         }
         
         if (  [Dictresponse valueForKey:@"IsRequiredImmediatley"] != NULL ||
@@ -624,17 +624,34 @@ NSString *amnt;
                 [user setObject:@"NO" forKey:@"requiredImmediately"];
             }
         }
+
+        if ([[Dictresponse valueForKey:@"IsVerifiedPhone"] intValue])
+        {
+            [defaults setObject:@"YES" forKey:@"IsVerifiedPhone"];
+        }
+        else
+        {
+            [defaults setObject:@"NO" forKey:@"IsVerifiedPhone"];
+        }
+
+        if ([[Dictresponse valueForKey:@"Status"] isEqualToString:@"Suspended"] ||
+            [[Dictresponse valueForKey:@"Status"] isEqualToString:@"Temporarily_Blocked"])
+        {
+            [[assist shared] setSusPended:YES];
+            [defaults setObject:@"Suspended" forKey:@"Status"];
+        }
+        else
+        {
+            [[assist shared] setSusPended:NO];
+            [defaults setObject:[Dictresponse valueForKey:@"Status"] forKey:@"Status"];
+        }
         
         if (  [Dictresponse valueForKey:@"PhotoUrl"] != NULL ||
             ![[Dictresponse valueForKey:@"PhotoUrl"] isKindOfClass:[NSNull class]])
         {
             [defaults setObject:[Dictresponse valueForKey:@"PhotoUrl"] forKey:@"PhotoUrlRef"];
         }
-        if ([Dictresponse valueForKey:@"BalanceAmount"] != NULL ||
-            ![[Dictresponse valueForKey:@"BalanceAmount"] isKindOfClass:[NSNull class]])
-        {
-            [defaults setObject:[NSString stringWithFormat:@"%@",[Dictresponse valueForKey:@"BalanceAmount"]] forKey:@"BalanceAmountRef"];
-        }
+
         [defaults synchronize];
         
     }
@@ -972,6 +989,48 @@ NSString *amnt;
     if (!connectionList)
         NSLog(@"connect error");
 }
+ -(void)SaveFrequency:(NSString*) withdrawalId type:(NSString*) type frequency: (float)withdrawalFrequency
+ {
+ //accessToken
+ self.responseData = [[NSMutableData alloc] init];
+ [[NSURLCache sharedURLCache] removeAllCachedResponses];
+ NSString *urlString = [NSString stringWithFormat:@"%@/SaveFrequency",ServerUrl];
+ 
+ NSURL *url = [NSURL URLWithString:urlString];
+ 
+ dictInv=[[NSMutableDictionary alloc]init];
+ 
+ [dictInv setObject:[[NSUserDefaults standardUserDefaults] objectForKey:@"MemberId"] forKey:@"memberId"];
+ [dictInv setObject:withdrawalId forKey:@"withdrawalId"];
+ [dictInv setObject:type forKey:@"type"];
+ //withdrawalFrequency
+ [dictInv setObject:[NSString stringWithFormat:@"%f",withdrawalFrequency] forKey:@"withdrawalFrequency"];
+ 
+ NSUserDefaults*defaults=[NSUserDefaults standardUserDefaults];
+ 
+ [dictInv setObject:[defaults valueForKey:@"OAuthToken"] forKey:@"accessToken"];
+ 
+ NSError *error;
+ postDataInv = [NSJSONSerialization dataWithJSONObject:dictInv
+ options:NSJSONWritingPrettyPrinted error:&error];
+ 
+ 
+ 
+ postLengthInv = [NSString stringWithFormat:@"%lu", (unsigned long)[postDataInv length]];
+ 
+ requestInv = [[NSMutableURLRequest alloc] initWithURL:url];
+ [requestInv setHTTPMethod:@"POST"];
+ [requestInv setValue:postLengthInv forHTTPHeaderField:@"Content-Length"];
+ [requestInv setValue:@"application/json" forHTTPHeaderField:@"Content-Type"];
+ [requestInv setValue:@"charset" forHTTPHeaderField:@"UTF-8"];
+ [requestInv setHTTPBody:postDataInv];
+ 
+ connectionInv = [[NSURLConnection alloc] initWithRequest:requestInv delegate:self];
+ 
+ if (!connectionInv)
+ 
+ NSLog(@"connect error");
+ }
 -(void)getAutoWithDrawalSelectedOption{
     [[NSURLCache sharedURLCache] removeAllCachedResponses];
     self.responseData = [[NSMutableData alloc] init];
@@ -1132,49 +1191,6 @@ NSString *amnt;
         NSLog(@"connect error");
     
 }
--(void)SaveFrequency:(NSString*) withdrawalId type:(NSString*) type frequency: (float)withdrawalFrequency
-{
-    //accessToken
-    self.responseData = [[NSMutableData alloc] init];
-    [[NSURLCache sharedURLCache] removeAllCachedResponses];
-    NSString *urlString = [NSString stringWithFormat:@"%@/SaveFrequency",ServerUrl];
-    
-    NSURL *url = [NSURL URLWithString:urlString];
-    
-    dictInv=[[NSMutableDictionary alloc]init];
-    
-    [dictInv setObject:[[NSUserDefaults standardUserDefaults] objectForKey:@"MemberId"] forKey:@"memberId"];
-    [dictInv setObject:withdrawalId forKey:@"withdrawalId"];
-    [dictInv setObject:type forKey:@"type"];
-    //withdrawalFrequency
-    [dictInv setObject:[NSString stringWithFormat:@"%f",withdrawalFrequency] forKey:@"withdrawalFrequency"];
-    
-    NSUserDefaults*defaults=[NSUserDefaults standardUserDefaults];
-    
-    [dictInv setObject:[defaults valueForKey:@"OAuthToken"] forKey:@"accessToken"];
-    
-    NSError *error;
-    postDataInv = [NSJSONSerialization dataWithJSONObject:dictInv
-                                                  options:NSJSONWritingPrettyPrinted error:&error];
-    
-    
-    
-    postLengthInv = [NSString stringWithFormat:@"%lu", (unsigned long)[postDataInv length]];
-    
-    requestInv = [[NSMutableURLRequest alloc] initWithURL:url];
-    [requestInv setHTTPMethod:@"POST"];
-    [requestInv setValue:postLengthInv forHTTPHeaderField:@"Content-Length"];
-    [requestInv setValue:@"application/json" forHTTPHeaderField:@"Content-Type"];
-    [requestInv setValue:@"charset" forHTTPHeaderField:@"UTF-8"];
-    [requestInv setHTTPBody:postDataInv];
-
-    connectionInv = [[NSURLConnection alloc] initWithRequest:requestInv delegate:self];
-
-    if (!connectionInv)
-        
-        NSLog(@"connect error");
-}
-
 -(void)histMore:(NSString*)type sPos:(NSInteger)sPos len:(NSInteger)len subType:(NSString*)subType
 {
     NSUserDefaults*defaults=[NSUserDefaults standardUserDefaults];
