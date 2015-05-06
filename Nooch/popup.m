@@ -49,7 +49,6 @@
 
     UIButton *details = [[UIButton alloc] initWithFrame:CGRectMake(25, 250, 150, 50)];
     [details setTitle:@"View details" forState:UIControlStateNormal];
-    
 }
 
 - (void)didReceiveMemoryWarning

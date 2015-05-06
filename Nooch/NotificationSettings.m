@@ -121,7 +121,7 @@
 
     self.btn_glyphPush_1 = [UIButton buttonWithType:UIButtonTypeCustom];
     self.btn_glyphPush_1.frame = CGRectMake(260, 0, 50, 39);
-    [self.btn_glyphPush_1 setStyleClass:@"font-awesome_22px"];
+    [self.btn_glyphPush_1 setStyleClass:@"fontAwesome_bigger"];
     [self.btn_glyphPush_1 setTitle:[NSString fontAwesomeIconStringForIconIdentifier:@"fa-mobile"] forState:UIControlStateNormal];
     [self.btn_glyphPush_1 setTitleColor:kNoochGreen forState:UIControlStateHighlighted];
     [self.btn_glyphPush_1 addTarget:self action:@selector(toggle_section:) forControlEvents:UIControlEventTouchUpInside];
@@ -137,7 +137,7 @@
 
     self.btn_glyphPush_2 = [UIButton buttonWithType:UIButtonTypeCustom];
     self.btn_glyphPush_2.frame = CGRectMake(260, 177, 50, 39);
-    [self.btn_glyphPush_2 setStyleClass:@"font-awesome_22px"];
+    [self.btn_glyphPush_2 setStyleClass:@"fontAwesome_bigger"];
     [self.btn_glyphPush_2 setTitle:[NSString fontAwesomeIconStringForIconIdentifier:@"fa-mobile"] forState:UIControlStateNormal];
     [self.btn_glyphPush_2 setTitleColor:kNoochGreen forState:UIControlStateHighlighted];
     [self.btn_glyphPush_2 addTarget:self action:@selector(toggle_section:) forControlEvents:UIControlEventTouchUpInside];
@@ -345,7 +345,7 @@
     if ([servicePath isEqualToString:@"push"])
     {
         transactionInput1 = [NSDictionary dictionaryWithObjectsAndKeys:
-                             [[NSUserDefaults standardUserDefaults]stringForKey:@"MemberId"],@"MemberId",
+                             [user stringForKey:@"MemberId"],@"MemberId",
                              @"NoochToBank",@"BankToNooch",
                              [self.push_received isOn]?@"1":@"0",@"TransferReceived",
                              //[self.push_failure isOn]?@"1":@"0",@"TransferAttemptFailure",
@@ -353,7 +353,7 @@
     }
     else
     {
-        transactionInput1 = [NSDictionary dictionaryWithObjectsAndKeys:[[NSUserDefaults standardUserDefaults]stringForKey:@"MemberId"],@"MemberId",
+        transactionInput1 = [NSDictionary dictionaryWithObjectsAndKeys:[user stringForKey:@"MemberId"],@"MemberId",
                              [self.email_received isOn]?@"1":@"0",@"EmailTransferReceived",
                              [self.email_sent isOn]?@"1":@"0",@"EmailTransferSent",
                              //[self.email_failure isOn]?@"1":@"0",@"EmailTransferAttemptFailure",
@@ -451,13 +451,13 @@
 {
     [self.hud hide:YES];
     
-    UIAlertView *alert = [[UIAlertView alloc]
+    /*UIAlertView *alert = [[UIAlertView alloc]
                           initWithTitle:@"Message"
                           message:@"Error connecting to server"
                           delegate:nil
                           cancelButtonTitle:@"OK"
                           otherButtonTitles:nil];
-    [alert show];
+    [alert show];*/
 }
 
 #pragma mark - server delegation

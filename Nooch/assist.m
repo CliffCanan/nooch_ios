@@ -10,6 +10,7 @@
 #import <QuartzCore/QuartzCore.h>
 #import "Home.h"
 #import "Register.h"
+#import "ProfileInfo.h"
 #import <AddressBook/AddressBook.h>
 #import <AddressBookUI/AddressBookUI.h>
 #import <LocalAuthentication/LocalAuthentication.h>
@@ -36,57 +37,64 @@ static assist * _sharedInstance = nil;
 
     return _sharedInstance;
 }
--(UIImage*)getTranferImage
+
+-(BOOL)isProfileCompleteAndValidated
 {
-    return imageOBJFortransfer;
+    if ( !isUserSuspended &&
+        [[user valueForKey:@"Status"] isEqualToString:@"Active"] &&
+        [[user valueForKey:@"IsVerifiedPhone"] isEqualToString:@"YES"])
+    {
+        NSLog(@"1.  Assist.m -> isProfileCompleteAndValidated -> isUserSuspended is: %d",isUserSuspended);
+        isProfileCompleteAndValidated = YES;
+    }
+    else
+    {
+        NSLog(@"2.  Assist.m -> isProfileCompleteAndValidated -> isUserSuspended is: %d",isUserSuspended);
+        isProfileCompleteAndValidated = NO;
+    }
+
+    return isProfileCompleteAndValidated;
 }
 
--(BOOL)getSuspended
-{
+-(BOOL)getSuspended {
     return isUserSuspended;
 }
--(void)setSusPended:(BOOL)istrue
-{
+-(void)setSusPended:(BOOL)istrue {
     isUserSuspended=istrue;
 }
--(void)setTranferImage:(UIImage*)image
-{
+-(void)setTranferImage:(UIImage*)image {
     imageOBJFortransfer=image;
 }
--(BOOL)isloggedout
-{
+-(UIImage*)getTranferImage {
+    return imageOBJFortransfer;
+}
+-(BOOL)isloggedout {
     return islogout;
 }
--(void)setisloggedout:(BOOL)islog
-{
+-(void)setisloggedout:(BOOL)islog {
     islogout=islog;
 }
--(BOOL)isloginFromOther
-{
+-(BOOL)isloginFromOther {
     return isLoginFromOther;
 }
--(void)setIsloginFromOther:(BOOL)islog
-{
+-(void)setIsloginFromOther:(BOOL)islog {
     isLoginFromOther=islog;
 }
-
--(BOOL)isPOP
-{
+-(BOOL)isPOP {
     return isPOP;
 }
--(void)setPOP:(BOOL)istrue
-{
+-(void)setPOP:(BOOL)istrue {
     isPOP=istrue;
 }
+
 // Next 2 are for 'Show In Search' setting
--(BOOL)islocationAllowed
-{
+-(BOOL)islocationAllowed {
     return islocationAllowed;
 }
--(void)setlocationAllowed:(BOOL)istrue
-{
+-(void)setlocationAllowed:(BOOL)istrue {
     islocationAllowed=istrue;
 }
+
 -(BOOL)checkIfLocAllowed
 {
     if ([CLLocationManager locationServicesEnabled])
@@ -94,12 +102,12 @@ static assist * _sharedInstance = nil;
         if ([CLLocationManager authorizationStatus] == kCLAuthorizationStatusAuthorized ||
             [CLLocationManager authorizationStatus] == kCLAuthorizationStatusAuthorizedWhenInUse)
         {
-            NSLog(@"Assist: Location Services Allowed");
+            //NSLog(@"Assist: Location Services Allowed");
             return YES;
         }
         else if ([CLLocationManager authorizationStatus] == kCLAuthorizationStatusDenied)
         {
-            NSLog(@"Assist: Location Services NOT Allowed");
+            //NSLog(@"Assist: Location Services NOT Allowed");
             return NO;
         }
     }
@@ -125,36 +133,29 @@ static assist * _sharedInstance = nil;
         return NO;
     }
 }
--(BOOL)needsReload
-{
+-(BOOL)needsReload {
     return isNeed;
 }
--(void)setneedsReload:(BOOL)istrue
-{
+-(void)setneedsReload:(BOOL)istrue {
     isNeed=istrue;
 }
--(NSMutableArray*)getArray
-{
+-(NSMutableArray*)getArray {
     return arrRequestMultiple;
 }
 -(void)setArray:(NSMutableArray*)arr{
     
     arrRequestMultiple=[arr copy];
 }
--(BOOL)isRequestMultiple
-{
+-(BOOL)isRequestMultiple {
     return isMutipleRequest;
 }
--(void)setRequestMultiple:(BOOL)istrue
-{
+-(void)setRequestMultiple:(BOOL)istrue {
     isMutipleRequest=istrue;
 }
--(NSString*)getPass
-{
+-(NSString*)getPass {
     return passValue;
 }
--(void)setPassValue:(NSString*)value
-{
+-(void)setPassValue:(NSString*)value {
     passValue=value;
 }
 
@@ -195,7 +196,7 @@ static assist * _sharedInstance = nil;
         [self fetchPic];
     }
 
-    [usr setValue:[[NSUserDefaults standardUserDefaults] objectForKey:@"UserName"] forKey:@"email"];
+    [usr setValue:[user objectForKey:@"UserName"] forKey:@"email"];
 
     timer = [NSTimer scheduledTimerWithTimeInterval:12 target:self selector:@selector(getAcctInfo) userInfo:nil repeats:YES];
 
@@ -239,7 +240,7 @@ static assist * _sharedInstance = nil;
         NSURL *photoUrl=[[NSURL alloc]initWithString:[usr objectForKey:@"PhotoUrl"]];
         pic = [NSMutableData dataWithContentsOfURL:photoUrl];
     }
-    [usr setObject:[[NSUserDefaults standardUserDefaults] objectForKey:@"MemberId"] forKey:@"MemberId"];
+    [usr setObject:[user objectForKey:@"MemberId"] forKey:@"MemberId"];
     NSMutableDictionary *usrB = [NSMutableDictionary new];
     NSMutableData *picB = [NSMutableData new];
     NSMutableDictionary *assosB = [NSMutableDictionary new];
@@ -303,10 +304,9 @@ static assist * _sharedInstance = nil;
 -(void)histMore:(NSString*)type sPos:(NSInteger)sPos len:(NSInteger)len
 {
     histSafe=NO;
-    NSUserDefaults*defaults=[NSUserDefaults standardUserDefaults];
 
     responseData = [NSMutableData data];
-    urlForHis = [NSString stringWithFormat:@"%@"@"/%@?memberId=%@&listType=%@&%@=%@&%@=%@&accessToken=%@", MyUrl, @"GetTransactionsList", [usr objectForKey:@"MemberId"], type, @"pSize", [NSString stringWithFormat:@"%ld",(long)len], @"pIndex", [NSString stringWithFormat:@"%ld",(long)sPos],[defaults valueForKey:@"OAuthToken"]];
+    urlForHis = [NSString stringWithFormat:@"%@"@"/%@?memberId=%@&listType=%@&%@=%@&%@=%@&accessToken=%@", MyUrl, @"GetTransactionsList", [usr objectForKey:@"MemberId"], type, @"pSize", [NSString stringWithFormat:@"%ld",(long)len], @"pIndex", [NSString stringWithFormat:@"%ld",(long)sPos],[user valueForKey:@"OAuthToken"]];
 
     requestForHis = [NSMutableURLRequest requestWithURL:[NSURL URLWithString:urlForHis]];
     connectionForHis=[[NSURLConnection alloc] initWithRequest:requestForHis delegate:self];
@@ -400,12 +400,10 @@ static assist * _sharedInstance = nil;
 {
     if (!islogout)
     {
-        NSUserDefaults * defaults = [NSUserDefaults standardUserDefaults];
-
         serve * info = [serve new];
         info.Delegate = self;
         info.tagName = @"info";
-        [info getDetails:[defaults valueForKey:@"MemberId"]];
+        [info getDetails:[user valueForKey:@"MemberId"]];
     }
 }
 
@@ -457,97 +455,44 @@ static assist * _sharedInstance = nil;
         {
             NSLog(@"assist.m --> 'info' returned NULL from server");
         }
-        
 
-        if (  [loginResult valueForKey:@"Status"] != NULL &&
-            ![[loginResult valueForKey:@"Status"] isKindOfClass:[NSNull class]])
-        {
-            [user setObject:[loginResult valueForKey:@"Status"] forKey:@"Status"];
-            [usr setObject:[loginResult objectForKey:@"Status"] forKey:@"Status"];
-
-            if ([[loginResult valueForKey:@"Status"] isEqualToString:@"Suspended"])
-            {
-                isUserSuspended = YES;
-            }
-            else
-            {
-               isUserSuspended = NO;
-            }
-
-            if ( [loginResult valueForKey:@"DateCreated"] &&
-                ([[user valueForKey:@"DateCreated"] isKindOfClass:[NSNull class]] ||
-                  [user valueForKey:@"DateCreated"] == NULL ||
-                 [[user valueForKey:@"DateCreated"] isEqualToString:@""] ||
-                ![[user valueForKey:@"DateCreated"] isEqualToString:[loginResult valueForKey:@"DateCreated"]]) )
-            {
-                [user setObject:[loginResult valueForKey:@"DateCreated"] forKey:@"DateCreated"];
-            }
-
-            if ([[loginResult valueForKey:@"IsKnoxBankAdded"] boolValue] == YES)
-            {
-                [[NSUserDefaults standardUserDefaults] setObject:@"1" forKey:@"IsBankAvailable"];
-            }
-            else
-            {
-                [[NSUserDefaults standardUserDefaults] setObject:@"0" forKey:@"IsBankAvailable"];
-            }
-        }
-
-        if (![[loginResult objectForKey:@"UserName"] isKindOfClass:[NSNull class]] &&
-              [loginResult objectForKey:@"UserName"] != NULL)
-        {
-            [user setObject:[loginResult objectForKey:@"UserName"] forKey:@"UserName"];
-        }
-
-        if (![[loginResult objectForKey:@"FirstName"] isKindOfClass:[NSNull class]] &&
-              [loginResult objectForKey:@"FirstName"] != NULL)
-        {
-            [usr setObject:[loginResult objectForKey:@"FirstName"] forKey:@"firstName"];
-            [usr setObject:[loginResult objectForKey:@"LastName"] forKey:@"lastName"];
-            
-            [user setObject:[loginResult objectForKey:@"FirstName"] forKey:@"firstName"];
-            [user setObject:[loginResult objectForKey:@"LastName"] forKey:@"lastName"];
-        }
-
-        if (![[loginResult objectForKey:@"PhotoUrl"] isKindOfClass:[NSNull class]] &&
-              [loginResult objectForKey:@"PhotoUrl"] != NULL)
-        {
-            [user setObject:[loginResult valueForKey:@"PhotoUrl"] forKey:@"Photo"];
-
-            if ([pic isEqualToData:UIImagePNGRepresentation([UIImage imageNamed:@"profile_picture.png"])] ||
-                [pic isKindOfClass:[NSNull class]] ||
-                [pic length] == 0)
-            {
-                [self fetchPic];
-            }
-        }
-
+        // MemberId
         if (![[loginResult objectForKey:@"MemberId"] isKindOfClass:[NSNull class]] &&
               [loginResult objectForKey:@"MemberId"] != NULL)
         {
             if (![[loginResult objectForKey:@"MemberId"] isEqualToString:[usr objectForKey:@"MemberId"]])
             {
                 [usr setObject:[loginResult objectForKey:@"MemberId"] forKey:@"MemberId"];
-
-                if (![[loginResult objectForKey:@"MemberId"] isEqualToString:@"00000000-0000-0000-0000-000000000000"])
-                {
-                    [[NSUserDefaults standardUserDefaults] setObject:[loginResult objectForKey:@"MemberId"] forKey:@"MemberId"];
-                    [[NSUserDefaults standardUserDefaults] synchronize];
+ 
+                if (![[loginResult objectForKey:@"MemberId"] isEqualToString:@"00000000-0000-0000-0000-000000000000"]) {
+                    [user setObject:[loginResult objectForKey:@"MemberId"] forKey:@"MemberId"];
                 }
             }
         }
 
-        if ( [loginResult valueForKey:@"FacebookAccountLogin"] &&
-            [[loginResult valueForKey:@"FacebookAccountLogin"]length] > 1)
+        // Photo (User's Profile Pic)
+        if (  [loginResult valueForKey:@"Status"] != NULL &&
+            ![[loginResult valueForKey:@"Status"] isKindOfClass:[NSNull class]])
         {
-            [user setObject:[loginResult valueForKey:@"FacebookAccountLogin"] forKey:@"facebook_id"];
+            if (![[loginResult valueForKey:@"PhotoUrl"] isKindOfClass:[NSNull class]] &&
+                 [loginResult valueForKey:@"PhotoUrl"] != NULL )
+            {
+                [user setObject:[loginResult valueForKey:@"PhotoUrl"] forKey:@"Photo"];
+                [usr setObject:[loginResult valueForKey:@"PhotoUrl"] forKey:@"Photo"];
+                
+                if ([pic isEqualToData:UIImagePNGRepresentation([UIImage imageNamed:@"profile_picture.png"])] ||
+                    [pic isKindOfClass:[NSNull class]] ||
+                    [pic length] == 0)
+                {
+                    [self fetchPic];
+                }
+            }
         }
-        else
-        {
-            [user setObject:@"" forKey:@"facebook_id"];
-        }
+
+        [user synchronize];
     }
 }
+
 - (NSDate*) dateFromString:(NSString*)aStr
 {
     NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
@@ -560,32 +505,31 @@ static assist * _sharedInstance = nil;
     return aDate;
 }
 # pragma mark - NSURLConnection Delegate Methods
-- (void)connection:(NSURLConnection *)connection didReceiveResponse:(NSURLResponse *)response {
+-(void)connection:(NSURLConnection *)connection didReceiveResponse:(NSURLResponse *)response {
     [responseData setLength:0];
 }
-- (void)connection:(NSURLConnection *)connection didReceiveData:(NSData *)data {
+-(void)connection:(NSURLConnection *)connection didReceiveData:(NSData *)data {
     [responseData appendData:data];
 }
-- (void)connection:(NSURLConnection *)connection didFailWithError:(NSError *)error {
+-(void)connection:(NSURLConnection *)connection didFailWithError:(NSError *)error {
     NSLog(@"Connection failed: %@", [error description]);
 }
-- (void)connectionDidFinishLoading:(NSURLConnection *)connection {
+-(void)connectionDidFinishLoading:(NSURLConnection *)connection {
     responseStringForHis = [[NSString alloc] initWithData:responseData encoding:NSASCIIStringEncoding];
     NSError *error;
     
     newHistForHis = [NSJSONSerialization JSONObjectWithData:[responseStringForHis dataUsingEncoding:NSUTF8StringEncoding] options:0 error:&error];
     [self performSelectorInBackground:@selector(processNew:) withObject:newHistForHis];
 }
-- (BOOL)connection:(NSURLConnection *)connection canAuthenticateAgainstProtectionSpace:(NSURLProtectionSpace *)protectionSpace
-{
+-(BOOL)connection:(NSURLConnection *)connection canAuthenticateAgainstProtectionSpace:(NSURLProtectionSpace *)protectionSpace {
     return [protectionSpace.authenticationMethod isEqualToString:NSURLAuthenticationMethodServerTrust];
 }
-- (void)connection:(NSURLConnection *)connection didReceiveAuthenticationChallenge:(NSURLAuthenticationChallenge *)challenge
-{
+-(void)connection:(NSURLConnection *)connection didReceiveAuthenticationChallenge:(NSURLAuthenticationChallenge *)challenge {
     if ([challenge.protectionSpace.authenticationMethod isEqualToString:NSURLAuthenticationMethodServerTrust])
         [challenge.sender useCredential:[NSURLCredential credentialForTrust:challenge.protectionSpace.serverTrust] forAuthenticationChallenge:challenge];
     [challenge.sender continueWithoutCredentialForAuthenticationChallenge:challenge];
 }
+
 -(void)processNew:(NSMutableArray*)newHist
 {
     [newHist setArray:[self sortByStringDate:newHist]];
@@ -635,7 +579,6 @@ static assist * _sharedInstance = nil;
         [histCache setArray:newHist];
     }
     histSafe = YES;
-    //loadingCheck = NO;
     needsUpdating = YES;
     [[NSNotificationCenter defaultCenter] postNotificationName:@"tableReload" object:self userInfo:nil];
     [[NSNotificationCenter defaultCenter] postNotificationName:@"updateTable" object:self userInfo:nil];
@@ -731,23 +674,21 @@ static assist * _sharedInstance = nil;
     }
     return unsortedArray;
 }
+
 #pragma mark - User objects
--(NSMutableDictionary*)usr
-{
+-(NSMutableDictionary*)usr {
     return usr;
 }
--(NSMutableArray *)hist
-{
+-(NSMutableArray *)hist {
     return histCache;
 }
--(NSMutableDictionary *)assos
-{
+-(NSMutableDictionary *)assos {
     return assosciateCache;
 }
--(NSMutableArray *)assosAll
-{
+-(NSMutableArray *)assosAll {
     return [ArrAllContacts mutableCopy];
 }
+
 -(void)SaveAssos:(NSMutableArray*)additions
 {
     ArrAllContacts = [[NSArray alloc] init];
@@ -912,15 +853,16 @@ static assist * _sharedInstance = nil;
         return [UIImagePNGRepresentation([UIImage imageNamed:@"profile_picture.png"]) mutableCopy];
     }
 }
--(BOOL)isAlive:(NSString *)path{/*{{{*/
+-(BOOL)isAlive:(NSString *)path{
     if([[NSFileManager defaultManager] fileExistsAtPath:path]) return YES;
     else return NO;
-}/*}}}*/
--(BOOL)isClean:(id)object{/*{{{*/
+}
+-(BOOL)isClean:(id)object{
     [object writeToFile:[self path:@"test"] atomically:YES];
     if([[NSFileManager defaultManager] fileExistsAtPath:[self path:@"test"]])return YES;
     else return NO;
-}/*}}}*/
+}
+
 -(UIColor*)hexColor:(NSString*)hex
 {
     NSString *cString = [[hex stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]] uppercaseString];
@@ -956,10 +898,11 @@ static assist * _sharedInstance = nil;
                             blue:((float) b / 255.0f)
                            alpha:1.0f];
 }
+
 -(NSString *)path:(NSString *)type{
     NSArray *paths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
     NSString *documentsDirectory = [paths objectAtIndex:0];
-    documentsDirectory = [documentsDirectory stringByAppendingPathComponent:[NSString stringWithFormat:@"%@",[[NSUserDefaults standardUserDefaults] stringForKey:@"MemberId"]]];
+    documentsDirectory = [documentsDirectory stringByAppendingPathComponent:[NSString stringWithFormat:@"%@",[user stringForKey:@"MemberId"]]];
     if ([type isEqualToString:@"image"])
         return [documentsDirectory stringByAppendingPathExtension:@"png"];
     else if([type isEqualToString:@"core"])

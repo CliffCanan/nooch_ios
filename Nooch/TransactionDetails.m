@@ -137,7 +137,8 @@
     shadow.shadowOffset = CGSizeMake(0, 1);
     NSDictionary * textAttributes = @{NSShadowAttributeName: shadow };
     
-    if ( [[self.trans valueForKey:@"TransactionType"]isEqualToString:@"Transfer"] ||
+    if ( [[self.trans valueForKey:@"TransactionType"] isEqualToString:@"Transfer"] ||
+         [[self.trans valueForKey:@"TransactionType"] isEqualToString:@"Reward"] ||
         ([[self.trans valueForKey:@"TransactionType"] isEqualToString:@"Invite"] &&
          [[self.trans valueForKey:@"InvitationSentTo"] isEqualToString:[user valueForKey:@"UserName"]]))
     {
@@ -194,7 +195,7 @@
         else
             [memo setText:[NSString stringWithFormat:@"\"%@\"",[self.trans valueForKey:@"Memo"]]];
     }
-    else  {
+    else {
         memo.text = NSLocalizedString(@"TransDeets_NoMemoTxt2", @"Transfer Details 'No memo attached' text (2nd)");
     }
 
@@ -375,7 +376,8 @@
     }
 
     else if (([[self.trans valueForKey:@"TransactionType"] isEqualToString:@"Transfer"] ||
-              [[self.trans valueForKey:@"TransactionType"] isEqualToString:@"Invite"] ) &&
+              [[self.trans valueForKey:@"TransactionType"] isEqualToString:@"Invite"]   ||
+              [[self.trans valueForKey:@"TransactionType"] isEqualToString:@"Reward"]) &&
               [[self.trans valueForKey:@"TransactionStatus"] isEqualToString:@"Success"])
     {
         if ([[self.trans objectForKey:@"MemberId"] isEqualToString:[user objectForKey:@"MemberId"]])
@@ -426,8 +428,8 @@
     UIAlertView *av = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"TransDeets_SndRmndrAlrtTtl1", @"'Send Reminder' Alert Title")
                                                  message:[NSString stringWithFormat:NSLocalizedString(@"TransDeets_SndRmndrAlrtBody1", @"'Send Reminder' Alert Body Text"),[[self.trans objectForKey:@"FirstName"] capitalizedString]]
                                                 delegate:self
-                                       cancelButtonTitle:NSLocalizedString(@"TransDeets_SndRmndrAlrtYesBtn1", @"'Yes' Button Text")
-                                       otherButtonTitles:NSLocalizedString(@"TransDeets_SndRmndrAlrtNoBtn1", @"'No' Button Text"), nil];
+                                       cancelButtonTitle:NSLocalizedString(@"TransDeets_SndRmndrAlrtNoBtn1", @"'No' Button Text")
+                                       otherButtonTitles:NSLocalizedString(@"TransDeets_SndRmndrAlrtYesBtn1", @"'Yes' Button Text"), nil];
     [av setTag:2012];
     [av show];
 }
@@ -437,8 +439,8 @@
     UIAlertView *av = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"TransDeets_SndRmndrAlrtTtl2", @"'Send Reminder' Alert Title (2nd)")
                                                  message:NSLocalizedString(@"TransDeets_SndRmndrAlrtBody", @"'Send Reminder' Alert Body Text")//@"Do you want to send a reminder about this request?"
                                                 delegate:self
-                                       cancelButtonTitle:NSLocalizedString(@"TransDeets_SndRmndrAlrtYesBtn2", @"'Yes' Button Text (2nd)")
-                                       otherButtonTitles:NSLocalizedString(@"TransDeets_SndRmndrAlrtNoBtn2", @"'No' Button Text (2nd)"), nil];
+                                       cancelButtonTitle:NSLocalizedString(@"TransDeets_SndRmndrAlrtNoBtn2", @"'No' Button Text (2nd)")
+                                       otherButtonTitles:NSLocalizedString(@"TransDeets_SndRmndrAlrtYesBtn2", @"'Yes' Button Text (2nd)"), nil];
     [av setTag:2013];
     [av show];
 }
@@ -448,12 +450,13 @@
     UIAlertView *av = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"TransDeets_SndRmndrAlrtTtl3", @"'Send Reminder' Alert Body Text (3rd)")
                                                  message:NSLocalizedString(@"TransDeets_SndRmndrAlrtBody3", @"'Send Reminder' Alert Body Text (3rd)")
                                                 delegate:self
-                                       cancelButtonTitle:NSLocalizedString(@"TransDeets_SndRmndrAlrtYesBtn3", @"'Yes' Button Text (3rd)")
-                                       otherButtonTitles:NSLocalizedString(@"TransDeets_SndRmndrAlrtNoBtn3", @"'No' Button Text (3rd)"), nil];
+                                       cancelButtonTitle:NSLocalizedString(@"TransDeets_SndRmndrAlrtNoBtn3", @"'No' Button Text (3rd)")
+                                       otherButtonTitles:NSLocalizedString(@"TransDeets_SndRmndrAlrtYesBtn3", @"'Yes' Button Text (3rd)"), nil];
     [av setTag:2014];
     [av show];
 }
 
+#pragma mark LightBox Methods
 -(void)Map_LightBox
 {
     overlay = [[UIView alloc]init];
@@ -779,104 +782,18 @@
      ];
 }
 
--(void)cancel_invite
-{
-    UIAlertView *av = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"TransDeets_CnclTrnsfrAlrtTitl", @"'Cancel This Transfer' Alert Title")
-                                                 message:NSLocalizedString(@"TransDeets_CnclTrnsfrAlrtBody", @"Cancel This Transfer Alert Body Text")
-                                                delegate:self
-                                       cancelButtonTitle:NSLocalizedString(@"TransDeets_CnclTrnsfrAlrtYesBtn", @"Cancel This Transfer Alert 'Yes' Btn")
-                                       otherButtonTitles:NSLocalizedString(@"TransDeets_CnclTrnsfrAlrtNoBtn", @"Cancel This Transfer Alert 'No' Btn"), nil];
-    [av show];
-    [av setTag:310];
-}
 
-- (void)mailComposeController:(MFMailComposeViewController *)controller didFinishWithResult:(MFMailComposeResult)result error:(NSError *)error
-{
-    UIAlertView *alert = [[UIAlertView alloc] init];
-    [alert addButtonWithTitle:@"OK"];
-    [alert setDelegate:nil];
-    switch (result) {
-        case MFMailComposeResultCancelled:    
-            NSLog(@"Mail cancelled");
-            break;
-        
-        case MFMailComposeResultSaved:
-            NSLog(@"Mail saved");
-            [alert setTitle:@"Email Draft Saved"];
-            [alert show];
-            break;
-
-        case MFMailComposeResultSent:
-            NSLog(@"Mail sent");
-            [alert setTitle:@"Email Sent Successfully"];
-            [alert show];
-            break;
-
-        case MFMailComposeResultFailed:
-            [alert setTitle:[error localizedDescription]];
-            [alert show];
-            NSLog(@"Mail sent failure: %@", [error localizedDescription]);
-            break;
-        default:
-            break;
-    }
-    // Close the Mail Interface
-    [self dismissViewControllerAnimated:YES completion:NULL];
-}
-
+#pragma mark Transfer Responses
 - (void)fulfill_request
 {
-    NSUserDefaults*defaults=[NSUserDefaults standardUserDefaults];
-    
-    if ([[assist shared]getSuspended])
+    if ([self isUsersStatusOk])
     {
-        UIAlertView * alert = [[UIAlertView alloc]initWithTitle:NSLocalizedString(@"TransDeets_SuspAlrtTtl", @"'Account Suspended' Alert Title")
-                                                    message:NSLocalizedString(@"TransDeets_SuspAlrtBody", @"Account Suspended Alert Body Text")
-                                                   delegate:self
-                                          cancelButtonTitle:@"OK"
-                                          otherButtonTitles:NSLocalizedString(@"TransDeets_SuspAlrtBtn", @"'Contact Support' Btn"), nil];
-        [alert setTag:50];
-        [alert show];
-        return;
-    }
-    if (![[user valueForKey:@"Status"]isEqualToString:@"Active"])
-    {
-        UIAlertView *alert = [[UIAlertView alloc]initWithTitle:NSLocalizedString(@"TransDeets_EmlVerNddAlrtTtl", @"'Email Verification Needed' Alert Title")
-                                                    message:NSLocalizedString(@"TransDeets_EmlVerNddAlrtBody", @"'Email Verification Needed' Alert Body Text")
-                                                   delegate:Nil
-                                          cancelButtonTitle:@"OK"
-                                          otherButtonTitles:Nil, nil];
-        [alert show];
-        return;
-    }
-    if (![[defaults valueForKey:@"ProfileComplete"]isEqualToString:@"YES"])
-    {
-        UIAlertView *alert = [[UIAlertView alloc]initWithTitle:@"Profile Not Complete"
-                                                    message:@"Please validate your profile by completing all fields. This helps us keep Nooch safe!"
-                                                   delegate:self
-                                          cancelButtonTitle:@"Later"
-                                          otherButtonTitles:@"Validate Now", nil];
-        [alert setTag:147];
-        [alert show];
-        return;
-    }
-    if ( ![[[NSUserDefaults standardUserDefaults] objectForKey:@"IsBankAvailable"]isEqualToString:@"1"])
-    {
-        UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Please Link A Bank Account"
-                                                      message:@"Before you can make any transfer you must attach a bank account."
-                                                     delegate:self
-                                            cancelButtonTitle:@"OK"
-                                            otherButtonTitles:Nil, nil];
-
-        [alert show];
-        return;
-    }
-
-    NSMutableDictionary *input = [self.trans mutableCopy];
-    [input setValue:@"accept" forKey:@"response"];
-    [[assist shared]setRequestMultiple:NO];
-    TransferPIN *trans = [[TransferPIN alloc] initWithReceiver:input type:@"requestRespond" amount:[[self.trans objectForKey:@"Amount"] floatValue]];
+        NSMutableDictionary *input = [self.trans mutableCopy];
+        [input setValue:@"accept" forKey:@"response"];
+        [[assist shared]setRequestMultiple:NO];
+        TransferPIN *trans = [[TransferPIN alloc] initWithReceiver:input type:@"requestRespond" amount:[[self.trans objectForKey:@"Amount"] floatValue]];
     [nav_ctrl pushViewController:trans animated:YES];
+    }
 }
 
 - (void)decline_request
@@ -888,6 +805,17 @@
                                        otherButtonTitles:@"No", nil];
     [av show];
     [av setTag:1011];
+}
+
+-(void)cancel_invite
+{
+    UIAlertView *av = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"TransDeets_CnclTrnsfrAlrtTitl", @"'Cancel This Transfer' Alert Title")
+                                                 message:NSLocalizedString(@"TransDeets_CnclTrnsfrAlrtBody", @"Cancel This Transfer Alert Body Text")
+                                                delegate:self
+                                       cancelButtonTitle:NSLocalizedString(@"TransDeets_CnclTrnsfrAlrtYesBtn", @"Cancel This Transfer Alert 'Yes' Btn")
+                                       otherButtonTitles:NSLocalizedString(@"TransDeets_CnclTrnsfrAlrtNoBtn", @"Cancel This Transfer Alert 'No' Btn"), nil];
+    [av show];
+    [av setTag:310];
 }
 
 - (void)cancel_request_to_existing
@@ -912,78 +840,76 @@
     [av setTag:2010];
 }
 
-- (void)pay_back
+-(void)pay_back
 {
-    NSUserDefaults * defaults = [NSUserDefaults standardUserDefaults];
-
-    if ([[assist shared]getSuspended])
+    if ([self isUsersStatusOk] == YES)
     {
-        UIAlertView * alert = [[UIAlertView alloc]initWithTitle:@"Account Suspended"
-                                                        message:@"Your account has been suspended for 24 hours from now. Please email support@nooch.com if you believe this was a mistake and we will be glad to help."
+        NSMutableDictionary * input = [self.trans mutableCopy];
+        if ([[user valueForKey:@"MemberId"] isEqualToString:[self.trans valueForKey:@"MemberId"]])
+        {
+            NSString * MemberId = [input valueForKey:@"RecepientId"];
+            [input setObject:MemberId forKey:@"MemberId"];
+        }
+
+        isPayBack = YES;
+        [[assist shared]setRequestMultiple:NO];
+
+        // NSLog(@"%@",self.trans);
+        HowMuch *payback = [[HowMuch alloc] initWithReceiver:input];
+        [self.navigationController pushViewController:payback animated:YES];
+    }
+}
+
+-(BOOL)isUsersStatusOk
+{
+    if ([[assist shared] getSuspended])
+    {
+        UIAlertView * alert = [[UIAlertView alloc]initWithTitle:[NSString stringWithFormat:@"\xF0\x9F\x98\xA7  %@", NSLocalizedString(@"TransDeets_SuspAlrtTtl", @"'Account Suspended' Alert Title")]
+                                                        message:NSLocalizedString(@"TransDeets_SuspAlrtBody", @"Account Suspended Alert Body Text")
                                                        delegate:self
                                               cancelButtonTitle:@"OK"
-                                              otherButtonTitles:@"Contact Support", nil];
+                                              otherButtonTitles:NSLocalizedString(@"TransDeets_SuspAlrtBtn", @"'Contact Support' Btn"), nil];
         [alert setTag:50];
         [alert show];
-        return;
+        return NO;
     }
-    if (![[user valueForKey:@"Status"]isEqualToString:@"Active"])
+    else if ([[user valueForKey:@"Status"]isEqualToString:@"Registered"])
     {
-        UIAlertView * alert = [[UIAlertView alloc]initWithTitle:@"Email Verification Needed"
-                                                        message:@"Please click the link sent to your email to verify your email address."
+        UIAlertView * alert = [[UIAlertView alloc]initWithTitle:NSLocalizedString(@"TransDeets_EmlVerNddAlrtTtl", @"'Email Verification Needed' Alert Title")
+                                                        message:NSLocalizedString(@"TransDeets_EmlVerNddAlrtBody", @"'Email Verification Needed' Alert Body Text")
                                                        delegate:Nil
                                               cancelButtonTitle:@"OK"
                                               otherButtonTitles:Nil, nil];
         [alert show];
-        return;
+        return NO;
     }
-    if (![[defaults valueForKey:@"ProfileComplete"]isEqualToString:@"YES"] )
-    {
-        UIAlertView * alert = [[UIAlertView alloc]initWithTitle:@"Profile Not Complete"
-                                                        message:@"Please validate your profile by completing all fields. This helps us keep Nooch safe!"
-                                                       delegate:self
-                                              cancelButtonTitle:@"Later"
-                                              otherButtonTitles:@"Validate Now", nil];
-        [alert setTag:147];
-        [alert show];
-        return;
-    }
-    if (![[defaults valueForKey:@"IsVerifiedPhone"]isEqualToString:@"YES"] )
+    else if (![[user valueForKey:@"IsVerifiedPhone"]isEqualToString:@"YES"] )
     {
         UIAlertView * alert = [[UIAlertView alloc]initWithTitle:@"Phone Not Verified"
-                                                        message:@"Please validate your phone number before sending money."
+                                                        message:@"To keep Nooch safe, we ask all users to verify a phone number before sending money.\n\nIf you've already added your phone number, just respond 'Go' to the text message we sent."
+                                                       delegate:self
+                                              cancelButtonTitle:@"Later"
+                                              otherButtonTitles:@"Go Now" , nil];
+        [alert setTag:147];
+        [alert show];
+        return NO;
+    }
+    else if (![[user objectForKey:@"IsBankAvailable"]isEqualToString:@"1"])
+    {
+        UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Please Link A Bank Account"
+                                                        message:@"Before you can make any transfer you must attach a bank account."
                                                        delegate:self
                                               cancelButtonTitle:@"OK"
-                                              otherButtonTitles:Nil , nil];
+                                              otherButtonTitles:Nil, nil];
+        
         [alert show];
-        return;
+        return NO;
     }
-    if ( ![[[NSUserDefaults standardUserDefaults] objectForKey:@"IsBankAvailable"]isEqualToString:@"1"])
-    {
-        UIAlertView * set = [[UIAlertView alloc] initWithTitle:@"Funding Source Needed"
-                                                       message:@"Before you can send or receive money, you must add a bank account."
-                                                      delegate:self
-                                             cancelButtonTitle:@"OK"
-                                             otherButtonTitles:Nil, nil];
-        [set show];
-        return;
-    }
-
-    NSMutableDictionary * input = [self.trans mutableCopy];
-    if ([[user valueForKey:@"MemberId"] isEqualToString:[self.trans valueForKey:@"MemberId"]])
-    {
-        NSString * MemberId = [input valueForKey:@"RecepientId"];
-        [input setObject:MemberId forKey:@"MemberId"];
-    }
-
-    isPayBack = YES;
-    [[assist shared]setRequestMultiple:NO];
-
-    // NSLog(@"%@",self.trans);
-    HowMuch *payback = [[HowMuch alloc] initWithReceiver:input];
-    [self.navigationController pushViewController:payback animated:YES];
+    
+    return YES;
 }
 
+#pragma mark Social Posting Methods
 - (void)post_to_fb
 {
     if ([SLComposeViewController isAvailableForServiceType:SLServiceTypeFacebook])
@@ -1209,15 +1135,15 @@
     UIAlertView *av = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"TransDeets_CnfrmDsptAlrtTtl", @"'Confirm Dispute' Alert Title")
                                                  message:NSLocalizedString(@"TransDeets_CnfrmDsptAlrtBody", @"'Confirm Dispute' Alert Body Text")//@"To protect your account, if you dispute a transfer your Nooch account will be temporarily suspended while we investigate."
                                                 delegate:self
-                                       cancelButtonTitle:NSLocalizedString(@"TransDeets_CnfrmDsptAlrtYesBtn", @"Confirm Dispute Alert 'Yes - Dispute' Btn Text")
-                                       otherButtonTitles:NSLocalizedString(@"TransDeets_CnfrmDsptAlrtNoBtn", @"Confirm Dispute Alert 'No' Btn Text"), nil];
+                                       cancelButtonTitle:NSLocalizedString(@"TransDeets_CnfrmDsptAlrtNoBtn", @"Confirm Dispute Alert 'No' Btn Text")
+                                       otherButtonTitles:NSLocalizedString(@"TransDeets_CnfrmDsptAlrtYesBtn", @"Confirm Dispute Alert 'Yes - Dispute' Btn Text"), nil];
     [av show];
     [av setTag:1];
 }
 
 - (void) alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex
 {
-    if (alertView.tag == 2012 && buttonIndex == 0)  // REMIND Request to Existing User
+    if (alertView.tag == 2012 && buttonIndex == 1)  // REMIND Request to Existing User
     {
         serve * serveObj = [serve new];
         [serveObj setDelegate:self];
@@ -1225,7 +1151,7 @@
         [serveObj SendReminderToRecepient:[self.trans valueForKey:@"TransactionId"] reminderType:@"RequestMoneyReminderToExistingUser"];
     }
 
-    else if (alertView.tag == 2013 && buttonIndex == 0)  // REMIND Request to New User
+    else if (alertView.tag == 2013 && buttonIndex == 1)  // REMIND Request to New User
     {
         serve * serveObj = [serve new];
         [serveObj setDelegate:self];
@@ -1233,7 +1159,7 @@
         [serveObj SendReminderToRecepient:[self.trans valueForKey:@"TransactionId"] reminderType:@"RequestMoneyReminderToNewUser"];
     }
 
-    else if (alertView.tag == 2014 && buttonIndex == 0)  // REMIND Transfer/Invite to New User
+    else if (alertView.tag == 2014 && buttonIndex == 1)  // REMIND Transfer/Invite to New User
     {
         serve * serveObj = [serve new];
         [serveObj setDelegate:self];
@@ -1241,14 +1167,15 @@
         [serveObj SendReminderToRecepient:[self.trans valueForKey:@"TransactionId"] reminderType:@"InvitationReminderToNewUser"];
     }
 
-    else if (alertView.tag == 147 && buttonIndex == 1)  // PROFILE INCOMPLETE, GO TO PROFILE
+    else if (alertView.tag == 147 && buttonIndex == 1)  // PHONE NOT VERIFIED, GO TO PROFILE
     {
         ProfileInfo *prof = [ProfileInfo new];
         isProfileOpenFromSideBar=NO;
+        isFromTransDetails=YES;
         [self.navigationController pushViewController:prof animated:YES];
     }
 
-    else if (alertView.tag == 1 && buttonIndex == 0)  // DISPUTE
+    else if (alertView.tag == 1 && buttonIndex == 1)  // DISPUTE
     {
         RTSpinKitView *spinner1 = [[RTSpinKitView alloc] initWithStyle:RTSpinKitViewStylePulse];
         spinner1.color = [UIColor whiteColor];
@@ -1264,7 +1191,7 @@
         self.responseData = [NSMutableData data];
         NSMutableDictionary *dict = [[NSMutableDictionary alloc] init];
 
-        NSString * memId = [[NSUserDefaults standardUserDefaults] objectForKey:@"MemberId"];
+        NSString * memId = [user objectForKey:@"MemberId"];
         [dict setObject :memId forKey:@"MemberId"];
         [dict setObject:[self.trans valueForKey:@"RecepientId"] forKey:@"RecepientId"];
         [dict setObject:[self.trans valueForKey:@"TransactionId"] forKey:@"TransactionId"];
@@ -1276,7 +1203,7 @@
         [serveobj RaiseDispute:dict];
     }
 
-    else if (alertView.tag == 568 && buttonIndex == 1)  // User Disputed a Transfer, then selected "Contact Support" in Alert
+    else if ((alertView.tag == 568 || alertView.tag == 50) && buttonIndex == 1)  // User Disputed a Transfer, then selected "Contact Support" in Alert
     {
         if (![MFMailComposeViewController canSendMail])
         {
@@ -1318,12 +1245,11 @@
         mailComposer.navigationBar.tintColor=[UIColor whiteColor];
         
         [mailComposer setSubject:[NSString stringWithFormat:@"Support Request: Version %@",[[[NSBundle mainBundle] infoDictionary] objectForKey:@"CFBundleVersion"]]];
-        
         [mailComposer setMessageBody:@"" isHTML:NO];
         [mailComposer setToRecipients:[NSArray arrayWithObjects:@"support@nooch.com", nil]];
         [mailComposer setCcRecipients:[NSArray arrayWithObject:@""]];
         [mailComposer setBccRecipients:[NSArray arrayWithObject:@""]];
-        [mailComposer setModalTransitionStyle:UIModalTransitionStyleCrossDissolve];
+        [mailComposer setModalTransitionStyle:UIModalTransitionStylePartialCurl];
         [self presentViewController:mailComposer animated:YES completion:nil];
     }
 
@@ -1390,56 +1316,6 @@
         serveObj.tagName = @"reject";
         [serveObj CancelRejectTransaction:[self.trans valueForKey:@"TransactionId"] resp:@"Rejected"];
     }
-
-    else if (alertView.tag == 50 && buttonIndex == 1)  // IF USER IS SUSPENDED, & TAPS "CONTACT SUPPORT" IN ALERT
-    {
-        if (![MFMailComposeViewController canSendMail])
-        {
-            if ([UIAlertController class]) // for iOS 8
-            {
-                UIAlertController * alert = [UIAlertController
-                                             alertControllerWithTitle:@"No Email Detected"
-                                             message:@"You don't have an email account configured for this device."
-                                             preferredStyle:UIAlertControllerStyleAlert];
-                
-                UIAlertAction * ok = [UIAlertAction
-                                      actionWithTitle:@"OK"
-                                      style:UIAlertActionStyleDefault
-                                      handler:^(UIAlertAction * action)
-                                      {
-                                          [alert dismissViewControllerAnimated:YES completion:nil];
-                                      }];
-                [alert addAction:ok];
-                
-                [self presentViewController:alert animated:YES completion:nil];
-                return;
-            }
-            else
-            {
-                if (![MFMailComposeViewController canSendMail])
-                {
-                    UIAlertView * av = [[UIAlertView alloc] initWithTitle:@"No Email Detected"
-                                                                  message:@"You don't have an email account configured for this device."
-                                                                 delegate:nil
-                                                        cancelButtonTitle:@"OK"
-                                                        otherButtonTitles: nil];
-                    [av show];
-                    return;
-                }
-            }
-        }
-        MFMailComposeViewController *mailComposer = [[MFMailComposeViewController alloc] init];
-        mailComposer.mailComposeDelegate = self;
-        mailComposer.navigationBar.tintColor=[UIColor whiteColor];
-
-        [mailComposer setSubject:[NSString stringWithFormat:@"Support Request: Version %@",[[[NSBundle mainBundle] infoDictionary] objectForKey:@"CFBundleVersion"]]];
-        [mailComposer setMessageBody:@"" isHTML:NO];
-        [mailComposer setToRecipients:[NSArray arrayWithObjects:@"support@nooch.com", nil]];
-        [mailComposer setCcRecipients:[NSArray arrayWithObject:@""]];
-        [mailComposer setBccRecipients:[NSArray arrayWithObject:@""]];
-        [mailComposer setModalTransitionStyle:UIModalTransitionStyleCrossDissolve];
-        [self presentViewController:mailComposer animated:YES completion:nil];
-    }
 }
 
 -(void)Error:(NSError *)Error {
@@ -1452,6 +1328,46 @@
                           cancelButtonTitle:@"OK"
                           otherButtonTitles:nil];
     [alert show];
+}
+
+-(void)DisputeDetailClicked:(UIButton*)sender
+{
+    DisputeDetail * dd = [[DisputeDetail alloc]initWithData:tranDetailResult];
+    [self.navigationController pushViewController:dd animated:YES];
+}
+
+- (void)mailComposeController:(MFMailComposeViewController *)controller didFinishWithResult:(MFMailComposeResult)result error:(NSError *)error
+{
+    UIAlertView *alert = [[UIAlertView alloc] init];
+    [alert addButtonWithTitle:@"OK"];
+    [alert setDelegate:nil];
+    switch (result) {
+        case MFMailComposeResultCancelled:
+            NSLog(@"Mail cancelled");
+            break;
+            
+        case MFMailComposeResultSaved:
+            NSLog(@"Mail saved");
+            [alert setTitle:@"Email Draft Saved"];
+            [alert show];
+            break;
+            
+        case MFMailComposeResultSent:
+            NSLog(@"Mail sent");
+            [alert setTitle:@"Email Sent Successfully"];
+            [alert show];
+            break;
+            
+        case MFMailComposeResultFailed:
+            [alert setTitle:[error localizedDescription]];
+            [alert show];
+            NSLog(@"Mail sent failure: %@", [error localizedDescription]);
+            break;
+        default:
+            break;
+    }
+    // Close the Mail Interface
+    [self dismissViewControllerAnimated:YES completion:NULL];
 }
 
 #pragma mark - server delegation
@@ -1615,7 +1531,7 @@
             [location removeFromSuperview];
         }
 
-        //Set Status
+        // Set Status
         UILabel * status = [[UILabel alloc] initWithFrame:CGRectMake(20, 166, 280, 30)];
         [status setFont: [UIFont fontWithName:@"Roboto-bold" size:21]];
         [status setTextAlignment:NSTextAlignmentCenter];
@@ -1657,8 +1573,9 @@
                 [status setStyleClass:@"green_text"];
             }
             else if ([[tranDetailResult valueForKey:@"TransactionType"] isEqualToString:@"Sent"]     ||
-                     [[tranDetailResult valueForKey:@"TransactionType"] isEqualToString:@"Received"]  ||
-                     [[tranDetailResult valueForKey:@"TransactionType"] isEqualToString:@"Transfer"])
+                     [[tranDetailResult valueForKey:@"TransactionType"] isEqualToString:@"Received"] ||
+                     [[tranDetailResult valueForKey:@"TransactionType"] isEqualToString:@"Transfer"] ||
+                     [[tranDetailResult valueForKey:@"TransactionType"] isEqualToString:@"Reward"])
             {
                 statusstr = NSLocalizedString(@"TransDeets_CmpltTxt", @"'Complete' Status Text");
                 [status setStyleClass:@"green_text"];
@@ -1727,9 +1644,7 @@
         serve *info = [serve new];
         info.Delegate = self;
         info.tagName = @"info";
-        
-        NSUserDefaults*defaults=[NSUserDefaults standardUserDefaults];
-        [info getDetails:[defaults valueForKey:@"MemberId"]];
+        [info getDetails:[user valueForKey:@"MemberId"]];
     }
 
     if ([tagName isEqualToString:@"reject"])
@@ -1801,7 +1716,7 @@
     {
         UIAlertView *alert = [[UIAlertView alloc]initWithTitle:@"Transfer Cancelled" message:@"Aye aye. That transfer has been cancelled successfully." delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];
         [alert show];
-        
+
         for (UIView *subview in self.view.subviews)
         {
             if (subview.tag == 12 || (subview.tag == 13) || (subview.tag == 14)) {  // Remove 'Cancel' Button, Remind Button, "Pending" status
@@ -1827,7 +1742,7 @@
             if (subview.tag == 12)  // Remove "Completed" Status
                 [subview removeFromSuperview];
         }
-        
+
         UIAlertView*alert=[[UIAlertView alloc]initWithTitle:@"Transfer Disputed"
                                                     message:@"Thanks for letting us know. We will investigate and may contact you for more information.\n\nIf you would like to tell us more please contact Nooch Support."
                                                    delegate:self
@@ -1835,7 +1750,7 @@
                                           otherButtonTitles:@"Contact Support", nil];
         [alert show];
         [alert setTag:568];
-        
+
         UILabel *status = [[UILabel alloc] initWithFrame:CGRectMake(20, 166, 320, 30)];
         [status setStyleClass:@"details_label"];
         [status setStyleId:@"details_status"];
@@ -1846,20 +1761,18 @@
         [[assist shared]setSusPended:YES];
     }
 
-    else if([tagName isEqualToString:@"info"])
+    else if ([tagName isEqualToString:@"info"])
     {
         NSError *error;
-        NSMutableDictionary *Result = [NSJSONSerialization JSONObjectWithData:[result dataUsingEncoding:NSUTF8StringEncoding] options:0 error:&error];
+        NSMutableDictionary * Result = [NSJSONSerialization JSONObjectWithData:[result dataUsingEncoding:NSUTF8StringEncoding] options:0 error:&error];
         
-        if ([Result valueForKey:@"Status"] != Nil &&
+        if ( [Result valueForKey:@"Status"] != Nil &&
            ![[Result valueForKey:@"Status"] isKindOfClass:[NSNull class]] &&
-            [Result valueForKey:@"Status"] != NULL)
+             [Result valueForKey:@"Status"] != NULL)
         {
             [user setObject:[Result valueForKey:@"Status"] forKey:@"Status"];
-            NSString*url=[Result valueForKey:@"PhotoUrl"];
-            
-            [user setObject:[Result valueForKey:@"DateCreated"] forKey:@"DateCreated"];
-            [user setObject:url forKey:@"Photo"];
+            //[user setObject:[Result valueForKey:@"DateCreated"] forKey:@"DateCreated"];
+            //[user setObject:[Result valueForKey:@"PhotoUrl"] forKey:@"Photo"];
         }
     }
     
@@ -1871,11 +1784,6 @@
     }
 }
 
--(void)DisputeDetailClicked:(UIButton*)sender
-{
-    DisputeDetail * dd = [[DisputeDetail alloc]initWithData:tranDetailResult];
-    [self.navigationController pushViewController:dd animated:YES];
-}
 
 - (void)didReceiveMemoryWarning
 {

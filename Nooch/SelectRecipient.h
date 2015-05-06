@@ -34,5 +34,6 @@ int screenLoadedTimes;
     NSArray *emailAddresses;
     NSMutableArray*arrRequestPersons;
     CLLocationManager*locationManager;
+    float locationUpdateDelay;
 }
 @end

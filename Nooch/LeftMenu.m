@@ -144,8 +144,8 @@
     }
 
     if ( ![[user valueForKey:@"Status"]isEqualToString:@"Active"]  ||
-        ![[[NSUserDefaults standardUserDefaults] valueForKey:@"IsVerifiedPhone"]isEqualToString:@"YES"] ||
-         ([[user valueForKey:@"firstName"] length] < 1 || [[user valueForKey:@"lastName"] length] < 1) )
+         ![[user valueForKey:@"IsVerifiedPhone"]isEqualToString:@"YES"] ||
+         ([[user valueForKey:@"firstName"]length] < 1 || [[user valueForKey:@"lastName"] length] < 1) )
     {
         user_pic.layer.borderWidth = 3;
         user_pic.layer.borderColor = kNoochRed.CGColor;
@@ -182,9 +182,7 @@
         [self.view addSubview:self.settings];
     }
 
-    NSUserDefaults * defaults = [[NSUserDefaults alloc]init];
-
-    if ([[defaults objectForKey:@"IsBankAvailable"]isEqualToString:@"1"])
+    if ([[user objectForKey:@"IsBankAvailable"]isEqualToString:@"1"])
     {
         [self.glyph_noBank removeFromSuperview];
     }
@@ -355,11 +353,10 @@
 
             UILabel * pending_notif = [UILabel new];
 
-            NSUserDefaults * defaults = [[NSUserDefaults alloc]init];
-            if ([defaults boolForKey:@"hasPendingItems"] == true)
+            if ([user boolForKey:@"hasPendingItems"] == true)
             {
                 //  NSLog(@"The current pending count is: %@",[defaults objectForKey:@"Pending_count"]);
-                [pending_notif setText:[NSString stringWithFormat:@"%@",[defaults objectForKey:@"Pending_count"]]];
+                [pending_notif setText:[NSString stringWithFormat:@"%@",[user objectForKey:@"Pending_count"]]];
                 [pending_notif setFrame:CGRectMake(212, 10, 22, 22)];
                 [pending_notif setStyleId:@"pending_notif"];
                 [pending_notif setStyleId:@"pending_notif_lsideMenu"];
@@ -512,7 +509,7 @@
                                                                            delegate:self
                                                                   cancelButtonTitle:@"Cancel"
                                                              destructiveButtonTitle:nil
-                                                                  otherButtonTitles:NSLocalizedString(@"LSidebar_SupportActShtBug", @"Left Sidebar contact support Action Sheet - 'Report a Bug'"), NSLocalizedString(@"LSidebar_SupportActShtEmail", @"Left Sidebar contact support Action Sheet - 'Email Nooch Support'"), NSLocalizedString(@"LSidebar_SupportActShtSupprtCtr", @"Left Sidebar contact support Action Sheet - 'Go to Support Center'"), nil];
+                                                                  otherButtonTitles:NSLocalizedString(@"LSidebar_SupportActShtSupprtCtr", @"Left Sidebar contact support Action Sheet - 'Go to Support Center'"), NSLocalizedString(@"LSidebar_SupportActShtBug", @"Left Sidebar contact support Action Sheet - 'Report a Bug'"), NSLocalizedString(@"LSidebar_SupportActShtEmail", @"Left Sidebar contact support Action Sheet - 'Email Nooch Support'"), nil];
             actionSheetObject.actionSheetStyle = UIActionSheetStyleDefault;
             [actionSheetObject setTag:1];
             [actionSheetObject showInView:self.view];
@@ -545,6 +542,13 @@
     if ([actionSheet tag] == 1)
     {
         if (buttonIndex == 0)
+        {
+            //support center
+            webView * wb = [[webView alloc]init];
+            [nav_ctrl pushViewController:wb animated:NO];
+            [self.slidingViewController resetTopView];
+        }
+        else if (buttonIndex == 1)
         {
             //report bug
             if (![MFMailComposeViewController canSendMail])
@@ -591,10 +595,10 @@
             [mailComposer setToRecipients:[NSArray arrayWithObjects:@"bugs@nooch.com",nil]];
             [mailComposer setCcRecipients:[NSArray arrayWithObject:@""]];
             [mailComposer setBccRecipients:[NSArray arrayWithObject:@""]];
-            [mailComposer setModalTransitionStyle:UIModalTransitionStyleCrossDissolve];
+            [mailComposer setModalTransitionStyle:UIModalTransitionStyleCoverVertical];
             [self presentViewController:mailComposer animated:YES completion:nil];
         }
-        else if (buttonIndex == 1)
+        else if (buttonIndex == 2)
         {
             //email support
             if (![MFMailComposeViewController canSendMail])
@@ -640,15 +644,8 @@
             [mailComposer setToRecipients:[NSArray arrayWithObjects:@"support@nooch.com", nil]];
             [mailComposer setCcRecipients:[NSArray arrayWithObject:@""]];
             [mailComposer setBccRecipients:[NSArray arrayWithObject:@""]];
-            [mailComposer setModalTransitionStyle:UIModalTransitionStyleCrossDissolve];
+            [mailComposer setModalTransitionStyle:UIModalTransitionStyleCoverVertical];
             [self presentViewController:mailComposer animated:YES completion:nil];
-        }
-        else if (buttonIndex == 2)
-        {
-            //support center
-            webView * wb = [[webView alloc]init];
-            [nav_ctrl pushViewController:wb animated:NO];
-            [self.slidingViewController resetTopView];
         }
     }
     else if ([actionSheet tag] == 2)

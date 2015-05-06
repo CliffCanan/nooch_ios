@@ -233,8 +233,8 @@
     if ([result rangeOfString:@"Invalid OAuth 2 Access"].location != NSNotFound)
     {
         [[NSFileManager defaultManager] removeItemAtPath:[self autoLogin] error:nil];
-        [[NSUserDefaults standardUserDefaults] removeObjectForKey:@"UserName"];
-        [[NSUserDefaults standardUserDefaults] removeObjectForKey:@"MemberId"];
+        [user removeObjectForKey:@"UserName"];
+        [user removeObjectForKey:@"MemberId"];
 
         [timer invalidate];
 
@@ -519,7 +519,7 @@
     [mainView addSubview:btnLink];
     [overlay addSubview:mainView];
     
-    [[NSUserDefaults standardUserDefaults] setBool:true forKey:@"VersionUpdateNoticeDisplayed"];
+    [user setBool:true forKey:@"VersionUpdateNoticeDisplayed"];
 }
 
 -(void)saveSuggestedProperty

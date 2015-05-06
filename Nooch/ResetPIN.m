@@ -280,7 +280,7 @@
         serve *checkValid = [serve new];
         checkValid.tagName = @"checkValid";
         checkValid.Delegate = self;
-        [checkValid pinCheck:[[NSUserDefaults standardUserDefaults] stringForKey:@"MemberId"] pin:encryptedPIN];
+        [checkValid pinCheck:[user stringForKey:@"MemberId"] pin:encryptedPIN];
     }
     else if ([tagName isEqualToString:@"checkValid"])
     {
@@ -424,7 +424,7 @@
         [mailComposer setToRecipients:[NSArray arrayWithObjects:@"support@nooch.com", nil]];
         [mailComposer setCcRecipients:[NSArray arrayWithObject:@""]];
         [mailComposer setBccRecipients:[NSArray arrayWithObject:@""]];
-        [mailComposer setModalTransitionStyle:UIModalTransitionStyleCrossDissolve];
+        [mailComposer setModalTransitionStyle:UIModalTransitionStylePartialCurl];
         [self presentViewController:mailComposer animated:YES completion:nil];
     }
     else if (alertView.tag == 1)

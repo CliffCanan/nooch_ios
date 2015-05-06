@@ -54,5 +54,6 @@ BOOL shouldDisplayAptsSection, noRecentContacts;
     short carouselTopValue, topBtnTopValue, loopIteration;
     BOOL shouldBreakLoop;
 }
+-(void)contact_support;
 -(void)hide;
 @end

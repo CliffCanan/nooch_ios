@@ -104,29 +104,29 @@
     [[assist shared]setneedsReload:NO];
     [self.slidingViewController anchorTopViewTo:ECRight];
 }
--(void)Error:(NSError *)Error{
+-(void)Error:(NSError *)Error
+{
     [self.hud hide:YES];
-    
-    UIAlertView *alert = [[UIAlertView alloc]
+
+    /*UIAlertView *alert = [[UIAlertView alloc]
                           initWithTitle:@"Message"
                           message:@"Error connecting to server"
                           delegate:nil
                           cancelButtonTitle:@"OK"
                           otherButtonTitles:nil];
-    
-    [alert show];
-    
+    [alert show];*/
 }
+
 # pragma mark - serve delegation
 -(void)listen:(NSString *)result tagName:(NSString*)tagName
 {
     NSError *error;
     NSDictionary *template = [NSJSONSerialization JSONObjectWithData:[result dataUsingEncoding:NSUTF8StringEncoding] options:0 error:&error];
-    
+
     if ([template objectForKey:@"Result"]) {
         [privacyView loadHTMLString:[template objectForKey:@"Result"] baseURL:nil];
     }
-    
+
     [self.hud hide:YES];
 
     for (id subView in [privacyView subviews]) {

@@ -95,7 +95,7 @@
 -(void)resetPassword:(NSString*)old new:(NSString*)new;
 -(void)resetPIN:(NSString*)old new:(NSString*)new;
 -(void)resendSMS;
--(void)SaveFrequency:(NSString*) withdrawalId type:(NSString*) type frequency: (float)withdrawalFrequency;
+-(void)saveUserIpAddress:(NSString*)IpAddress;
 -(void)SaveImmediateRequire:(BOOL)IsRequiredImmediatley;
 -(void)saveShareToFB_Twitter:(NSString*)PostTo;
 -(void)saveMemberTransId:(NSDictionary*)trans;

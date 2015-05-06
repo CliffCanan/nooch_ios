@@ -1,3 +1,9 @@
-/* Class = "IBUIViewController"; title = "Nooch"; ObjectID = "A54-GI-PkY"; */
-"A54-GI-PkY.title" = "Nooch";
+/* Class = "UIViewController"; title = "Nooch"; ObjectID = "A54-GI-PkY"; */
+"A54-GI-PkY.title" = "N1111ooch";
+
+/* Home Screen Btn Title */
+"HomeBtnTitle" = "spanish";
+
+/* Left Sidebar 'Version' Text */
+"LeftSidebar_VersionTxt" = "UH OH THIS WORKS";
 

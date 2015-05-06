@@ -60,7 +60,7 @@
     [super viewDidAppear:animated];
 
     self.login = [UIButton buttonWithType:UIButtonTypeRoundedRect];
-    [self.login setFrame:CGRectMake(10, [[UIScreen mainScreen] bounds].size.height + 6, 300, 50)];
+    [self.login setFrame:CGRectMake(10, [[UIScreen mainScreen] bounds].size.height + 6, 300, 52)];
     [self.login setStyleId:@"label_small_register"];
     [self.login setBackgroundColor:[UIColor clearColor]];
     [self.login setTitle:NSLocalizedString(@"Register_loginTxt", @"Register Screen 'Already a member?  Sign in here ") forState:UIControlStateNormal];
@@ -71,7 +71,7 @@
 
     UILabel * glyph_login = [UILabel new];
     [glyph_login setFont:[UIFont fontWithName:@"FontAwesome" size:20]];
-    [glyph_login setFrame:CGRectMake(0, 35, 300, 22)];
+    [glyph_login setFrame:CGRectMake(0, 38, 300, 25)];
     [glyph_login setText:[NSString fontAwesomeIconStringForIconIdentifier:@"fa-arrow-circle-right"]];
     [glyph_login setTextColor:kNoochGreen];
     [glyph_login setTextAlignment:NSTextAlignmentCenter];
@@ -85,7 +85,7 @@
                                       [self.login setAlpha:1];
                                       if ([[UIScreen mainScreen] bounds].size.height > 500)
                                       {
-                                          [self.login setFrame:CGRectMake(10, 498, 300, 50)];
+                                          [self.login setFrame:CGRectMake(10, 495, 300, 52)];
                                       }
                                       else
                                       {
@@ -515,10 +515,8 @@
         if (!error)
         {
             // Success! Now Log User into Nooch using the FB ID
-            
-            [[NSUserDefaults standardUserDefaults] setObject:[result objectForKey:@"id"] forKey:@"facebook_id"];
+            [user setObject:[result objectForKey:@"id"] forKey:@"facebook_id"];
             NSLog(@"Login w FB successful --> fb id is %@",[result objectForKey:@"id"]);
-            // NSLog(@"Login w FB successful --> result is %@",result);
 
             isloginWithFB = YES;
 
@@ -614,7 +612,32 @@
 #pragma mark - navigation
 - (void)continue_to_signup
 {
-    if ([[[self.name_field.text componentsSeparatedByString:@" "] objectAtIndex:0]length] < 2)
+    if (([self.password_field.text length] == 0) || ([self.name_field.text length] == 0) || ([self.email_field.text length] == 0))
+    {
+        UIAlertView *av = [[UIAlertView alloc] initWithTitle:@"Eager Beaver"
+                                                     message:@"You have not filled out the sign up form!"
+                                                    delegate:nil
+                                           cancelButtonTitle:@"OK"
+                                           otherButtonTitles:nil];
+        [av show];
+        [self.name_field becomeFirstResponder];
+        return;
+    }
+
+    else if ([self.name_field.text rangeOfString:@" "].location == NSNotFound)
+    {
+        UIAlertView * alert =[[UIAlertView alloc]initWithTitle:@"Need a Full Name"
+                                                       message:@"For security, we ask all Nooch users sign up with a full name (first and last name)."
+                                                      delegate:nil
+                                             cancelButtonTitle:@"OK"
+                                             otherButtonTitles:nil, nil];
+        [alert show];
+        [self.name_field becomeFirstResponder];
+        return;
+    }
+
+    else if ([[[self.name_field.text componentsSeparatedByString:@" "] objectAtIndex:0]length] < 2 ||
+             [[[self.name_field.text componentsSeparatedByString:@" "] objectAtIndex:1]length] < 2)
     {
         UIAlertView * alert =[[UIAlertView alloc]initWithTitle:@"Need a Full Name"
                                                        message:@"Nooch is currently only able to handle names greater than 3 letters.\n\nIf your first or last name has fewer than 3, please contact us and we'll be happy to manually create your account."
@@ -625,16 +648,17 @@
         [self.name_field becomeFirstResponder];
         return;
     }
-
-    if (([self.password_field.text length] == 0) || ([self.name_field.text length] == 0) || ([self.email_field.text length] == 0))
+    else
     {
-        UIAlertView *av = [[UIAlertView alloc] initWithTitle:@"Eager Beaver"
-                                                     message:@"You have not filled out the sign up form!"
-                                                    delegate:nil
-                                           cancelButtonTitle:@"OK"
-                                           otherButtonTitles:nil];
-        [av show];
-        [self.name_field becomeFirstResponder];
+        if ([self checkNameForNumsAndSpecChars] == false)
+        {
+            return;
+        }
+    }
+
+    // CHECK IF EMAIL IS ONE OF THE SHADY DOMAINS
+    if ([self checkEmailForShadyDomain] == false)
+    {
         return;
     }
 
@@ -687,7 +711,7 @@
         self.hud.delegate = self;
         [self.hud show:YES];
 
-        [[assist shared]setIsloginFromOther:NO];
+        [[assist shared] setIsloginFromOther:NO];
 
         serve * check_duplicate = [serve new];
         [check_duplicate setTagName:@"check_dup"];
@@ -710,9 +734,9 @@
                               animations:^{
                                   [UIView addKeyframeWithRelativeStartTime:0 relativeDuration:1 animations:^{
                                       if ([[UIScreen mainScreen] bounds].size.height > 500) {
-                                          [sender setFrame:CGRectMake(-29, 498, 300, 50)];
+                                          [sender setFrame:CGRectMake(-29, 495, 300, 52)];
                                       } else {
-                                          [sender setFrame:CGRectMake(-28, 425, 300, 44)];
+                                          [sender setFrame:CGRectMake(-28, 425, 300, 42)];
                                       }
                                   }];
                               } completion: ^(BOOL finished){
@@ -722,9 +746,9 @@
                                                             animations:^{
                                                                 [UIView addKeyframeWithRelativeStartTime:0 relativeDuration:1 animations:^{
                                                                     if ([[UIScreen mainScreen] bounds].size.height > 500) {
-                                                                        [sender setFrame:CGRectMake(321, 498, 300, 50)];
+                                                                        [sender setFrame:CGRectMake(321, 496, 300, 52)];
                                                                     } else {
-                                                                        [sender setFrame:CGRectMake(321, 419, 300, 44)];
+                                                                        [sender setFrame:CGRectMake(321, 419, 300, 42)];
                                                                     }
                                                                 }];
                                                             } completion: ^(BOOL finished){
@@ -749,7 +773,7 @@
     [self.hud hide:YES];
     UIAlertView *alert = [[UIAlertView alloc]
                           initWithTitle:NSLocalizedString(@"Rgstr_CnctnErrAlrtTitle", @"Register screen 'Connection Error' Alert Text")
-                          message:NSLocalizedString(@"Rgstr_CnctnErrAlrtBody", @"Register screen Connection Error Alert Body Text")//@"Looks like we're having trouble finding an internet connection! Please try again."
+                          message:NSLocalizedString(@"Rgstr_CnctnErrAlrtBody", @"Register screen Connection Error Alert Body Text")
                           delegate:nil
                           cancelButtonTitle:@"OK"
                           otherButtonTitles:nil];
@@ -777,7 +801,7 @@
             
             NSString * imgURL = [NSString stringWithFormat:@"https://graph.facebook.com/%@/picture?type=large", fbID];
 
-            [[NSUserDefaults standardUserDefaults] setObject:fbID forKey:@"facebook_id"];
+            [user setObject:fbID forKey:@"facebook_id"];
 
             if (imgURL)
             {
@@ -992,16 +1016,15 @@
     else if ([tagName isEqualToString:@"getMemberId"])
     {
         NSError *error;
+        //user = [NSUserDefaults standardUserDefaults];
 
         NSDictionary *loginResult = [NSJSONSerialization JSONObjectWithData:[result dataUsingEncoding:NSUTF8StringEncoding] options:0 error:&error];
-        [[NSUserDefaults standardUserDefaults] setObject:[loginResult objectForKey:@"Result"] forKey:@"MemberId"];
-        [[NSUserDefaults standardUserDefaults] setObject:email_fb forKey:@"UserName"];
-
-        user = [NSUserDefaults standardUserDefaults];
+        [user setObject:[loginResult objectForKey:@"Result"] forKey:@"MemberId"];
+        [user setObject:email_fb forKey:@"UserName"];
 
         NSMutableDictionary * automatic = [[NSMutableDictionary alloc] init];
-        [automatic setObject:[[NSUserDefaults standardUserDefaults] valueForKey:@"MemberId"] forKey:@"MemberId"];
-        [automatic setObject:[[NSUserDefaults standardUserDefaults] valueForKey:@"UserName"] forKey:@"UserName"];
+        [automatic setObject:[user valueForKey:@"MemberId"] forKey:@"MemberId"];
+        [automatic setObject:[user valueForKey:@"UserName"] forKey:@"UserName"];
         [automatic writeToFile:[self autoLogin] atomically:YES];
 
         me = [core new];
@@ -1326,43 +1349,7 @@
             }
             else
             {
-                BOOL containsPunctuation = NSNotFound != [self.name_field.text rangeOfCharacterFromSet:NSCharacterSet.punctuationCharacterSet].location;
-                BOOL containsNumber = NSNotFound != [self.name_field.text rangeOfCharacterFromSet:NSCharacterSet.decimalDigitCharacterSet].location;
-                BOOL containsSymbols = NSNotFound != [self.name_field.text rangeOfCharacterFromSet:NSCharacterSet.symbolCharacterSet].location;
-                NSMutableCharacterSet *characterSet = [NSMutableCharacterSet characterSetWithCharactersInString:@"'.-"];
-                BOOL containsDash = NSNotFound != [self.name_field.text rangeOfCharacterFromSet:characterSet].location;
-
-                if (containsNumber)
-                {
-                    [self.nameValidator setHidden:NO];
-                    [self.name_field becomeFirstResponder];
-
-                    UIAlertView *av = [[UIAlertView alloc] initWithTitle:[NSString stringWithFormat:@"\xF0\x9F\x98\x8F  %@", NSLocalizedString(@"Rgstr_ReallyAlrtTtl1", @"Register screen Really Alert Title")]
-                                                                 message:NSLocalizedString(@"Rgstr_ReallyAlrtBody1", @"Register screen Really Alert Body Text")
-                                                                delegate:self
-                                                       cancelButtonTitle:@"OK"
-                                                       otherButtonTitles:nil];
-                    [av show];
-                }
-                else if ((containsSymbols || containsPunctuation) &&
-                         !containsDash)
-                {
-                    [self.nameValidator setHidden:NO];
-                    [self.name_field becomeFirstResponder];
-                        
-                    UIAlertView *av = [[UIAlertView alloc] initWithTitle:[NSString stringWithFormat:@"\xF0\x9F\x98\x8F  %@", NSLocalizedString(@"Rgstr_ReallyAlrtTtl2", @"Register screen Really Alert Title")]
-                                                                 message:NSLocalizedString(@"Rgstr_ReallyAlrtBody2", @"Register screen Really Alert Body (2nd - symbol)")
-                                                                delegate:self
-                                                       cancelButtonTitle:@"OK"
-                                                       otherButtonTitles:nil];
-                    [av show];
-                }
-                else
-                {
-                    [self.fullNameInstruc setHidden:YES];
-                    [self.nameValidator setHidden:YES];
-                    [self.email_field becomeFirstResponder];
-                }
+                [self checkNameForNumsAndSpecChars];
             }
             break;
         case 2:
@@ -1396,6 +1383,114 @@
             break;
     }
     return YES;
+}
+
+-(BOOL)checkNameForNumsAndSpecChars
+{
+    BOOL containsPunctuation = NSNotFound != [self.name_field.text rangeOfCharacterFromSet:NSCharacterSet.punctuationCharacterSet].location;
+    BOOL containsNumber = NSNotFound != [self.name_field.text rangeOfCharacterFromSet:NSCharacterSet.decimalDigitCharacterSet].location;
+    BOOL containsSymbols = NSNotFound != [self.name_field.text rangeOfCharacterFromSet:NSCharacterSet.symbolCharacterSet].location;
+    NSMutableCharacterSet *characterSet = [NSMutableCharacterSet characterSetWithCharactersInString:@"'.-"];
+    BOOL containsDash = NSNotFound != [self.name_field.text rangeOfCharacterFromSet:characterSet].location;
+    
+    if (containsNumber)
+    {
+        [self.nameValidator setHidden:NO];
+        [self.name_field becomeFirstResponder];
+        
+        UIAlertView *av = [[UIAlertView alloc] initWithTitle:[NSString stringWithFormat:@"\xF0\x9F\x98\x8F  %@", NSLocalizedString(@"Rgstr_ReallyAlrtTtl1", @"Register screen Really Alert Title")]
+                                                     message:NSLocalizedString(@"Rgstr_ReallyAlrtBody1", @"Register screen Really Alert Body Text")
+                                                    delegate:self
+                                           cancelButtonTitle:@"OK"
+                                           otherButtonTitles:nil];
+        [av show];
+        return false;
+    }
+    else if ((containsSymbols || containsPunctuation) &&
+             !containsDash)
+    {
+        [self.nameValidator setHidden:NO];
+        [self.name_field becomeFirstResponder];
+        
+        UIAlertView *av = [[UIAlertView alloc] initWithTitle:[NSString stringWithFormat:@"\xF0\x9F\x98\x8F  %@", NSLocalizedString(@"Rgstr_ReallyAlrtTtl2", @"Register screen Really Alert Title")]
+                                                     message:NSLocalizedString(@"Rgstr_ReallyAlrtBody2", @"Register screen Really Alert Body (2nd - symbol)")
+                                                    delegate:self
+                                           cancelButtonTitle:@"OK"
+                                           otherButtonTitles:nil];
+        [av show];
+        return false;
+    }
+    else
+    {
+        [self.fullNameInstruc setHidden:YES];
+        [self.nameValidator setHidden:YES];
+
+        if ([self.email_field.text length] < 2)
+        {
+            [self.email_field becomeFirstResponder];
+        }
+        return true;
+    }
+}
+
+-(bool)checkEmailForShadyDomain
+{
+    NSString * emailToCheck = self.email_field.text;
+
+    if ([emailToCheck rangeOfString:@"sharklasers"].location != NSNotFound ||
+        [emailToCheck rangeOfString:@"grr.la"].location != NSNotFound ||
+        [emailToCheck rangeOfString:@"guerrillamail"].location != NSNotFound ||
+        [emailToCheck rangeOfString:@"spam4"].location != NSNotFound ||
+        [emailToCheck rangeOfString:@"anonymousemail"].location != NSNotFound ||
+        [emailToCheck rangeOfString:@"anonemail"].location != NSNotFound ||
+        [emailToCheck rangeOfString:@"hmamail.com"].location != NSNotFound || // "hideMyAss.com"
+        [emailToCheck rangeOfString:@"mailinator"].location != NSNotFound ||
+        [emailToCheck rangeOfString:@"mailinater"].location != NSNotFound ||
+        [emailToCheck rangeOfString:@"sendspamhere"].location != NSNotFound ||
+        [emailToCheck rangeOfString:@"sogetthis"].location != NSNotFound ||
+        [emailToCheck rangeOfString:@"mt2014.com"].location != NSNotFound ||  // "myTrashMail.com"
+        [emailToCheck rangeOfString:@"hushmail"].location != NSNotFound ||
+        [emailToCheck rangeOfString:@"mailnesia"].location != NSNotFound)
+    {
+        [self.emailValidator setHidden:NO];
+        [self.emailValidator setText:[NSString fontAwesomeIconStringForIconIdentifier:@"fa-times"]];
+        [self.emailValidator setTextColor:kNoochRed];
+        
+        [self.email_field becomeFirstResponder];
+        
+        if ([UIAlertController class]) // for iOS 8
+        {
+            UIAlertController * alert = [UIAlertController
+                                         alertControllerWithTitle:@"Try A Different Email"
+                                         message:@"\xF0\x9F\x93\xA7\nTo protect all Nooch accounts, we ask that you please use a regular email address to create your account."
+                                         preferredStyle:UIAlertControllerStyleAlert];
+            
+            UIAlertAction * ok = [UIAlertAction
+                                  actionWithTitle:@"OK"
+                                  style:UIAlertActionStyleDefault
+                                  handler:^(UIAlertAction * action)
+                                  {
+                                      [alert dismissViewControllerAnimated:YES completion:nil];
+                                  }];
+            [alert addAction:ok];
+            
+            [self presentViewController:alert animated:YES completion:nil];
+        }
+        else  // for iOS 7 and prior
+        {
+            UIAlertView *av = [[UIAlertView alloc] initWithTitle:@"Try A Different Email"
+                                                         message:@"To protect all Nooch accounts, we ask that you please use a regular email address to create your account."
+                                                        delegate:self
+                                               cancelButtonTitle:@"OK"
+                                               otherButtonTitles:nil];
+            [av show];
+        }
+        return false;
+    }
+    else
+    {
+        return true;
+    }
 }
 
 - (void)textFieldDidEndEditing:(UITextField *)textField
@@ -1450,7 +1545,7 @@
     [mailComposer setToRecipients:[NSArray arrayWithObjects:@"support@nooch.com", nil]];
     [mailComposer setCcRecipients:[NSArray arrayWithObject:@""]];
     [mailComposer setBccRecipients:[NSArray arrayWithObject:@""]];
-    [mailComposer setModalTransitionStyle:UIModalTransitionStyleCrossDissolve];
+    [mailComposer setModalTransitionStyle:UIModalTransitionStylePartialCurl];
     [self presentViewController:mailComposer animated:YES completion:nil];
 }
 

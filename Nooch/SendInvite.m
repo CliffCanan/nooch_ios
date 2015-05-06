@@ -185,7 +185,9 @@
     serve * serveOBJ = [serve new];
     serveOBJ.tagName = @"GetReffereduser";
     [serveOBJ setDelegate:self];
-    [serveOBJ getInvitedMemberList:[[NSUserDefaults standardUserDefaults] objectForKey:@"MemberId"]];
+    [serveOBJ getInvitedMemberList:[user objectForKey:@"MemberId"]];
+
+    [ARTrackingManager trackEvent:@"Refer_ViewDidLoad_End"];
 }
 
 #pragma mark - file paths
@@ -200,13 +202,13 @@
 {
     [self.hud hide:YES];
 
-    UIAlertView * alert = [[UIAlertView alloc]
+    /*UIAlertView * alert = [[UIAlertView alloc]
                           initWithTitle:@"Message"
                           message:@"Error connecting to server"
                           delegate:nil
                           cancelButtonTitle:@"OK"
                           otherButtonTitles:nil];
-    [alert show];
+    [alert show];*/
 }
 
 #pragma mark - server Delegation
@@ -218,8 +220,8 @@
     if ([result rangeOfString:@"Invalid OAuth 2 Access"].location!=NSNotFound)
     {
         [[NSFileManager defaultManager] removeItemAtPath:[self autoLogin] error:nil];
-        [[NSUserDefaults standardUserDefaults] removeObjectForKey:@"UserName"];
-        [[NSUserDefaults standardUserDefaults] removeObjectForKey:@"MemberId"];
+        [user removeObjectForKey:@"UserName"];
+        [user removeObjectForKey:@"MemberId"];
 
         [timer invalidate];
 
@@ -237,11 +239,12 @@
                       JSONObjectWithData:[result dataUsingEncoding:NSUTF8StringEncoding]
                       options:kNilOptions
                       error:&error];
-        NSUserDefaults * defaults = [NSUserDefaults standardUserDefaults];
-        [defaults setValue:[[dictResponse valueForKey:@"getReferralCodeResult"] valueForKey:@"Result"] forKey:@"ReferralCode"];
-        [defaults synchronize];
+
         code.text = [NSString stringWithFormat:@"%@",[[dictResponse valueForKey:@"getReferralCodeResult"] valueForKey:@"Result"]];
         [code setStyleClass:@"animate_bubble_slow"];
+
+        [user setValue:[[dictResponse valueForKey:@"getReferralCodeResult"] valueForKey:@"Result"] forKey:@"ReferralCode"];
+        [user synchronize];
     }
     else if ([tagName isEqualToString:@"GetReffereduser"])
     {
@@ -288,7 +291,7 @@
         serve * serveOBJ = [serve new];
         serveOBJ.tagName = @"ReferralCode";
         [serveOBJ setDelegate:self];
-        [serveOBJ GetReferralCode:[[NSUserDefaults standardUserDefaults] objectForKey:@"MemberId"]];
+        [serveOBJ GetReferralCode:[user objectForKey:@"MemberId"]];
     }
 }
 

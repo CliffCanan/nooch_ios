@@ -8,8 +8,9 @@
 BOOL isBankAttached;
 #import <UIKit/UIKit.h>
 #import "serve.h"
+#import <MessageUI/MessageUI.h>
 
-@interface SettingsOptions : GAITrackedViewController<UIAlertViewDelegate,UITableViewDataSource,UITableViewDelegate,serveD>
+@interface SettingsOptions : GAITrackedViewController<UIAlertViewDelegate,UITableViewDataSource,UITableViewDelegate,MFMailComposeViewControllerDelegate,serveD>
 {
     UIView * blankView;
     UIButton * arrow;

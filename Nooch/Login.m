@@ -104,8 +104,7 @@
 
 -(void) BackClicked:(id) sender
 {
-//    Register * reg = [Register new];
-    NSLog(@"viewControllers are: %@",[self.navigationController viewControllers]);
+    //NSLog(@"viewControllers are: %@",[self.navigationController viewControllers]);
     [self.navigationController popViewControllerAnimated:YES];
 }
 
@@ -119,7 +118,7 @@
 -(void)viewDidAppear:(BOOL)animated
 {
     [super viewDidAppear:animated];
-    //back button
+
     UIButton *btnback = [UIButton buttonWithType:UIButtonTypeCustom];
     [btnback setBackgroundColor:[UIColor whiteColor]];
     [btnback setFrame:CGRectMake(7, -40, 44, 44)];
@@ -173,7 +172,6 @@
     if ([[UIScreen mainScreen] bounds].size.height > 500)
     {
         NSString * sloganFromArtisan = [ARPowerHookManager getValueForHookById:@"slogan"];
-        //NSLog(@"SloganFromArtisan is: %@",sloganFromArtisan);
         UILabel * slogan = [[UILabel alloc] initWithFrame:CGRectMake(70, 72, 180, 16)];
         [slogan setBackgroundColor:[UIColor clearColor]];
         [slogan setText:sloganFromArtisan];
@@ -322,6 +320,8 @@
     [self.view addSubview:forgot];
     [self.view addSubview:encryption];
     [self.view addSubview:encrypt_icon];
+
+    user = [NSUserDefaults standardUserDefaults];
 }
 
 
@@ -470,7 +470,7 @@
 
             [self checkIfLocationAllowed];
 
-            [[NSUserDefaults standardUserDefaults] setObject:[result objectForKey:@"id"] forKey:@"facebook_id"];
+            [user setObject:[result objectForKey:@"id"] forKey:@"facebook_id"];
             NSLog(@"Login w FB successful --> fb id is %@",[result objectForKey:@"id"]);
 
             isloginWithFB = YES;
@@ -815,10 +815,9 @@
         [log setTagName:@"login"];
         [[UIApplication sharedApplication]setStatusBarHidden:NO];
 
-        [[NSUserDefaults standardUserDefaults] removeObjectForKey:@"firstName"];
         NSString * udid = [[UIDevice currentDevice] uniqueDeviceIdentifier];
         [[assist shared]setlocationAllowed:YES];
-        [[NSUserDefaults standardUserDefaults] setObject:self.email.text forKey:@"email"];
+        [user setObject:self.email.text forKey:@"UserName"];
 
         if ([self.stay_logged_in isOn]) {
             [log login:[self.email.text lowercaseString] password:self.encrypted_pass remember:YES lat:lat lon:lon uid:udid];
@@ -1002,14 +1001,13 @@
         if (  loginResult[@"Result"] != NULL &&
             ![loginResult[@"Result"] isKindOfClass:[NSNull class]])
         {
-            [[NSUserDefaults standardUserDefaults] setObject:[loginResult objectForKey:@"Result"] forKey:@"MemberId"];
+            [user setObject:[loginResult objectForKey:@"Result"] forKey:@"MemberId"];
 
             if (isloginWithFB) {
-                [[NSUserDefaults standardUserDefaults] setObject:email_fb forKey:@"UserName"];
+                [user setObject:email_fb forKey:@"UserName"];
             }
             else
-                [[NSUserDefaults standardUserDefaults] setObject:[self.email.text lowercaseString] forKey:@"UserName"];
-            user = [NSUserDefaults standardUserDefaults];
+                [user setObject:[self.email.text lowercaseString] forKey:@"UserName"];
             
             if (![self.stay_logged_in isOn])
             {
@@ -1018,8 +1016,8 @@
             else
             {
                 NSMutableDictionary * automatic = [[NSMutableDictionary alloc] init];
-                [automatic setObject:[[NSUserDefaults standardUserDefaults] valueForKey:@"MemberId"] forKey:@"MemberId"];
-                [automatic setObject:[[NSUserDefaults standardUserDefaults] valueForKey:@"UserName"] forKey:@"UserName"];
+                [automatic setObject:[user valueForKey:@"MemberId"] forKey:@"MemberId"];
+                [automatic setObject:[user valueForKey:@"UserName"] forKey:@"UserName"];
                 [automatic writeToFile:[self autoLogin] atomically:YES];
             }
             me = [core new];
@@ -1184,7 +1182,7 @@
     [mailComposer setToRecipients:[NSArray arrayWithObjects:@"support@nooch.com", nil]];
     [mailComposer setCcRecipients:[NSArray arrayWithObject:@""]];
     [mailComposer setBccRecipients:[NSArray arrayWithObject:@""]];
-    [mailComposer setModalTransitionStyle:UIModalTransitionStyleCrossDissolve];
+    [mailComposer setModalTransitionStyle:UIModalTransitionStylePartialCurl];
     [self presentViewController:mailComposer animated:YES completion:nil];
 }
 

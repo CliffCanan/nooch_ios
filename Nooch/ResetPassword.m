@@ -340,7 +340,7 @@
                                           cancelButtonTitle:NSLocalizedString(@"ResetPw_ForgotAlrtBtn1", @"Reset PW Forgot Password Alert Cancel Btn")
                                           otherButtonTitles:@"OK", nil];
     alert.alertViewStyle = UIAlertViewStylePlainTextInput;
-    [[alert textFieldAtIndex:0] setText:[[NSUserDefaults standardUserDefaults] objectForKey:@"UserName"]];
+    [[alert textFieldAtIndex:0] setText:[user objectForKey:@"UserName"]];
     [[alert textFieldAtIndex:0] setKeyboardType:UIKeyboardTypeEmailAddress];
     [[alert textFieldAtIndex:0] setStyleClass:@"customTextField_2"];
     [alert textFieldAtIndex:0].inputAccessoryView = [[UIView alloc] init];

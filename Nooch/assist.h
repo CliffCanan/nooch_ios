@@ -14,85 +14,90 @@
 #import <Accounts/Accounts.h>
 NSTimer*timer;
 bool histSafe;
-//bool limit;
 bool needsUpdating;
 NSString *histSearching;
 @interface assist : NSObject<serveD>{
+    NSArray*ArrAllContacts;
     NSMutableDictionary *usr;
     NSMutableDictionary *assosciateCache;
+    NSMutableArray *arrRequestMultiple;
     NSMutableArray *histCache;
-    NSMutableData *pic;
-    NSMutableData *archivedData;
-    NSMutableData *responseData;
     NSMutableArray *sortedHist;
-    //venturepact
+    NSMutableData *archivedData;
+    NSMutableData *pic;
+    NSMutableData *responseData;
+    NSString*passValue;
+    UIImage*imageOBJFortransfer;
     BOOL isPrimaryBankVerified;
     BOOL islogout;
-    UIImage*imageOBJFortransfer;
     BOOL islocationAllowed;
     BOOL isNeed;
-    BOOL isUserSuspended;
-    NSMutableArray*arrRequestMultiple;
+    BOOL isUserSuspended, isProfileCompleteAndValidated;
     BOOL isMutipleRequest;
     BOOL isPOP;
     BOOL isLoginFromOther;
-    NSString*passValue;
-    NSArray*ArrAllContacts;
 }
-//@property(nonatomic,retain)NSTimer*timer;
 
-@property (nonatomic, retain) ACAccountStore *accountStore;
-@property (nonatomic, retain) ACAccount *facebookAccount;
-@property (nonatomic, retain) ACAccount *twitterAccount;
-@property (nonatomic) bool fbAllowed;
-@property (nonatomic) bool twitterAllowed;
-//venturepact
+@property(nonatomic, retain) ACAccountStore *accountStore;
+@property(nonatomic, retain) ACAccount *facebookAccount;
+@property(nonatomic, retain) ACAccount *twitterAccount;
+@property(nonatomic) bool fbAllowed;
+@property(nonatomic) bool twitterAllowed;
 @property(nonatomic,strong)NSArray*arrRecordsCheck;
--(NSMutableDictionary*)usr;
--(NSMutableArray*)hist;
--(NSMutableData*)pic;
+
++(assist*)shared;
+
 -(NSMutableArray*)allHist;
--(NSMutableDictionary*)assos;
--(NSMutableArray*)assosAll;
--(void)addAssos:(NSMutableArray*)additions;
--(void)SaveAssos:(NSMutableArray*)additions;
 -(NSMutableArray*)assosSearch:(NSString*)searchText;
--(BOOL)isloginFromOther;
--(void)setIsloginFromOther:(BOOL)islog;
--(void)histMore:(NSString*)type sPos:(NSInteger)sPos len:(NSInteger)len;
+-(NSMutableArray*)assosAll;
+-(NSMutableArray*)getArray;
+-(NSMutableArray*)hist;
 -(NSMutableArray*)histFilter:(NSString*)filterPick;
--(void)birth;
--(void)stamp;
--(void)death:(NSString*)path;
+
+-(NSMutableData*)pic;
+-(NSMutableDictionary*)usr;
+-(NSMutableDictionary*)assos;
+
+-(NSString*)getPass;
+-(NSString *)path:(NSString *)type;
+
+-(UIColor*)hexColor:(NSString*)hex;
+-(UIFont *)nFont:(NSString*)weight size:(int)size;
+-(UIImage*)getTranferImage;
+
 -(BOOL)isAlive:(NSString*)path;
 -(BOOL)isClean:(id)object;
--(UIColor*)hexColor:(NSString*)hex;
--(NSString *)path:(NSString *)type;
+-(BOOL)islocationAllowed;
+-(BOOL)isloggedout;
+-(BOOL)isloginFromOther;
+-(BOOL)isPOP;
+-(BOOL)isProfileCompleteAndValidated;
+-(BOOL)isRequestMultiple;
+-(BOOL)checkIfLocAllowed;
+-(BOOL)checkIfTouchIdAvailable;
+-(BOOL)getSuspended;
+-(BOOL)needsReload;
+
 -(id)cleanForSave:(id)array;
--(UIFont *)nFont:(NSString*)weight size:(int)size;
+
+-(void)addAssos:(NSMutableArray*)additions;
+-(void)birth;
+-(void)death:(NSString*)path;
+-(void)histMore:(NSString*)type sPos:(NSInteger)sPos len:(NSInteger)len;
+-(void)stamp;
 -(void)fetchPic;
 -(void)getSettings;
 -(void)getAcctInfo;
--(void)setTranferImage:(UIImage*)image;
-+(assist*)shared;
--(UIImage*)getTranferImage;
--(BOOL)isloggedout;
--(void)setisloggedout:(BOOL)islog;
--(BOOL)isPOP;
--(void)setPOP:(BOOL)istrue;
--(BOOL)islocationAllowed;
--(void)setlocationAllowed:(BOOL)istrue;
--(BOOL)checkIfLocAllowed;
--(BOOL)checkIfTouchIdAvailable;
--(BOOL)needsReload;
--(void)setneedsReload:(BOOL)istrue;
--(BOOL)getSuspended;
--(void)setSusPended:(BOOL)istrue;
--(NSMutableArray*)getArray;
+-(void)SaveAssos:(NSMutableArray*)additions;
 -(void)setArray:(NSMutableArray*)arr;
--(BOOL)isRequestMultiple;
--(void)setRequestMultiple:(BOOL)istrue;
--(NSString*)getPass;
+-(void)setisloggedout:(BOOL)islog;
+-(void)setIsloginFromOther:(BOOL)islog;
+-(void)setlocationAllowed:(BOOL)istrue;
+-(void)setneedsReload:(BOOL)istrue;
 -(void)setPassValue:(NSString*)value;
+-(void)setPOP:(BOOL)istrue;
+-(void)setRequestMultiple:(BOOL)istrue;
+-(void)setSusPended:(BOOL)istrue;
+-(void)setTranferImage:(UIImage*)image;
 
 @end

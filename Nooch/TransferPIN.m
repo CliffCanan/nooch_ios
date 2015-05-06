@@ -714,32 +714,46 @@
     
     if (len == 4)
     {
-        NSString * textLoading=@"";
-        if ([self.type isEqualToString:@"send"] || [self.type isEqualToString:@"requestRespond"])
+        if ([[assist shared] getSuspended])
         {
-            textLoading = NSLocalizedString(@"EnterPIN_HUDlblSend", @"Enter PIN Screen HUD label text for sending a payment");
+            UIAlertView * alert = [[UIAlertView alloc]initWithTitle:@"Account Suspended"
+                                                            message:@"Your account has been suspended pending a review. Please email support@nooch.com if you believe this was a mistake and we will be glad to help."
+                                                           delegate:self
+                                                  cancelButtonTitle:@"OK"
+                                                  otherButtonTitles:@"Contact Support", nil];
+            [alert setTag:53];
+            [alert show];
         }
-        else if ([self.type isEqualToString:@"request"])
+
+        else
         {
-            textLoading = NSLocalizedString(@"EnterPIN_HUDlblRequest", @"Enter PIN Screen HUD label text for sending a request");
+            NSString * textLoading=@"";
+            if ([self.type isEqualToString:@"send"] || [self.type isEqualToString:@"requestRespond"])
+            {
+                textLoading = NSLocalizedString(@"EnterPIN_HUDlblSend", @"Enter PIN Screen HUD label text for sending a payment");
+            }
+            else if ([self.type isEqualToString:@"request"])
+            {
+                textLoading = NSLocalizedString(@"EnterPIN_HUDlblRequest", @"Enter PIN Screen HUD label text for sending a request");
+            }
+
+            RTSpinKitView *spinner1 = [[RTSpinKitView alloc] initWithStyle:RTSpinKitViewStyleThreeBounce];
+            spinner1.color = [UIColor whiteColor];
+            self.hud = [[MBProgressHUD alloc] initWithView:self.navigationController.view];
+            [self.navigationController.view addSubview:self.hud];
+
+            self.hud.mode = MBProgressHUDModeCustomView;
+            self.hud.customView = spinner1;
+            self.hud.delegate = self;
+            self.hud.labelText = textLoading;
+            self.hud.detailsLabelText = nil;
+            [self.hud show:YES];
+
+            serve * pin = [serve new];
+            pin.Delegate = self;
+            pin.tagName = @"ValidatePinNumber";
+            [pin getEncrypt:[NSString stringWithFormat:@"%@%@",textField.text,string]];
         }
-
-        RTSpinKitView *spinner1 = [[RTSpinKitView alloc] initWithStyle:RTSpinKitViewStyleThreeBounce];
-        spinner1.color = [UIColor whiteColor];
-        self.hud = [[MBProgressHUD alloc] initWithView:self.navigationController.view];
-        [self.navigationController.view addSubview:self.hud];
-
-        self.hud.mode = MBProgressHUDModeCustomView;
-        self.hud.customView = spinner1;
-        self.hud.delegate = self;
-        self.hud.labelText = textLoading;
-        self.hud.detailsLabelText = nil;
-        [self.hud show:YES];
-
-        serve * pin = [serve new];
-        pin.Delegate = self;
-        pin.tagName = @"ValidatePinNumber";
-        [pin getEncrypt:[NSString stringWithFormat:@"%@%@",textField.text,string]];
     }
     return YES;
 }
@@ -773,7 +787,7 @@
             serve *checkValid = [serve new];
             checkValid.tagName = @"checkValid";
             checkValid.Delegate = self;
-            [checkValid pinCheck:[[NSUserDefaults standardUserDefaults] stringForKey:@"MemberId"] pin:encryptedPINNonUser];
+            [checkValid pinCheck:[user stringForKey:@"MemberId"] pin:encryptedPINNonUser];
         }
         else if ([tagName isEqualToString:@"checkValid"])
         {
@@ -804,8 +818,8 @@
                 NSString *TransactionDate = [dateFormat stringFromDate:date];
 
                 [transactionInputTransfer setValue:TransactionDate forKey:@"TransactionDate"];
-                [transactionInputTransfer setValue:[[NSUserDefaults standardUserDefaults] objectForKey:@"DeviceToken"] forKey:@"DeviceId"];
-                [transactionInputTransfer setValue:[[NSUserDefaults standardUserDefaults] stringForKey:@"MemberId"] forKey:@"MemberId"];
+                [transactionInputTransfer setValue:[user objectForKey:@"DeviceToken"] forKey:@"DeviceId"];
+                [transactionInputTransfer setValue:[user stringForKey:@"MemberId"] forKey:@"MemberId"];
                 [transactionInputTransfer setValue:self.memo forKey:@"Memo"];
                 [transactionInputTransfer setValue:encryptedPINNonUser forKey:@"PinNumber"];
                 [transactionInputTransfer setValue:[NSString stringWithFormat:@"%.02f",self.amnt] forKey:@"Amount"];
@@ -826,7 +840,7 @@
                     {
                         transactionTransfer = [[NSMutableDictionary alloc] initWithObjectsAndKeys:
                                                 transactionInputTransfer, @"transactionInput",
-                                                [[NSUserDefaults standardUserDefaults] valueForKey:@"OAuthToken"], @"accessToken",
+                                                [user valueForKey:@"OAuthToken"], @"accessToken",
                                                 @"personal",@"inviteType",
                                                 [self.receiver objectForKey:@"email"],@"receiverEmailId", nil];
                     }
@@ -834,7 +848,7 @@
                     {
                         transactionTransfer = [[NSMutableDictionary alloc] initWithObjectsAndKeys:
                                                transactionInputTransfer, @"transactionInput",
-                                               [[NSUserDefaults standardUserDefaults] valueForKey:@"OAuthToken"], @"accessToken",
+                                               [user valueForKey:@"OAuthToken"], @"accessToken",
                                                @"personal",@"inviteType",
                                                self.phone,@"receiverPhoneNumer", nil];
                     }
@@ -869,13 +883,13 @@
 
                         transactionTransfer = [[NSMutableDictionary alloc] initWithObjectsAndKeys:
                                                     transactionInputTransfer, @"requestInput",
-                                                    [[NSUserDefaults standardUserDefaults] valueForKey:@"OAuthToken"],@"accessToken", nil];
+                                                    [user valueForKey:@"OAuthToken"],@"accessToken", nil];
                     }
                     else if ([self.receiver objectForKey:@"phone"] )
                     {
                         transactionTransfer = [[NSMutableDictionary alloc] initWithObjectsAndKeys:
                                                transactionInputTransfer, @"requestInput",
-                                               [[NSUserDefaults standardUserDefaults] valueForKey:@"OAuthToken"], @"accessToken",
+                                               [user valueForKey:@"OAuthToken"], @"accessToken",
                                                self.phone,@"PayorPhoneNumber", nil];
                     }
                 }
@@ -911,7 +925,6 @@
                         urlStrTranfer = [urlStrTranfer stringByAppendingFormat:@"/%@", @"TransferMoneyToNonNoochUserThroughPhoneUsingKnox"];
                     }
                 }
-
 
                 urlTransfer = [NSURL URLWithString:urlStrTranfer];
                 requestTransfer = [[NSMutableURLRequest alloc] initWithURL:urlTransfer];
@@ -1041,7 +1054,7 @@
             }
 
             [transactionInputTransfer setValue:[dictResult valueForKey:@"Status"] forKey:@"PinNumber"];
-            [transactionInputTransfer setValue:[[NSUserDefaults standardUserDefaults] stringForKey:@"MemberId"] forKey:@"MemberId"];
+            [transactionInputTransfer setValue:[user stringForKey:@"MemberId"] forKey:@"MemberId"];
             if ([self.type isEqualToString:@"request"])
             {
                 [transactionInputTransfer setValue:@"Request" forKey:@"TransactionType"];
@@ -1087,10 +1100,10 @@
             [transactionInputTransfer setValue:@"" forKey:@"Zipcode"];
             [transactionInputTransfer setValue:self.memo forKey:@"Memo"];
             if ([self.type isEqualToString:@"request"]) {
-                transactionTransfer = [[NSMutableDictionary alloc] initWithObjectsAndKeys:transactionInputTransfer, @"requestInput",[[NSUserDefaults standardUserDefaults] valueForKey:@"OAuthToken"],@"accessToken", nil];
+                transactionTransfer = [[NSMutableDictionary alloc] initWithObjectsAndKeys:transactionInputTransfer, @"requestInput",[user valueForKey:@"OAuthToken"],@"accessToken", nil];
             }
             else {
-                transactionTransfer = [[NSMutableDictionary alloc] initWithObjectsAndKeys:transactionInputTransfer, @"transactionInput",[[NSUserDefaults standardUserDefaults] valueForKey:@"OAuthToken"],@"accessToken", nil];
+                transactionTransfer = [[NSMutableDictionary alloc] initWithObjectsAndKeys:transactionInputTransfer, @"transactionInput",[user valueForKey:@"OAuthToken"],@"accessToken", nil];
             }
             NSLog(@"SEND/REQUEST --> transactionInputTransfer B) is: %@", transactionInputTransfer);
 
@@ -1136,7 +1149,7 @@
         {
             transactionInputTransfer = [[NSMutableDictionary alloc]init];
             [transactionInputTransfer setValue:[dictResult valueForKey:@"Status"] forKey:@"PinNumber"];
-            [transactionInputTransfer setValue:[[NSUserDefaults standardUserDefaults] stringForKey:@"MemberId"] forKey:@"MemberId"];
+            [transactionInputTransfer setValue:[user stringForKey:@"MemberId"] forKey:@"MemberId"];
             [transactionInputTransfer setValue:[self.receiver objectForKey:@"TransactionId"] forKey:@"TransactionId"];
 
             NSDate *date = [NSDate date];
@@ -1153,7 +1166,7 @@
                 [transactionInputTransfer setValue:@"Cancelled" forKey:@"Status"];
             }
 
-            NSString *uid = [[NSUserDefaults standardUserDefaults] objectForKey:@"DeviceToken"];
+            NSString *uid = [user objectForKey:@"DeviceToken"];
 
             [transactionInputTransfer setValue:TransactionDate forKey:@"TransactionDate"];
             [transactionInputTransfer setValue:@"RequestRespond" forKey:@"TransactionType"];
@@ -1169,7 +1182,7 @@
             [transactionInputTransfer setValue:@"" forKey:@"Zipcode"];
             [transactionInputTransfer setValue:self.memo forKey:@"Memo"];
 
-            transactionTransfer = [[NSMutableDictionary alloc] initWithObjectsAndKeys:transactionInputTransfer, @"handleRequestInput",[[NSUserDefaults standardUserDefaults] valueForKey:@"OAuthToken"],@"accessToken", nil];
+            transactionTransfer = [[NSMutableDictionary alloc] initWithObjectsAndKeys:transactionInputTransfer, @"handleRequestInput",[user valueForKey:@"OAuthToken"],@"accessToken", nil];
         }
 
         NSLog(@"TransactionTransfer Object is: %@", transactionTransfer);
@@ -1207,7 +1220,7 @@
             [transactionInputTransfer setValue:@"Donation" forKey:@"TransactionType"];
 
             [transactionInputTransfer setValue:[dictResult valueForKey:@"Status"] forKey:@"PinNumber"];
-            [transactionInputTransfer setValue:[[NSUserDefaults standardUserDefaults] stringForKey:@"MemberId"] forKey:@"MemberId"];
+            [transactionInputTransfer setValue:[user stringForKey:@"MemberId"] forKey:@"MemberId"];
             [transactionInputTransfer setValue:[self.receiver valueForKey:@"MemberId"] forKey:@"RecepientId"];
 
             NSString *receiveName = [[self.receiver valueForKey:@"FirstName"] stringByAppendingString:[NSString stringWithFormat:@" %@",[self.receiver valueForKey:@"LastName"]]];
@@ -1231,7 +1244,7 @@
             [transactionInputTransfer setValue:@"" forKey:@"Zipcode"];
             [transactionInputTransfer setValue:self.memo forKey:@"Memo"];
 
-            transactionTransfer = [[NSMutableDictionary alloc] initWithObjectsAndKeys:transactionInputTransfer, @"transactionInput",[[NSUserDefaults standardUserDefaults] valueForKey:@"OAuthToken"],@"accessToken", nil];
+            transactionTransfer = [[NSMutableDictionary alloc] initWithObjectsAndKeys:transactionInputTransfer, @"transactionInput",[user valueForKey:@"OAuthToken"],@"accessToken", nil];
         }
     
         postTransfer = [NSJSONSerialization dataWithJSONObject:transactionTransfer
@@ -1334,18 +1347,19 @@
             {
                 [arrNav removeLastObject];
             }
-
+            
             HistoryFlat * mainHistoryScreen = [HistoryFlat new];
             [arrNav addObject: mainHistoryScreen];
             [nav_ctrl setViewControllers:arrNav animated:NO];
-
+            
             //NSLog(@"TransferPIN -> nav_ctrl.viewControllers is: %@", nav_ctrl.viewControllers);
-
+            
             TransactionDetails *td = [[TransactionDetails alloc] initWithData:input];
             [nav_ctrl pushViewController:td animated:YES];
         }
     }
-    else if ((alertView.tag == 50 || alertView.tag == 51 || alertView.tag == 52) && buttonIndex == 1)
+    else if ((alertView.tag == 50 || alertView.tag == 51 ||
+              alertView.tag == 52 || alertView.tag == 53) && buttonIndex == 1)
     {
         if (![MFMailComposeViewController canSendMail])
         {
@@ -1390,7 +1404,7 @@
         [mailComposer setToRecipients:[NSArray arrayWithObjects:@"support@nooch.com", nil]];
         [mailComposer setCcRecipients:[NSArray arrayWithObject:@""]];
         [mailComposer setBccRecipients:[NSArray arrayWithObject:@""]];
-        [mailComposer setModalTransitionStyle:UIModalTransitionStyleCrossDissolve];
+        [mailComposer setModalTransitionStyle:UIModalTransitionStyleCoverVertical];
         [self presentViewController:mailComposer animated:YES completion:nil];
     }
     else if (alertView.tag == 50 && buttonIndex == 1)
@@ -1418,7 +1432,7 @@
 
 -(void)errorAlerts:(NSString *)referenceNumber
 {
-    NSDictionary * dictionary = @{@"MemberId": [[NSUserDefaults standardUserDefaults] valueForKey:@"MemberId"],
+    NSDictionary * dictionary = @{@"MemberId": [user valueForKey:@"MemberId"],
                                   @"errorAlertNumber": referenceNumber};
     [ARTrackingManager trackEvent:@"TrnsfrPIN_ErrorAlert_Displayed" parameters:dictionary];
 
@@ -1841,7 +1855,7 @@ NSString * calculateArrivalDate()
     short knoxXtraDays = [[ARPowerHookManager getValueForHookById:@"knox_xtraTime"] intValue];
 
     if ([dateString isEqualToString:@"Mon"] ||
-        [dateString isEqualToString:@"Tues"] ||
+        [dateString isEqualToString:@"Tue"] ||
         [dateString isEqualToString:@"Wed"])
     {
         if (timeOfDay < 15) // its BEFORE 3:00pm EST
@@ -1851,7 +1865,7 @@ NSString * calculateArrivalDate()
         else // its AFTER 3:00pm EST
         {
             if ([dateString isEqualToString:@"Mon"] ||
-                [dateString isEqualToString:@"Tues"])
+                [dateString isEqualToString:@"Tue"])
             {
                 [offsetComponents setDay:(2 + knoxXtraDays)];
             }
@@ -1872,7 +1886,7 @@ NSString * calculateArrivalDate()
             }
         }
     }
-    else if ([dateString isEqualToString:@"Thurs"])
+    else if ([dateString isEqualToString:@"Thu"])
     {
         if (timeOfDay < 15) // its BEFORE 3:00pm EST
         {

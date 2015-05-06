@@ -64,7 +64,7 @@
     [super viewDidLoad];
     // isBankAttached = NO;
 
-    if ( ![[[NSUserDefaults standardUserDefaults] objectForKey:@"IsBankAvailable"]isEqualToString:@"1"])
+    if ( ![[user objectForKey:@"IsBankAvailable"]isEqualToString:@"1"])
     {
         isBankAttached = NO;
 
@@ -135,7 +135,8 @@
 
     UILabel * glyph = [UILabel new];
     [glyph setFont:[UIFont fontWithName:@"FontAwesome" size:20]];
-    [glyph setFrame:CGRectMake(25, 9, 30, 30)];
+    [glyph setFrame:CGRectMake(26, 9, 30, 30)];
+    [glyph setTextAlignment:NSTextAlignmentCenter];
     glyph.attributedText = [[NSAttributedString alloc] initWithString:[NSString fontAwesomeIconStringForIconIdentifier:@"fa-plus-circle"]
                                                                  attributes:textAttributes1];
     [glyph setTextColor:[UIColor whiteColor]];
@@ -145,7 +146,7 @@
     [link_bank setStyleId:@"link_new_account"];
     [link_bank setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
     [self.view addSubview:link_bank];
-    
+
     menu = [[UITableView alloc] initWithFrame:CGRectMake(-1, 194, 322, 200) style:UITableViewStylePlain];
     [menu setStyleId:@"settings"];
     menu.layer.borderColor = Rgb2UIColor(188, 190, 192, 0.85).CGColor;
@@ -154,12 +155,12 @@
     [menu setDataSource:self];
     [menu setScrollEnabled:NO];
     [self.view addSubview:menu];
-    
+
     self.logout = [UIButton buttonWithType:UIButtonTypeRoundedRect];
     [self.logout setTitle:NSLocalizedString(@"Settings_SignOutBtn", @"Settings Screen 'Sign Out' button text") forState:UIControlStateNormal];
     [self.logout setTitleShadowColor:Rgb2UIColor(30, 31, 33, 0.24) forState:UIControlStateNormal];
     self.logout.titleLabel.shadowOffset = CGSizeMake(0.0, -1.0);
-    
+
     UILabel * glyphLogout = [UILabel new];
     [glyphLogout setFont:[UIFont fontWithName:@"FontAwesome" size:18]];
     [glyphLogout setFrame:CGRectMake(60, 7, 30, 30)];
@@ -225,16 +226,56 @@
 
 -(void)attach_bank
 {
-    if (isBankAttached)
+    // 1. IS USER SUSPENDED?
+    if ([[assist shared] getSuspended])
+    {
+        UIAlertView * alert = [[UIAlertView alloc]initWithTitle:@"Account Suspended  \xF0\x9F\x98\xA7"
+                                                        message:@"Your account has been suspended pending a review. Please email support@nooch.com if you believe this was a mistake and we will be glad to help."
+                                                       delegate:self
+                                              cancelButtonTitle:@"OK"
+                                              otherButtonTitles:@"Contact Support", nil];
+        [alert setTag:10];
+        [alert show];
+        return;
+    }
+
+    // 2. IS USER's PHONE VERIFIED?
+    else if (![[user valueForKey:@"IsVerifiedPhone"]isEqualToString:@"YES"])
+    {
+        UIAlertView * alert = [[UIAlertView alloc]initWithTitle:@"Blame The Lawyers"
+                                                        message:@"To keep Nooch safe, we ask all users to verify a phone number before sending money.\n\nIf you've already added your phone number, just respond 'Go' to the text message we sent."
+                                                       delegate:self
+                                              cancelButtonTitle:@"OK"
+                                              otherButtonTitles:nil, nil];
+        [alert show];
+        return;
+    }
+
+    // 3. HAS USER COMPLETED & VERIFIED PROFILE INFO? (EMAIL, PHONE)
+    if (![[assist shared] isProfileCompleteAndValidated])
+    {
+        UIAlertView * alert = [[UIAlertView alloc]initWithTitle:@"Help Us Keep Nooch Safe"
+                                                        message:@"Please take 1 minute to verify your identity by completing your Nooch profile (just 4 fields)."
+                                                       delegate:self
+                                              cancelButtonTitle:@"Later"
+                                              otherButtonTitles:@"Go Now", nil];
+        [alert setTag:41];
+        [alert show];
+        return;
+    }
+
+    // 4. DOES USER ALREADY HAVE A BANK ATTACHED?
+    else if (isBankAttached)
     {
         UIAlertView *av = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"Settings_AttchBnkAlrtTitle", @"Settings Screen attach a new bank Alert Title")
                                                      message:NSLocalizedString(@"Settings_AttchBnkAlrtBody", @"Settings Screen attach a new bank Alert Body Text")
                                                     delegate:self
                                            cancelButtonTitle:NSLocalizedString(@"Settings_AttchBnkAlrtYesBtn", @"Settings Screen attach a new bank Alert Btn - 'Yes - Replace'")
                                            otherButtonTitles:NSLocalizedString(@"CancelTxt", @"Any screen 'Cancel' Button Text"), nil];
-        [av setTag:32];
+        [av setTag:11];
         [av show];
     }
+
     else
     {
         [ARTrackingManager trackEvent:@"Settings_TappedAddBankGoToKnoxWbvw"];
@@ -263,6 +304,7 @@
     [av show];
 }
 
+#pragma mark - Table Handling
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section{
     return 4;
 }
@@ -362,6 +404,9 @@
 {
     isProfileOpenFromSideBar = NO;
     sentFromHomeScrn = NO;
+    isFromTransDetails = NO;
+    isFromSettingsOptions = YES;
+
     ProfileInfo * info = [ProfileInfo new];
     [self performSelector:@selector(navigate_to:) withObject:info afterDelay:0.01];
 }
@@ -426,11 +471,13 @@
             {
                 [blankView removeFromSuperview];
                 [[NSFileManager defaultManager] removeItemAtPath:[self autoLogin] error:nil];
-                [[NSUserDefaults standardUserDefaults] removeObjectForKey:@"email"];
-                [[NSUserDefaults standardUserDefaults] removeObjectForKey:@"UserName"];
-                [[NSUserDefaults standardUserDefaults] removeObjectForKey:@"MemberId"];
-                [[NSUserDefaults standardUserDefaults] removeObjectForKey:@"hasPendingItems"];
-                [[NSUserDefaults standardUserDefaults] removeObjectForKey:@"Pending_count"];
+                [user removeObjectForKey:@"email"];
+                [user removeObjectForKey:@"UserName"];
+                [user removeObjectForKey:@"MemberId"];
+                [user removeObjectForKey:@"hasPendingItems"];
+                [user removeObjectForKey:@"Pending_count"];
+
+                [[assist shared] setisloggedout:YES];
 
                 [nav_ctrl performSelector:@selector(disable)];
                 Register *reg = [Register new];
@@ -440,7 +487,7 @@
             }
         }
     }
-    
+
     else if ([tagName isEqualToString:@"RemoveKnoxBankAccount"])
     {
         NSError* error;
@@ -458,13 +505,14 @@
                                                otherButtonTitles:nil, nil];
             [av show];
 
-            [[NSUserDefaults standardUserDefaults]setObject:@"0" forKey:@"IsBankAvailable"];
-            
+            [user setObject:@"0" forKey:@"IsBankAvailable"];
+            [user synchronize];
+
             [introText setHidden:NO];
             [glyph_noBank setHidden:NO];
             
             isBankAttached = NO;
-            
+
             [linked_background removeFromSuperview];
             [bank_image removeFromSuperview];
             [unlink_account removeFromSuperview];
@@ -504,7 +552,9 @@
             ![[dictResponse valueForKey:@"BankImageURL"] isKindOfClass:[NSNull class]] &&
             ![[dictResponse valueForKey:@"BankName"] isKindOfClass:[NSNull class]])
         {
-            [[NSUserDefaults standardUserDefaults]setObject:@"1" forKey:@"IsBankAvailable"];
+            [user setObject:@"1" forKey:@"IsBankAvailable"];
+            [user synchronize];
+
             isBankAttached = YES;
 
             [introText setHidden:YES];
@@ -558,7 +608,7 @@
         }
         else
         {
-            [[NSUserDefaults standardUserDefaults]setObject:@"0" forKey:@"IsBankAvailable"];
+            [user setObject:@"0" forKey:@"IsBankAvailable"];
 
             [introText setHidden:NO];
             [glyph_noBank setHidden:NO];
@@ -575,6 +625,35 @@
     }
 }
 
+- (void) mailComposeController:(MFMailComposeViewController *)controller didFinishWithResult:(MFMailComposeResult)result error:(NSError *)error
+{
+    UIAlertView *alert = [[UIAlertView alloc] init];
+    [alert addButtonWithTitle:@"OK"];
+    [alert setDelegate:nil];
+    switch (result)
+    {
+        case MFMailComposeResultCancelled:
+            NSLog(@"Mail cancelled");
+            break;
+        case MFMailComposeResultSaved:
+            NSLog(@"Mail saved");
+            break;
+        case MFMailComposeResultSent:
+            NSLog(@"Mail sent");
+            break;
+        case MFMailComposeResultFailed:
+            [alert setTitle:[error localizedDescription]];
+            [alert show];
+            NSLog(@"Mail sent failure: %@", [error localizedDescription]);
+            break;
+        default:
+            break;
+    }
+    
+    // Close the Mail Interface
+    [self dismissViewControllerAnimated:YES completion:NULL];
+}
+
 #pragma mark - file paths
 - (NSString *)autoLogin
 {
@@ -583,57 +662,110 @@
     return [documentsDirectory stringByAppendingPathComponent:[NSString stringWithFormat:@"autoLogin.plist"]];
 }
 
+#pragma mark - AlertView Handling
 - (void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex
 {
-    if (alertView.tag == 2)
+    if (alertView.tag == 11 && buttonIndex == 0)
     {
-        if (buttonIndex == 0)
-        {
-            //proceed to unlink
-            [self RemoveKnoxBankAccount];
-        }
-        return;
-    }
-    
-    if (alertView.tag == 32)
-    {
-        if (buttonIndex == 0)
-        {
-            [ARTrackingManager trackEvent:@"Settings_TappedAddBankGoToKnoxWbvw_ReplaceBnk"];
-            knoxWeb *knox = [knoxWeb new];
-            [self.navigationController pushViewController:knox animated:YES];
-        }
+        [ARTrackingManager trackEvent:@"Settings_TappedAddBankGoToKnoxWbvw_ReplaceBnk"];
+        knoxWeb *knox = [knoxWeb new];
+        [self.navigationController pushViewController:knox animated:YES];
         return;
     }
 
-    if (alertView.tag == 15)
+    else if( alertView.tag == 41 && buttonIndex == 1)
     {
-        if (buttonIndex == 1)
+        [self profile];
+    }
+
+    else if (alertView.tag == 2 && buttonIndex == 0)
+    {
+        [self RemoveKnoxBankAccount];
+    }
+
+    else if (alertView.tag == 10 && buttonIndex == 1)
+    {
+        [self contactSupport_SetOpt];
+    }
+
+    else if (alertView.tag == 15 &&buttonIndex == 1)
+    {
+        [ARTrackingManager trackEvent:@"UserLoggedOutManually"];
+
+        blankView = [[UIView alloc]initWithFrame:CGRectMake(0, 0,320, self.view.frame.size.height)];
+        [blankView setBackgroundColor:[UIColor colorWithRed:0 green:0 blue:0 alpha:0.6]];
+
+        UIActivityIndicatorView * actv = [[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleWhiteLarge];
+        [actv setFrame:CGRectMake(140,(self.view.frame.size.height/2) - 10, 40, 40)];
+        [actv startAnimating];
+        [blankView addSubview:actv];
+
+        [self.view addSubview:blankView];
+        [self.view bringSubviewToFront:blankView];
+
+        [[assist shared] setisloggedout:YES];
+
+        [timer invalidate];
+        timer = nil;
+
+        serve *  serveOBJ = [serve new];
+        serveOBJ.Delegate = self;
+        serveOBJ.tagName = @"logout";
+        [serveOBJ LogOutRequest:[user valueForKey:@"MemberId"]];
+    }
+
+}
+
+-(void)contactSupport_SetOpt
+{
+    if (![MFMailComposeViewController canSendMail])
+    {
+        if ([UIAlertController class]) // for iOS 8
         {
-            [ARTrackingManager trackEvent:@"UserLoggedOutManually"];
-
-            blankView = [[UIView alloc]initWithFrame:CGRectMake(0, 0,320, self.view.frame.size.height)];
-            [blankView setBackgroundColor:[UIColor colorWithRed:0 green:0 blue:0 alpha:0.6]];
-
-            UIActivityIndicatorView * actv = [[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleWhiteLarge];
-            [actv setFrame:CGRectMake(140,(self.view.frame.size.height/2) - 10, 40, 40)];
-            [actv startAnimating];
-            [blankView addSubview:actv];
-
-            [self.view addSubview:blankView];
-            [self.view bringSubviewToFront:blankView];
-
-            [[assist shared] setisloggedout:YES];
-
-            [timer invalidate];
-            timer = nil;
-
-            serve *  serveOBJ = [serve new];
-            serveOBJ.Delegate = self;
-            serveOBJ.tagName = @"logout";
-            [serveOBJ LogOutRequest:[[NSUserDefaults standardUserDefaults] valueForKey:@"MemberId"]];
+            UIAlertController * alert = [UIAlertController
+                                         alertControllerWithTitle:@"No Email Detected"
+                                         message:@"You don't have an email account configured for this device."
+                                         preferredStyle:UIAlertControllerStyleAlert];
+            
+            UIAlertAction * ok = [UIAlertAction
+                                  actionWithTitle:@"OK"
+                                  style:UIAlertActionStyleDefault
+                                  handler:^(UIAlertAction * action)
+                                  {
+                                      [alert dismissViewControllerAnimated:YES completion:nil];
+                                  }];
+            [alert addAction:ok];
+            
+            [self presentViewController:alert animated:YES completion:nil];
+            return;
+        }
+        else
+        {
+            if (![MFMailComposeViewController canSendMail])
+            {
+                UIAlertView * av = [[UIAlertView alloc] initWithTitle:@"No Email Detected"
+                                                              message:@"You don't have an email account configured for this device."
+                                                             delegate:nil
+                                                    cancelButtonTitle:@"OK"
+                                                    otherButtonTitles: nil];
+                [av show];
+                return;
+            }
         }
     }
+
+    MFMailComposeViewController *mailComposer = [[MFMailComposeViewController alloc] init];
+    mailComposer.mailComposeDelegate = self;
+    mailComposer.navigationBar.tintColor=[UIColor whiteColor];
+
+    [mailComposer setSubject:[NSString stringWithFormat:@"Support Request: Version %@",[[[NSBundle mainBundle] infoDictionary] objectForKey:@"CFBundleVersion"]]];
+
+    [mailComposer setMessageBody:@"" isHTML:NO];
+    [mailComposer setToRecipients:[NSArray arrayWithObjects:@"support@nooch.com", nil]];
+    [mailComposer setCcRecipients:[NSArray arrayWithObject:@""]];
+    [mailComposer setBccRecipients:[NSArray arrayWithObject:@""]];
+    [mailComposer setModalTransitionStyle:UIModalTransitionStylePartialCurl];
+    [self presentViewController:mailComposer animated:YES completion:nil];
 }
 
 - (void)didReceiveMemoryWarning

@@ -170,15 +170,13 @@
     isStart = YES;
     isLocalSearch = NO;
 
-    NSUserDefaults * defaults = [[NSUserDefaults alloc]init];
-
     self.glyph_checkmark = [[UILabel alloc] initWithFrame:CGRectMake(22, 13, 22, 18)];
     [self.glyph_checkmark setFont:[UIFont fontWithName:@"FontAwesome" size:16]];
 
     self.glyph_pending = [[UILabel alloc] initWithFrame:CGRectMake(174, 13, 20, 18)];
     [self.glyph_pending setFont:[UIFont fontWithName:@"FontAwesome" size:16]];
 
-    if ([defaults boolForKey:@"hasPendingItems"] == true)
+    if ([user boolForKey:@"hasPendingItems"] == true)
     {
         [completed_pending setSelectedSegmentIndex:1];
 
@@ -298,7 +296,7 @@
         mapView_.myLocationEnabled = NO;
     }
         mapView_.delegate = self;
-        [mapView_ setMinZoom:5 maxZoom:16];
+        [mapView_ setMinZoom:3 maxZoom:17];
         [mapArea addSubview:mapView_];
     /*}
     else
@@ -1176,7 +1174,7 @@
             if ([[dictRecord valueForKey:@"TransactionType"]isEqualToString:@"Request"] ||
                 [[dictRecord valueForKey:@"TransactionType"]isEqualToString:@"Invite"] )
             {
-                if ([[dictRecord valueForKey:@"RecepientId"]isEqualToString:[[NSUserDefaults standardUserDefaults] objectForKey:@"MemberId"]])
+                if ([[dictRecord valueForKey:@"RecepientId"]isEqualToString:[user objectForKey:@"MemberId"]])
                 {
                     //cancel or remind
                     [rightUtilityButtons sw_addUtilityButtonWithColor:kNoochBlue
@@ -1276,7 +1274,8 @@
                     [statusIndicator setText:[NSString fontAwesomeIconStringForIconIdentifier:@"fa-times"]];
                     [statusIndicator setTextColor:kNoochRed];
                 }
-                else if ([[dictRecord valueForKey:@"TransactionStatus"]isEqualToString:@"Success"]) {
+                else if ([[dictRecord valueForKey:@"TransactionStatus"]isEqualToString:@"Success"] ||
+                         [[dictRecord valueForKey:@"TransactionStatus"]isEqualToString:@"Reward"]) {
                     [statusIndicator setText:[NSString fontAwesomeIconStringForIconIdentifier:@"fa-check"]];
                     [statusIndicator setTextColor:kNoochGreen];
                 }
@@ -1286,6 +1285,7 @@
                 NSString * invitationSentTo = [NSString stringWithFormat:@"%@",[dictRecord valueForKey:@"InvitationSentTo"]];
 
                 if ( [[dictRecord valueForKey:@"TransactionType"]isEqualToString:@"Transfer"] ||
+                     [[dictRecord valueForKey:@"TransactionType"]isEqualToString:@"Reward"] ||
                     ([[dictRecord valueForKey:@"TransactionType"]isEqualToString:@"Invite"] &&
                      invitationSentTo != NULL && ![invitationSentTo isEqualToString:username] &&
                     ![[dictRecord valueForKey:@"Name"] isEqualToString:fullName]))
@@ -1294,7 +1294,6 @@
                     {
                         // Sent Transfer
                         [amount setStyleClass:@"history_transferamount_neg"];
-                        //@"Transfer to"
                         [transferTypeLabel setText:NSLocalizedString(@"History_TransferToTxt", @"History screen 'Transfer To' Text")];
 						[transferTypeLabel setBackgroundColor:kNoochRed];
                         [name setText:[NSString stringWithFormat:@"%@",[[dictRecord valueForKey:@"Name"] capitalizedString]]];
@@ -1305,7 +1304,6 @@
                     {
                         // Received Transfer
                         [amount setStyleClass:@"history_transferamount_pos"];
-                        //@"Transfer from"
                         [transferTypeLabel setText:NSLocalizedString(@"History_TransferFromTxt", @"History screen 'Transfer From' Text")];
                         [transferTypeLabel setBackgroundColor:kNoochGreen];
                         [name setText:[NSString stringWithFormat:@"%@ ",[[dictRecord valueForKey:@"Name"] capitalizedString]]];
@@ -1445,7 +1443,6 @@
                 else if ([[dictRecord valueForKey:@"TransactionStatus"]isEqualToString:@"Success"] &&
                          [[dictRecord valueForKey:@"TransactionType"]isEqualToString:@"Request"] )
                 {
-                    //@"Paid"
                     [updated_balance setText:NSLocalizedString(@"History_PaidTxt", @"History screen 'Paid' Text")];
                     [updated_balance setTextColor:kNoochGreen];
                     [cell.contentView addSubview:updated_balance];
@@ -1453,7 +1450,6 @@
                 else if ([[dictRecord valueForKey:@"TransactionStatus"]isEqualToString:@"Success"] &&
                          [[dictRecord valueForKey:@"TransactionType"]isEqualToString:@"Invite"] )
                 {
-                    //@"Accepted"
                     [updated_balance setText:NSLocalizedString(@"History_AcceptedTxt", @"History screen 'Accepted' Text")];
                     [updated_balance setTextColor:kNoochGreen];
                     [cell.contentView addSubview:updated_balance];
@@ -1461,7 +1457,6 @@
                 else if ([[dictRecord valueForKey:@"TransactionType"]isEqualToString:@"Disputed"] &&
                          [[dictRecord valueForKey:@"DisputeStatus"]isEqualToString:@"Resolved"])
                 {
-                    //@"Resolved"
                     [updated_balance setText:NSLocalizedString(@"History_ResolvedTxt", @"History screen 'Resolved' Text")];
                     [updated_balance setTextColor:kNoochGreen];
                     [cell.contentView addSubview:updated_balance];
@@ -1682,7 +1677,7 @@
 
                 if ([[dictRecord valueForKey:@"TransactionType"]isEqualToString:@"Request"])
                 {
-                    if ([[dictRecord valueForKey:@"RecepientId"]isEqualToString:[[NSUserDefaults standardUserDefaults] objectForKey:@"MemberId"]])
+                    if ([[dictRecord valueForKey:@"RecepientId"]isEqualToString:[user objectForKey:@"MemberId"]])
                     {
                         [transferTypeLabel setText:NSLocalizedString(@"History_RequestSentToTxt", @"History screen 'Request Sent To' Text")];
                         [transferTypeLabel setStyleClass:@"history_cell_transTypeLabel_wider"];
@@ -1995,7 +1990,7 @@
 
     if ([[dictRecord valueForKey:@"TransactionType"]isEqualToString:@"Request"])
     {
-        if ([[dictRecord valueForKey:@"RecepientId"]isEqualToString:[[NSUserDefaults standardUserDefaults] objectForKey:@"MemberId"]])
+        if ([[dictRecord valueForKey:@"RecepientId"]isEqualToString:[user objectForKey:@"MemberId"]])
         { // For the Sender of a Request
 
 			if ( [dictRecord valueForKey:@"InvitationSentTo"] == NULL ||
@@ -2054,20 +2049,19 @@
         {  // For the Recipient of a Request
             if (ind == 0)
             { //accept
-                NSUserDefaults * defaults = [NSUserDefaults standardUserDefaults];
 
-                if ([[assist shared]getSuspended])
+                if ([[assist shared] getSuspended])
                 {
                     UIAlertView * alert = [[UIAlertView alloc]initWithTitle:@"Account Suspended"
-                                                                    message:@"Your account has been suspended for 24 hours from now. Please email support@nooch.com if you believe this was a mistake and we will be glad to help."
+                                                                    message:@"\xF0\x9F\x98\xA7\nYour account has been suspended pending a security review. We apologize for the inconvenience - our top priority is keeping Nooch safe for all users.\n\nPlease email support@nooch.com if you believe this was a mistake and we will be glad to help."
                                                                    delegate:self
                                                           cancelButtonTitle:@"OK"
                                                           otherButtonTitles:@"Contact Support", nil];
                     [alert setTag:50];
                     [alert show];
-                    return; 
+                    return;
                 }
-                else if (![[user valueForKey:@"Status"]isEqualToString:@"Active"])
+                else if ([[user valueForKey:@"Status"]isEqualToString:@"Registered"])
                 {
                     UIAlertView * alert = [[UIAlertView alloc]initWithTitle:@"Email Verification Needed"
                                                                     message:@"Please click the link we emailed you to verify your email address."
@@ -2078,7 +2072,17 @@
                     [alert show];
                     return;
                 }
-                else if (![[defaults objectForKey:@"IsBankAvailable"]isEqualToString:@"1"])
+                else if (![[user valueForKey:@"IsVerifiedPhone"]isEqualToString:@"YES"] )
+                {
+                    UIAlertView * alert = [[UIAlertView alloc]initWithTitle:@"Phone Not Verified"
+                                                                    message:@"To keep Nooch safe, we ask all users to verify a phone number before sending money.\n\nIf you've already added your phone number, just respond 'Go' to the text message we sent."
+                                                                   delegate:self
+                                                          cancelButtonTitle:@"Later"
+                                                          otherButtonTitles:@"Go Now" , nil];
+                    [alert show];
+                    return;
+                }
+                else if (![[user objectForKey:@"IsBankAvailable"]isEqualToString:@"1"])
                 {
                     UIAlertView * alert = [[UIAlertView alloc] initWithTitle:@"Please Attach An Account"
                                                                   message:@"Before you can send or receive money, you must add a bank account."
@@ -2397,6 +2401,21 @@
 {
     [searchBar becomeFirstResponder];
     [searchBar setShowsCancelButton:YES];
+
+    if (isMapOpen)
+    {
+        [UIView beginAnimations:nil context:nil];
+        [UIView setAnimationDelegate:self];
+        [UIView setAnimationDuration:0.35];
+
+        self.tableShadow.frame = CGRectMake(0, 84, 320, self.view.frame.size.height);
+        self.list.frame = CGRectMake(0, 84, 320, self.view.frame.size.height);
+        [self.view bringSubviewToFront:self.list];
+        mapArea.frame = CGRectMake(0, 84, 320, self.view.frame.size.height);
+        isMapOpen = NO;
+
+        [UIView commitAnimations];
+    }
 }
 
 -(BOOL)searchBar:(UISearchBar *)searchBar shouldChangeTextInRange:(NSRange)range replacementText:(NSString *)text{
@@ -2458,8 +2477,8 @@
     if ([result rangeOfString:@"Invalid OAuth 2 Access"].location!=NSNotFound)
     {
         [[NSFileManager defaultManager] removeItemAtPath:[self autoLogin] error:nil];
-        [[NSUserDefaults standardUserDefaults] removeObjectForKey:@"UserName"];
-        [[NSUserDefaults standardUserDefaults] removeObjectForKey:@"MemberId"];
+        [user removeObjectForKey:@"UserName"];
+        [user removeObjectForKey:@"MemberId"];
         [timer invalidate];
         [nav_ctrl performSelector:@selector(disable)];
         [nav_ctrl performSelector:@selector(reset)];
@@ -2683,22 +2702,20 @@
             [completed_pending setTitle:@" Pending" forSegmentAtIndex:1];
         }
 
-        NSUserDefaults * defaults = [[NSUserDefaults alloc]init];
-
         // PENDING REQUESTS RECEIVED (SET DEFAULT VALUE FOR LEFT SIDE MENU)
         if (pendingRequestsReceived > 0)
         {
-            [defaults setBool:true forKey:@"hasPendingItems"];
+            [user setBool:true forKey:@"hasPendingItems"];
 
             NSString * count;
             count = [NSString stringWithFormat:@"%@", [dict valueForKey:@"pendingRequestsReceived"]];
 
-            [defaults setValue: count forKey:@"Pending_count"];
-            [defaults synchronize];
+            [user setValue: count forKey:@"Pending_count"];
+            [user synchronize];
         }
         else
         {
-            [defaults setBool:false forKey:@"hasPendingItems"];
+            [user setBool:false forKey:@"hasPendingItems"];
         }
     }
 
@@ -2826,7 +2843,7 @@
         else if ([response isEqualToString:@"Success"])
         {
             UIAlertView *av = [[UIAlertView alloc] initWithTitle:@"Check Your Email"
-                                                         message:[NSString stringWithFormat:@"\xF0\x9F\x93\xA5\nA verifiction link has been sent to %@.",[[NSUserDefaults standardUserDefaults] objectForKey:@"email"]]
+                                                         message:[NSString stringWithFormat:@"\xF0\x9F\x93\xA5\nA verifiction link has been sent to %@.",[user objectForKey:@"UserName"]]
                                                         delegate:nil
                                                cancelButtonTitle:@"OK"
                                                otherButtonTitles:nil];
@@ -2856,9 +2873,9 @@
     alert.tag = 11;
 
     UITextField *textField = [alert textFieldAtIndex:0];
-    textField.text = [[NSUserDefaults standardUserDefaults] objectForKey:@"UserName"];
+    textField.text = [user objectForKey:@"UserName"];
     textField.textAlignment = NSTextAlignmentCenter;
-    textField.KeyboardType = UIKeyboardTypeEmailAddress;
+    textField.keyboardType = UIKeyboardTypeEmailAddress;
     [alert show];
 }
 
@@ -3018,7 +3035,7 @@
         [mailComposer setToRecipients:[NSArray arrayWithObjects:@"support@nooch.com", nil]];
         [mailComposer setCcRecipients:[NSArray arrayWithObject:@""]];
         [mailComposer setBccRecipients:[NSArray arrayWithObject:@""]];
-        [mailComposer setModalTransitionStyle:UIModalTransitionStyleCrossDissolve];
+        [mailComposer setModalTransitionStyle:UIModalTransitionStyleCoverVertical];
         [self presentViewController:mailComposer animated:YES completion:nil];
     }
 }

@@ -66,9 +66,10 @@
 
     UILabel * back_button = [UILabel new];
     [back_button setStyleId:@"navbar_back"];
+    [back_button setStyleId:@"navbar_backSm"];
     [back_button setUserInteractionEnabled:YES];
     [back_button addGestureRecognizer: backTap];
-    back_button.attributedText = [[NSAttributedString alloc] initWithString:[NSString fontAwesomeIconStringForIconIdentifier:@"fa-angle-left"] attributes:titleAttributes];
+    back_button.attributedText = [[NSAttributedString alloc] initWithString:[NSString fontAwesomeIconStringForIconIdentifier:@"fa-times"] attributes:titleAttributes];
 
     UIBarButtonItem * menu = [[UIBarButtonItem alloc] initWithCustomView:back_button];
 
@@ -100,24 +101,54 @@
     self.hud.labelText = @"Preparing Secure Connection";
     [self.hud show:YES];
 
-    NSString * knoxBaseUrl = [ARPowerHookManager getValueForHookById:@"knox_baseUrl"];
-    NSString * k_Key = [ARPowerHookManager getValueForHookById:@"knox_Key"];
-    NSString * k_pw = [ARPowerHookManager getValueForHookById:@"knox_Pw"];
+    NSString * knoxOnOff = [ARPowerHookManager getValueForHookById:@"knox_OnOff"];
+    NSString * SynapseOnOff = [ARPowerHookManager getValueForHookById:@"synps_OnOff"];
 
-    NSString *body = [NSString stringWithFormat: @"amount=%@&api_key=%@&api_password=%@&invoice_detail=%@&recurring=%@&information_request=%@&redirect_url=%@&partner=%@&label=%@", @"0.00",k_Key,k_pw,@"Onboard",@"ot",@"show_all",@"nooch://",@"nooch",@"wl"];
-	NSURL *url = [NSURL URLWithString: [NSString stringWithFormat:@"%@?%@",knoxBaseUrl,body]];
+    NSString * baseUrl = @"";
 
-    self.request = [[NSMutableURLRequest alloc]initWithURL: url];
-    [self.request setHTTPMethod: @"GET"];
-    [self.request setValue:@"application/json" forHTTPHeaderField:@"Content-Type"];
-    [self.request setValue:@"charset" forHTTPHeaderField:@"UTF-8"];
-    [self.request setHTTPBody: [jsonString dataUsingEncoding: NSUTF8StringEncoding]];
-    [self.web loadRequest: self.request];
+    if (![knoxOnOff isEqualToString:@"on"])
+    {
+        baseUrl = [ARPowerHookManager getValueForHookById:@"knox_baseUrl"];
+        NSString * k_Key = [ARPowerHookManager getValueForHookById:@"knox_Key"];
+        NSString * k_pw = [ARPowerHookManager getValueForHookById:@"knox_Pw"];
 
-    [[NSNotificationCenter defaultCenter] addObserver:self
-                                             selector:@selector(resignView)
-                                                 name:@"KnoxResponse"
-                                               object:nil];
+        NSString *body = [NSString stringWithFormat: @"amount=%@&api_key=%@&api_password=%@&invoice_detail=%@&recurring=%@&information_request=%@&redirect_url=%@&partner=%@&label=%@", @"0.00",k_Key,k_pw,@"Onboard",@"ot",@"show_all",@"nooch://",@"nooch",@"wl"];
+        NSURL *url = [NSURL URLWithString: [NSString stringWithFormat:@"%@?%@",baseUrl,body]];
+
+        self.request = [[NSMutableURLRequest alloc]initWithURL: url];
+        [self.request setHTTPMethod: @"GET"];
+        [self.request setValue:@"application/json" forHTTPHeaderField:@"Content-Type"];
+        [self.request setValue:@"charset" forHTTPHeaderField:@"UTF-8"];
+        [self.request setHTTPBody: [jsonString dataUsingEncoding: NSUTF8StringEncoding]];
+        [self.web loadRequest: self.request];
+
+        [[NSNotificationCenter defaultCenter] addObserver:self
+                                                 selector:@selector(resignView)
+                                                     name:@"KnoxResponse"
+                                                   object:nil];
+    }
+
+    else if ([SynapseOnOff isEqualToString:@"on"])
+    {
+        baseUrl = [ARPowerHookManager getValueForHookById:@"synps_baseUrl"];
+        NSString * memberId = [user objectForKey:@"MemberId"];
+        
+        NSString *body = [NSString stringWithFormat: @"MemberId=%@",memberId];
+    
+        NSURL *url = [NSURL URLWithString: [NSString stringWithFormat:@"%@?%@",baseUrl,body]];
+
+        self.request = [[NSMutableURLRequest alloc]initWithURL: url];
+        [self.request setHTTPMethod: @"GET"];
+        [self.request setValue:@"application/json" forHTTPHeaderField:@"Content-Type"];
+        [self.request setValue:@"charset" forHTTPHeaderField:@"UTF-8"];
+        [self.request setHTTPBody: [jsonString dataUsingEncoding: NSUTF8StringEncoding]];
+        [self.web loadRequest: self.request];
+        
+        [[NSNotificationCenter defaultCenter] addObserver:self
+                                                 selector:@selector(resignView)
+                                                     name:@"KnoxResponse"
+                                                   object:nil];
+    }
 }
 
 -(void)moreinfo_lightBox
@@ -397,8 +428,8 @@
     obj.tagName = @"saveMemberTransId";
     [obj setDelegate:self];
 
-    NSDictionary * dict = @{@"TransId":[[NSUserDefaults standardUserDefaults] objectForKey:@"paymentID"],
-                            @"MemberId":[[NSUserDefaults standardUserDefaults] objectForKey:@"MemberId"]};
+    NSDictionary * dict = @{@"TransId":[user objectForKey:@"paymentID"],
+                            @"MemberId":[user objectForKey:@"MemberId"]};
 
     [obj saveMemberTransId:[dict mutableCopy]];
 }
@@ -429,10 +460,9 @@
 
         if ([[[dictResponse valueForKey:@"SaveMemberTransIdResult"]valueForKey:@"Result"]isEqualToString:@"Success"])
         {
-            [[NSUserDefaults standardUserDefaults]setObject:@"1" forKey:@"IsBankAvailable"];
+            [user setObject:@"1" forKey:@"IsBankAvailable"];
 
             isProfileOpenFromSideBar = NO;
-            isFromSettingsOptions = YES;
             sentFromHomeScrn = NO;
 
             UIAlertView * alert = [[UIAlertView alloc]initWithTitle:@"Great Success"
@@ -442,12 +472,12 @@
                                                   otherButtonTitles:Nil, nil];
             [alert show];
 
-            ProfileInfo * profile = [ProfileInfo new];
-            [nav_ctrl pushViewController:profile animated:YES];
+            Home * home = [Home new];
+            [nav_ctrl pushViewController:home animated:YES];
         }
         else
         {
-            [[NSUserDefaults standardUserDefaults]setObject:@"0" forKey:@"IsBankAvailable"];
+            [user setObject:@"0" forKey:@"IsBankAvailable"];
 
             UIAlertView * alert = [[UIAlertView alloc]initWithTitle:@"Please Try Again"
                                                             message:@"\xF0\x9F\x98\xAE\nBank linking failed, unfortunately your info was not saved. We hate it when this happens too."
@@ -458,6 +488,7 @@
 
             [self.navigationController popViewControllerAnimated:YES];
         }
+        [user synchronize];
     }
 }
 

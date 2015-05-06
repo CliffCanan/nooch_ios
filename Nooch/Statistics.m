@@ -11,6 +11,8 @@
 #import "MagicPieLayer.h"
 #import "HowMuch.h"
 #import "SendInvite.h"
+#import "ProfileInfo.h"
+#import "knoxWeb.h"
 
 @interface Statistics ()
 @property(nonatomic,retain) UIView *back_profile;
@@ -80,7 +82,7 @@
     serveOBJ.tagName = @"Total_P2P_transfers";
     [serveOBJ GetMemberStats:@"Total_P2P_transfers"];
     
-    [self.navigationItem setTitle:@"Statistics"];
+    [self.navigationItem setTitle: NSLocalizedString(@"Stats_ScrnTtl", @"Stats - 'Statistics'")];//@"Statistics"];
 
     self.selected = 0;
     UISwipeGestureRecognizer * left = [[UISwipeGestureRecognizer alloc] initWithTarget:self action:@selector(change_stats:)];
@@ -279,7 +281,7 @@
     [titleTopFriends setFrame:CGRectMake(0, 78, 300, 24)];
     [titleTopFriends setTextColor:kNoochGrayDark];
     [titleTopFriends setTextAlignment:NSTextAlignmentCenter];
-    titleTopFriends.text = @"Top Friends";
+    titleTopFriends.text = NSLocalizedString(@"Stats_TpFrndsHdr", @"Stats - 'Top Friends'");
     [self.back_donation addSubview:titleTopFriends];
 
     [self.back_donation addSubview:transfersIcon_bckgrnd3];
@@ -314,7 +316,7 @@
 
     //Export Stats
     self.exportHistory = [UIButton buttonWithType:UIButtonTypeCustom];
-    [self.exportHistory setTitle:@"      Export Account History" forState:UIControlStateNormal];
+    [self.exportHistory setTitle:NSLocalizedString(@"Stats_ExprtBtn", @"Stats - '      Export Account History'") forState:UIControlStateNormal];
     [self.exportHistory setTitleShadowColor:Rgb2UIColor(19, 32, 38, 0.2) forState:UIControlStateNormal];
     self.exportHistory.titleLabel.shadowOffset = CGSizeMake(0.0, -1.0);
     [self.exportHistory setStyleId:@"exportStatsBtn"];
@@ -349,7 +351,7 @@
     spinner1.color = [UIColor whiteColor];
     self.hud = [[MBProgressHUD alloc] initWithView:self.navigationController.view];
     [self.navigationController.view addSubview:self.hud];
-    self.hud.labelText = @"Grabbing your account stats...";
+    self.hud.labelText = NSLocalizedString(@"Stats_HudTxt", @"Stats - 'Getting account stats...");
     [self.hud show:YES];
     [spinner1 startAnimating];
     self.hud.mode = MBProgressHUDModeCustomView;
@@ -400,22 +402,19 @@
                               animations:^{
                                   [UIView addKeyframeWithRelativeStartTime:0 relativeDuration:1 animations:^{
                                       [self.exportHistory setFrame:CGRectMake(60, 570, 200, 38)];
-                                      
-                                      self.selected += 2;
-                                      
+
                                       CGRect frame;
                                       frame = self.back_profile.frame;
                                       frame.origin.x -= 640;
                                       [self.back_profile setFrame:frame];
-                                      
+
                                       frame = self.back_transfer.frame;
                                       frame.origin.x -= 640;
                                       [self.back_transfer setFrame:frame];
-                                      
+
                                       frame = self.back_donation.frame;
                                       frame.origin.x -= 640;
                                       [self.back_donation setFrame:frame];
-                                      
                                   }];
                               } completion: ^(BOOL finished) {
                                   [self performSelector:@selector(animatePieChart) withObject:nil afterDelay:.1];
@@ -463,16 +462,16 @@
                               animations:^{
                                   [UIView addKeyframeWithRelativeStartTime:0 relativeDuration:1 animations:^{
                                       [self.exportHistory setFrame:CGRectMake(60, 448, 200, 38)];
-                                      
+
                                       CGRect frame;
                                       frame = self.back_profile.frame;
                                       frame.origin.x += 320;
                                       [self.back_profile setFrame:frame];
-                                      
+
                                       frame = self.back_transfer.frame;
                                       frame.origin.x += 320;
                                       [self.back_transfer setFrame:frame];
-                                      
+
                                       frame = self.back_donation.frame;
                                       frame.origin.x += 320;
                                       [self.back_donation setFrame:frame];
@@ -496,11 +495,11 @@
                                       frame = self.back_profile.frame;
                                       frame.origin.x += 320;
                                       [self.back_profile setFrame:frame];
-                                      
+
                                       frame = self.back_transfer.frame;
                                       frame.origin.x += 320;
                                       [self.back_transfer setFrame:frame];
-                                      
+
                                       frame = self.back_donation.frame;
                                       frame.origin.x += 320;
                                       [self.back_donation setFrame:frame];
@@ -526,11 +525,11 @@
                                       frame = self.back_profile.frame;
                                       frame.origin.x += 640;
                                       [self.back_profile setFrame:frame];
-                                      
+
                                       frame = self.back_transfer.frame;
                                       frame.origin.x += 640;
                                       [self.back_transfer setFrame:frame];
-                                      
+
                                       frame = self.back_donation.frame;
                                       frame.origin.x += 640;
                                       [self.back_donation setFrame:frame];
@@ -547,7 +546,7 @@
     [UIView setAnimationDuration:0.4];
 
     CGRect frame;
-    
+
     if (slide.direction == UISwipeGestureRecognizerDirectionLeft)
     {
         if (self.selected == 0)
@@ -646,13 +645,13 @@
     [Title setStyleClass:@"stats_header"];
 
     if (tableView == self.profile_stats) {
-        Title.text = @"Social Stats";
+        Title.text = NSLocalizedString(@"Stats_SocStsHdr", @"Stats - 'Social Stats'");//@"Social Stats";
     }
     else if (tableView == self.top_friends_stats) {
         Title.text = @"";
     }
     else if (tableView == self.transfer_stats) {
-        Title.text = @"Transfer Stats";
+        Title.text = NSLocalizedString(@"Stats_TrnsfrHdr", @"Stats - 'Transfer Stats'");//@"Transfer Stats"
     }
     [view addSubview:Title];
     return view;    
@@ -692,6 +691,54 @@
 
 -(void)goToHowMuch:(UIButton*)sender
 {
+    // 1. IS USER SUSPENDED?
+    if ([[assist shared] getSuspended])
+    {
+        UIAlertView * alert = [[UIAlertView alloc]initWithTitle:@"Account Suspended  \xF0\x9F\x98\xA7"
+                                                        message:@"Your account has been suspended pending a review. Please email support@nooch.com if you believe this was a mistake and we will be glad to help."
+                                                       delegate:self
+                                              cancelButtonTitle:@"OK"
+                                              otherButtonTitles:nil, nil];
+        [alert show];
+        return;
+    }
+
+    // 2. IS USER's PHONE VERIFIED?
+    else if (![[user valueForKey:@"IsVerifiedPhone"]isEqualToString:@"YES"])
+    {
+        UIAlertView * alert = [[UIAlertView alloc]initWithTitle:@"Blame The Lawyers"
+                                                        message:@"To keep Nooch safe, we ask all users to verify a phone number before sending money.\n\nIf you've already added your phone number, just respond 'Go' to the text message we sent."
+                                                       delegate:self
+                                              cancelButtonTitle:@"OK"
+                                              otherButtonTitles:nil, nil];
+        [alert show];
+        return;
+    }
+
+    // 3. HAS USER COMPLETED & VERIFIED PROFILE INFO? (EMAIL, PHONE)
+    if (![[assist shared] isProfileCompleteAndValidated])
+    {
+        UIAlertView * alert = [[UIAlertView alloc]initWithTitle:@"Help Us Keep Nooch Safe"
+                                                        message:@"Please take 1 minute to verify your identity by completing your Nooch profile (just 4 fields)."
+                                                       delegate:self
+                                              cancelButtonTitle:@"Later"
+                                              otherButtonTitles:@"Go Now", nil];
+        [alert setTag:20];
+        [alert show];
+        return;
+    }
+
+    // 4. DOES USER ALREADY HAVE A BANK ATTACHED?
+    else if (![[user objectForKey:@"IsBankAvailable"]isEqualToString:@"1"])
+    {
+        UIAlertView *av = [[UIAlertView alloc] initWithTitle:@"Connect A Funding Source \xF0\x9F\x92\xB0"
+                                                     message:@"\xE2\x9A\xA1\nAdding a bank account to fund Nooch payments is lightning quick.\n\n• No routing or account number needed\n• Bank-grade encryption keeps your info safe\n\nWould you like to take care of this now?"
+                                                    delegate:self
+                                           cancelButtonTitle:@"Later"
+                                           otherButtonTitles:@"Go Now", nil];
+        [av setTag:21];
+        [av show];
+    }
     [ARTrackingManager trackEvent:@"Stats_goToHowMuch"];
 
     [sender setFrame:CGRectMake(252, 5, 37, 40)];
@@ -747,7 +794,7 @@
     {
         if (indexPath.row == 0)
         {
-           [title setText:@"Friends Invited"];
+           [title setText:NSLocalizedString(@"Stats_FriendsInv", @"Stats - 'Friends Invited'")];
             if ([dictAllStats valueForKey:@"Total_Friends_Invited"]) {
                 [statistic setText:[[dictAllStats valueForKey:@"Total_Friends_Invited"]  valueForKey:@"Result"]];
             }
@@ -757,7 +804,7 @@
         }
         else if (indexPath.row == 1)
         {
-            [title setText:@"Invites Accepted"];
+            [title setText:NSLocalizedString(@"Stats_InvAccptd", @"Stats - 'Invites Accepted'")];
             if ([dictAllStats valueForKey:@"Total_Friends_Joined"]) {
                 [statistic setText:[[dictAllStats valueForKey:@"Total_Friends_Joined"]  valueForKey:@"Result"]];
             }
@@ -767,26 +814,26 @@
         }
         else if (indexPath.row == 2)
         {
+            [title setText:NSLocalizedString(@"Stats_PostToTwit", @"Stats - 'Posts to Twitter'")];
             if ([dictAllStats valueForKey:@"Total_Posts_To_TW"]) {
                 [statistic setText:[[dictAllStats valueForKey:@"Total_Posts_To_TW"]  valueForKey:@"Result"]];
             }
             else if ([[[dictAllStats valueForKey:@"Total_Posts_To_TW"]valueForKey:@"Result"] length] == 0) {
                 [statistic setText:@"0"];
             }
-            [title setText:@"Posts to Twitter"];
             [glyph setText:[NSString fontAwesomeIconStringForIconIdentifier:@"fa-twitter"]];
             [glyph setFrame:CGRectMake(144, 2, 30, 44)];
             [cell.contentView addSubview:glyph];
         }
         else if (indexPath.row == 3)
         {
+            [title setText:NSLocalizedString(@"Stats_PostToFB", @"Stats - 'Posts to Facebook'")];
             if ([dictAllStats valueForKey:@"Total_Posts_To_FB"]) {
                 [statistic setText:[[dictAllStats valueForKey:@"Total_Posts_To_FB"]  valueForKey:@"Result"]];
             }
             else if ([[[dictAllStats valueForKey:@"Total_Posts_To_FB"]valueForKey:@"Result"] length] == 0) {
                 [statistic setText:@"0"];
             }
-            [title setText:@"Posts to Facebook"];
             [glyph setText:[NSString fontAwesomeIconStringForIconIdentifier:@"fa-facebook"]];
             [cell.contentView addSubview:glyph];
         }
@@ -796,7 +843,7 @@
             [goToRefer setUserInteractionEnabled:YES];
             [goToRefer setFont:[UIFont fontWithName:@"Roboto-regular" size:17]];
             [goToRefer setTextColor:Rgb2UIColor(64, 65, 66, 1)];
-            [goToRefer setText:@"   Refer More Friends"];
+            [goToRefer setText:NSLocalizedString(@"Stats_RfrFrnds", @"Stats - '   Refer More Friends'")];
             [goToRefer setTextAlignment:NSTextAlignmentCenter];
 
             UILabel * goToRefer_glyph = [[UILabel alloc] initWithFrame:CGRectMake(4, 2, 22, 38)];
@@ -827,7 +874,7 @@
     {
         if (indexPath.row == 0)
         {
-            [title setText:@"Total Completed Payments"];
+            [title setText:NSLocalizedString(@"Stats_TotalCompltd", @"Stats - 'Total Completed Payments'")];
             if ([dictAllStats valueForKey:@"Total_P2P_transfers"]) {
                 [statistic setText:[[dictAllStats valueForKey:@"Total_P2P_transfers"]  valueForKey:@"Result"]];
             }
@@ -837,7 +884,7 @@
         }
         else if (indexPath.row == 1)
         {
-            [title setText:@"Payments Sent"];
+            [title setText:NSLocalizedString(@"Stats_PymntsSnt", @"Stats - 'Payments Sent'")];
             [statistic setText:[[dictAllStats valueForKey:@"Total_no_of_transfer_Sent"]  valueForKey:@"Result"]];
             if ([[[dictAllStats valueForKey:@"Total_no_of_transfer_Sent"]valueForKey:@"Result"] length] == 0) {
                 [statistic setText:@"0"];
@@ -845,7 +892,7 @@
         }
         else if (indexPath.row == 2)
         {
-            [title setText:@"Total Sent"];
+            [title setText:NSLocalizedString(@"Stats_TtlSnt", @"Stats - 'Total Sent'")];
             [statistic setText:[NSString stringWithFormat:@"$ %@",[[dictAllStats valueForKey:@"Total_$_Sent"]  valueForKey:@"Result"]]];
             
             if ([[[dictAllStats valueForKey:@"Total_$_Sent"]valueForKey:@"Result"] length] == 0) {
@@ -854,7 +901,7 @@
         }
         else if (indexPath.row == 3)
         {
-            [title setText:@"Payments Received"];
+            [title setText:NSLocalizedString(@"Stats_PymntsRcvd", @"Stats - 'Payments Received'")];
             [statistic setText:[[dictAllStats valueForKey:@"Total_no_of_transfer_Received"]  valueForKey:@"Result"]];
             if ([[[dictAllStats valueForKey:@"Total_no_of_transfer_Received"]valueForKey:@"Result"] length] == 0) {
                 [statistic setText:@"0"];
@@ -862,7 +909,7 @@
         }
         else if (indexPath.row == 4)
         {
-            [title setText:@"Total Received"];
+            [title setText:NSLocalizedString(@"Stats_TtlRcvd", @"Stats - 'Total Received'")];
             [statistic setText:[NSString stringWithFormat:@"$ %@",[[dictAllStats valueForKey:@"Total_$_Received"]  valueForKey:@"Result"]]];
             if ([[[dictAllStats valueForKey:@"Total_$_Received"]valueForKey:@"Result"] length] == 0) {
                 [statistic setText:@"$ 0"];
@@ -870,7 +917,7 @@
         }
         else if (indexPath.row == 5)
         {
-            [title setText:@"Largest Transfer Sent"];
+            [title setText:NSLocalizedString(@"Stats_LrgstSnt", @"Stats - 'Largest Transfer Sent'")];
             [statistic setText:[NSString stringWithFormat:@"$ %@",[[dictAllStats valueForKey:@"Largest_sent_transfer"]  valueForKey:@"Result"]]];
             if ([[[dictAllStats valueForKey:@"Largest_sent_transfer"]valueForKey:@"Result"] length] == 0) {
                 [statistic setText:@"0"];
@@ -878,7 +925,7 @@
         }
         else if (indexPath.row == 6)
         {
-            [title setText:@"Largest Transfer Received"];
+            [title setText:NSLocalizedString(@"Stats_LrgstRcvd", @"Stats - 'Largest Transfer Received'")];
             [statistic setText:[NSString stringWithFormat:@"$ %@",[[dictAllStats valueForKey:@"Largest_received_transfer"]  valueForKey:@"Result"]]];
             if ([[[dictAllStats valueForKey:@"Largest_received_transfer"]valueForKey:@"Result"] length] == 0) {
                 [statistic setText:@"0"];
@@ -905,7 +952,6 @@
             imageView = [[UIImageView alloc] initWithFrame:CGRectMake(11, 4, 42, 42)];
             imageView.contentMode = UIViewContentModeScaleAspectFill;
             imageView.layer.cornerRadius = 21;
-            // [imageView setStyleClass:@"animate_bubble"];
 
             name = [[UILabel alloc] initWithFrame:CGRectMake(0, 12, 140, 20)];
             [name setStyleClass:@"stats_topFriends_label"];
@@ -935,11 +981,11 @@
                 name.text = [NSString stringWithFormat:@"%@ %@",favorite[@"FirstName"],favorite[@"LastName"]];
                 if ([favorite[@"Frequency"] isEqualToString:@"1"])
                 {
-                    frequency.text = @"1 Payment";
+                    frequency.text = NSLocalizedString(@"Stats_1Pymnt", @"Stats - '1 Payment'");
                 }
                 else
                 {
-                    frequency.text = [NSString stringWithFormat:@"%@ Payments",favorite[@"Frequency"]];
+                    frequency.text = [NSString stringWithFormat:@"%@ %@",favorite[@"Frequency"], NSLocalizedString(@"Stats_Pymtns", @"Stats - 'Payments'")];
                 }
                 colorIndicator.backgroundColor = kNoochGreen;
 
@@ -955,11 +1001,11 @@
                 name.text = [NSString stringWithFormat:@"%@ %@",favorite[@"FirstName"],favorite[@"LastName"]];
                 if ([favorite[@"Frequency"] isEqualToString:@"1"])
                 {
-                    frequency.text = @"1 Payment";
+                    frequency.text = NSLocalizedString(@"Stats_1Pymnt", @"Stats - '1 Payment'");
                 }
                 else
                 {
-                    frequency.text = [NSString stringWithFormat:@"%@ Payments",favorite[@"Frequency"]];
+                    frequency.text = [NSString stringWithFormat:@"%@ %@",favorite[@"Frequency"], NSLocalizedString(@"Stats_Pymtns", @"Stats - 'Payments'")];
                 }
                 colorIndicator.backgroundColor = kNoochPurple;
 
@@ -975,11 +1021,11 @@
                 name.text = [NSString stringWithFormat:@"%@ %@",favorite[@"FirstName"],favorite[@"LastName"]];
                 if ([favorite[@"Frequency"] isEqualToString:@"1"])
                 {
-                    frequency.text = @"1 Payment";
+                    frequency.text = NSLocalizedString(@"Stats_1Pymnt", @"Stats - '1 Payment'");
                 }
                 else
                 {
-                    frequency.text = [NSString stringWithFormat:@"%@ Payments",favorite[@"Frequency"]];
+                    frequency.text = [NSString stringWithFormat:@"%@ %@",favorite[@"Frequency"], NSLocalizedString(@"Stats_Pymtns", @"Stats - 'Payments'")];
                 }
                 colorIndicator.backgroundColor = kNoochRed;
 
@@ -995,11 +1041,11 @@
                 name.text = [NSString stringWithFormat:@"%@ %@",favorite[@"FirstName"],favorite[@"LastName"]];
                 if ([favorite[@"Frequency"] isEqualToString:@"1"])
                 {
-                    frequency.text = @"1 Payment";
+                    frequency.text = NSLocalizedString(@"Stats_1Pymnt", @"Stats - '1 Payment'");
                 }
                 else
                 {
-                    frequency.text = [NSString stringWithFormat:@"%@ Payments",favorite[@"Frequency"]];
+                    frequency.text = [NSString stringWithFormat:@"%@ %@",favorite[@"Frequency"], NSLocalizedString(@"Stats_Pymtns", @"Stats - 'Payments'")];
                 }
                 colorIndicator.backgroundColor = kNoochBlue;
 
@@ -1015,11 +1061,11 @@
                 name.text = [NSString stringWithFormat:@"%@ %@",favorite[@"FirstName"],favorite[@"LastName"]];
                 if ([favorite[@"Frequency"] isEqualToString:@"1"])
                 {
-                    frequency.text = @"1 Payment";
+                    frequency.text = NSLocalizedString(@"Stats_1Pymnt", @"Stats - '1 Payment'");
                 }
                 else
                 {
-                    frequency.text = [NSString stringWithFormat:@"%@ Payments",favorite[@"Frequency"]];
+                    frequency.text = [NSString stringWithFormat:@"%@ %@",favorite[@"Frequency"], NSLocalizedString(@"Stats_Pymtns", @"Stats - 'Payments'")];
                 }
                 colorIndicator.backgroundColor = kNoochGrayLight;
 
@@ -1053,7 +1099,7 @@
                 }
                 [emptyText setTextAlignment:NSTextAlignmentCenter];
                 [emptyText setNumberOfLines:0];
-                emptyText.text = @"Once you make or receive some payments, your top friends will show up here.";
+                emptyText.text = NSLocalizedString(@"Stats_TopFrndsEmpty", @"Stats - 'Once you make or receive some payments, your top friends will show up here.'");
                 [cell.contentView addSubview:emptyText];
             }
             else if (indexPath.row == 1)
@@ -1592,8 +1638,8 @@
         
         if ([[[dictResponse valueForKey:@"sendTransactionInCSVResult"]valueForKey:@"Result"]isEqualToString:@"1"])
         {
-            UIAlertView *alert=[[UIAlertView alloc]initWithTitle:@"Export Successful"
-                                                         message:@"\xF0\x9F\x93\xA5\nYour personalized transaction report has been emailed to you."
+            UIAlertView *alert=[[UIAlertView alloc]initWithTitle:NSLocalizedString(@"Stats_ExprtSccsTtl", @"Stats - 'Export Successful'")
+                                                         message:[NSString stringWithFormat:@"\xF0\x9F\x93\xA5\n%@", NSLocalizedString(@"Stats_ExprtSccsBdy", @"Stats - 'Your personalized transaction report has been emailed to you.'")]// @""
                                                         delegate:Nil
                                                cancelButtonTitle:@"OK"
                                                otherButtonTitles:Nil, nil];
@@ -1605,18 +1651,18 @@
 #pragma mark Exporting History
 - (IBAction)ExportHistory:(id)sender
 {
-    UIAlertView * alert = [[UIAlertView alloc] initWithTitle:@"Export Transfer Data"
-                                                     message:@"Where should we email your data?"
+    UIAlertView * alert = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"Stats_ExprtAlrtTtl", @"Stats - 'Export Transfer Data'")
+                                                     message:NSLocalizedString(@"Stats_ExprtAlrtBdy", @"Stats - 'Where should we email your data?'")
                                                     delegate:self
-                                           cancelButtonTitle:@"Cancel"
-                                           otherButtonTitles:@"Send", nil];
+                                           cancelButtonTitle:NSLocalizedString(@"Stats_Cancel", @"Stats - 'Cancel'")
+                                           otherButtonTitles:NSLocalizedString(@"Stats_Send", @"Stats - 'Send'"), nil];
     [alert setAlertViewStyle:UIAlertViewStylePlainTextInput];
     alert.tag = 11;
     
     UITextField * textField = [alert textFieldAtIndex:0];
-    textField.text = [[NSUserDefaults standardUserDefaults] objectForKey:@"UserName"];
+    textField.text = [user objectForKey:@"UserName"];
     textField.textAlignment = NSTextAlignmentCenter;
-    textField.KeyboardType = UIKeyboardTypeEmailAddress;
+    textField.keyboardType = UIKeyboardTypeEmailAddress;
     [alert show];
 }
 
@@ -1630,6 +1676,17 @@
         [s setTagName:@"csv"];
         [s setDelegate:self];
         [s sendCsvTrasactionHistory:email];
+    }
+    else if (actionSheet.tag == 20 && buttonIndex == 1)
+    {
+        ProfileInfo *info = [ProfileInfo new];
+        [self.navigationController pushViewController:info animated:YES];
+    }
+    else if (actionSheet.tag == 21 && buttonIndex == 1)
+    {
+        knoxWeb *knox = [knoxWeb new];
+        [nav_ctrl pushViewController:knox animated:YES];
+        [self.slidingViewController resetTopView];
     }
 }
 
