@@ -48,7 +48,7 @@
     spinner1.color = [UIColor whiteColor];
     self.hud = [[MBProgressHUD alloc] initWithView:self.navigationController.view];
     [self.navigationController.view addSubview:self.hud];
-    
+
     self.hud.mode = MBProgressHUDModeCustomView;
     self.hud.customView = spinner1;
     self.hud.delegate = self;
@@ -415,6 +415,13 @@
     [super viewWillAppear:animated];
     self.screenName = @"TransactionDetail Screen";
     self.artisanNameTag = @"Transfer Details Screen";
+}
+
+-(void)viewDidAppear:(BOOL)animated
+{
+    [super viewDidAppear:animated];
+    
+    isFromTransferPIN = NO;
 }
 
 -(void)viewDidDisappear:(BOOL)animated
@@ -1181,13 +1188,13 @@
         spinner1.color = [UIColor whiteColor];
         self.hud = [[MBProgressHUD alloc] initWithView:self.navigationController.view];
         [self.navigationController.view addSubview:self.hud];
-        
+
         self.hud.mode = MBProgressHUDModeCustomView;
         self.hud.customView = spinner1;
         self.hud.delegate = self;
         self.hud.labelText = NSLocalizedString(@"TransDeets_disputeHUDlbl", @"'Disputing this transfer...' HUD Text");
         [self.hud show:YES];
-        
+
         self.responseData = [NSMutableData data];
         NSMutableDictionary *dict = [[NSMutableDictionary alloc] init];
 

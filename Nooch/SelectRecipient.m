@@ -915,7 +915,7 @@
         {
             [search resignFirstResponder];
 
-            RTSpinKitView * spinner2 = [[RTSpinKitView alloc] initWithStyle:RTSpinKitViewStyleWave];
+            RTSpinKitView * spinner2 = [[RTSpinKitView alloc] initWithStyle:RTSpinKitViewStyleCircleFlip];
             spinner2.color = [UIColor whiteColor];
             self.hud.customView = spinner2;
             self.hud.labelText = NSLocalizedString(@"SelectRecip_HUDchecking", @"Select Recipient HUD Checking Text");
@@ -2414,7 +2414,7 @@
     {
         if ([search.text length] == 14)
         {
-            RTSpinKitView * spinner2 = [[RTSpinKitView alloc] initWithStyle:RTSpinKitViewStyleWave];
+            RTSpinKitView * spinner2 = [[RTSpinKitView alloc] initWithStyle:RTSpinKitViewStyleThreeBounce];
             spinner2.color = [UIColor whiteColor];
             self.hud.customView = spinner2;
             self.hud.labelText = NSLocalizedString(@"SelectRecip_HUD_CheckingPhoneNum", @"Select Recipient HUD Checking That Phone Text");
@@ -2468,7 +2468,7 @@
         {
             if ([self checkEmailForShadyDomainSelectRecip] == true)
             {
-                RTSpinKitView * spinner2 = [[RTSpinKitView alloc] initWithStyle:RTSpinKitViewStyleWave];
+                RTSpinKitView * spinner2 = [[RTSpinKitView alloc] initWithStyle:RTSpinKitViewStyleThreeBounce];
                 spinner2.color = [UIColor whiteColor];
                 self.hud.customView = spinner2;
                 self.hud.labelText = @"Checking that email address...";
@@ -2571,7 +2571,7 @@
                 }
                 else
                 {
-                    RTSpinKitView * spinner2 = [[RTSpinKitView alloc] initWithStyle:RTSpinKitViewStylePulse];
+                    RTSpinKitView * spinner2 = [[RTSpinKitView alloc] initWithStyle:RTSpinKitViewStyleArcAlt];
                     spinner2.color = [UIColor whiteColor];
                     self.hud.customView = spinner2;
                     self.hud.labelText = NSLocalizedString(@"SelectRecip_HUD_GeneratingTrnsfr", @"Select Recipient HUD Generating Transfer Text");
@@ -2612,7 +2612,7 @@
                 }
                 else // only 1 Phone Number
                 {
-                    RTSpinKitView * spinner2 = [[RTSpinKitView alloc] initWithStyle:RTSpinKitViewStyleWave];
+                    RTSpinKitView * spinner2 = [[RTSpinKitView alloc] initWithStyle:RTSpinKitViewStyleFadingCircleAlt];
                     spinner2.color = [UIColor whiteColor];
                     self.hud.customView = spinner2;
                     self.hud.labelText = NSLocalizedString(@"SelectRecip_HUD_GeneratingTrnsfr2", @"Select Recipient HUD Generating Transfer Text");

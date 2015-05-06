@@ -455,6 +455,7 @@
             [imageCache clearDisk];
             [imageCache cleanDisk];
 
+            isFromTransferPIN = NO;
             HistoryFlat *hist = [[HistoryFlat alloc] init];
             [nav_ctrl pushViewController:hist animated:NO];
             [self.slidingViewController resetTopView];

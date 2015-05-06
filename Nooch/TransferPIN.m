@@ -1342,18 +1342,20 @@
             NSLog(@"Input: %@",input);
 
             NSMutableArray * arrNav = [nav_ctrl.viewControllers mutableCopy];
-            
+
             for (short i = [arrNav count]; i > 1; i--)
             {
                 [arrNav removeLastObject];
             }
-            
+
+            isFromTransferPIN = YES;
+
             HistoryFlat * mainHistoryScreen = [HistoryFlat new];
             [arrNav addObject: mainHistoryScreen];
             [nav_ctrl setViewControllers:arrNav animated:NO];
-            
+
             //NSLog(@"TransferPIN -> nav_ctrl.viewControllers is: %@", nav_ctrl.viewControllers);
-            
+
             TransactionDetails *td = [[TransactionDetails alloc] initWithData:input];
             [nav_ctrl pushViewController:td animated:YES];
         }
@@ -1369,7 +1371,7 @@
                                              alertControllerWithTitle:@"No Email Detected"
                                              message:@"You don't have an email account configured for this device."
                                              preferredStyle:UIAlertControllerStyleAlert];
-                
+
                 UIAlertAction * ok = [UIAlertAction
                                       actionWithTitle:@"OK"
                                       style:UIAlertActionStyleDefault
@@ -1378,7 +1380,7 @@
                                           [alert dismissViewControllerAnimated:YES completion:nil];
                                       }];
                 [alert addAction:ok];
-                
+
                 [self presentViewController:alert animated:YES completion:nil];
                 return;
             }

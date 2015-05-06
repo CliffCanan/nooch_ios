@@ -311,7 +311,7 @@
     _emptyText = [[UILabel alloc] initWithFrame:CGRectMake(15, 15, 290, 70)];
     _emptyPic = [[UIImageView alloc] initWithFrame:CGRectMake(33, 102, 253, 256)];
 
-    [ARTrackingManager trackEvent:@"HistoryMain_viewDidAppear_End"];
+    [ARTrackingManager trackEvent:@"HistoryMain_viewDidLoad_End"];
 
     indexPathForDeletion = nil;
 }
@@ -962,15 +962,18 @@
 
 -(void)loadHist:(NSString*)filter index:(int)ind len:(int)len subType:(NSString*)subType
 {
-    RTSpinKitView *spinner1 = [[RTSpinKitView alloc] initWithStyle:RTSpinKitViewStyleWanderingCubes];
-    spinner1.color = [UIColor whiteColor];
-    self.hud = [[MBProgressHUD alloc] initWithView:self.navigationController.view];
-    [self.navigationController.view addSubview:self.hud];
-    self.hud.labelText = NSLocalizedString(@"History_HUDloadingTxt", @"History screen HUD loading text");
-    [self.hud show:YES];
-    self.hud.mode = MBProgressHUDModeCustomView;
-    self.hud.customView = spinner1;
-    self.hud.delegate = self;
+    if (!isFromTransferPIN)
+    {
+        RTSpinKitView *spinner1 = [[RTSpinKitView alloc] initWithStyle:RTSpinKitViewStyleWanderingCubes];
+        spinner1.color = [UIColor whiteColor];
+        self.hud = [[MBProgressHUD alloc] initWithView:self.navigationController.view];
+        [self.navigationController.view addSubview:self.hud];
+        self.hud.labelText = NSLocalizedString(@"History_HUDloadingTxt", @"History screen HUD loading text");
+        [self.hud show:YES];
+        self.hud.mode = MBProgressHUDModeCustomView;
+        self.hud.customView = spinner1;
+        self.hud.delegate = self;
+    }
 
     isSearch = NO;
     isLocalSearch = NO;
