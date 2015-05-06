@@ -64,7 +64,7 @@
     [super viewDidLoad];
     // isBankAttached = NO;
 
-    if ( ![[[NSUserDefaults standardUserDefaults] objectForKey:@"IsBankAvailable"]isEqualToString:@"1"])
+    if ( ![[user objectForKey:@"IsBankAvailable"]isEqualToString:@"1"])
     {
         isBankAttached = NO;
 
@@ -226,8 +226,6 @@
 
 -(void)attach_bank
 {
-    NSLog(@"GetSuspended result is:  %d",[[assist shared] getSuspended]);
-
     // 1. IS USER SUSPENDED?
     if ([[assist shared] getSuspended])
     {
@@ -241,7 +239,19 @@
         return;
     }
 
-    // 2. HAS USER COMPLETED & VERIFIED PROFILE INFO? (EMAIL, PHONE)
+    // 2. IS USER's PHONE VERIFIED?
+    else if (![[user valueForKey:@"IsVerifiedPhone"]isEqualToString:@"YES"])
+    {
+        UIAlertView * alert = [[UIAlertView alloc]initWithTitle:@"Blame The Lawyers"
+                                                        message:@"To keep Nooch safe, we ask all users to verify a phone number before sending money.\n\nIf you've already added your phone number, just respond 'Go' to the text message we sent."
+                                                       delegate:self
+                                              cancelButtonTitle:@"OK"
+                                              otherButtonTitles:nil, nil];
+        [alert show];
+        return;
+    }
+
+    // 3. HAS USER COMPLETED & VERIFIED PROFILE INFO? (EMAIL, PHONE)
     if (![[assist shared] isProfileCompleteAndValidated])
     {
         UIAlertView * alert = [[UIAlertView alloc]initWithTitle:@"Help Us Keep Nooch Safe"
@@ -254,7 +264,7 @@
         return;
     }
 
-    // 3. DOES USER ALREADY HAVE A BANK ATTACHED?
+    // 4. DOES USER ALREADY HAVE A BANK ATTACHED?
     else if (isBankAttached)
     {
         UIAlertView *av = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"Settings_AttchBnkAlrtTitle", @"Settings Screen attach a new bank Alert Title")
@@ -461,11 +471,11 @@
             {
                 [blankView removeFromSuperview];
                 [[NSFileManager defaultManager] removeItemAtPath:[self autoLogin] error:nil];
-                [[NSUserDefaults standardUserDefaults] removeObjectForKey:@"email"];
-                [[NSUserDefaults standardUserDefaults] removeObjectForKey:@"UserName"];
-                [[NSUserDefaults standardUserDefaults] removeObjectForKey:@"MemberId"];
-                [[NSUserDefaults standardUserDefaults] removeObjectForKey:@"hasPendingItems"];
-                [[NSUserDefaults standardUserDefaults] removeObjectForKey:@"Pending_count"];
+                [user removeObjectForKey:@"email"];
+                [user removeObjectForKey:@"UserName"];
+                [user removeObjectForKey:@"MemberId"];
+                [user removeObjectForKey:@"hasPendingItems"];
+                [user removeObjectForKey:@"Pending_count"];
 
                 [[assist shared] setisloggedout:YES];
 
@@ -495,7 +505,8 @@
                                                otherButtonTitles:nil, nil];
             [av show];
 
-            [[NSUserDefaults standardUserDefaults]setObject:@"0" forKey:@"IsBankAvailable"];
+            [user setObject:@"0" forKey:@"IsBankAvailable"];
+            [user synchronize];
 
             [introText setHidden:NO];
             [glyph_noBank setHidden:NO];
@@ -541,7 +552,9 @@
             ![[dictResponse valueForKey:@"BankImageURL"] isKindOfClass:[NSNull class]] &&
             ![[dictResponse valueForKey:@"BankName"] isKindOfClass:[NSNull class]])
         {
-            [[NSUserDefaults standardUserDefaults]setObject:@"1" forKey:@"IsBankAvailable"];
+            [user setObject:@"1" forKey:@"IsBankAvailable"];
+            [user synchronize];
+
             isBankAttached = YES;
 
             [introText setHidden:YES];
@@ -595,7 +608,7 @@
         }
         else
         {
-            [[NSUserDefaults standardUserDefaults]setObject:@"0" forKey:@"IsBankAvailable"];
+            [user setObject:@"0" forKey:@"IsBankAvailable"];
 
             [introText setHidden:NO];
             [glyph_noBank setHidden:NO];
@@ -698,7 +711,7 @@
         serve *  serveOBJ = [serve new];
         serveOBJ.Delegate = self;
         serveOBJ.tagName = @"logout";
-        [serveOBJ LogOutRequest:[[NSUserDefaults standardUserDefaults] valueForKey:@"MemberId"]];
+        [serveOBJ LogOutRequest:[user valueForKey:@"MemberId"]];
     }
 
 }

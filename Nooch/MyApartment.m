@@ -60,7 +60,7 @@
     [super viewDidLoad];
     isBankAttached = NO;
     
-    if ([[[NSUserDefaults standardUserDefaults] objectForKey:@"IsBankAvailable"]isEqualToString:@"1"])
+    if ([[user objectForKey:@"IsBankAvailable"]isEqualToString:@"1"])
     {
         isBankAttached = YES;
     }
@@ -258,7 +258,7 @@
 {
     [super viewDidAppear:animated];
 
-    if ([[[NSUserDefaults standardUserDefaults] objectForKey:@"isAutoPayEnabled"]isEqualToString:@"1"])
+    if ([[user objectForKey:@"isAutoPayEnabled"]isEqualToString:@"1"])
     {
         [autoPaySetting setFont:[UIFont fontWithName:@"Roboto-medium" size: 13]];
         [autoPaySetting setTextColor:kNoochGreen];
@@ -417,7 +417,7 @@
     [aptToPay setObject:@"MemberId" forKey:@"MemberId"];
     [aptToPay setObject:@"Bellevue Apartments" forKey:@"AptName"];
     [aptToPay setObject:@"650" forKey:@"RentAmount"];
-    [aptToPay setObject:[NSString stringWithFormat:@"https://www.nooch.com/staging/web-app/images/apt1.jpg"] forKey:@"Photo"];
+    //[aptToPay setObject:[NSString stringWithFormat:@"https://www.nooch.com/staging/web-app/images/apt1.jpg"] forKey:@"Photo"];
 
     isFromMyApt = YES;
     HowMuch * howMuch = [[HowMuch alloc] initWithReceiver: aptToPay];
@@ -474,8 +474,8 @@
     if ([result rangeOfString:@"Invalid OAuth 2 Access"].location != NSNotFound)
     {
         [[NSFileManager defaultManager] removeItemAtPath:[self autoLogin] error:nil];
-        [[NSUserDefaults standardUserDefaults] removeObjectForKey:@"UserName"];
-        [[NSUserDefaults standardUserDefaults] removeObjectForKey:@"MemberId"];
+        [user removeObjectForKey:@"UserName"];
+        [user removeObjectForKey:@"MemberId"];
         
         [timer invalidate];
         
@@ -499,7 +499,8 @@
             ![[dictResponse valueForKey:@"aptAddress"] isKindOfClass:[NSNull class]] &&
             ![[dictResponse valueForKey:@"aptWebsite"] isKindOfClass:[NSNull class]])
         {
-            [[NSUserDefaults standardUserDefaults]setObject:@"1" forKey:@"HasAptSelected"];
+            [user setObject:@"1" forKey:@"HasAptSelected"];
+            [user synchronize];
 
             isBankAttached = YES;
             aptName.text = [dictResponse valueForKey:@"aptName"];

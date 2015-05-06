@@ -11,6 +11,8 @@
 #import "MagicPieLayer.h"
 #import "HowMuch.h"
 #import "SendInvite.h"
+#import "ProfileInfo.h"
+#import "knoxWeb.h"
 
 @interface Statistics ()
 @property(nonatomic,retain) UIView *back_profile;
@@ -689,6 +691,54 @@
 
 -(void)goToHowMuch:(UIButton*)sender
 {
+    // 1. IS USER SUSPENDED?
+    if ([[assist shared] getSuspended])
+    {
+        UIAlertView * alert = [[UIAlertView alloc]initWithTitle:@"Account Suspended  \xF0\x9F\x98\xA7"
+                                                        message:@"Your account has been suspended pending a review. Please email support@nooch.com if you believe this was a mistake and we will be glad to help."
+                                                       delegate:self
+                                              cancelButtonTitle:@"OK"
+                                              otherButtonTitles:nil, nil];
+        [alert show];
+        return;
+    }
+
+    // 2. IS USER's PHONE VERIFIED?
+    else if (![[user valueForKey:@"IsVerifiedPhone"]isEqualToString:@"YES"])
+    {
+        UIAlertView * alert = [[UIAlertView alloc]initWithTitle:@"Blame The Lawyers"
+                                                        message:@"To keep Nooch safe, we ask all users to verify a phone number before sending money.\n\nIf you've already added your phone number, just respond 'Go' to the text message we sent."
+                                                       delegate:self
+                                              cancelButtonTitle:@"OK"
+                                              otherButtonTitles:nil, nil];
+        [alert show];
+        return;
+    }
+
+    // 3. HAS USER COMPLETED & VERIFIED PROFILE INFO? (EMAIL, PHONE)
+    if (![[assist shared] isProfileCompleteAndValidated])
+    {
+        UIAlertView * alert = [[UIAlertView alloc]initWithTitle:@"Help Us Keep Nooch Safe"
+                                                        message:@"Please take 1 minute to verify your identity by completing your Nooch profile (just 4 fields)."
+                                                       delegate:self
+                                              cancelButtonTitle:@"Later"
+                                              otherButtonTitles:@"Go Now", nil];
+        [alert setTag:20];
+        [alert show];
+        return;
+    }
+
+    // 4. DOES USER ALREADY HAVE A BANK ATTACHED?
+    else if (![[user objectForKey:@"IsBankAvailable"]isEqualToString:@"1"])
+    {
+        UIAlertView *av = [[UIAlertView alloc] initWithTitle:@"Connect A Funding Source \xF0\x9F\x92\xB0"
+                                                     message:@"\xE2\x9A\xA1\nAdding a bank account to fund Nooch payments is lightning quick.\n\n• No routing or account number needed\n• Bank-grade encryption keeps your info safe\n\nWould you like to take care of this now?"
+                                                    delegate:self
+                                           cancelButtonTitle:@"Later"
+                                           otherButtonTitles:@"Go Now", nil];
+        [av setTag:21];
+        [av show];
+    }
     [ARTrackingManager trackEvent:@"Stats_goToHowMuch"];
 
     [sender setFrame:CGRectMake(252, 5, 37, 40)];
@@ -1610,7 +1660,7 @@
     alert.tag = 11;
     
     UITextField * textField = [alert textFieldAtIndex:0];
-    textField.text = [[NSUserDefaults standardUserDefaults] objectForKey:@"UserName"];
+    textField.text = [user objectForKey:@"UserName"];
     textField.textAlignment = NSTextAlignmentCenter;
     textField.keyboardType = UIKeyboardTypeEmailAddress;
     [alert show];
@@ -1626,6 +1676,17 @@
         [s setTagName:@"csv"];
         [s setDelegate:self];
         [s sendCsvTrasactionHistory:email];
+    }
+    else if (actionSheet.tag == 20 && buttonIndex == 1)
+    {
+        ProfileInfo *info = [ProfileInfo new];
+        [self.navigationController pushViewController:info animated:YES];
+    }
+    else if (actionSheet.tag == 21 && buttonIndex == 1)
+    {
+        knoxWeb *knox = [knoxWeb new];
+        [nav_ctrl pushViewController:knox animated:YES];
+        [self.slidingViewController resetTopView];
     }
 }
 

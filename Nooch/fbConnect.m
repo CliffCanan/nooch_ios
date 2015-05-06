@@ -28,7 +28,7 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-    
+
     self.navigationController.navigationBar.topItem.title = @"";
     [self.navigationItem setTitle:NSLocalizedString(@"SocSettings_ScrnTitle", @"Social Settings Screen Title")];
 
@@ -119,7 +119,6 @@
     [info setTextColor:[Helpers hexColor:@"6c6e71"]];
     [info setText:NSLocalizedString(@"SocSettings_Instruct", @"Social Settings instruction text")];
     [self.view addSubview:info];
-
 }
 
 -(void)viewDidDisappear:(BOOL)animated
@@ -130,7 +129,6 @@
 -(void)viewDidAppear:(BOOL)animated
 {
     [super viewDidAppear:animated];
-    
     [ARTrackingManager trackEvent:@"SocSet_viewDidAppear"];
 }
 
@@ -145,7 +143,7 @@
     [av show];
 }
 
-- (void) alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex
+-(void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex
 {
     if (alertView.tag == 10 && buttonIndex == 1)
     {
@@ -168,7 +166,7 @@
     [self.navigationController popViewControllerAnimated:YES];
 }
 
-- (void)toggleFacebookLogin:(id)sender
+-(void)toggleFacebookLogin:(id)sender
 {
     // If the session state is any of the two "open" states when the button is clicked
     if (FBSession.activeSession.state == FBSessionStateOpen
@@ -192,7 +190,7 @@
     }
 }
 
-- (void)sessionStateChanged:(FBSession *)session state:(FBSessionState) state error:(NSError *)error
+-(void)sessionStateChanged:(FBSession *)session state:(FBSessionState) state error:(NSError *)error
 {
     // If the session was opened successfully
     if (!error && state == FBSessionStateOpen)
@@ -323,8 +321,8 @@
         if (!error)
         {
             // Success! Now set the facebook_id to be the fb_id that was just returned & send to Nooch DB
-            [[NSUserDefaults standardUserDefaults] setObject:[result objectForKey:@"id"] forKey:@"facebook_id"];
-            NSLog(@"fbConnect -> FB id stored in user defaults as: %@",[result objectForKey:@"id"]);
+            [user setObject:[result objectForKey:@"id"] forKey:@"facebook_id"];
+            [user synchronize];
 
             serve * storeFbID = [serve new];
             [storeFbID setDelegate:self];
@@ -342,7 +340,7 @@
 }
 
 // Show an alert message (For Facebook methods)
-- (void)showMessage:(NSString *)text withTitle:(NSString *)title
+-(void)showMessage:(NSString *)text withTitle:(NSString *)title
 {
     [[[UIAlertView alloc] initWithTitle:title
                                 message:text
@@ -352,7 +350,7 @@
 }
 
 #pragma mark - server Delegation
-- (void) listen:(NSString *)result tagName:(NSString *)tagName
+-(void)listen:(NSString *)result tagName:(NSString *)tagName
 {
     [self.hud hide:YES];
     NSError *error;
@@ -376,17 +374,18 @@
         //[user synchronize];
     }
 }
+
 -(void)Error:(NSError *)Error
 {
     [self.hud hide:YES];
 
-    UIAlertView *alert = [[UIAlertView alloc]
+    /*UIAlertView *alert = [[UIAlertView alloc]
                           initWithTitle:@"Connection Error"
                           message:@"Looks like there was some trouble connecting to the right place. Please try again!"
                           delegate:nil
                           cancelButtonTitle:@"OK"
                           otherButtonTitles:nil];
-    [alert show];
+    [alert show];*/
 }
 
 #pragma mark - file paths

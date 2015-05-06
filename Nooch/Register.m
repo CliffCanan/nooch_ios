@@ -60,7 +60,7 @@
     [super viewDidAppear:animated];
 
     self.login = [UIButton buttonWithType:UIButtonTypeRoundedRect];
-    [self.login setFrame:CGRectMake(10, [[UIScreen mainScreen] bounds].size.height + 6, 300, 50)];
+    [self.login setFrame:CGRectMake(10, [[UIScreen mainScreen] bounds].size.height + 6, 300, 52)];
     [self.login setStyleId:@"label_small_register"];
     [self.login setBackgroundColor:[UIColor clearColor]];
     [self.login setTitle:NSLocalizedString(@"Register_loginTxt", @"Register Screen 'Already a member?  Sign in here ") forState:UIControlStateNormal];
@@ -71,7 +71,7 @@
 
     UILabel * glyph_login = [UILabel new];
     [glyph_login setFont:[UIFont fontWithName:@"FontAwesome" size:20]];
-    [glyph_login setFrame:CGRectMake(0, 35, 300, 22)];
+    [glyph_login setFrame:CGRectMake(0, 38, 300, 25)];
     [glyph_login setText:[NSString fontAwesomeIconStringForIconIdentifier:@"fa-arrow-circle-right"]];
     [glyph_login setTextColor:kNoochGreen];
     [glyph_login setTextAlignment:NSTextAlignmentCenter];
@@ -85,7 +85,7 @@
                                       [self.login setAlpha:1];
                                       if ([[UIScreen mainScreen] bounds].size.height > 500)
                                       {
-                                          [self.login setFrame:CGRectMake(10, 498, 300, 50)];
+                                          [self.login setFrame:CGRectMake(10, 495, 300, 52)];
                                       }
                                       else
                                       {
@@ -515,10 +515,8 @@
         if (!error)
         {
             // Success! Now Log User into Nooch using the FB ID
-            
-            [[NSUserDefaults standardUserDefaults] setObject:[result objectForKey:@"id"] forKey:@"facebook_id"];
+            [user setObject:[result objectForKey:@"id"] forKey:@"facebook_id"];
             NSLog(@"Login w FB successful --> fb id is %@",[result objectForKey:@"id"]);
-            // NSLog(@"Login w FB successful --> result is %@",result);
 
             isloginWithFB = YES;
 
@@ -713,7 +711,7 @@
         self.hud.delegate = self;
         [self.hud show:YES];
 
-        [[assist shared]setIsloginFromOther:NO];
+        [[assist shared] setIsloginFromOther:NO];
 
         serve * check_duplicate = [serve new];
         [check_duplicate setTagName:@"check_dup"];
@@ -736,9 +734,9 @@
                               animations:^{
                                   [UIView addKeyframeWithRelativeStartTime:0 relativeDuration:1 animations:^{
                                       if ([[UIScreen mainScreen] bounds].size.height > 500) {
-                                          [sender setFrame:CGRectMake(-29, 498, 300, 50)];
+                                          [sender setFrame:CGRectMake(-29, 495, 300, 52)];
                                       } else {
-                                          [sender setFrame:CGRectMake(-28, 425, 300, 44)];
+                                          [sender setFrame:CGRectMake(-28, 425, 300, 42)];
                                       }
                                   }];
                               } completion: ^(BOOL finished){
@@ -748,9 +746,9 @@
                                                             animations:^{
                                                                 [UIView addKeyframeWithRelativeStartTime:0 relativeDuration:1 animations:^{
                                                                     if ([[UIScreen mainScreen] bounds].size.height > 500) {
-                                                                        [sender setFrame:CGRectMake(321, 498, 300, 50)];
+                                                                        [sender setFrame:CGRectMake(321, 496, 300, 52)];
                                                                     } else {
-                                                                        [sender setFrame:CGRectMake(321, 419, 300, 44)];
+                                                                        [sender setFrame:CGRectMake(321, 419, 300, 42)];
                                                                     }
                                                                 }];
                                                             } completion: ^(BOOL finished){
@@ -803,7 +801,7 @@
             
             NSString * imgURL = [NSString stringWithFormat:@"https://graph.facebook.com/%@/picture?type=large", fbID];
 
-            [[NSUserDefaults standardUserDefaults] setObject:fbID forKey:@"facebook_id"];
+            [user setObject:fbID forKey:@"facebook_id"];
 
             if (imgURL)
             {
@@ -1018,16 +1016,15 @@
     else if ([tagName isEqualToString:@"getMemberId"])
     {
         NSError *error;
+        //user = [NSUserDefaults standardUserDefaults];
 
         NSDictionary *loginResult = [NSJSONSerialization JSONObjectWithData:[result dataUsingEncoding:NSUTF8StringEncoding] options:0 error:&error];
-        [[NSUserDefaults standardUserDefaults] setObject:[loginResult objectForKey:@"Result"] forKey:@"MemberId"];
-        [[NSUserDefaults standardUserDefaults] setObject:email_fb forKey:@"UserName"];
-
-        user = [NSUserDefaults standardUserDefaults];
+        [user setObject:[loginResult objectForKey:@"Result"] forKey:@"MemberId"];
+        [user setObject:email_fb forKey:@"UserName"];
 
         NSMutableDictionary * automatic = [[NSMutableDictionary alloc] init];
-        [automatic setObject:[[NSUserDefaults standardUserDefaults] valueForKey:@"MemberId"] forKey:@"MemberId"];
-        [automatic setObject:[[NSUserDefaults standardUserDefaults] valueForKey:@"UserName"] forKey:@"UserName"];
+        [automatic setObject:[user valueForKey:@"MemberId"] forKey:@"MemberId"];
+        [automatic setObject:[user valueForKey:@"UserName"] forKey:@"UserName"];
         [automatic writeToFile:[self autoLogin] atomically:YES];
 
         me = [core new];

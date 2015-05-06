@@ -137,7 +137,7 @@ UIImageView *picture;
     scrollView.contentSize = CGSizeMake(320, [[UIScreen mainScreen] bounds].size.height);
 
     self.member_since_back = [[UIView alloc] initWithFrame:CGRectMake(0, 0, 320, heightOfTopSection)];
-    if ([[assist shared] isProfileCompleteAndValidated])
+    if (![[assist shared] isProfileCompleteAndValidated])
     {
         [self.member_since_back setBackgroundColor:Rgb2UIColor(214, 25, 21, .55)];
         [self.member_since_back setStyleId:@"profileTopSectionBg_susp"];
@@ -213,7 +213,7 @@ UIImageView *picture;
     [goToSettings addSubview:bankLinkedTxt];
     [goToSettings addSubview:glyph_bank];
 
-    if ([[[NSUserDefaults standardUserDefaults] objectForKey:@"IsBankAvailable"]isEqualToString:@"1"])
+    if ([[user objectForKey:@"IsBankAvailable"]isEqualToString:@"1"])
     {
         [bankLinkedTxt setFont:[UIFont fontWithName:@"Roboto-regular" size:13]];
         bankLinkedTxt.text = NSLocalizedString(@"Profile_BnkLnkd", @"Profile 'Bank Linked' text");
@@ -281,7 +281,7 @@ UIImageView *picture;
     [self.email setKeyboardType:UIKeyboardTypeEmailAddress];
     self.email.returnKeyType = UIReturnKeyNext;
     [self.email setStyleClass:@"tableViewCell_Profile_rightSide"];
-    [self.email setText:[[NSUserDefaults standardUserDefaults] objectForKey:@"UserName"]];
+    [self.email setText:[user objectForKey:@"UserName"]];
     [self.email setUserInteractionEnabled:NO];
     [self.email setTag:0];
     [scrollView addSubview:self.email];
@@ -357,20 +357,18 @@ UIImageView *picture;
     [self.list setScrollEnabled:NO];
     [self.list setBackgroundColor:[UIColor whiteColor]];
 
-    NSUserDefaults * defaults = [NSUserDefaults standardUserDefaults];
-
-    if (![[defaults valueForKey:@"Status"] isEqualToString:@"Registered"] &&
-         [[defaults valueForKey:@"IsVerifiedPhone"]isEqualToString:@"YES"])
+    if (![[user valueForKey:@"Status"] isEqualToString:@"Registered"] &&
+         [[user valueForKey:@"IsVerifiedPhone"]isEqualToString:@"YES"])
     {
         [self.list setFrame:CGRectMake(0, pictureRadius + 18 + self.sectionHeaderBg.frame.size.height, 320, rowHeight * 2)];
         numberOfRowsToDisplay = 2;
         emailVerifyRowIsShowing = false;
         smsVerifyRowIsShowing = false;
     }
-    else if ((![[defaults valueForKey:@"Status"] isEqualToString:@"Registered"] &&
-              ![[defaults valueForKey:@"IsVerifiedPhone"]isEqualToString:@"YES"]) ||
-             ( [[defaults valueForKey:@"Status"] isEqualToString:@"Registered"] &&
-               [[defaults valueForKey:@"IsVerifiedPhone"]isEqualToString:@"YES"]) )
+    else if ((![[user valueForKey:@"Status"] isEqualToString:@"Registered"] &&
+              ![[user valueForKey:@"IsVerifiedPhone"]isEqualToString:@"YES"]) ||
+             ( [[user valueForKey:@"Status"] isEqualToString:@"Registered"] &&
+               [[user valueForKey:@"IsVerifiedPhone"]isEqualToString:@"YES"]) )
     {
         numberOfRowsToDisplay = 3;
         [self.list setFrame:CGRectMake(0, pictureRadius + 18 + self.sectionHeaderBg.frame.size.height, 320, rowHeight * 3)];
@@ -379,13 +377,13 @@ UIImageView *picture;
         {
             emailVerifyRowIsShowing = true;
         }
-        else if (![[[NSUserDefaults standardUserDefaults] valueForKey:@"IsVerifiedPhone"]isEqualToString:@"YES"])
+        else if (![[user valueForKey:@"IsVerifiedPhone"]isEqualToString:@"YES"])
         {
             smsVerifyRowIsShowing = true;
         }
     }
-    else if (![[defaults valueForKey:@"Status"] isEqualToString:@"Active"] &&
-             ![[defaults valueForKey:@"IsVerifiedPhone"]isEqualToString:@"YES"])
+    else if (![[user valueForKey:@"Status"] isEqualToString:@"Active"] &&
+             ![[user valueForKey:@"IsVerifiedPhone"]isEqualToString:@"YES"])
     {
         numberOfRowsToDisplay = 4;
         [self.list setFrame:CGRectMake(0, pictureRadius + 18 + self.sectionHeaderBg.frame.size.height, 320, rowHeight * 4)];
@@ -764,13 +762,13 @@ UIImageView *picture;
     
     if ([arrdivide count] == 2)
     {
-        transactionInput = [[NSMutableDictionary alloc] initWithObjectsAndKeys:[[NSUserDefaults standardUserDefaults]stringForKey:@"MemberId"],@"MemberId",[arrdivide objectAtIndex:0],@"FirstName",[arrdivide objectAtIndex:1],@"LastName",self.email.text,@"UserName",nil];
+        transactionInput = [[NSMutableDictionary alloc] initWithObjectsAndKeys:[user stringForKey:@"MemberId"],@"MemberId",[arrdivide objectAtIndex:0],@"FirstName",[arrdivide objectAtIndex:1],@"LastName",self.email.text,@"UserName",nil];
 
         self.name.text = [NSString stringWithFormat:@"%@ %@",[[arrdivide objectAtIndex:0] capitalizedString],[[arrdivide objectAtIndex:1] capitalizedString]];
     }
     else
     {
-        transactionInput = [[NSMutableDictionary alloc] initWithObjectsAndKeys:[[NSUserDefaults standardUserDefaults]stringForKey:@"MemberId"],@"MemberId",self.name.text,@"FirstName",@" ",@"LastName",self.email.text,@"UserName",nil];
+        transactionInput = [[NSMutableDictionary alloc] initWithObjectsAndKeys:[user stringForKey:@"MemberId"],@"MemberId",self.name.text,@"FirstName",@" ",@"LastName",self.email.text,@"UserName",nil];
     }
 
     [transactionInput setObject:[NSString stringWithFormat:@"%@/%@",self.address_one.text,self.address_two.text] forKey:@"Address"];
@@ -1038,7 +1036,8 @@ UIImageView *picture;
             fbID = [result objectForKey:@"id"];
             [ARProfileManager setUserFacebook:fbID];
 
-            [[NSUserDefaults standardUserDefaults] setObject:fbID forKey:@"facebook_id"];
+            [user setObject:fbID forKey:@"facebook_id"];
+            [user synchronize];
 
             NSString * imgURL = [NSString stringWithFormat:@"https://graph.facebook.com/%@/picture?type=normal", fbID];
             [ARProfileManager setUserAvatarUrl:imgURL];
@@ -1525,8 +1524,8 @@ UIImageView *picture;
     if ([result rangeOfString:@"Invalid OAuth 2 Access"].location!=NSNotFound)
     {
         [[NSFileManager defaultManager] removeItemAtPath:[self autoLogin] error:nil];
-        [[NSUserDefaults standardUserDefaults] removeObjectForKey:@"UserName"];
-        [[NSUserDefaults standardUserDefaults] removeObjectForKey:@"MemberId"];
+        [user removeObjectForKey:@"UserName"];
+        [user removeObjectForKey:@"MemberId"];
         [timer invalidate];
         [nav_ctrl performSelector:@selector(disable)];
         [nav_ctrl performSelector:@selector(reset)];
@@ -1710,9 +1709,6 @@ UIImageView *picture;
 
         if ([[resultValue valueForKey:@"Result"] isEqualToString:@"Your details have been updated successfully."])
         {
-            NSUserDefaults * defaults = [NSUserDefaults standardUserDefaults];
-            [defaults setObject:@"YES" forKey:@"ProfileComplete"];
-            [defaults synchronize];
             [self.save setEnabled:NO];
             [self.save setUserInteractionEnabled:NO];
             [self.save setStyleClass:@"disabled_gray"];
@@ -1728,7 +1724,7 @@ UIImageView *picture;
                         placeholderImage:[UIImage imageNamed:@"RoundLoading"]];
             }
 
-            if (![[[NSUserDefaults standardUserDefaults] valueForKey:@"IsVerifiedPhone"]isEqualToString:@"YES"] &&
+            if (![[user valueForKey:@"IsVerifiedPhone"]isEqualToString:@"YES"] &&
                 self.phone.text.length > 8)
             {
                 UIAlertView *av = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"Profile_SvdSucAlrtTtle", @"Profile 'Profile Saved' Alert Title")
@@ -1906,7 +1902,8 @@ UIImageView *picture;
         }
 
         // Top Background Color (Red if Suspended)
-        if (![[user valueForKey:@"Status"] isEqualToString:@"Active"])
+        if (![[user valueForKey:@"Status"] isEqualToString:@"Active"] ||
+            ![[user valueForKey:@"IsVerifiedPhone"] isEqualToString:@"YES"])
         {
             [self.member_since_back setBackgroundColor:Rgb2UIColor(214, 25, 21, .55)];
             [self.member_since_back setStyleId:@"profileTopSectionBg_susp"];

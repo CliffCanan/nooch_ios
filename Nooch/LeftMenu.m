@@ -144,8 +144,8 @@
     }
 
     if ( ![[user valueForKey:@"Status"]isEqualToString:@"Active"]  ||
-        ![[[NSUserDefaults standardUserDefaults] valueForKey:@"IsVerifiedPhone"]isEqualToString:@"YES"] ||
-         ([[user valueForKey:@"firstName"] length] < 1 || [[user valueForKey:@"lastName"] length] < 1) )
+         ![[user valueForKey:@"IsVerifiedPhone"]isEqualToString:@"YES"] ||
+         ([[user valueForKey:@"firstName"]length] < 1 || [[user valueForKey:@"lastName"] length] < 1) )
     {
         user_pic.layer.borderWidth = 3;
         user_pic.layer.borderColor = kNoochRed.CGColor;
@@ -182,9 +182,7 @@
         [self.view addSubview:self.settings];
     }
 
-    NSUserDefaults * defaults = [[NSUserDefaults alloc]init];
-
-    if ([[defaults objectForKey:@"IsBankAvailable"]isEqualToString:@"1"])
+    if ([[user objectForKey:@"IsBankAvailable"]isEqualToString:@"1"])
     {
         [self.glyph_noBank removeFromSuperview];
     }
@@ -355,11 +353,10 @@
 
             UILabel * pending_notif = [UILabel new];
 
-            NSUserDefaults * defaults = [[NSUserDefaults alloc]init];
-            if ([defaults boolForKey:@"hasPendingItems"] == true)
+            if ([user boolForKey:@"hasPendingItems"] == true)
             {
                 //  NSLog(@"The current pending count is: %@",[defaults objectForKey:@"Pending_count"]);
-                [pending_notif setText:[NSString stringWithFormat:@"%@",[defaults objectForKey:@"Pending_count"]]];
+                [pending_notif setText:[NSString stringWithFormat:@"%@",[user objectForKey:@"Pending_count"]]];
                 [pending_notif setFrame:CGRectMake(212, 10, 22, 22)];
                 [pending_notif setStyleId:@"pending_notif"];
                 [pending_notif setStyleId:@"pending_notif_lsideMenu"];

@@ -554,7 +554,6 @@ NSString *amnt;
                                                                delegate:Nil
                                                       cancelButtonTitle:@"OK"
                                                       otherButtonTitles:nil, nil];
-                
                 [Alert show];
 
                 Home * home1 = [Home new];
@@ -597,24 +596,46 @@ NSString *amnt;
 
     else if ([tagName isEqualToString:@"info"])
     {
-        NSUserDefaults * defaults = [NSUserDefaults standardUserDefaults];
-
         NSError* error;
         Dictresponse = [NSJSONSerialization
                         JSONObjectWithData:[responseString dataUsingEncoding:NSUTF8StringEncoding]
                         options:kNilOptions
                         error:&error];
 
-        //NSLog(@"\n\nSERVE.M INFO DICTRESPONSE IS:  %@",Dictresponse);
-        if (![[Dictresponse objectForKey:@"LastLocationLat"] isKindOfClass:[NSNull class]] &&
-            ![[Dictresponse objectForKey:@"LastLocationLng"] isKindOfClass:[NSNull class]])
+        //NSLog(@"SERVE.M INFO DICTRESPONSE IS:  %@",Dictresponse);
+
+        // LastLocationLat & LastLocationLng
+        if (![[Dictresponse objectForKey:@"LastLocationLat"]isKindOfClass:[NSNull class]] &&
+            ![[Dictresponse objectForKey:@"LastLocationLng"]isKindOfClass:[NSNull class]])
         {
-            [defaults setObject:[Dictresponse objectForKey:@"LastLocationLat"] forKey:@"LastLat"];
-            [defaults setObject:[Dictresponse objectForKey:@"LastLocationLng"] forKey:@"LastLng"];
+            [user setObject:[Dictresponse objectForKey:@"LastLocationLat"] forKey:@"LastLat"];
+            [user setObject:[Dictresponse objectForKey:@"LastLocationLng"] forKey:@"LastLng"];
         }
-        
+
+        // IsVerifiedPhone
+        if ([[Dictresponse valueForKey:@"IsVerifiedPhone"]intValue]) {
+            [user setObject:@"YES" forKey:@"IsVerifiedPhone"];
+        }
+        else {
+            [user setObject:@"NO" forKey:@"IsVerifiedPhone"];
+        }
+
+        // Status
+        if ([[Dictresponse valueForKey:@"Status"]isEqualToString:@"Suspended"] ||
+            [[Dictresponse valueForKey:@"Status"]isEqualToString:@"Temporarily_Blocked"])
+        {
+            [[assist shared] setSusPended:YES];
+            [user setObject:@"Suspended" forKey:@"Status"];
+        }
+        else
+        {
+            [[assist shared] setSusPended:NO];
+            [user setObject:[Dictresponse valueForKey:@"Status"] forKey:@"Status"];
+        }
+
+        // IsRequiredImmediatley
         if (  [Dictresponse valueForKey:@"IsRequiredImmediatley"] != NULL ||
-            ![[Dictresponse valueForKey:@"IsRequiredImmediatley"] isKindOfClass:[NSNull class]])
+            ![[Dictresponse valueForKey:@"IsRequiredImmediatley"]isKindOfClass:[NSNull class]])
         {
             if ([[Dictresponse valueForKey:@"IsRequiredImmediatley"]boolValue]) {
                 [user setObject:@"YES" forKey:@"requiredImmediately"];
@@ -625,39 +646,54 @@ NSString *amnt;
             }
         }
 
-        if ([[Dictresponse valueForKey:@"IsVerifiedPhone"] intValue])
-        {
-            [defaults setObject:@"YES" forKey:@"IsVerifiedPhone"];
+        // IsBankAvailable
+        if ( [Dictresponse valueForKey:@"IsKnoxBankAdded"] &&
+            [[Dictresponse valueForKey:@"IsKnoxBankAdded"] boolValue] == YES) {
+            [user setObject:@"1" forKey:@"IsBankAvailable"];
         }
-        else
-        {
-            [defaults setObject:@"NO" forKey:@"IsVerifiedPhone"];
-        }
-
-        if ([[Dictresponse valueForKey:@"Status"] isEqualToString:@"Suspended"] ||
-            [[Dictresponse valueForKey:@"Status"] isEqualToString:@"Temporarily_Blocked"])
-        {
-            [[assist shared] setSusPended:YES];
-            [defaults setObject:@"Suspended" forKey:@"Status"];
-        }
-        else
-        {
-            [[assist shared] setSusPended:NO];
-            [defaults setObject:[Dictresponse valueForKey:@"Status"] forKey:@"Status"];
-        }
-        
-        if (  [Dictresponse valueForKey:@"PhotoUrl"] != NULL ||
-            ![[Dictresponse valueForKey:@"PhotoUrl"] isKindOfClass:[NSNull class]])
-        {
-            [defaults setObject:[Dictresponse valueForKey:@"PhotoUrl"] forKey:@"PhotoUrlRef"];
+        else {
+            [user setObject:@"0" forKey:@"IsBankAvailable"];
         }
 
-        [defaults synchronize];
-        
+        // FirstName & LastName
+        if (![[Dictresponse objectForKey:@"FirstName"] isKindOfClass:[NSNull class]] &&
+              [Dictresponse objectForKey:@"FirstName"] != NULL)
+        {
+            [user setObject:[Dictresponse objectForKey:@"FirstName"] forKey:@"firstName"];
+            [user setObject:[Dictresponse objectForKey:@"LastName"] forKey:@"lastName"];
+        }
+
+        // facebook_id
+        if ( [Dictresponse valueForKey:@"FacebookAccountLogin"] &&
+            [[Dictresponse valueForKey:@"FacebookAccountLogin"]length] > 1) {
+            [user setObject:[Dictresponse valueForKey:@"FacebookAccountLogin"] forKey:@"facebook_id"];
+        }
+        else {
+            [user setObject:@"" forKey:@"facebook_id"];
+        }
+
+        // UserName
+        if (  [Dictresponse objectForKey:@"UserName"] != NULL &&
+            ![[Dictresponse objectForKey:@"UserName"] isKindOfClass:[NSNull class]])
+        {
+            [user setObject:[Dictresponse objectForKey:@"UserName"] forKey:@"UserName"];
+        }
+
+        // DateCreated
+        if ( [Dictresponse valueForKey:@"DateCreated"] &&
+            ([[user valueForKey:@"DateCreated"] isKindOfClass:[NSNull class]] ||
+             [user valueForKey:@"DateCreated"] == NULL ||
+             [[user valueForKey:@"DateCreated"] isEqualToString:@""] ||
+             ![[user valueForKey:@"DateCreated"] isEqualToString:[Dictresponse valueForKey:@"DateCreated"]]))
+        {
+            [user setObject:[Dictresponse valueForKey:@"DateCreated"] forKey:@"DateCreated"];
+        }
+
+        [user synchronize];
     }
     else if ([tagName isEqualToString:@"sets"])
     {
-        NSUserDefaults * defaults = [NSUserDefaults standardUserDefaults];
+        //NSUserDefaults * defaults = [NSUserDefaults standardUserDefaults];
         
         NSError * error;
         Dictresponse = [NSJSONSerialization
@@ -668,44 +704,48 @@ NSString *amnt;
         //NSLog(@"SETS RESPONSE IS:  %@",Dictresponse);
         if (Dictresponse != NULL)
         {
+            // FullyVerified
             if ([[Dictresponse valueForKey:@"IsValidProfile"] intValue]) {
-                [defaults setObject:@"1" forKey:@"FullyVerified"];
+                [user setObject:@"1" forKey:@"FullyVerified"];
             }
-            else
-            {
-                [defaults setObject:@"0" forKey:@"FullyVerified"];
-            }
-            if ([[Dictresponse valueForKey:@"IsVerifiedPhone"] intValue])
-            {
-                [defaults setObject:@"YES" forKey:@"IsVerifiedPhone"];
-            }
-            else
-            {
-                [defaults setObject:@"NO" forKey:@"IsVerifiedPhone"];
+            else {
+                [user setObject:@"0" forKey:@"FullyVerified"];
             }
 
+            // IsVerifiedPhone
+            if ([[Dictresponse valueForKey:@"IsVerifiedPhone"] intValue]) {
+                [user setObject:@"YES" forKey:@"IsVerifiedPhone"];
+            }
+            else {
+                [user setObject:@"NO" forKey:@"IsVerifiedPhone"];
+            }
+
+            // ContactNumber
             if (  [Dictresponse valueForKey:@"ContactNumber"] &&
                 ![[Dictresponse valueForKey:@"ContactNumber"] isKindOfClass:[NSNull class]])
             {
-                [defaults setObject:[Dictresponse valueForKey:@"ContactNumber"] forKey:@"ContactNumber"];
+                [user setObject:[Dictresponse valueForKey:@"ContactNumber"] forKey:@"ContactNumber"];
             }
+
+            // ProfileComplete
             if ([[Dictresponse valueForKey:@"ContactNumber"]isKindOfClass:[NSNull class]] ||
                 [[Dictresponse valueForKey:@"Address"]isKindOfClass:[NSNull class]])
             {
-                [defaults setObject:@"NO"forKey:@"ProfileComplete"];
+                [user setObject:@"NO"forKey:@"ProfileComplete"];
             }
             else
             {
                 [[me usr] setObject:@"YES" forKey:@"validated"];
-                [defaults setObject:@"YES"forKey:@"ProfileComplete"];
+                [user setObject:@"YES"forKey:@"ProfileComplete"];
             }
-            [defaults synchronize];
+
+            [user synchronize];
         }
         else
         {
             NSLog(@"serve.m --> 'Sets' response from server was NULL:  %@",Dictresponse);
         }
-        
+
     }
     else if ([tagName isEqualToString:@"login"] ||
              [tagName isEqualToString:@"loginwithFB"])
@@ -715,7 +755,7 @@ NSString *amnt;
                                 JSONObjectWithData:[responseString dataUsingEncoding:NSUTF8StringEncoding]
                                 options:kNilOptions
                                 error:&error];
-        //NSLog(@"Serve --> connectionDidFinishLoading --> Login: dict object %@",[result objectForKey:@"Result"]);
+        //NSLog(@"Serve -> connectionDidFinishLoading -> Login: dict object %@",[result objectForKey:@"Result"]);
         //getting the token
         if ( [result objectForKey:@"Result"] &&
            ![[result objectForKey:@"Result"] isEqualToString:@"Invalid user id or password."] &&
@@ -726,11 +766,11 @@ NSString *amnt;
         {
             NSString * token = [result objectForKey:@"Result"];
             //storing the token
-            NSUserDefaults * defaults = [NSUserDefaults standardUserDefaults];
             //setting the token in the user defaults
-            [defaults setObject:token forKey:@"OAuthToken"];
+            [user setObject:token forKey:@"OAuthToken"];
+            NSLog(@"THIS HAS BEEN REACHED :-)");
             //syncing the defaults
-            [defaults synchronize];
+            [user synchronize];
         }
     }
     [self.Delegate listen:responseString tagName:self.tagName];
@@ -911,25 +951,24 @@ NSString *amnt;
         NSLog(@"connect error");
 }
 
-//Venturepact Edit
 -(void)sendCsvTrasactionHistory:(NSString *)emailaddress
 {
     self.responseData = [[NSMutableData alloc] init];
     [[NSURLCache sharedURLCache] removeAllCachedResponses];
     NSString *urlString = [NSString stringWithFormat:@"%@/sendTransactionInCSV",ServerUrl];
-    
+
     NSURL *url = [NSURL URLWithString:urlString];
-    
+
     dictInv=[[NSMutableDictionary alloc]init];
-    
+
     [dictInv setObject:[[NSUserDefaults standardUserDefaults] objectForKey:@"MemberId"] forKey:@"memberId"];
     [dictInv setObject:emailaddress forKey:@"toAddress"];
-    
+
     NSUserDefaults*defaults=[NSUserDefaults standardUserDefaults];
-    
+
     [dictInv setObject:[defaults valueForKey:@"OAuthToken"] forKey:@"accessToken"];
-    // NSString *post = [dictSMS JSONRepresentation];
     NSError *error;
+
     postDataInv = [NSJSONSerialization dataWithJSONObject:dictInv
                                                   options:NSJSONWritingPrettyPrinted error:&error];
     
@@ -942,7 +981,7 @@ NSString *amnt;
     [requestInv setValue:@"charset" forHTTPHeaderField:@"UTF-8"];
     [requestInv setHTTPBody:postDataInv];
     connectionInv = [[NSURLConnection alloc] initWithRequest:requestInv delegate:self];
-    
+
     if (!connectionInv)
         NSLog(@"connect error");
 }
@@ -954,9 +993,9 @@ NSString *amnt;
     [[NSURLCache sharedURLCache] removeAllCachedResponses];
     NSString *urlString = [NSString stringWithFormat:@"%@/GetFeaturedNonprofit?accessToken=%@&memberId=%@",ServerUrl, [defaults valueForKey:@"OAuthToken"],[[NSUserDefaults standardUserDefaults] objectForKey:@"MemberId"]];
     NSURL *url = [NSURL URLWithString:urlString];
-    
+
     requestList = [[NSMutableURLRequest alloc] initWithURL:url];
-    
+
     connectionList = [[NSURLConnection alloc] initWithRequest:requestList delegate:self];
     if (!connectionList)
         NSLog(@"connect error");
@@ -967,80 +1006,88 @@ NSString *amnt;
     [[NSURLCache sharedURLCache] removeAllCachedResponses];
     NSString *urlString = [NSString stringWithFormat:@"%@/GetNonprofits?accessToken=%@&memberId=%@",ServerUrl, [defaults valueForKey:@"OAuthToken"],[[NSUserDefaults standardUserDefaults] objectForKey:@"MemberId"]];
     NSURL *url = [NSURL URLWithString:urlString];
-    
+
     requestList = [[NSMutableURLRequest alloc] initWithURL:url];
-    
+
     connectionList = [[NSURLConnection alloc] initWithRequest:requestList delegate:self];
     if (!connectionList)
         NSLog(@"connect error");
+}
+-(void)GetNonProfiltDetail:(NSString*)npId memberId:(NSString*)memberId
+{
+ self.responseData = [[NSMutableData alloc] init];
+ NSUserDefaults*defaults=[NSUserDefaults standardUserDefaults];
+ [[NSURLCache sharedURLCache] removeAllCachedResponses];
+ NSString *urlString = [NSString stringWithFormat:@"%@/GetNonprofitDetails?accessToken=%@&nonProfitMemberId=%@&memberId=%@",ServerUrl, [defaults valueForKey:@"OAuthToken"],npId,memberId];
+ NSURL *url = [NSURL URLWithString:urlString];
+ 
+ requestList = [[NSMutableURLRequest alloc] initWithURL:url];
+ 
+ connectionList = [[NSURLConnection alloc] initWithRequest:requestList delegate:self];
+ if (!connectionList)
+ NSLog(@"connect error");
 }
 -(void) GetAllWithdrawalFrequency
 {
     [[NSURLCache sharedURLCache] removeAllCachedResponses];
     self.responseData = [[NSMutableData alloc] init];
     NSUserDefaults*defaults=[NSUserDefaults standardUserDefaults];
-    
+
     NSString *urlString = [NSString stringWithFormat:@"%@/GetAllWithdrawalFrequency?accessToken=%@&memberId=%@",ServerUrl, [defaults valueForKey:@"OAuthToken"],[defaults valueForKey:@"MemberId"]];
     NSURL *url = [NSURL URLWithString:urlString];
-    
+
     requestList = [[NSMutableURLRequest alloc] initWithURL:url];
-    
+
     connectionList = [[NSURLConnection alloc] initWithRequest:requestList delegate:self];
     if (!connectionList)
         NSLog(@"connect error");
 }
- -(void)SaveFrequency:(NSString*) withdrawalId type:(NSString*) type frequency: (float)withdrawalFrequency
- {
- //accessToken
+-(void)SaveFrequency:(NSString*) withdrawalId type:(NSString*) type frequency: (float)withdrawalFrequency
+{
  self.responseData = [[NSMutableData alloc] init];
  [[NSURLCache sharedURLCache] removeAllCachedResponses];
  NSString *urlString = [NSString stringWithFormat:@"%@/SaveFrequency",ServerUrl];
- 
+
  NSURL *url = [NSURL URLWithString:urlString];
- 
+
  dictInv=[[NSMutableDictionary alloc]init];
- 
  [dictInv setObject:[[NSUserDefaults standardUserDefaults] objectForKey:@"MemberId"] forKey:@"memberId"];
  [dictInv setObject:withdrawalId forKey:@"withdrawalId"];
  [dictInv setObject:type forKey:@"type"];
- //withdrawalFrequency
  [dictInv setObject:[NSString stringWithFormat:@"%f",withdrawalFrequency] forKey:@"withdrawalFrequency"];
- 
+
  NSUserDefaults*defaults=[NSUserDefaults standardUserDefaults];
- 
+
  [dictInv setObject:[defaults valueForKey:@"OAuthToken"] forKey:@"accessToken"];
- 
+
  NSError *error;
  postDataInv = [NSJSONSerialization dataWithJSONObject:dictInv
  options:NSJSONWritingPrettyPrinted error:&error];
- 
- 
- 
+
  postLengthInv = [NSString stringWithFormat:@"%lu", (unsigned long)[postDataInv length]];
- 
+
  requestInv = [[NSMutableURLRequest alloc] initWithURL:url];
  [requestInv setHTTPMethod:@"POST"];
  [requestInv setValue:postLengthInv forHTTPHeaderField:@"Content-Length"];
  [requestInv setValue:@"application/json" forHTTPHeaderField:@"Content-Type"];
  [requestInv setValue:@"charset" forHTTPHeaderField:@"UTF-8"];
  [requestInv setHTTPBody:postDataInv];
- 
+
  connectionInv = [[NSURLConnection alloc] initWithRequest:requestInv delegate:self];
- 
+
  if (!connectionInv)
- 
- NSLog(@"connect error");
- }
+    NSLog(@"connect error");
+}
 -(void)getAutoWithDrawalSelectedOption{
     [[NSURLCache sharedURLCache] removeAllCachedResponses];
     self.responseData = [[NSMutableData alloc] init];
     NSUserDefaults*defaults=[NSUserDefaults standardUserDefaults];
-    
+
     NSString *urlString = [NSString stringWithFormat:@"%@/GetMemberAutomaticWithdrawalOption?accessToken=%@&memberId=%@",ServerUrl, [defaults valueForKey:@"OAuthToken"],[[NSUserDefaults standardUserDefaults] objectForKey:@"MemberId"]];
     NSURL *url = [NSURL URLWithString:urlString];
-    
+
     requestList = [[NSMutableURLRequest alloc] initWithURL:url];
-    
+
     connectionList = [[NSURLConnection alloc] initWithRequest:requestList delegate:self];
     if (!connectionList)
         NSLog(@"connect error");
@@ -1050,13 +1097,12 @@ NSString *amnt;
     [[NSURLCache sharedURLCache] removeAllCachedResponses];
     self.responseData = [[NSMutableData alloc] init];
     NSUserDefaults*defaults=[NSUserDefaults standardUserDefaults];
-    
-    
+
     NSString *urlString = [NSString stringWithFormat:@"%@/GetAllWithdrawalTrigger?accessToken=%@&memberId=%@",ServerUrl, [defaults valueForKey:@"OAuthToken"],[defaults valueForKey:@"MemberId"]];
     NSURL *url = [NSURL URLWithString:urlString];
-    
+
     requestList = [[NSMutableURLRequest alloc] initWithURL:url];
-    
+
     connectionList = [[NSURLConnection alloc] initWithRequest:requestList delegate:self];
     if (!connectionList)
         NSLog(@"connect error");
@@ -1071,11 +1117,11 @@ NSString *amnt;
     NSUserDefaults*defaults=[NSUserDefaults standardUserDefaults];
     NSString * memId = [defaults objectForKey:@"MemberId"];
     NSString *urlString = [NSString stringWithFormat:@"%@/GetMostFrequentFriends?MemberId=%@&accessToken=%@",ServerUrl,memId,[defaults valueForKey:@"OAuthToken"]];
-    
+
     NSURL *url = [NSURL URLWithString:urlString];
-    
+
     requestList = [[NSMutableURLRequest alloc] initWithURL:url];
-    
+
     connectionList = [[NSURLConnection alloc] initWithRequest:requestList delegate:self];
     if (!connectionList)
         NSLog(@"connect error");
@@ -1088,15 +1134,16 @@ NSString *amnt;
     NSUserDefaults*defaults=[NSUserDefaults standardUserDefaults];
     NSString * memId = [defaults objectForKey:@"MemberId"];
     NSString *urlString = [NSString stringWithFormat:@"%@/GetKnoxBankAccountDetails?memberId=%@&accessToken=%@",ServerUrl,memId,[defaults valueForKey:@"OAuthToken"]];
-    
+
     NSURL *url = [NSURL URLWithString:urlString];
-    
+
     requestList = [[NSMutableURLRequest alloc] initWithURL:url];
-    
+
     connectionList = [[NSURLConnection alloc] initWithRequest:requestList delegate:self];
     if (!connectionList)
         NSLog(@"connect error");
 }
+
 -(void)getLocationBasedSearch:(NSString *)radius
 {
     ServiceType = @"LocationSearch";
@@ -1105,11 +1152,11 @@ NSString *amnt;
     NSString * memId = [defaults objectForKey:@"MemberId"];
     [[NSURLCache sharedURLCache] removeAllCachedResponses];
     NSString *urlString = [NSString stringWithFormat:@"%@/GetLocationSearch?MemberId=%@&accessToken=%@&Radius=%@",ServerUrl,memId,[defaults valueForKey:@"OAuthToken"],radius];
-    
+
     NSURL *url = [NSURL URLWithString:urlString];
-    
+
     requestList = [[NSMutableURLRequest alloc] initWithURL:url];
-    
+
     connectionList = [[NSURLConnection alloc] initWithRequest:requestList delegate:self];
     if (!connectionList)
         NSLog(@"connect error");
@@ -1121,13 +1168,12 @@ NSString *amnt;
     NSUserDefaults * defaults = [NSUserDefaults standardUserDefaults];
     NSString * urlString = [NSString stringWithFormat:@"%@/GetMemberPendingTransctionsCount?MemberId=%@&accesstoken=%@",ServerUrl,[defaults objectForKey:@"MemberId"],[defaults objectForKey:@"OAuthToken"]];
     NSURL * url = [NSURL URLWithString:urlString];
-    
+
     requestList = [[NSMutableURLRequest alloc] initWithURL:url];
-    
+
     connectionList = [[NSURLConnection alloc] initWithRequest:requestList delegate:self];
     if (!connectionList)
         NSLog(@"connect error");
-    
 }
 -(void)GetMemberStats:(NSString*)query
 {
@@ -1135,43 +1181,28 @@ NSString *amnt;
     self.responseData = [[NSMutableData alloc] init];
     NSUserDefaults * defaults = [NSUserDefaults standardUserDefaults];
     NSString * memId = [defaults objectForKey:@"MemberId"];
-    
+
     NSString *urlString = [NSString stringWithFormat:@"%@/GetMemberStats?memberId=%@&query=%@&accessToken=%@",ServerUrl,memId,query,[defaults valueForKey:@"OAuthToken"]];
     NSURL *url = [NSURL URLWithString:urlString];
-    
+
     requestList = [[NSMutableURLRequest alloc] initWithURL:url];
-    
+
     connectionList = [[NSURLConnection alloc] initWithRequest:requestList delegate:self];
     if (!connectionList)
         NSLog(@"connect error");
 }
-/*-(void)GetNonProfiltDetail:(NSString*)npId memberId:(NSString*)memberId
-{
-    self.responseData = [[NSMutableData alloc] init];
-    NSUserDefaults*defaults=[NSUserDefaults standardUserDefaults];
-    [[NSURLCache sharedURLCache] removeAllCachedResponses];
-    NSString *urlString = [NSString stringWithFormat:@"%@/GetNonprofitDetails?accessToken=%@&nonProfitMemberId=%@&memberId=%@",ServerUrl, [defaults valueForKey:@"OAuthToken"],npId,memberId];
-    NSURL *url = [NSURL URLWithString:urlString];
-    
-    requestList = [[NSMutableURLRequest alloc] initWithURL:url];
-    
-    connectionList = [[NSURLConnection alloc] initWithRequest:requestList delegate:self];
-    if (!connectionList)
-        NSLog(@"connect error");
-}*/
 -(void)GetServerCurrentTime
 {
     [[NSURLCache sharedURLCache] removeAllCachedResponses];
-    
+
     responseData = [NSMutableData data];
     NSString *urlForHis = [NSString stringWithFormat:@"%@"@"/%@", ServerUrl, @"GetServerCurrentTime"];
-    
+
     requestList = [[NSMutableURLRequest alloc] initWithURL:[NSURL URLWithString:urlForHis]];
-    
+
     connectionList = [[NSURLConnection alloc] initWithRequest:requestList delegate:self];
     if (!connectionList)
         NSLog(@"connect error");
-    
 }
 -(void)GetTransactionDetail:(NSString*)transactionId
 {
@@ -1181,15 +1212,14 @@ NSString *amnt;
     [[NSURLCache sharedURLCache] removeAllCachedResponses];
     NSString *urlString = [NSString stringWithFormat:@"%@/GetsingleTransactionDetail?MemberId=%@&transactionId=%@&accessToken=%@",ServerUrl,memId,transactionId,[defaults valueForKey:@"OAuthToken"]];
     //NSLog(@"%@",urlString);
-    
+
     NSURL *url = [NSURL URLWithString:urlString];
-    
+
     requestList = [[NSMutableURLRequest alloc] initWithURL:url];
-    
+
     connectionList = [[NSURLConnection alloc] initWithRequest:requestList delegate:self];
     if (!connectionList)
         NSLog(@"connect error");
-    
 }
 -(void)histMore:(NSString*)type sPos:(NSInteger)sPos len:(NSInteger)len subType:(NSString*)subType
 {
@@ -1199,7 +1229,7 @@ NSString *amnt;
     NSString *urlForHis = [NSString stringWithFormat:@"%@"@"/%@?memberId=%@&listType=%@&SubListType=%@&%@=%@&%@=%@&accessToken=%@", ServerUrl, @"GetTransactionsList", [[NSUserDefaults standardUserDefaults] valueForKey:@"MemberId"], type,subType, @"pSize", [NSString stringWithFormat:@"%ld",(long)len], @"pIndex", [NSString stringWithFormat:@"%ld",(long)sPos],[defaults valueForKey:@"OAuthToken"]];
     NSLog(@"more hist: %@",type);
     requestList = [[NSMutableURLRequest alloc] initWithURL:[NSURL URLWithString:urlForHis]];
-    
+
     connectionList = [[NSURLConnection alloc] initWithRequest:requestList delegate:self];
     if (!connectionList)
         NSLog(@"connect error");
@@ -1208,18 +1238,16 @@ NSString *amnt;
     //histSafe=NO;
     [[NSURLCache sharedURLCache] removeAllCachedResponses];
     NSUserDefaults*defaults=[NSUserDefaults standardUserDefaults];
-    
+
     responseData = [NSMutableData data];
     NSString *urlForHis = [NSString stringWithFormat:@"%@"@"/%@?memberId=%@&listType=%@&sublist=%@&friendName=%@&%@=%@&%@=%@&accessToken=%@", ServerUrl, @"GetTransactionsSearchList", [[NSUserDefaults standardUserDefaults] valueForKey:@"MemberId"], type,subType,name, @"pSize", [NSString stringWithFormat:@"%ld",(long)len], @"pIndex", [NSString stringWithFormat:@"%ld",(long)sPos],[defaults valueForKey:@"OAuthToken"]];
     //NSLog(@"more hist: %@",type);
     requestList = [[NSMutableURLRequest alloc] initWithURL:[NSURL URLWithString:urlForHis]];
-    
+
     connectionList = [[NSURLConnection alloc] initWithRequest:requestList delegate:self];
     if (!connectionList)
         NSLog(@"connect error");
-    
 }
-
 -(void) LogOutRequest:(NSString*) memberId
 {
     self.responseData = [[NSMutableData alloc] init];
@@ -1227,17 +1255,15 @@ NSString *amnt;
     [[NSURLCache sharedURLCache] removeAllCachedResponses];
     NSString *urlString = [NSString stringWithFormat:@"%@/LogOutRequest?accessToken=%@&memberId=%@",ServerUrl, [defaults valueForKey:@"OAuthToken"],memberId];
     NSURL *url = [NSURL URLWithString:urlString];
-    
+
     requestList = [[NSMutableURLRequest alloc] initWithURL:url];
-    
+
     connectionList = [[NSURLConnection alloc] initWithRequest:requestList delegate:self];
     if (!connectionList)
         NSLog(@"connect error");
 }
-
 -(void)MemberNotificationSettings:(NSDictionary*) memberNotificationSettings type:(NSString*)type
 {
-    //accessToken
     [[NSURLCache sharedURLCache] removeAllCachedResponses];
     self.responseData = [[NSMutableData alloc] init];
     NSString*servicePath;
@@ -1249,24 +1275,21 @@ NSString *amnt;
         servicePath=@"MemberEmailNotificationSettings";
     }
     NSString *urlString = [NSString stringWithFormat:@"%@/%@",ServerUrl,servicePath];
-    
+
     NSURL *url = [NSURL URLWithString:urlString];
     dictInv=[[NSMutableDictionary alloc]init];
-    
     [dictInv setObject:memberNotificationSettings forKey:@"memberNotificationSettings"];
+
     NSUserDefaults*defaults=[NSUserDefaults standardUserDefaults];
-    
     [dictInv setObject:[defaults valueForKey:@"OAuthToken"] forKey:@"accessToken"];
     NSError *error;
+
     postDataInv = [NSJSONSerialization dataWithJSONObject:dictInv
                                                   options:NSJSONWritingPrettyPrinted error:&error];
-    
-    
-    
+
     postLengthInv = [NSString stringWithFormat:@"%lu", (unsigned long)[postDataInv length]];
-    
+
     requestInv = [[NSMutableURLRequest alloc] initWithURL:url];
-    
     [requestInv setHTTPMethod:@"POST"];
     [requestInv setValue:postLengthInv forHTTPHeaderField:@"Content-Length"];
     [requestInv setValue:@"application/json" forHTTPHeaderField:@"Content-Type"];
@@ -1276,7 +1299,6 @@ NSString *amnt;
     connectionInv = [[NSURLConnection alloc] initWithRequest:requestInv delegate:self];
 
     if (!connectionInv)
-        
         NSLog(@"connect error");
 }
 
@@ -1286,13 +1308,13 @@ NSString *amnt;
     self.responseData = [[NSMutableData alloc] init];
     NSUserDefaults*defaults = [NSUserDefaults standardUserDefaults];
     NSString * memId = [defaults objectForKey:@"MemberId"];
-    
+
     NSString *urlString = [NSString stringWithFormat:@"%@/GetMemberNotificationSettings?memberId=%@&accessToken=%@",ServerUrl,memId,[defaults valueForKey:@"OAuthToken"]];
-    
+
     NSURL *url = [NSURL URLWithString:urlString];
-    
+
     requestList = [[NSMutableURLRequest alloc] initWithURL:url];
-    
+
     connectionList = [[NSURLConnection alloc] initWithRequest:requestList delegate:self];
     if (!connectionList)
         NSLog(@"connect error");
@@ -1302,9 +1324,9 @@ NSString *amnt;
 {
     self.responseData = [[NSMutableData alloc] init];
     [[NSURLCache sharedURLCache] removeAllCachedResponses];
-    
+
     NSString *urlString = [NSString stringWithFormat:@"%@/TransferMoneyToNonNoochUser",ServerUrl];
-    
+
     NSURL *url = [NSURL URLWithString:urlString];
     dictInv = [[NSMutableDictionary alloc]init];
     [dictInv setObject:transactionInput forKey:@"transactionInput"];
@@ -1313,15 +1335,13 @@ NSString *amnt;
     [dictInv setObject:@"personal" forKey:@"inviteType"];
     [dictInv setObject:email forKey:@"receiverEmailId"];
     [dictInv setObject:[defaults valueForKey:@"OAuthToken"] forKey:@"accessToken"];
-    // NSString *post = [dictSMS JSONRepresentation];
 
     NSError *error;
     postDataInv = [NSJSONSerialization dataWithJSONObject:dictInv
                                                   options:NSJSONWritingPrettyPrinted error:&error];
-    
 
     postLengthInv = [NSString stringWithFormat:@"%lu", (unsigned long)[postDataInv length]];
-    
+
     requestInv = [[NSMutableURLRequest alloc] initWithURL:url];
     [requestInv setHTTPMethod:@"POST"];
     [requestInv setValue:postLengthInv forHTTPHeaderField:@"Content-Length"];
@@ -1332,7 +1352,6 @@ NSString *amnt;
     connectionInv = [[NSURLConnection alloc] initWithRequest:requestInv delegate:self];
 
     if (!connectionInv)
-        
         NSLog(@"connect error");
 }
 
@@ -1350,9 +1369,9 @@ NSString *amnt;
         rm = @"false";
     NSString *urlString = [NSString stringWithFormat:@"%@/SaveImmediateRequire?memberId=%@&IsRequiredImmediatley=%@&accessToken=%@",ServerUrl,memId,rm,[defaults valueForKey:@"OAuthToken"]];
     NSURL *url = [NSURL URLWithString:urlString];
-    
+
     requestList = [[NSMutableURLRequest alloc] initWithURL:url];
-    
+
     connectionList = [[NSURLConnection alloc] initWithRequest:requestList delegate:self];
     if (!connectionList)
         NSLog(@"connect error");
@@ -1379,15 +1398,15 @@ NSString *amnt;
 
     [[NSURLCache sharedURLCache] removeAllCachedResponses];
     NSString *urlString = [NSString stringWithFormat:@"%@/RaiseDispute",ServerUrl];
-    
+
     NSURL *url = [NSURL URLWithString:urlString];
-    dictInv=[[NSMutableDictionary alloc]init];
-    [dictInv setObject:Input forKey:@"raiseDisputeInput"];
 
     NSUserDefaults*defaults=[NSUserDefaults standardUserDefaults];
-
+    dictInv=[[NSMutableDictionary alloc]init];
+    [dictInv setObject:Input forKey:@"raiseDisputeInput"];
     [dictInv setObject:[defaults valueForKey:@"OAuthToken"] forKey:@"accessToken"];
     [dictInv setObject:[[NSUserDefaults standardUserDefaults] objectForKey:@"MemberId"] forKey:@"memberId"];
+
     NSError *error;
     postDataInv = [NSJSONSerialization dataWithJSONObject:dictInv
                                                   options:NSJSONWritingPrettyPrinted error:&error];
@@ -1400,11 +1419,10 @@ NSString *amnt;
     [requestInv setValue:@"application/json" forHTTPHeaderField:@"Content-Type"];
     [requestInv setValue:@"charset" forHTTPHeaderField:@"UTF-8"];
     [requestInv setHTTPBody:postDataInv];
-    
+
     connectionInv = [[NSURLConnection alloc] initWithRequest:requestInv delegate:self];
-    
+
     if (!connectionInv)
-        
         NSLog(@"connect error");
 }
 
@@ -1416,9 +1434,9 @@ NSString *amnt;
     [[NSURLCache sharedURLCache] removeAllCachedResponses];
     NSString *urlString = [NSString stringWithFormat:@"%@/SaveSocialMediaPost?MemberId=%@&PostTo=%@&PostContent=%@&accessToken=%@",ServerUrl,memId,PostTo,PostTo,[defaults valueForKey:@"OAuthToken"]];
     NSURL *url = [NSURL URLWithString:urlString];
-    
+
     requestList = [[NSMutableURLRequest alloc] initWithURL:url];
-    
+
     connectionList = [[NSURLConnection alloc] initWithRequest:requestList delegate:self];
     if (!connectionList)
         NSLog(@"connect error");
@@ -1432,9 +1450,9 @@ NSString *amnt;
     [[NSURLCache sharedURLCache] removeAllCachedResponses];
     NSString *urlString = [NSString stringWithFormat:@"%@/UpDateLatLongOfUser?memberId=%@&Lat=%@&Long=%@&accessToken=%@",ServerUrl,memId,lat,lng,[defaults valueForKey:@"OAuthToken"]];
     NSURL *url = [NSURL URLWithString:urlString];
-    
+
     requestList = [[NSMutableURLRequest alloc] initWithURL:url];
-    
+
     connectionList = [[NSURLConnection alloc] initWithRequest:requestList delegate:self];
     if (!connectionList)
         NSLog(@"connect error");
@@ -1448,11 +1466,10 @@ NSString *amnt;
     NSString *urlString = [NSString stringWithFormat:@"%@/CancelMoneyRequestForExistingNoochUser?TransactionId=%@&MemberId=%@",ServerUrl,transactionId,[defaults objectForKey:@"MemberId"]];
     NSURL *url = [NSURL URLWithString:urlString];
     requestList = [[NSMutableURLRequest alloc] initWithURL:url];
-    
+
     connectionList = [[NSURLConnection alloc] initWithRequest:requestList delegate:self];
     if (!connectionList)
         NSLog(@"connect error");
-    
 }
 
 -(void)CancelMoneyRequestForNonNoochUser:(NSString *)transactionId
@@ -1463,7 +1480,7 @@ NSString *amnt;
     NSString *urlString = [NSString stringWithFormat:@"%@/CancelMoneyRequestForNonNoochUser?TransactionId=%@&MemberId=%@",ServerUrl,transactionId,[defaults objectForKey:@"MemberId"]];
     NSURL *url = [NSURL URLWithString:urlString];
     requestList = [[NSMutableURLRequest alloc] initWithURL:url];
-    
+
     connectionList = [[NSURLConnection alloc] initWithRequest:requestList delegate:self];
     if (!connectionList)
         NSLog(@"connect error");
@@ -1477,7 +1494,7 @@ NSString *amnt;
     NSString *urlString = [NSString stringWithFormat:@"%@/CancelMoneyTransferToNonMemberForSender?TransactionId=%@&MemberId=%@",ServerUrl,transactionId,[defaults objectForKey:@"MemberId"]];
     NSURL *url = [NSURL URLWithString:urlString];
     requestList = [[NSMutableURLRequest alloc] initWithURL:url];
-    
+
     connectionList = [[NSURLConnection alloc] initWithRequest:requestList delegate:self];
     if (!connectionList)
         NSLog(@"connect error");
@@ -1487,33 +1504,34 @@ NSString *amnt;
 {
     self.responseData = [[NSMutableData alloc] init];
     [[NSURLCache sharedURLCache] removeAllCachedResponses];
-    
+
     NSString *urlString = [NSString stringWithFormat:@"%@/CancelRejectTransaction",ServerUrl];
-    
+
     NSURL *url = [NSURL URLWithString:urlString];
-    
+
+    NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
+
     dictInv = [[NSMutableDictionary alloc]init];
     [dictInv setObject:transactionId forKey:@"transactionId"];
     [dictInv setObject:userResponse forKey:@"userResponse"];
-    NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
-    
     [dictInv setObject:[defaults valueForKey:@"OAuthToken"] forKey:@"accessToken"];
     [dictInv setObject:[[NSUserDefaults standardUserDefaults] objectForKey:@"MemberId"] forKey:@"memberId"];
+
     NSError *error;
     postDataInv = [NSJSONSerialization dataWithJSONObject:dictInv
                                                   options:NSJSONWritingPrettyPrinted error:&error];
-    
+
     postLengthInv = [NSString stringWithFormat:@"%lu", (unsigned long)[postDataInv length]];
-    
+
     requestInv = [[NSMutableURLRequest alloc] initWithURL:url];
     [requestInv setHTTPMethod:@"POST"];
     [requestInv setValue:postLengthInv forHTTPHeaderField:@"Content-Length"];
     [requestInv setValue:@"application/json" forHTTPHeaderField:@"Content-Type"];
     [requestInv setValue:@"charset" forHTTPHeaderField:@"UTF-8"];
     [requestInv setHTTPBody:postDataInv];
-    
+
     connectionInv = [[NSURLConnection alloc] initWithRequest:requestInv delegate:self];
-    
+
     if (!connectionInv)
         NSLog(@"connect error");
 }
@@ -1621,7 +1639,7 @@ NSString *amnt;
     NSString *urlString = [NSString stringWithFormat:@"%@/SetShowInSearch?memberId=%@&showInSearch=%@&accessToken=%@",ServerUrl,[defaults objectForKey:@"MemberId"],show ? @"YES" : @"NO", [defaults objectForKey:@"OAuthToken"]];
     NSURL *url = [NSURL URLWithString:urlString];
     requestList = [[NSMutableURLRequest alloc] initWithURL:url];
-    
+
     connectionList = [[NSURLConnection alloc] initWithRequest:requestList delegate:self];
     if (!connectionList)
         NSLog(@"connect error");
@@ -1675,7 +1693,7 @@ NSString *amnt;
     [requestInv setHTTPBody:postDataInv];
 
     connectionInv = [[NSURLConnection alloc] initWithRequest:requestInv delegate:self];
-    
+
     if (!connectionInv)
         NSLog(@"connect error");
 }

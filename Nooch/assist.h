@@ -14,14 +14,13 @@
 #import <Accounts/Accounts.h>
 NSTimer*timer;
 bool histSafe;
-//bool limit;
 bool needsUpdating;
 NSString *histSearching;
 @interface assist : NSObject<serveD>{
     NSArray*ArrAllContacts;
     NSMutableDictionary *usr;
     NSMutableDictionary *assosciateCache;
-    NSMutableArray*arrRequestMultiple;
+    NSMutableArray *arrRequestMultiple;
     NSMutableArray *histCache;
     NSMutableArray *sortedHist;
     NSMutableData *archivedData;

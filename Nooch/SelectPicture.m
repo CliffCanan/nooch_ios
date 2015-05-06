@@ -414,7 +414,7 @@
             // Success! Now set the facebook_id to be the fb_id that was just returned & send to Nooch DB
             fbID = [result objectForKey:@"id"];
 
-            [[NSUserDefaults standardUserDefaults] setObject:fbID forKey:@"facebook_id"];
+            [user setObject:fbID forKey:@"facebook_id"];
             NSLog(@"Login w FB successful --> fb id is %@",[result objectForKey:@"id"]);
 
             // isloginWithFB = YES;

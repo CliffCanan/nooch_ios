@@ -162,7 +162,7 @@ bool modal;
 
     [ARPowerHookManager registerHookWithId:@"versionNum" friendlyName:@"Most Recent Version Number" defaultValue:@"8.5"];
     [ARPowerHookManager registerHookWithId:@"NV_YorN" friendlyName:@"New Version Alert - Should Display Y or N" defaultValue:@"no"];
-    [ARPowerHookManager registerHookWithId:@"NV_HD" friendlyName:@"New Version Alert Header Txt" defaultValue:@"New Stuff Galore"];
+    [ARPowerHookManager registerHookWithId:@"NV_HDR" friendlyName:@"New Version Alert Header Txt" defaultValue:@"New Stuff Galore"];
     [ARPowerHookManager registerHookWithId:@"NV_BODY" friendlyName:@"New Version Alert Body Txt" defaultValue:@"Check out the latest updates and enhancements in the newest version of Nooch."];
     [ARPowerHookManager registerHookWithId:@"NV_IMG" friendlyName:@"New Version Alert Image URL" defaultValue:@"https://www.nooch.com/wp-content/uploads/2014/12/ReferralCode_NOCASH.gif"];
     [ARPowerHookManager registerHookWithId:@"NV_IMG_W" friendlyName:@"New Version Alert Img Width" defaultValue:@"180"];
@@ -486,9 +486,10 @@ void exceptionHandler(NSException *exception){
     //Get the Response from Knox and parse it
     NSString *response = [[url absoluteString]stringByReplacingPercentEscapesUsingEncoding:NSUTF8StringEncoding];
     NSArray *URLParse = [response componentsSeparatedByString:@"?"];
-    NSLog(@"%@",URLParse);
     NSString *responseBody = URLParse[1];
+    NSLog(@"%@",URLParse);
     NSLog(@"%@",responseBody);
+
     NSArray *responseParse = [responseBody componentsSeparatedByString:@"&"];
     
     //Parse the components of the response
@@ -499,11 +500,10 @@ void exceptionHandler(NSException *exception){
 
     //Components of response are Logged here
     NSLog(@"fired in Delegate - URL Encoded --> IsPaid: %@   paymentID: %@", isPaid, paymentID);
-    NSUserDefaults * defaults = [NSUserDefaults standardUserDefaults];
-    [defaults setObject:isPaid forKey:@"isPaid"];
-    [defaults setObject:paymentID forKey:@"paymentID"];
+    [user setObject:isPaid forKey:@"isPaid"];
+    [user setObject:paymentID forKey:@"paymentID"];
 
-    [defaults synchronize];
+    [user synchronize];
     
     //Send Notification to WebView so it can resign itself and to the parent view if desired to handle response and give success notification etc.
     [[NSNotificationCenter defaultCenter]

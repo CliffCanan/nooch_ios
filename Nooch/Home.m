@@ -101,15 +101,16 @@ NSMutableURLRequest *request;
         me = [core new];
         [user removeObjectForKey:@"Balance"];
         loadInfo = [[NSMutableDictionary alloc] initWithContentsOfFile:[self autoLogin]];
-        [[NSUserDefaults standardUserDefaults] setValue:[loadInfo valueForKey:@"MemberId"] forKey:@"MemberId"];
-        [[NSUserDefaults standardUserDefaults] setValue:[loadInfo valueForKey:@"UserName"] forKey:@"UserName"];
+        [user setValue:[loadInfo valueForKey:@"MemberId"] forKey:@"MemberId"];
+        [user setValue:[loadInfo valueForKey:@"UserName"] forKey:@"UserName"];
+        [user synchronize];
 
         [me birth];
     }
     else
     {
-        [[NSUserDefaults standardUserDefaults] removeObjectForKey:@"MemberId"];
-        [[NSUserDefaults standardUserDefaults] removeObjectForKey:@"UserName"];
+        [user removeObjectForKey:@"MemberId"];
+        [user removeObjectForKey:@"UserName"];
         [self.view removeGestureRecognizer:self.slidingViewController.panGesture];
         [user removeObjectForKey:@"Balance"];
 
@@ -667,8 +668,7 @@ void addressBookChanged(ABAddressBookRef addressBook, CFDictionaryRef info, void
     isProfileOpenFromSideBar = NO;
     isFromTransDetails = NO;
 
-    ProfileInfo *info = [ProfileInfo new];
-    [self.navigationController pushViewController:info animated:YES];
+    
 }
 
 -(void)go_history
@@ -704,9 +704,9 @@ void addressBookChanged(ABAddressBookRef addressBook, CFDictionaryRef info, void
         }
 
         if ([[assist shared] needsReload] &&
-            [[[NSUserDefaults standardUserDefaults] valueForKey:@"ProfileComplete"]isEqualToString:@"YES"])
+            [[user valueForKey:@"ProfileComplete"]isEqualToString:@"YES"])
         {
-            NSDictionary * dictionary = @{@"MemberId": [[NSUserDefaults standardUserDefaults] valueForKey:@"MemberId"]};
+            NSDictionary * dictionary = @{@"MemberId": [user valueForKey:@"MemberId"]};
 
             [ARTrackingManager trackEvent:@"Home_ViewDidAppear_ReloadInitiated" parameters:dictionary];
 
@@ -801,7 +801,7 @@ void addressBookChanged(ABAddressBookRef addressBook, CFDictionaryRef info, void
         float bundleVersionNumDouble = [versionNumFromBundle floatValue];
 
         if (bundleVersionNumDouble < versionNumFromArtisanDouble &&
-            [[NSUserDefaults standardUserDefaults] boolForKey:@"VersionUpdateNoticeDisplayed"] == false )
+            [user boolForKey:@"VersionUpdateNoticeDisplayed"] == false )
         {
             [self displayVersionUpdateNotice];
         }
@@ -811,7 +811,7 @@ void addressBookChanged(ABAddressBookRef addressBook, CFDictionaryRef info, void
         [ARProfileManager registerString:@"IsBankAttached" withValue:@"unknown"];
         [ARProfileManager registerString:@"IPaddress" withValue:@"unknown"];
 
-        if ([[[NSUserDefaults standardUserDefaults] objectForKey:@"IsBankAvailable"]isEqualToString:@"1"])
+        if ([[user objectForKey:@"IsBankAvailable"]isEqualToString:@"1"])
         {
             [ARProfileManager setStringValue:@"YES" forVariable:@"IsBankAttached"];
         }
@@ -836,7 +836,7 @@ void addressBookChanged(ABAddressBookRef addressBook, CFDictionaryRef info, void
     {
         Ip = [Ip substringWithRange: NSMakeRange(0, [Ip rangeOfString: @"\n"].location)];
     }
-    NSLog(@"IP: %@", Ip);
+    //NSLog(@"IP: %@", Ip);
 
     serve * saveIP = [serve new];
     [saveIP setTagName:@"saveIpAddress"];
@@ -1027,7 +1027,7 @@ void addressBookChanged(ABAddressBookRef addressBook, CFDictionaryRef info, void
         }
     }
 
-    if (![[[NSUserDefaults standardUserDefaults] valueForKey:@"IsVerifiedPhone"]isEqualToString:@"YES"] &&
+    if (![[user valueForKey:@"IsVerifiedPhone"]isEqualToString:@"YES"] &&
         ![[user objectForKey:@"Status"] isEqualToString:@"Suspended"])
     {
         if (![self.view.subviews containsObject:self.phone_incomplete])
@@ -1142,9 +1142,7 @@ void addressBookChanged(ABAddressBookRef addressBook, CFDictionaryRef info, void
     //NSLog(@"Banner count is: %d",bannerAlert);
 
     //Update Pending Status
-    NSUserDefaults * defaults = [[NSUserDefaults alloc] init];
-
-    if ([[defaults objectForKey:@"Pending_count"] intValue] > 0)
+    if ([[user objectForKey:@"Pending_count"] intValue] > 0)
     {
         [self addPendingBanner];
     }
@@ -1209,14 +1207,13 @@ void addressBookChanged(ABAddressBookRef addressBook, CFDictionaryRef info, void
 -(void)addPendingBanner
 {
     //Update Pending Status
-    NSUserDefaults * defaults = [[NSUserDefaults alloc] init];
 
     [self.navigationItem setLeftBarButtonItem:nil];
     UILabel * pending_notif = [UILabel new];
-    [pending_notif setText:[defaults objectForKey:@"Pending_count"]];
+    [pending_notif setText:[user objectForKey:@"Pending_count"]];
     [pending_notif setFrame:CGRectMake(16, -2, 20, 20)];
     [pending_notif setStyleId:@"pending_notif"];
-    
+
     UIButton * hamburger = [UIButton buttonWithType:UIButtonTypeRoundedRect];
     [hamburger setStyleId:@"navbar_hamburger"];
     [hamburger addTarget:self action:@selector(showMenu) forControlEvents:UIControlEventTouchUpInside];
@@ -1226,28 +1223,28 @@ void addressBookChanged(ABAddressBookRef addressBook, CFDictionaryRef info, void
     [hamburger addSubview:pending_notif];
     UIBarButtonItem * menu = [[UIBarButtonItem alloc] initWithCustomView:hamburger];
     [self.navigationItem setLeftBarButtonItem:menu];
-    
+
     if ([[user objectForKey:@"Status"] isEqualToString:@"Active"] &&
-        [[[NSUserDefaults standardUserDefaults] valueForKey:@"IsVerifiedPhone"]isEqualToString:@"YES"])
+        [[user valueForKey:@"IsVerifiedPhone"]isEqualToString:@"YES"])
     {
         bannerAlert++;
-        
+
         if (![self.view.subviews containsObject:self.pending_requests])
         {
             [self.pending_requests removeFromSuperview];
-            
+
             self.pending_requests = [UIView new];
             [self.pending_requests setStyleId:@"pendingRequestBanner"];
             [self.pending_requests addGestureRecognizer:[[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(go_history)]];
-            
+
             NSShadow * shadowBlue = [[NSShadow alloc] init];
             shadowBlue.shadowColor = Rgb2UIColor(19, 32, 38, .25);
             shadowBlue.shadowOffset = CGSizeMake(0, 1);
             NSDictionary * textShadowBlue = @{NSShadowAttributeName:shadowBlue};
-            
+
             UILabel * em = [UILabel new];
             [em setStyleClass:@"banner_header"];
-            
+
             UILabel * em_exclaim = [UILabel new];
             [em_exclaim setStyleClass:@"banner_alert_glyph"];
             [em_exclaim setText:[NSString fontAwesomeIconStringForIconIdentifier:@"fa-inbox"]];
@@ -1255,23 +1252,23 @@ void addressBookChanged(ABAddressBookRef addressBook, CFDictionaryRef info, void
             frameOfGlyph.origin.x += 6;
             [em_exclaim setFrame:frameOfGlyph];
             [self.pending_requests addSubview:em_exclaim];
-            
+
             UILabel * em_info = [UILabel new];
             [em_info setStyleClass:@"banner_info"];
             [em_info setNumberOfLines:0];
-            if ([[defaults objectForKey:@"Pending_count"] intValue] == 1)
+            if ([[user objectForKey:@"Pending_count"] intValue] == 1)
             {
                 em.attributedText = [[NSAttributedString alloc] initWithString:NSLocalizedString(@"PendingBannerTitleSingular", @"Home Screen Pending Title Singular") attributes:textShadowBlue];
                 em_info.attributedText = [[NSAttributedString alloc] initWithString:NSLocalizedString(@"PendingBannerBodyTxtSingular", @"Home Screen Pending Body Text Singular") attributes:textShadowBlue];
             }
-            else if ([[defaults objectForKey:@"Pending_count"] intValue] > 1)
+            else if ([[user objectForKey:@"Pending_count"] intValue] > 1)
             {
                 em.attributedText = [[NSAttributedString alloc] initWithString:NSLocalizedString(@"PendingBannerTitlePlural", @"Home Screen Pending Title Plural") attributes:textShadowBlue];
-                em_info.attributedText = [[NSAttributedString alloc] initWithString:[NSString stringWithFormat:NSLocalizedString(@"PendingBannerBodyTxtPlural", @"Home Screen Pending Body Text Plural"), [[defaults objectForKey:@"Pending_count"] intValue]] attributes:textShadowBlue];
+                em_info.attributedText = [[NSAttributedString alloc] initWithString:[NSString stringWithFormat:NSLocalizedString(@"PendingBannerBodyTxtPlural", @"Home Screen Pending Body Text Plural"), [[user objectForKey:@"Pending_count"] intValue]] attributes:textShadowBlue];
             }
             [self.pending_requests addSubview:em];
             [self.pending_requests addSubview:em_info];
-            
+
             UIButton * goHistory = [UIButton buttonWithType:UIButtonTypeRoundedRect];
             [goHistory setStyleClass:@"go_now_text"];
             [goHistory setTitle:NSLocalizedString(@"PendingBannerActionTxt", @"Home Screen Pending Banner Action Text") forState:UIControlStateNormal];
@@ -1279,7 +1276,7 @@ void addressBookChanged(ABAddressBookRef addressBook, CFDictionaryRef info, void
             goHistory.titleLabel.shadowOffset = CGSizeMake(0.0, 1.0);
             [goHistory addTarget:self action:@selector(go_history) forControlEvents:UIControlEventTouchUpInside];
             [self.pending_requests addSubview:goHistory];
-            
+
             UIButton * dis = [UIButton buttonWithType:UIButtonTypeCustom];
             [dis setStyleClass:@"dismiss_banner"];
             [dis setTitle:[NSString fontAwesomeIconStringForIconIdentifier:@"fa-times-circle"] forState:UIControlStateNormal];
@@ -1287,11 +1284,11 @@ void addressBookChanged(ABAddressBookRef addressBook, CFDictionaryRef info, void
             [dis setTitleColor:[Helpers hexColor:@"a5d8f1"] forState:UIControlStateHighlighted];
             dis.titleLabel.shadowOffset = CGSizeMake(0.0, 1.0);
             [dis addTarget:self action:@selector(dismiss_requestsPendingBanner) forControlEvents:UIControlEventTouchUpInside];
-            
+
             [self.pending_requests addSubview:dis];
-            
+
             [self.view addSubview:self.pending_requests];
-            
+
             [UIView animateKeyframesWithDuration:.6
                                            delay:0
                                          options:2 << 16
@@ -1456,11 +1453,11 @@ void addressBookChanged(ABAddressBookRef addressBook, CFDictionaryRef info, void
     self.artisanNameTag = @"Home Screen";
 
     NSMutableDictionary * automatic = [[NSMutableDictionary alloc] init];
-    if ([[NSUserDefaults standardUserDefaults] valueForKey:@"MemberId"] &&
-        [[NSUserDefaults standardUserDefaults] valueForKey:@"UserName"])
+    if ([user valueForKey:@"MemberId"] &&
+        [user valueForKey:@"UserName"])
     {
-        [automatic setObject:[[NSUserDefaults standardUserDefaults] valueForKey:@"MemberId"] forKey:@"MemberId"];
-        [automatic setObject:[[NSUserDefaults standardUserDefaults] valueForKey:@"UserName"] forKey:@"UserName"];
+        [automatic setObject:[user valueForKey:@"MemberId"] forKey:@"MemberId"];
+        [automatic setObject:[user valueForKey:@"UserName"] forKey:@"UserName"];
         [automatic writeToFile:[self autoLogin] atomically:YES];
     }
     // for the red notification bubble if a user has a pending RECEIVED Request
@@ -1554,7 +1551,7 @@ void addressBookChanged(ABAddressBookRef addressBook, CFDictionaryRef info, void
     NSUInteger picwidthInt = [pictureWidth integerValue];
     NSString * pictureHeight = [ARPowerHookManager getValueForHookById:@"NV_IMG_H"];
     NSUInteger picHeightInt = [pictureHeight integerValue];
-    NSString * bodyHeaderTxt = [ARPowerHookManager getValueForHookById:@"NV_HD"];
+    NSString * bodyHeaderTxt = [ARPowerHookManager getValueForHookById:@"NV_HDR"];
     NSString * bodyTextTxt = [ARPowerHookManager getValueForHookById:@"NV_BODY"];
 
     UILabel * bodyHeader = [[UILabel alloc]initWithFrame:CGRectMake(10, head_container.bounds.size.height + 180, mainView.bounds.size.width - 20, 30)];
@@ -1621,7 +1618,8 @@ void addressBookChanged(ABAddressBookRef addressBook, CFDictionaryRef info, void
     [mainView addSubview:btnLink];
     [overlay addSubview:mainView];
 
-    [[NSUserDefaults standardUserDefaults] setBool:true forKey:@"VersionUpdateNoticeDisplayed"];
+    [user setBool:true forKey:@"VersionUpdateNoticeDisplayed"];
+    [user synchronize];
 }
 
 -(void)close_lightBox
@@ -2009,8 +2007,6 @@ void addressBookChanged(ABAddressBookRef addressBook, CFDictionaryRef info, void
 
 -(BOOL)checkIfUserSuspendedOrBlocked
 {
-    NSUserDefaults * defaults = [NSUserDefaults standardUserDefaults];
-
     if ([[assist shared] getSuspended])
     {
         SIAlertView * alertView = [[SIAlertView alloc] initWithTitle:@"Account Suspended" andMessage:@"\xF0\x9F\x98\xA7\nFor security your account has been suspended pending a review.\n\nWe really apologize for the inconvenience and ask for your patience. Our top priority is keeping Nooch safe and secure.\n\nPlease contact us at support@nooch.com if this is a mistake or for more information."];
@@ -2057,7 +2053,7 @@ void addressBookChanged(ABAddressBookRef addressBook, CFDictionaryRef info, void
      return NO;
      }*/
 
-    else if (![[defaults valueForKey:@"IsVerifiedPhone"]isEqualToString:@"YES"] )
+    else if (![[user valueForKey:@"IsVerifiedPhone"]isEqualToString:@"YES"] )
     {
         SIAlertView * alertView = [[SIAlertView alloc] initWithTitle:@"Blame The Lawyers" andMessage:@"To keep Nooch safe, we ask all users to verify a phone number before sending money.\n\nIf you've already added your phone number, just respond 'Go' to the text message we sent."];
         [alertView addButtonWithTitle:@"Later" type:SIAlertViewButtonTypeCancel handler:nil];
@@ -2080,7 +2076,7 @@ void addressBookChanged(ABAddressBookRef addressBook, CFDictionaryRef info, void
         return NO;
     }
 
-    else if (![[[NSUserDefaults standardUserDefaults] objectForKey:@"IsBankAvailable"]isEqualToString:@"1"])
+    else if (![[user objectForKey:@"IsBankAvailable"]isEqualToString:@"1"])
     {
         SIAlertView *alertView = [[SIAlertView alloc] initWithTitle:@"Connect A Funding Source \xF0\x9F\x92\xB0" andMessage:@"\xE2\x9A\xA1\nAdding a bank account to fund Nooch payments is lightning quick.\n\n• No routing or account number needed\n• Bank-grade encryption keeps your info safe\n\nWould you like to take care of this now?"];
         [alertView addButtonWithTitle:@"Later" type:SIAlertViewButtonTypeCancel handler:nil];
@@ -2159,8 +2155,8 @@ void addressBookChanged(ABAddressBookRef addressBook, CFDictionaryRef info, void
         [self.hud hide:YES];
         
         [[NSFileManager defaultManager] removeItemAtPath:[self autoLogin] error:nil];
-        [[NSUserDefaults standardUserDefaults] removeObjectForKey:@"UserName"];
-        [[NSUserDefaults standardUserDefaults] removeObjectForKey:@"MemberId"];
+        [user removeObjectForKey:@"UserName"];
+        [user removeObjectForKey:@"MemberId"];
         
         [timer invalidate];
         [self.view removeGestureRecognizer:self.slidingViewController.panGesture];
@@ -2228,8 +2224,6 @@ void addressBookChanged(ABAddressBookRef addressBook, CFDictionaryRef info, void
 
         [self.navigationItem setLeftBarButtonItem:nil];
 
-        NSUserDefaults * defaults = [[NSUserDefaults alloc] init];
-
         if (pendingRequestsReceived > 0)
         {
             UILabel * pending_notif = [UILabel new];
@@ -2248,11 +2242,10 @@ void addressBookChanged(ABAddressBookRef addressBook, CFDictionaryRef info, void
             UIBarButtonItem * menu = [[UIBarButtonItem alloc] initWithCustomView:hamburger];
             [self.navigationItem setLeftBarButtonItem:menu];
 
-            [defaults setBool:true forKey:@"hasPendingItems"];
+            [user setBool:true forKey:@"hasPendingItems"];
             count = [dict valueForKey:@"pendingRequestsReceived"];
 
-            [defaults setValue: count forKey:@"Pending_count"];
-            [defaults synchronize];
+            [user setValue: count forKey:@"Pending_count"];
 
             if (![self.view.subviews containsObject:self.pending_requests])
             {
@@ -2271,7 +2264,7 @@ void addressBookChanged(ABAddressBookRef addressBook, CFDictionaryRef info, void
             UIBarButtonItem * menu = [[UIBarButtonItem alloc] initWithCustomView:hamburger];
             [self.navigationItem setLeftBarButtonItem:menu];
 
-            [defaults setBool:false forKey:@"hasPendingItems"];
+            [user setBool:false forKey:@"hasPendingItems"];
 
             count = @"0";
 
@@ -2280,9 +2273,9 @@ void addressBookChanged(ABAddressBookRef addressBook, CFDictionaryRef info, void
                 [self dismiss_requestsPendingBanner];
             }
 
-            [defaults setValue:count forKey:@"Pending_count"];
-            [defaults synchronize];
+            [user setValue:count forKey:@"Pending_count"];
         }
+        [user synchronize];
 
         if ([self.view.subviews containsObject:self.hud])
         {

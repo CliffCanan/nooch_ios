@@ -170,15 +170,13 @@
     isStart = YES;
     isLocalSearch = NO;
 
-    NSUserDefaults * defaults = [[NSUserDefaults alloc]init];
-
     self.glyph_checkmark = [[UILabel alloc] initWithFrame:CGRectMake(22, 13, 22, 18)];
     [self.glyph_checkmark setFont:[UIFont fontWithName:@"FontAwesome" size:16]];
 
     self.glyph_pending = [[UILabel alloc] initWithFrame:CGRectMake(174, 13, 20, 18)];
     [self.glyph_pending setFont:[UIFont fontWithName:@"FontAwesome" size:16]];
 
-    if ([defaults boolForKey:@"hasPendingItems"] == true)
+    if ([user boolForKey:@"hasPendingItems"] == true)
     {
         [completed_pending setSelectedSegmentIndex:1];
 
@@ -1176,7 +1174,7 @@
             if ([[dictRecord valueForKey:@"TransactionType"]isEqualToString:@"Request"] ||
                 [[dictRecord valueForKey:@"TransactionType"]isEqualToString:@"Invite"] )
             {
-                if ([[dictRecord valueForKey:@"RecepientId"]isEqualToString:[[NSUserDefaults standardUserDefaults] objectForKey:@"MemberId"]])
+                if ([[dictRecord valueForKey:@"RecepientId"]isEqualToString:[user objectForKey:@"MemberId"]])
                 {
                     //cancel or remind
                     [rightUtilityButtons sw_addUtilityButtonWithColor:kNoochBlue
@@ -1679,7 +1677,7 @@
 
                 if ([[dictRecord valueForKey:@"TransactionType"]isEqualToString:@"Request"])
                 {
-                    if ([[dictRecord valueForKey:@"RecepientId"]isEqualToString:[[NSUserDefaults standardUserDefaults] objectForKey:@"MemberId"]])
+                    if ([[dictRecord valueForKey:@"RecepientId"]isEqualToString:[user objectForKey:@"MemberId"]])
                     {
                         [transferTypeLabel setText:NSLocalizedString(@"History_RequestSentToTxt", @"History screen 'Request Sent To' Text")];
                         [transferTypeLabel setStyleClass:@"history_cell_transTypeLabel_wider"];
@@ -1992,7 +1990,7 @@
 
     if ([[dictRecord valueForKey:@"TransactionType"]isEqualToString:@"Request"])
     {
-        if ([[dictRecord valueForKey:@"RecepientId"]isEqualToString:[[NSUserDefaults standardUserDefaults] objectForKey:@"MemberId"]])
+        if ([[dictRecord valueForKey:@"RecepientId"]isEqualToString:[user objectForKey:@"MemberId"]])
         { // For the Sender of a Request
 
 			if ( [dictRecord valueForKey:@"InvitationSentTo"] == NULL ||
@@ -2051,7 +2049,6 @@
         {  // For the Recipient of a Request
             if (ind == 0)
             { //accept
-                NSUserDefaults * defaults = [NSUserDefaults standardUserDefaults];
 
                 if ([[assist shared] getSuspended])
                 {
@@ -2075,7 +2072,7 @@
                     [alert show];
                     return;
                 }
-                else if (![[defaults valueForKey:@"IsVerifiedPhone"]isEqualToString:@"YES"] )
+                else if (![[user valueForKey:@"IsVerifiedPhone"]isEqualToString:@"YES"] )
                 {
                     UIAlertView * alert = [[UIAlertView alloc]initWithTitle:@"Phone Not Verified"
                                                                     message:@"To keep Nooch safe, we ask all users to verify a phone number before sending money.\n\nIf you've already added your phone number, just respond 'Go' to the text message we sent."
@@ -2085,7 +2082,7 @@
                     [alert show];
                     return;
                 }
-                else if (![[defaults objectForKey:@"IsBankAvailable"]isEqualToString:@"1"])
+                else if (![[user objectForKey:@"IsBankAvailable"]isEqualToString:@"1"])
                 {
                     UIAlertView * alert = [[UIAlertView alloc] initWithTitle:@"Please Attach An Account"
                                                                   message:@"Before you can send or receive money, you must add a bank account."
@@ -2480,8 +2477,8 @@
     if ([result rangeOfString:@"Invalid OAuth 2 Access"].location!=NSNotFound)
     {
         [[NSFileManager defaultManager] removeItemAtPath:[self autoLogin] error:nil];
-        [[NSUserDefaults standardUserDefaults] removeObjectForKey:@"UserName"];
-        [[NSUserDefaults standardUserDefaults] removeObjectForKey:@"MemberId"];
+        [user removeObjectForKey:@"UserName"];
+        [user removeObjectForKey:@"MemberId"];
         [timer invalidate];
         [nav_ctrl performSelector:@selector(disable)];
         [nav_ctrl performSelector:@selector(reset)];
@@ -2705,22 +2702,20 @@
             [completed_pending setTitle:@" Pending" forSegmentAtIndex:1];
         }
 
-        NSUserDefaults * defaults = [[NSUserDefaults alloc]init];
-
         // PENDING REQUESTS RECEIVED (SET DEFAULT VALUE FOR LEFT SIDE MENU)
         if (pendingRequestsReceived > 0)
         {
-            [defaults setBool:true forKey:@"hasPendingItems"];
+            [user setBool:true forKey:@"hasPendingItems"];
 
             NSString * count;
             count = [NSString stringWithFormat:@"%@", [dict valueForKey:@"pendingRequestsReceived"]];
 
-            [defaults setValue: count forKey:@"Pending_count"];
-            [defaults synchronize];
+            [user setValue: count forKey:@"Pending_count"];
+            [user synchronize];
         }
         else
         {
-            [defaults setBool:false forKey:@"hasPendingItems"];
+            [user setBool:false forKey:@"hasPendingItems"];
         }
     }
 
@@ -2848,7 +2843,7 @@
         else if ([response isEqualToString:@"Success"])
         {
             UIAlertView *av = [[UIAlertView alloc] initWithTitle:@"Check Your Email"
-                                                         message:[NSString stringWithFormat:@"\xF0\x9F\x93\xA5\nA verifiction link has been sent to %@.",[[NSUserDefaults standardUserDefaults] objectForKey:@"email"]]
+                                                         message:[NSString stringWithFormat:@"\xF0\x9F\x93\xA5\nA verifiction link has been sent to %@.",[user objectForKey:@"UserName"]]
                                                         delegate:nil
                                                cancelButtonTitle:@"OK"
                                                otherButtonTitles:nil];
@@ -2878,7 +2873,7 @@
     alert.tag = 11;
 
     UITextField *textField = [alert textFieldAtIndex:0];
-    textField.text = [[NSUserDefaults standardUserDefaults] objectForKey:@"UserName"];
+    textField.text = [user objectForKey:@"UserName"];
     textField.textAlignment = NSTextAlignmentCenter;
     textField.keyboardType = UIKeyboardTypeEmailAddress;
     [alert show];

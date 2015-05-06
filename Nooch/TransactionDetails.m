@@ -862,7 +862,6 @@
 
 -(BOOL)isUsersStatusOk
 {
-    NSUserDefaults * defaults = [NSUserDefaults standardUserDefaults];
     if ([[assist shared] getSuspended])
     {
         UIAlertView * alert = [[UIAlertView alloc]initWithTitle:[NSString stringWithFormat:@"\xF0\x9F\x98\xA7  %@", NSLocalizedString(@"TransDeets_SuspAlrtTtl", @"'Account Suspended' Alert Title")]
@@ -884,7 +883,7 @@
         [alert show];
         return NO;
     }
-    else if (![[defaults valueForKey:@"IsVerifiedPhone"]isEqualToString:@"YES"] )
+    else if (![[user valueForKey:@"IsVerifiedPhone"]isEqualToString:@"YES"] )
     {
         UIAlertView * alert = [[UIAlertView alloc]initWithTitle:@"Phone Not Verified"
                                                         message:@"To keep Nooch safe, we ask all users to verify a phone number before sending money.\n\nIf you've already added your phone number, just respond 'Go' to the text message we sent."
@@ -895,7 +894,7 @@
         [alert show];
         return NO;
     }
-    else if (![[[NSUserDefaults standardUserDefaults] objectForKey:@"IsBankAvailable"]isEqualToString:@"1"])
+    else if (![[user objectForKey:@"IsBankAvailable"]isEqualToString:@"1"])
     {
         UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Please Link A Bank Account"
                                                         message:@"Before you can make any transfer you must attach a bank account."
@@ -1192,7 +1191,7 @@
         self.responseData = [NSMutableData data];
         NSMutableDictionary *dict = [[NSMutableDictionary alloc] init];
 
-        NSString * memId = [[NSUserDefaults standardUserDefaults] objectForKey:@"MemberId"];
+        NSString * memId = [user objectForKey:@"MemberId"];
         [dict setObject :memId forKey:@"MemberId"];
         [dict setObject:[self.trans valueForKey:@"RecepientId"] forKey:@"RecepientId"];
         [dict setObject:[self.trans valueForKey:@"TransactionId"] forKey:@"TransactionId"];
@@ -1532,7 +1531,7 @@
             [location removeFromSuperview];
         }
 
-        //Set Status
+        // Set Status
         UILabel * status = [[UILabel alloc] initWithFrame:CGRectMake(20, 166, 280, 30)];
         [status setFont: [UIFont fontWithName:@"Roboto-bold" size:21]];
         [status setTextAlignment:NSTextAlignmentCenter];
@@ -1645,9 +1644,7 @@
         serve *info = [serve new];
         info.Delegate = self;
         info.tagName = @"info";
-        
-        NSUserDefaults*defaults=[NSUserDefaults standardUserDefaults];
-        [info getDetails:[defaults valueForKey:@"MemberId"]];
+        [info getDetails:[user valueForKey:@"MemberId"]];
     }
 
     if ([tagName isEqualToString:@"reject"])
@@ -1764,20 +1761,18 @@
         [[assist shared]setSusPended:YES];
     }
 
-    else if([tagName isEqualToString:@"info"])
+    else if ([tagName isEqualToString:@"info"])
     {
         NSError *error;
-        NSMutableDictionary *Result = [NSJSONSerialization JSONObjectWithData:[result dataUsingEncoding:NSUTF8StringEncoding] options:0 error:&error];
+        NSMutableDictionary * Result = [NSJSONSerialization JSONObjectWithData:[result dataUsingEncoding:NSUTF8StringEncoding] options:0 error:&error];
         
-        if ([Result valueForKey:@"Status"] != Nil &&
+        if ( [Result valueForKey:@"Status"] != Nil &&
            ![[Result valueForKey:@"Status"] isKindOfClass:[NSNull class]] &&
-            [Result valueForKey:@"Status"] != NULL)
+             [Result valueForKey:@"Status"] != NULL)
         {
             [user setObject:[Result valueForKey:@"Status"] forKey:@"Status"];
-            NSString*url=[Result valueForKey:@"PhotoUrl"];
-            
-            [user setObject:[Result valueForKey:@"DateCreated"] forKey:@"DateCreated"];
-            [user setObject:url forKey:@"Photo"];
+            //[user setObject:[Result valueForKey:@"DateCreated"] forKey:@"DateCreated"];
+            //[user setObject:[Result valueForKey:@"PhotoUrl"] forKey:@"Photo"];
         }
     }
     

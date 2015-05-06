@@ -345,7 +345,7 @@
     if ([servicePath isEqualToString:@"push"])
     {
         transactionInput1 = [NSDictionary dictionaryWithObjectsAndKeys:
-                             [[NSUserDefaults standardUserDefaults]stringForKey:@"MemberId"],@"MemberId",
+                             [user stringForKey:@"MemberId"],@"MemberId",
                              @"NoochToBank",@"BankToNooch",
                              [self.push_received isOn]?@"1":@"0",@"TransferReceived",
                              //[self.push_failure isOn]?@"1":@"0",@"TransferAttemptFailure",
@@ -353,7 +353,7 @@
     }
     else
     {
-        transactionInput1 = [NSDictionary dictionaryWithObjectsAndKeys:[[NSUserDefaults standardUserDefaults]stringForKey:@"MemberId"],@"MemberId",
+        transactionInput1 = [NSDictionary dictionaryWithObjectsAndKeys:[user stringForKey:@"MemberId"],@"MemberId",
                              [self.email_received isOn]?@"1":@"0",@"EmailTransferReceived",
                              [self.email_sent isOn]?@"1":@"0",@"EmailTransferSent",
                              //[self.email_failure isOn]?@"1":@"0",@"EmailTransferAttemptFailure",

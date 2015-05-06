@@ -285,14 +285,14 @@
     {
         NSError *error;
         NSDictionary *loginResult = [NSJSONSerialization JSONObjectWithData:[result dataUsingEncoding:NSUTF8StringEncoding] options:0 error:&error];
-        [[NSUserDefaults standardUserDefaults] setObject:[self.user objectForKey:@"email"] forKey:@"email"];
-        [[NSUserDefaults standardUserDefaults] setObject:[self.user objectForKey:@"first_name"] forKey:@"first_name"];
-        [[NSUserDefaults standardUserDefaults] setObject:[self.user objectForKey:@"last_name"] forKey:@"last_name"];
-        [[NSUserDefaults standardUserDefaults] setObject:[[NSString alloc] initWithString:[loginResult objectForKey:@"Status"]] forKey:@"password"];
+        [user setObject:[self.user objectForKey:@"email"] forKey:@"UserName"];
+        [user setObject:[self.user objectForKey:@"first_name"] forKey:@"FirstName"];
+        [user setObject:[self.user objectForKey:@"last_name"] forKey:@"last_name"];
+        [user setObject:[[NSString alloc] initWithString:[loginResult objectForKey:@"Status"]] forKey:@"password"];
 
         if ([self.user objectForKey:@"facebook_id"])
         {
-            [[NSUserDefaults standardUserDefaults] setObject:[self.user objectForKey:@"facebook_id"] forKey:@"facebook_id"];
+            [user setObject:[self.user objectForKey:@"facebook_id"] forKey:@"facebook_id"];
         }
     
         if (![[loginResult objectForKey:@"Status"] isKindOfClass:[NSNull class]] &&
@@ -300,9 +300,6 @@
         {
             getEncryptedPassword = [loginResult objectForKey:@"Status"];
         }
-
-        [user setObject:[self.user objectForKey:@"first_name"] forKey:@"firstName"];
-        [[NSUserDefaults standardUserDefaults]setObject:[self.user objectForKey:@"email"] forKey:@"UserName"];
 
         serve * create = [serve new];
         [create setDelegate:self];
@@ -317,6 +314,7 @@
 
         // NSLog(@"User Fields to be sent to server are: %@",create);
         self.code_field.text = @"";
+        [user synchronize];
     }
     else if ([tagName isEqualToString:@"create_account"])
     {
@@ -326,11 +324,11 @@
         
         if ([[[response objectForKey:@"MemberRegistrationResult"]objectForKey:@"Result"] isEqualToString:@"Thanks for registering! Check your email to complete activation."])
         {
-            NSString * udid = [[NSUserDefaults standardUserDefaults] valueForKey:@"DeviceToken"];
+            NSString * udid = [user valueForKey:@"DeviceToken"];
             serve * login = [serve new];
             login.Delegate = self;
             login.tagName = @"login";
-            [login login:[[NSUserDefaults standardUserDefaults] objectForKey:@"email"] password:getEncryptedPassword remember:YES lat:lat lon:lon uid:udid];
+            [login login:[user objectForKey:@"UserName"] password:getEncryptedPassword remember:YES lat:lat lon:lon uid:udid];
         }
         else if ([[[response objectForKey:@"MemberRegistrationResult"] objectForKey:@"Result"] isEqualToString:@"You are already a nooch member."])
         {
@@ -352,7 +350,7 @@
         serve *req = [[serve alloc] init];
         req.Delegate = self;
         req.tagName = @"getMemId";
-        [req getMemIdFromuUsername:[[NSUserDefaults standardUserDefaults] objectForKey:@"email"]];
+        [req getMemIdFromuUsername:[user objectForKey:@"UserName"]];
     }
 
     if ([tagName isEqualToString:@"getMemId"])
@@ -361,13 +359,15 @@
 
         NSDictionary *response = [NSJSONSerialization JSONObjectWithData:[result dataUsingEncoding:NSUTF8StringEncoding] options:0 error:&error];
         NSLog(@"%@",response);
-        [[NSUserDefaults standardUserDefaults] setObject:[response objectForKey:@"Result"] forKey:@"MemberId"];
+        [user setObject:[response objectForKey:@"Result"] forKey:@"MemberId"];
+
         me = [core new];
         [me birth];
         [me stamp];
+
         NSMutableDictionary * automatic = [[NSMutableDictionary alloc] init];
-        [automatic setObject:[[NSUserDefaults standardUserDefaults] valueForKey:@"MemberId"] forKey:@"MemberId"];
-        [automatic setObject:[[NSUserDefaults standardUserDefaults] valueForKey:@"UserName"] forKey:@"UserName"];
+        [automatic setObject:[user valueForKey:@"MemberId"] forKey:@"MemberId"];
+        [automatic setObject:[user valueForKey:@"UserName"] forKey:@"UserName"];
         [automatic writeToFile:[self autoLogin] atomically:YES];
 
         Welcome * welc = [Welcome new];

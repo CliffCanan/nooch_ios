@@ -66,7 +66,7 @@
     [super viewDidLoad];
     isBankAttached = NO;
 
-    if ( ![[[NSUserDefaults standardUserDefaults] objectForKey:@"IsBankAvailable"]isEqualToString:@"1"])
+    if (![[user objectForKey:@"IsBankAvailable"]isEqualToString:@"1"])
     {
         isBankAttached = NO;
     }
@@ -275,7 +275,7 @@
     [self.view addSubview: titleFundingSrcSection];
 
     self.secondSectionContainer = [[UIView alloc] initWithFrame:CGRectMake(8, 283, 304, (rowHeight * 2) + 1)];
-    if ([[[NSUserDefaults standardUserDefaults] objectForKey:@"isAutoPayEnabled"]isEqualToString:@"1"])
+    if ([[user objectForKey:@"isAutoPayEnabled"]isEqualToString:@"1"])
     {
         [self.secondSectionContainer setFrame:CGRectMake(8, 283, 304, (rowHeight * 3) + 1)];
     }
@@ -353,7 +353,7 @@
     [self.glyph_dateToPayDropdown setTextColor:kNoochBlue];
     [self.secondSectionContainer addSubview:self.glyph_dateToPayDropdown];
 
-    if ([[[NSUserDefaults standardUserDefaults] objectForKey:@"isAutoPayEnabled"]isEqualToString:@"1"])
+    if ([[user objectForKey:@"isAutoPayEnabled"]isEqualToString:@"1"])
     {
         [self.glyph_dateToPayDropdown setAlpha:1];
         [self.secondSectionDivider2 setAlpha:1];
@@ -1059,7 +1059,7 @@
 
         [UIView commitAnimations];
 
-        [[NSUserDefaults standardUserDefaults] setObject:@"1" forKey:@"isAutoPayEnabled"];
+        [user setObject:@"1" forKey:@"isAutoPayEnabled"];
     }
     else
     {
@@ -1082,8 +1082,9 @@
 
         [UIView commitAnimations];
 
-        [[NSUserDefaults standardUserDefaults] setObject:@"0" forKey:@"isAutoPayEnabled"];
+        [user setObject:@"0" forKey:@"isAutoPayEnabled"];
     }
+    [user synchronize];
 }
 
 -(void)attach_bank2
@@ -1237,8 +1238,8 @@
     if ([result rangeOfString:@"Invalid OAuth 2 Access"].location != NSNotFound)
     {
         [[NSFileManager defaultManager] removeItemAtPath:[self autoLogin] error:nil];
-        [[NSUserDefaults standardUserDefaults] removeObjectForKey:@"UserName"];
-        [[NSUserDefaults standardUserDefaults] removeObjectForKey:@"MemberId"];
+        [user removeObjectForKey:@"UserName"];
+        [user removeObjectForKey:@"MemberId"];
         
         [timer invalidate];
         
@@ -1262,8 +1263,8 @@
             ![[dictResponse valueForKey:@"aptAddress"] isKindOfClass:[NSNull class]] &&
             ![[dictResponse valueForKey:@"aptWebsite"] isKindOfClass:[NSNull class]])
         {
-            [[NSUserDefaults standardUserDefaults]setObject:@"1" forKey:@"HasAptSelected"];
-            
+            [user setObject:@"1" forKey:@"HasAptSelected"];
+
             isBankAttached = YES;
             aptName.text = [dictResponse valueForKey:@"aptName"];
             aptAddress.text = [dictResponse valueForKey:@"aptAddress"];

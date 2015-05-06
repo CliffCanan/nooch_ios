@@ -314,10 +314,10 @@
         !isAddRequest && !emailEntry && !phoneNumEntry)
     {
         NSLog(@"Contacts permission denied");
-        NSLog(@"screenLoadedTimes is: %d  and  shouldNotDisplayContactsAlert is: %d",screenLoadedTimes,[[NSUserDefaults standardUserDefaults] boolForKey:@"shouldNotDisplayContactsAlert"]);
+        NSLog(@"screenLoadedTimes is: %d  and  shouldNotDisplayContactsAlert is: %d",screenLoadedTimes,[user boolForKey:@"shouldNotDisplayContactsAlert"]);
 
         if (screenLoadedTimes % 2 == 0 &&
-            ![[NSUserDefaults standardUserDefaults] boolForKey:@"shouldNotDisplayContactsAlert"])
+            ![user boolForKey:@"shouldNotDisplayContactsAlert"])
         {
             UIAlertView * alert = [[UIAlertView alloc]initWithTitle:@"Access To Contacts"
                                                             message:@"Did you know you can send money to ANY email address OR phone number? It's really helpful to select a contact you already have in your iPhone's Address Book.\n\nTO ENABLE, turn on access to Contacts in your iPhone's Settings:\n\nSettings --> 'Privacy' --> 'Contacts'"
@@ -902,7 +902,7 @@
         emailphoneBook = selectedEmail;
         isphoneBook = YES;
 
-        if ([emailphoneBook isEqualToString:[[NSUserDefaults standardUserDefaults] objectForKey:@"UserName"]])
+        if ([emailphoneBook isEqualToString:[user objectForKey:@"UserName"]])
         {
             UIAlertView *av = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"SelectRecip_VerySneaky", @"Select Recipient Very Sneaky Alert Title")
                                                          message:[NSString stringWithFormat:@"\xF0\x9F\x98\xB1\n%@", NSLocalizedString(@"SelectRecip_VerySneakyBody", @"Select Recipient Very Sneak Body Text")]
@@ -1318,7 +1318,7 @@
 #pragma mark - Email From Address Book handling
 -(void)getMemberIdByUsingUserNameFromPhoneBook
 {
-    if ([emailphoneBook isEqualToString:[[NSUserDefaults standardUserDefaults] objectForKey:@"UserName"]])
+    if ([emailphoneBook isEqualToString:[user objectForKey:@"UserName"]])
     {
         UIAlertView *av = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"SelectRecip_TryAgainAlertTitle", @"Select Recipient Try That Again Alert Title")
                                                      message:[NSString stringWithFormat:@"\xE2\x98\x9D\n%@", NSLocalizedString(@"SelectRecip_TryAgainAlertBody", @"Select Recipient Try That Again Alert Body Text")]
@@ -1341,7 +1341,7 @@
 #pragma mark - Manually Entered Email Handling
 -(void)getMemberIdByUsingUserName
 {
-    if ([[search.text lowercaseString] isEqualToString:[[NSUserDefaults standardUserDefaults] objectForKey:@"UserName"]])
+    if ([[search.text lowercaseString] isEqualToString:[user objectForKey:@"UserName"]])
     {
         [self.hud hide:YES];
         UIAlertView *av = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"SelectRecip_HoldOnThere", @"Select Recipient Hold On There Alert Title")
@@ -1430,8 +1430,8 @@
     if ([result rangeOfString:@"Invalid OAuth 2 Access"].location != NSNotFound)
     {
         [[NSFileManager defaultManager] removeItemAtPath:[self autoLogin] error:nil];
-        [[NSUserDefaults standardUserDefaults] removeObjectForKey:@"UserName"];
-        [[NSUserDefaults standardUserDefaults] removeObjectForKey:@"MemberId"];
+        [user removeObjectForKey:@"UserName"];
+        [user removeObjectForKey:@"MemberId"];
 
         [timer invalidate];
 
@@ -1737,7 +1737,7 @@
 
         if ([dictResult objectForKey:@"Result"] != [NSNull null])
         {
-            if ([[dictResult objectForKey:@"Result"] isEqualToString:[[NSUserDefaults standardUserDefaults] objectForKey:@"MemberId"]])
+            if ([[dictResult objectForKey:@"Result"] isEqualToString:[user objectForKey:@"MemberId"]])
             {
                 [self.hud hide:YES];
                 [search becomeFirstResponder];
@@ -1917,8 +1917,9 @@
 {
     if (alertView.tag == 2 && buttonIndex == 1)
     {
-        [[NSUserDefaults standardUserDefaults]setBool:YES forKey:@"shouldNotDisplayContactsAlert"];
-        NSLog(@"shouldNotDisplayContactsAlert is: %d",[[NSUserDefaults standardUserDefaults] boolForKey:@"shouldNotDisplayContactsAlert"]);
+        [user setBool:YES forKey:@"shouldNotDisplayContactsAlert"];
+        [user synchronize];
+        NSLog(@"shouldNotDisplayContactsAlert is: %d",[user boolForKey:@"shouldNotDisplayContactsAlert"]);
     }
 }
 

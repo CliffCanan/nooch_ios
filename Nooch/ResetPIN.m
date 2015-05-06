@@ -280,7 +280,7 @@
         serve *checkValid = [serve new];
         checkValid.tagName = @"checkValid";
         checkValid.Delegate = self;
-        [checkValid pinCheck:[[NSUserDefaults standardUserDefaults] stringForKey:@"MemberId"] pin:encryptedPIN];
+        [checkValid pinCheck:[user stringForKey:@"MemberId"] pin:encryptedPIN];
     }
     else if ([tagName isEqualToString:@"checkValid"])
     {

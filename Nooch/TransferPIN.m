@@ -787,7 +787,7 @@
             serve *checkValid = [serve new];
             checkValid.tagName = @"checkValid";
             checkValid.Delegate = self;
-            [checkValid pinCheck:[[NSUserDefaults standardUserDefaults] stringForKey:@"MemberId"] pin:encryptedPINNonUser];
+            [checkValid pinCheck:[user stringForKey:@"MemberId"] pin:encryptedPINNonUser];
         }
         else if ([tagName isEqualToString:@"checkValid"])
         {
@@ -818,8 +818,8 @@
                 NSString *TransactionDate = [dateFormat stringFromDate:date];
 
                 [transactionInputTransfer setValue:TransactionDate forKey:@"TransactionDate"];
-                [transactionInputTransfer setValue:[[NSUserDefaults standardUserDefaults] objectForKey:@"DeviceToken"] forKey:@"DeviceId"];
-                [transactionInputTransfer setValue:[[NSUserDefaults standardUserDefaults] stringForKey:@"MemberId"] forKey:@"MemberId"];
+                [transactionInputTransfer setValue:[user objectForKey:@"DeviceToken"] forKey:@"DeviceId"];
+                [transactionInputTransfer setValue:[user stringForKey:@"MemberId"] forKey:@"MemberId"];
                 [transactionInputTransfer setValue:self.memo forKey:@"Memo"];
                 [transactionInputTransfer setValue:encryptedPINNonUser forKey:@"PinNumber"];
                 [transactionInputTransfer setValue:[NSString stringWithFormat:@"%.02f",self.amnt] forKey:@"Amount"];
@@ -840,7 +840,7 @@
                     {
                         transactionTransfer = [[NSMutableDictionary alloc] initWithObjectsAndKeys:
                                                 transactionInputTransfer, @"transactionInput",
-                                                [[NSUserDefaults standardUserDefaults] valueForKey:@"OAuthToken"], @"accessToken",
+                                                [user valueForKey:@"OAuthToken"], @"accessToken",
                                                 @"personal",@"inviteType",
                                                 [self.receiver objectForKey:@"email"],@"receiverEmailId", nil];
                     }
@@ -848,7 +848,7 @@
                     {
                         transactionTransfer = [[NSMutableDictionary alloc] initWithObjectsAndKeys:
                                                transactionInputTransfer, @"transactionInput",
-                                               [[NSUserDefaults standardUserDefaults] valueForKey:@"OAuthToken"], @"accessToken",
+                                               [user valueForKey:@"OAuthToken"], @"accessToken",
                                                @"personal",@"inviteType",
                                                self.phone,@"receiverPhoneNumer", nil];
                     }
@@ -883,13 +883,13 @@
 
                         transactionTransfer = [[NSMutableDictionary alloc] initWithObjectsAndKeys:
                                                     transactionInputTransfer, @"requestInput",
-                                                    [[NSUserDefaults standardUserDefaults] valueForKey:@"OAuthToken"],@"accessToken", nil];
+                                                    [user valueForKey:@"OAuthToken"],@"accessToken", nil];
                     }
                     else if ([self.receiver objectForKey:@"phone"] )
                     {
                         transactionTransfer = [[NSMutableDictionary alloc] initWithObjectsAndKeys:
                                                transactionInputTransfer, @"requestInput",
-                                               [[NSUserDefaults standardUserDefaults] valueForKey:@"OAuthToken"], @"accessToken",
+                                               [user valueForKey:@"OAuthToken"], @"accessToken",
                                                self.phone,@"PayorPhoneNumber", nil];
                     }
                 }
@@ -1054,7 +1054,7 @@
             }
 
             [transactionInputTransfer setValue:[dictResult valueForKey:@"Status"] forKey:@"PinNumber"];
-            [transactionInputTransfer setValue:[[NSUserDefaults standardUserDefaults] stringForKey:@"MemberId"] forKey:@"MemberId"];
+            [transactionInputTransfer setValue:[user stringForKey:@"MemberId"] forKey:@"MemberId"];
             if ([self.type isEqualToString:@"request"])
             {
                 [transactionInputTransfer setValue:@"Request" forKey:@"TransactionType"];
@@ -1100,10 +1100,10 @@
             [transactionInputTransfer setValue:@"" forKey:@"Zipcode"];
             [transactionInputTransfer setValue:self.memo forKey:@"Memo"];
             if ([self.type isEqualToString:@"request"]) {
-                transactionTransfer = [[NSMutableDictionary alloc] initWithObjectsAndKeys:transactionInputTransfer, @"requestInput",[[NSUserDefaults standardUserDefaults] valueForKey:@"OAuthToken"],@"accessToken", nil];
+                transactionTransfer = [[NSMutableDictionary alloc] initWithObjectsAndKeys:transactionInputTransfer, @"requestInput",[user valueForKey:@"OAuthToken"],@"accessToken", nil];
             }
             else {
-                transactionTransfer = [[NSMutableDictionary alloc] initWithObjectsAndKeys:transactionInputTransfer, @"transactionInput",[[NSUserDefaults standardUserDefaults] valueForKey:@"OAuthToken"],@"accessToken", nil];
+                transactionTransfer = [[NSMutableDictionary alloc] initWithObjectsAndKeys:transactionInputTransfer, @"transactionInput",[user valueForKey:@"OAuthToken"],@"accessToken", nil];
             }
             NSLog(@"SEND/REQUEST --> transactionInputTransfer B) is: %@", transactionInputTransfer);
 
@@ -1149,7 +1149,7 @@
         {
             transactionInputTransfer = [[NSMutableDictionary alloc]init];
             [transactionInputTransfer setValue:[dictResult valueForKey:@"Status"] forKey:@"PinNumber"];
-            [transactionInputTransfer setValue:[[NSUserDefaults standardUserDefaults] stringForKey:@"MemberId"] forKey:@"MemberId"];
+            [transactionInputTransfer setValue:[user stringForKey:@"MemberId"] forKey:@"MemberId"];
             [transactionInputTransfer setValue:[self.receiver objectForKey:@"TransactionId"] forKey:@"TransactionId"];
 
             NSDate *date = [NSDate date];
@@ -1166,7 +1166,7 @@
                 [transactionInputTransfer setValue:@"Cancelled" forKey:@"Status"];
             }
 
-            NSString *uid = [[NSUserDefaults standardUserDefaults] objectForKey:@"DeviceToken"];
+            NSString *uid = [user objectForKey:@"DeviceToken"];
 
             [transactionInputTransfer setValue:TransactionDate forKey:@"TransactionDate"];
             [transactionInputTransfer setValue:@"RequestRespond" forKey:@"TransactionType"];
@@ -1182,7 +1182,7 @@
             [transactionInputTransfer setValue:@"" forKey:@"Zipcode"];
             [transactionInputTransfer setValue:self.memo forKey:@"Memo"];
 
-            transactionTransfer = [[NSMutableDictionary alloc] initWithObjectsAndKeys:transactionInputTransfer, @"handleRequestInput",[[NSUserDefaults standardUserDefaults] valueForKey:@"OAuthToken"],@"accessToken", nil];
+            transactionTransfer = [[NSMutableDictionary alloc] initWithObjectsAndKeys:transactionInputTransfer, @"handleRequestInput",[user valueForKey:@"OAuthToken"],@"accessToken", nil];
         }
 
         NSLog(@"TransactionTransfer Object is: %@", transactionTransfer);
@@ -1220,7 +1220,7 @@
             [transactionInputTransfer setValue:@"Donation" forKey:@"TransactionType"];
 
             [transactionInputTransfer setValue:[dictResult valueForKey:@"Status"] forKey:@"PinNumber"];
-            [transactionInputTransfer setValue:[[NSUserDefaults standardUserDefaults] stringForKey:@"MemberId"] forKey:@"MemberId"];
+            [transactionInputTransfer setValue:[user stringForKey:@"MemberId"] forKey:@"MemberId"];
             [transactionInputTransfer setValue:[self.receiver valueForKey:@"MemberId"] forKey:@"RecepientId"];
 
             NSString *receiveName = [[self.receiver valueForKey:@"FirstName"] stringByAppendingString:[NSString stringWithFormat:@" %@",[self.receiver valueForKey:@"LastName"]]];
@@ -1244,7 +1244,7 @@
             [transactionInputTransfer setValue:@"" forKey:@"Zipcode"];
             [transactionInputTransfer setValue:self.memo forKey:@"Memo"];
 
-            transactionTransfer = [[NSMutableDictionary alloc] initWithObjectsAndKeys:transactionInputTransfer, @"transactionInput",[[NSUserDefaults standardUserDefaults] valueForKey:@"OAuthToken"],@"accessToken", nil];
+            transactionTransfer = [[NSMutableDictionary alloc] initWithObjectsAndKeys:transactionInputTransfer, @"transactionInput",[user valueForKey:@"OAuthToken"],@"accessToken", nil];
         }
     
         postTransfer = [NSJSONSerialization dataWithJSONObject:transactionTransfer
@@ -1432,7 +1432,7 @@
 
 -(void)errorAlerts:(NSString *)referenceNumber
 {
-    NSDictionary * dictionary = @{@"MemberId": [[NSUserDefaults standardUserDefaults] valueForKey:@"MemberId"],
+    NSDictionary * dictionary = @{@"MemberId": [user valueForKey:@"MemberId"],
                                   @"errorAlertNumber": referenceNumber};
     [ARTrackingManager trackEvent:@"TrnsfrPIN_ErrorAlert_Displayed" parameters:dictionary];
 

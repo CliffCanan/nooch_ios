@@ -131,7 +131,7 @@
     else if ([SynapseOnOff isEqualToString:@"on"])
     {
         baseUrl = [ARPowerHookManager getValueForHookById:@"synps_baseUrl"];
-        NSString * memberId = [[NSUserDefaults standardUserDefaults] objectForKey:@"MemberId"];
+        NSString * memberId = [user objectForKey:@"MemberId"];
         
         NSString *body = [NSString stringWithFormat: @"MemberId=%@",memberId];
     
@@ -428,8 +428,8 @@
     obj.tagName = @"saveMemberTransId";
     [obj setDelegate:self];
 
-    NSDictionary * dict = @{@"TransId":[[NSUserDefaults standardUserDefaults] objectForKey:@"paymentID"],
-                            @"MemberId":[[NSUserDefaults standardUserDefaults] objectForKey:@"MemberId"]};
+    NSDictionary * dict = @{@"TransId":[user objectForKey:@"paymentID"],
+                            @"MemberId":[user objectForKey:@"MemberId"]};
 
     [obj saveMemberTransId:[dict mutableCopy]];
 }
@@ -460,10 +460,9 @@
 
         if ([[[dictResponse valueForKey:@"SaveMemberTransIdResult"]valueForKey:@"Result"]isEqualToString:@"Success"])
         {
-            [[NSUserDefaults standardUserDefaults]setObject:@"1" forKey:@"IsBankAvailable"];
+            [user setObject:@"1" forKey:@"IsBankAvailable"];
 
             isProfileOpenFromSideBar = NO;
-            isFromSettingsOptions = YES;
             sentFromHomeScrn = NO;
 
             UIAlertView * alert = [[UIAlertView alloc]initWithTitle:@"Great Success"
@@ -473,12 +472,12 @@
                                                   otherButtonTitles:Nil, nil];
             [alert show];
 
-            ProfileInfo * profile = [ProfileInfo new];
-            [nav_ctrl pushViewController:profile animated:YES];
+            Home * home = [Home new];
+            [nav_ctrl pushViewController:home animated:YES];
         }
         else
         {
-            [[NSUserDefaults standardUserDefaults]setObject:@"0" forKey:@"IsBankAvailable"];
+            [user setObject:@"0" forKey:@"IsBankAvailable"];
 
             UIAlertView * alert = [[UIAlertView alloc]initWithTitle:@"Please Try Again"
                                                             message:@"\xF0\x9F\x98\xAE\nBank linking failed, unfortunately your info was not saved. We hate it when this happens too."
@@ -489,6 +488,7 @@
 
             [self.navigationController popViewControllerAnimated:YES];
         }
+        [user synchronize];
     }
 }
 

@@ -184,7 +184,7 @@
         serve * checkValid = [serve new];
         checkValid.tagName = @"checkValid";
         checkValid.Delegate = self;
-        [checkValid ValidatePinNumberToEnterForEnterForeground:[[NSUserDefaults standardUserDefaults] stringForKey:@"MemberId"] pin:encryptedPIN];
+        [checkValid ValidatePinNumberToEnterForEnterForeground:[user stringForKey:@"MemberId"] pin:encryptedPIN];
     }
     
     else if ([tagName isEqualToString:@"checkValid"])
