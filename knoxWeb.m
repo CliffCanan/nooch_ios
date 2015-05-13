@@ -7,10 +7,10 @@
 //
 
 #import "knoxWeb.h"
-#import "ProfileInfo.h"
 #import "Home.h"
 #import "Welcome.h"
 #import "webView.h"
+#import "SelectRecipient.h"
 
 @interface knoxWeb ()<serveD,UIWebViewDelegate>
 {
@@ -24,7 +24,7 @@
 
 @implementation knoxWeb
 
-- (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
+-(id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
 {
     self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil];
     if (self) {
@@ -46,7 +46,7 @@
     [super viewDidDisappear:animated];
 }
 
-- (void)viewDidLoad
+-(void)viewDidLoad
 {
     [super viewDidLoad];
     // Do any additional setup after loading the view.
@@ -62,7 +62,7 @@
     shadowNavText.shadowOffset = CGSizeMake(0, -1.0);
     NSDictionary * titleAttributes = @{NSShadowAttributeName: shadowNavText};
 
-    UITapGestureRecognizer * backTap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(backToHome)];
+    UITapGestureRecognizer * backTap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(backToSettings)];
 
     UILabel * back_button = [UILabel new];
     [back_button setStyleId:@"navbar_back"];
@@ -86,9 +86,9 @@
 
     self.web = [UIWebView new];
     [self.web setDelegate:self];
-    [self.web setFrame:CGRectMake(0, -2, 320, [[UIScreen mainScreen] bounds].size.height - 61)];
+    [self.web setFrame:CGRectMake(0, -1, 320, [[UIScreen mainScreen] bounds].size.height - 63)];
     [self.view addSubview:self.web];
-    [self.web.scrollView setScrollEnabled:NO];
+    [self.web.scrollView setScrollEnabled:YES];
 
     RTSpinKitView * spinner1 = [[RTSpinKitView alloc] initWithStyle:RTSpinKitViewStyleWanderingCubes];
     spinner1.color = [UIColor whiteColor];
@@ -123,7 +123,7 @@
         [self.web loadRequest: self.request];
 
         [[NSNotificationCenter defaultCenter] addObserver:self
-                                                 selector:@selector(resignView)
+                                                 selector:@selector(resignViewKnox)
                                                      name:@"KnoxResponse"
                                                    object:nil];
     }
@@ -133,10 +133,11 @@
         baseUrl = [ARPowerHookManager getValueForHookById:@"synps_baseUrl"];
         NSString * memberId = [user objectForKey:@"MemberId"];
         
-        NSString *body = [NSString stringWithFormat: @"MemberId=%@",memberId];
+        NSString *body = [NSString stringWithFormat: @"MemberId=%@&redUrl=nooch://banksuccess",memberId];
     
         NSURL *url = [NSURL URLWithString: [NSString stringWithFormat:@"%@?%@",baseUrl,body]];
 
+        NSLog(@"SYNPASE URL IS: %@",url);
         self.request = [[NSMutableURLRequest alloc]initWithURL: url];
         [self.request setHTTPMethod: @"GET"];
         [self.request setValue:@"application/json" forHTTPHeaderField:@"Content-Type"];
@@ -145,8 +146,8 @@
         [self.web loadRequest: self.request];
         
         [[NSNotificationCenter defaultCenter] addObserver:self
-                                                 selector:@selector(resignView)
-                                                     name:@"KnoxResponse"
+                                                 selector:@selector(resignViewSynapse)
+                                                     name:@"SynapseResponse"
                                                    object:nil];
     }
 }
@@ -413,13 +414,13 @@
     }
 }
 
--(void)backToHome
+-(void)backToSettings
 {
     [self.navigationItem setLeftBarButtonItem:nil];
     [self.navigationController popViewControllerAnimated:YES];
 }
 
-- (void)resignView
+-(void)resignViewKnox
 {
     self.hud.labelText = @"Finishing Up...";
     [self.hud show:YES];
@@ -428,10 +429,30 @@
     obj.tagName = @"saveMemberTransId";
     [obj setDelegate:self];
 
+    NSLog(@"KnoxWeb.m -> resignViewKnox fired. TransId is: %@     MemberId is: %@",[user objectForKey:@"paymentID"],[user objectForKey:@"MemberId"]);
     NSDictionary * dict = @{@"TransId":[user objectForKey:@"paymentID"],
                             @"MemberId":[user objectForKey:@"MemberId"]};
 
     [obj saveMemberTransId:[dict mutableCopy]];
+}
+
+-(void)resignViewSynapse
+{
+    NSLog(@"KnoxWeb.m -> resignViewSynapse fired");
+
+    [user setObject:@"1" forKey:@"IsBankAvailable"];
+
+    UIAlertView * alert = [[UIAlertView alloc]initWithTitle:@"Great Success"
+                                                    message:@"\xF0\x9F\x98\x80\nYour bank was linked successfully."
+                                                   delegate:Nil
+                                          cancelButtonTitle:@"OK"
+                                          otherButtonTitles:Nil, nil];
+    [alert show];
+
+    isFromBankWebView = YES;
+
+    SelectRecipient * selectRecipScrn = [SelectRecipient new];
+    [nav_ctrl pushViewController:selectRecipScrn animated:YES];
 }
 
 -(void)Error:(NSError *)Error
@@ -458,12 +479,12 @@
         
         NSDictionary * dictResponse = [NSJSONSerialization JSONObjectWithData:[result dataUsingEncoding:NSUTF8StringEncoding] options:0 error:&error];
 
+        //NSLog(@"Knox dictResponse is: %@",[dictResponse valueForKey:@"SaveMemberTransIdResult"]);
+        //NSLog(@"Knox dictResponse -> valueForKey@'Result' is: %@",[[dictResponse valueForKey:@"SaveMemberTransIdResult"]valueForKey:@"Result"]);
+
         if ([[[dictResponse valueForKey:@"SaveMemberTransIdResult"]valueForKey:@"Result"]isEqualToString:@"Success"])
         {
             [user setObject:@"1" forKey:@"IsBankAvailable"];
-
-            isProfileOpenFromSideBar = NO;
-            sentFromHomeScrn = NO;
 
             UIAlertView * alert = [[UIAlertView alloc]initWithTitle:@"Great Success"
                                                             message:@"\xF0\x9F\x98\x80\nYour bank was linked successfully."

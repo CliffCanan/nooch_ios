@@ -292,6 +292,12 @@
     self.memo.inputAccessoryView = [[UIView alloc] init]; // To override the IQ Keyboard Mgr
     [memoShell addSubview:self.memo];
 
+    if ([self.receiver objectForKey:@"Memo"] &&
+        [[self.receiver objectForKey:@"Memo"] length] > 2)
+    {
+        [self.memo setText:[self.receiver objectForKey:@"Memo"]];
+    }
+
     if (isFromMyApt)
     {
         if ([self.receiver objectForKey:@"RentAmount"])

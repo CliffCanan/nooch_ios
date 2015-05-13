@@ -741,48 +741,62 @@
         NSDictionary *tempDict = [histArrayCommon objectAtIndex:i];
 
         markerOBJ = [[GMSMarker alloc] init];
-        markerOBJ.position = CLLocationCoordinate2DMake([[tempDict objectForKey:@"Latitude"] floatValue], [[tempDict objectForKey:@"Longitude"] floatValue]);
-        markerOBJ.infoWindowAnchor = CGPointMake(0.5, -0.05);
-        markerOBJ.appearAnimation = kGMSMarkerAnimationPop;
-        markerOBJ.zIndex = 10 + i;
-        markerOBJ.map = mapView_;
-        markerOBJ.title = [NSString stringWithFormat:@"%d",i];
 
-        [_markers addObject:markerOBJ];
-
-        if ( [[[histArrayCommon objectAtIndex:i] valueForKey:@"TransactionType"]isEqualToString:@"Transfer"])
+        // IF transaction has a location, OR if the transfer is type "Reward", meaning paid directly from Nooch
+        if (([[tempDict objectForKey:@"Latitude"] floatValue] != 0 && [[tempDict objectForKey:@"Longitude"] floatValue] != 0) ||
+            [[[histArrayCommon objectAtIndex:i] valueForKey:@"TransactionType"]isEqualToString:@"Reward"])
         {
-            if ([[user valueForKey:@"MemberId"] isEqualToString:[[histArrayCommon objectAtIndex:i] valueForKey:@"RecepientId"]])
+            if ([[[histArrayCommon objectAtIndex:i] valueForKey:@"TransactionType"]isEqualToString:@"Reward"])
             {
-                markerOBJ.icon = [GMSMarker markerImageWithColor:kNoochGreen];
-                markerOBJ.rotation = 11;
+                markerOBJ.icon=[UIImage imageNamed:@"n_Icon.png"];
+                markerOBJ.position = CLLocationCoordinate2DMake(339.9526f, -75.1634f);
             }
             else
             {
-                markerOBJ.icon = [GMSMarker markerImageWithColor:kNoochRed];
-                markerOBJ.rotation = -11;
+                markerOBJ.position = CLLocationCoordinate2DMake([[tempDict objectForKey:@"Latitude"] floatValue], [[tempDict objectForKey:@"Longitude"] floatValue]);
             }
-        }
-        else if ([[[histArrayCommon objectAtIndex:i] valueForKey:@"TransactionType"] isEqualToString:@"Request"])
-        {
-            markerOBJ.icon = [GMSMarker markerImageWithColor:kNoochBlue];
-            markerOBJ.rotation = -6;
-        }
-        else if ([[[histArrayCommon objectAtIndex:i] valueForKey:@"TransactionType"] isEqualToString:@"Disputed"])
-        {
-            markerOBJ.icon = [GMSMarker markerImageWithColor:kNoochGrayDark];
-            markerOBJ.rotation = 5;
-        }
-        else if ([[[histArrayCommon objectAtIndex:i] valueForKey:@"TransactionType"] isEqualToString:@"Invite"])
-        {
-            markerOBJ.icon = [GMSMarker markerImageWithColor:[UIColor whiteColor]];
-            markerOBJ.rotation = -4;
-        }
-        else
-        {
-            NSLog(@"Transaction Type is: %@", [[histArrayCommon objectAtIndex:i] valueForKey:@"TransactionType"]);
-            markerOBJ.rotation = 1;
-            //markerOBJ.icon=[UIImage imageNamed:@"n_Icon.png"];
+            markerOBJ.infoWindowAnchor = CGPointMake(0.5, -0.05);
+            markerOBJ.appearAnimation = kGMSMarkerAnimationPop;
+            markerOBJ.zIndex = 10 + i;
+            markerOBJ.map = mapView_;
+            markerOBJ.title = [NSString stringWithFormat:@"%d",i];
+
+            [_markers addObject:markerOBJ];
+
+            if ([[[histArrayCommon objectAtIndex:i] valueForKey:@"TransactionType"]isEqualToString:@"Transfer"])
+            {
+                if ([[user valueForKey:@"MemberId"] isEqualToString:[[histArrayCommon objectAtIndex:i] valueForKey:@"RecepientId"]])
+                {
+                    markerOBJ.icon = [GMSMarker markerImageWithColor:kNoochGreen];
+                    markerOBJ.rotation = 11;
+                }
+                else
+                {
+                    markerOBJ.icon = [GMSMarker markerImageWithColor:kNoochRed];
+                    markerOBJ.rotation = -11;
+                }
+            }
+            else if ([[[histArrayCommon objectAtIndex:i] valueForKey:@"TransactionType"] isEqualToString:@"Request"])
+            {
+                markerOBJ.icon = [GMSMarker markerImageWithColor:kNoochBlue];
+                markerOBJ.rotation = -6;
+            }
+            else if ([[[histArrayCommon objectAtIndex:i] valueForKey:@"TransactionType"] isEqualToString:@"Disputed"])
+            {
+                markerOBJ.icon = [GMSMarker markerImageWithColor:kNoochGrayDark];
+                markerOBJ.rotation = 5;
+            }
+            else if ([[[histArrayCommon objectAtIndex:i] valueForKey:@"TransactionType"] isEqualToString:@"Invite"])
+            {
+                markerOBJ.icon = [GMSMarker markerImageWithColor:[UIColor whiteColor]];
+                markerOBJ.rotation = -4;
+            }
+            else
+            {
+                NSLog(@"Transaction Type is: %@", [[histArrayCommon objectAtIndex:i] valueForKey:@"TransactionType"]);
+                markerOBJ.rotation = 1;
+                markerOBJ.icon=[UIImage imageNamed:@"n_Icon.png"];
+            }
         }
     }
 }
@@ -791,7 +805,7 @@
 {
     if (locUpdateSuccessfully == true)
     {
-        NSLog(@"locationUser is: %f,%f", lat_hist,lon_hist);
+        //NSLog(@"locationUser is: %f,%f", lat_hist,lon_hist);
     }
     else
     {
@@ -946,13 +960,13 @@
         index = 1;
         isFilterSelected = NO;
 
-        //Rlease memory cache
+        //Release memory cache
         SDImageCache *imageCache = [SDImageCache sharedImageCache];
         [imageCache clearMemory];
         [imageCache clearDisk];
         [imageCache cleanDisk];
         countRows = 0;
-        NSLog(@"ListType is: %@",listType);
+        //NSLog(@"ListType is: %@",listType);
 
         [self loadHist:listType index:index len:20 subType:subTypestr];
     }
@@ -1245,10 +1259,9 @@
                 [amount setStyleClass:@"history_transferamount"];
                 [amount setText:[NSString stringWithFormat:@"$%.02f",[[dictRecord valueForKey:@"Amount"] floatValue]]];
 
-                UIImageView *pic = [[UIImageView alloc] initWithFrame:CGRectMake(7, 9, 50, 50)];
+                UIImageView *pic = [[UIImageView alloc] initWithFrame:CGRectMake(7, 7, 50, 50)];
                 pic.layer.cornerRadius = 25;
                 pic.clipsToBounds = YES;
-                [cell.contentView addSubview:pic];
 
 				UILabel *transferTypeLabel = [UILabel new];
                 [transferTypeLabel setStyleClass:@"history_cell_transTypeLabel"];
@@ -1277,18 +1290,17 @@
                     [statusIndicator setText:[NSString fontAwesomeIconStringForIconIdentifier:@"fa-times"]];
                     [statusIndicator setTextColor:kNoochRed];
                 }
-                else if ([[dictRecord valueForKey:@"TransactionStatus"]isEqualToString:@"Success"] ||
-                         [[dictRecord valueForKey:@"TransactionStatus"]isEqualToString:@"Reward"]) {
+                else if ( [[dictRecord valueForKey:@"TransactionStatus"]isEqualToString:@"Success"] ||
+                         ![[dictRecord valueForKey:@"TransactionStatus"]isEqualToString:@"Reward"]) {
                     [statusIndicator setText:[NSString fontAwesomeIconStringForIconIdentifier:@"fa-check"]];
                     [statusIndicator setTextColor:kNoochGreen];
                 }
-                
+    
                 NSString * username = [NSString stringWithFormat:@"%@",[user valueForKey:@"UserName"]];
                 NSString * fullName = [NSString stringWithFormat:@"%@ %@",[user valueForKey:@"firstName"],[user valueForKey:@"lastName"]];
                 NSString * invitationSentTo = [NSString stringWithFormat:@"%@",[dictRecord valueForKey:@"InvitationSentTo"]];
 
                 if ( [[dictRecord valueForKey:@"TransactionType"]isEqualToString:@"Transfer"] ||
-                     [[dictRecord valueForKey:@"TransactionType"]isEqualToString:@"Reward"] ||
                     ([[dictRecord valueForKey:@"TransactionType"]isEqualToString:@"Invite"] &&
                      invitationSentTo != NULL && ![invitationSentTo isEqualToString:username] &&
                     ![[dictRecord valueForKey:@"Name"] isEqualToString:fullName]))
@@ -1371,7 +1383,6 @@
                 else if ([[dictRecord valueForKey:@"TransactionType"]isEqualToString:@"Invite"] &&
                           [dictRecord valueForKey:@"InvitationSentTo"] != NULL)
                 {
-                    //ADDED BY CLIFF
                     if ([[dictRecord valueForKey:@"TransactionStatus"]isEqualToString:@"Cancelled"]) {
                         [amount setTextColor:kNoochGrayDark];
                     }
@@ -1380,7 +1391,6 @@
                     }
                     [pic setImage:[UIImage imageNamed:@"profile_picture.png"]];
 
-                    //@"Invite sent to"
                     [transferTypeLabel setText:NSLocalizedString(@"History_InviteSentToTxt", @"History screen 'Invite Sent To' Text")];
 					[transferTypeLabel setTextColor:kNoochGrayDark];
 
@@ -1407,6 +1417,21 @@
                         [name setText:[NSString stringWithFormat:@"%@ ",[dictRecord valueForKey:@"InvitationSentTo"]]];
                     }
                 }
+                else if ([[dictRecord valueForKey:@"TransactionType"]isEqualToString:@"Reward"])
+                {
+                    [amount setStyleClass:@"history_transferamount_pos"];
+                    [transferTypeLabel setText:@"REWARD FROM"];
+                    [transferTypeLabel setTextColor:kNoochGrayDark];
+                    [transferTypeLabel setBackgroundColor:[UIColor yellowColor]];
+                    [name setText:[NSString stringWithFormat:@"%@ ",[[dictRecord valueForKey:@"Name"] capitalizedString]]];
+                    [pic setFrame:CGRectMake(9, 7, 44, 44)];
+                    [pic setImage:[UIImage  imageNamed:@"Icon.png"]];
+                    pic.layer.cornerRadius = 7;
+                    [statusIndicator setText:[NSString fontAwesomeIconStringForIconIdentifier:@"fa-star"]];
+                    [statusIndicator setTextColor:[UIColor yellowColor]];
+                    [statusIndicator setFont:[UIFont fontWithName:@"FontAwesome" size:10]];
+                    [statusIndicator setStyleId:@"rewardIconShadow"];
+                }
                 else if ([[dictRecord valueForKey:@"TransactionType"]isEqualToString:@"Disputed"])
                 {
                     if ([[user valueForKey:@"MemberId"] isEqualToString:[dictRecord valueForKey:@"MemberId"]])
@@ -1432,7 +1457,6 @@
 
 				//  'updated_balance' now for displaying transfer STATUS, only if status is "cancelled" or "rejected"
                 //  (this used to display the user's updated balance, which no longer exists)
-                
                 UILabel * updated_balance = [UILabel new];
                 [updated_balance setStyleClass:@"transfer_status"];
                 
@@ -1563,6 +1587,7 @@
                     [name setStyleClass:@"history_cell_textlabel_wMemo"];
                 }
 
+                [cell.contentView addSubview:pic];
                 [cell.contentView addSubview:amount];
                 [cell.contentView addSubview:statusIndicator];
                 [cell.contentView addSubview:transferTypeLabel];
@@ -2629,7 +2654,6 @@
                     if (![self.list.subviews containsObject:_emptyPic] ||
                         ![self.list.subviews containsObject:_emptyText])
                     {
-                        NSLog(@"Checkpoint #4");
                         [self.list addSubview: _emptyPic];
                         [self.list addSubview: _emptyText];
 
@@ -2687,7 +2711,6 @@
     else if ([tagName isEqualToString:@"getPendingTransfersCount"])
     {
         NSDictionary * dict = [NSJSONSerialization JSONObjectWithData:[result dataUsingEncoding:NSUTF8StringEncoding] options:0 error:&error];
-        NSLog(@"getPendingTransfersCount is: %@", dict);
 
         int pendingDisputes = [[dict valueForKey:@"pendingDisputesNotSolved"] intValue];
         int pendingInvitations = [[dict valueForKey:@"pendingInvitationsSent"] intValue];
@@ -2810,7 +2833,6 @@
 
     else if ([tagName isEqualToString:@"remind"])
     {
-        // NSLog(@"Remind response was: %@",result);
         UIAlertView * alert = [[UIAlertView alloc]initWithTitle:NSLocalizedString(@"History_ReminderSuccessAlrtTitle", @"History screen reminder sent successfully Alert Title")
                                                         message:nil
                                                        delegate:nil

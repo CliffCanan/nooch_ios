@@ -768,7 +768,6 @@ NSString *amnt;
             //storing the token
             //setting the token in the user defaults
             [user setObject:token forKey:@"OAuthToken"];
-            NSLog(@"THIS HAS BEEN REACHED :-)");
             //syncing the defaults
             [user synchronize];
         }
@@ -1574,7 +1573,7 @@ NSString *amnt;
     self.responseData = [[NSMutableData alloc] init];
     [[NSURLCache sharedURLCache] removeAllCachedResponses];
 
-    NSString * urlString = [NSString stringWithFormat:@"%@/SaveM2emberTransId",ServerUrl];
+    NSString * urlString = [NSString stringWithFormat:@"%@/SaveMemberTransId",ServerUrl];
     NSURL * url = [NSURL URLWithString:urlString];
 
     dictInv = [[NSMutableDictionary alloc]init];

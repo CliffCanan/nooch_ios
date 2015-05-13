@@ -650,9 +650,7 @@ void addressBookChanged(ABAddressBookRef addressBook, CFDictionaryRef info, void
     MFMailComposeViewController *mailComposer = [[MFMailComposeViewController alloc] init];
     mailComposer.mailComposeDelegate = self;
     mailComposer.navigationBar.tintColor=[UIColor whiteColor];
-    
     [mailComposer setSubject:[NSString stringWithFormat:@"Support Request: Version %@",[[[NSBundle mainBundle] infoDictionary] objectForKey:@"CFBundleVersion"]]];
-    
     [mailComposer setMessageBody:@"" isHTML:NO];
     [mailComposer setToRecipients:[NSArray arrayWithObjects:@"support@nooch.com", nil]];
     [mailComposer setCcRecipients:[NSArray arrayWithObject:@""]];
@@ -668,7 +666,8 @@ void addressBookChanged(ABAddressBookRef addressBook, CFDictionaryRef info, void
     isProfileOpenFromSideBar = NO;
     isFromTransDetails = NO;
 
-    
+    ProfileInfo *info = [ProfileInfo new];
+    [self.navigationController pushViewController:info animated:YES];
 }
 
 -(void)go_history
@@ -708,8 +707,6 @@ void addressBookChanged(ABAddressBookRef addressBook, CFDictionaryRef info, void
         {
             NSDictionary * dictionary = @{@"MemberId": [user valueForKey:@"MemberId"]};
 
-            [ARTrackingManager trackEvent:@"Home_ViewDidAppear_ReloadInitiated" parameters:dictionary];
-
             RTSpinKitView *spinner1 = [[RTSpinKitView alloc] initWithStyle:RTSpinKitViewStyleCircleFlip];
             spinner1.color = [UIColor clearColor];
             self.hud = [[MBProgressHUD alloc] initWithView:self.navigationController.view];
@@ -726,6 +723,7 @@ void addressBookChanged(ABAddressBookRef addressBook, CFDictionaryRef info, void
             //location
             [self checkIfLocAllowed];
 
+            [ARTrackingManager trackEvent:@"Home_ViewDidAppear_ReloadInitiated" parameters:dictionary];
             NSLog(@"Home: Reload Initiated");
         }
 
@@ -1866,7 +1864,7 @@ void addressBookChanged(ABAddressBookRef addressBook, CFDictionaryRef info, void
                                               return;
                                           }];
             }
-            
+
             else if (favorite[@"UserName"])
             {
                 if ([favorite[@"emailCount"]intValue] > 1)
@@ -2406,6 +2404,17 @@ void addressBookChanged(ABAddressBookRef addressBook, CFDictionaryRef info, void
         if ([error isKindOfClass:[NSNull class]])
         {
             NSLog(@"Home -> Server response error for saveIpAddress: %@  & Error: %@", dict, error);
+        }
+        BOOL shouldDisplayRefCampaign= [[ARPowerHookManager getValueForHookById:@"RefCmpgn_YorN"] boolValue];
+        
+        if (!shouldDisplayRefCampaign)
+        {
+            NSLog(@"ShouldDisplayRefCampaign block fired");
+            [ARPowerHookManager executeBlockWithId:@"goToReferScrn"
+                                              data:@{ @"shouldDisplayAlert" : @"YES",
+                                                      @"alertText" : @"Here you can see your unique Referral Code. Send it out to anyone as often as you'd like and you'll get $5 when the first 5 people sign up with your code and makes a payment."
+                                                      }
+                                           context:self];
         }
     }
 

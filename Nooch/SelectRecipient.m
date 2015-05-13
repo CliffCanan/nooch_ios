@@ -51,11 +51,6 @@
 
     [self.navigationItem setLeftBarButtonItem:nil];
     UIButton * back_button = [UIButton buttonWithType:UIButtonTypeRoundedRect];
-    [back_button setStyleId:@"navbar_back"];
-    [back_button addTarget:self action:@selector(backPressed_SelectRecip:) forControlEvents:UIControlEventTouchUpInside];
-    [back_button setTitle:[NSString fontAwesomeIconStringForIconIdentifier:@"fa-angle-left"] forState:UIControlStateNormal];
-    [back_button setTitleShadowColor:Rgb2UIColor(19, 32, 38, 0.15) forState:UIControlStateNormal];
-    back_button.titleLabel.shadowOffset = CGSizeMake(0.0, -1.0);
     UIBarButtonItem * menu = [[UIBarButtonItem alloc] initWithCustomView:back_button];
     [self.navigationItem setLeftBarButtonItem:menu];
 
@@ -160,7 +155,8 @@
         self.location = NO;
         [self.navigationItem setHidesBackButton:YES];
         [self.navigationItem setLeftBarButtonItem:nil];
-        [self.recent_location setSelectedSegmentIndex:0];
+        [self.navigationItem setTitle:@"Group Request"];
+        [self.navigationItem setRightBarButtonItem:Nil];
 
         UIAlertView *av = [[UIAlertView alloc] initWithTitle:@"Add Recipients"
                                                      message:@"To request money from more than one person, search for friends then tap each additional person (up to 10).\n\nTap 'Done' when finished."
@@ -168,9 +164,6 @@
                                            cancelButtonTitle:@"OK"
                                            otherButtonTitles:nil];
         [av show];
-
-        [self.navigationItem setTitle:@"Group Request"];
-        [self.navigationItem setRightBarButtonItem:Nil];
 
         UIButton * Done = [UIButton buttonWithType:UIButtonTypeRoundedRect];
         Done.frame = CGRectMake(307, 25, 16, 35);
@@ -219,21 +212,38 @@
         shadowNavText.shadowOffset = CGSizeMake(0, -1.0);
         NSDictionary * titleAttributes = @{NSShadowAttributeName: shadowNavText};
 
-        UITapGestureRecognizer * backTap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(backPressed_SelectRecip:)];
+        
+        if (!isFromBankWebView)
+        {
+            UILabel * back_button = [UILabel new];
+            [back_button setUserInteractionEnabled:YES];
+            UITapGestureRecognizer * backTap;
+            [back_button setStyleId:@"navbar_back"];
+            back_button.attributedText = [[NSAttributedString alloc] initWithString:[NSString fontAwesomeIconStringForIconIdentifier:@"fa-angle-left"] attributes:titleAttributes];
+            backTap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(backPressed_SelectRecip)];
+            [back_button addGestureRecognizer: backTap];
 
-        UILabel * back_button = [UILabel new];
-        [back_button setStyleId:@"navbar_back"];
-        [back_button setUserInteractionEnabled:YES];
-        [back_button addGestureRecognizer: backTap];
-        back_button.attributedText = [[NSAttributedString alloc] initWithString:[NSString fontAwesomeIconStringForIconIdentifier:@"fa-angle-left"] attributes:titleAttributes];
+            UIBarButtonItem * menu = [[UIBarButtonItem alloc] initWithCustomView:back_button];
+            [self.navigationItem setLeftBarButtonItem:menu];
+        }
+        else
+        {
+            UIButton * Done = [UIButton buttonWithType:UIButtonTypeRoundedRect];
+            Done.frame = CGRectMake(307, 25, 16, 35);
+            [Done setStyleId:@"icon_RequestMultiple"];
+            [Done setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
+            [Done setTitle:@"Home" forState:UIControlStateNormal];
+            [Done setTitleShadowColor:Rgb2UIColor(19, 32, 38, 0.16) forState:UIControlStateNormal];
+            Done.titleLabel.shadowOffset = CGSizeMake(0.0, -1.0);
+            [Done addTarget:self action:@selector(backPressed_FrmBnkWbView) forControlEvents:UIControlEventTouchUpInside];
 
-        UIBarButtonItem * menu = [[UIBarButtonItem alloc] initWithCustomView:back_button];
+            UIBarButtonItem * backItem = [[UIBarButtonItem alloc] initWithCustomView:Done];
+            [self.navigationItem setLeftBarButtonItem:backItem];
+        }
 
-        [self.navigationItem setLeftBarButtonItem:menu];
         [self.navigationItem setRightBarButtonItem:Nil];
 
         [[assist shared]setRequestMultiple:NO];
-        [self.recent_location setSelectedSegmentIndex:0];
         self.location = NO;
 
         if (emailEntry || phoneNumEntry)
@@ -241,6 +251,8 @@
             [self searchBarTextDidBeginEditing:search];
         }
     }
+
+    [self.recent_location setSelectedSegmentIndex:0];
 
     if (!emailEntry && !phoneNumEntry)
     {
@@ -363,12 +375,22 @@
     [super viewDidDisappear:animated];
 }
 
--(void)backPressed_SelectRecip:(id)sender
+-(void)backPressed_SelectRecip
 {
     [[assist shared]setneedsReload:NO]; //Going right back to Home, so don't really need to reload
 
     [self.navigationItem setLeftBarButtonItem:nil];
     [self.navigationController popViewControllerAnimated:YES];
+}
+
+-(void)backPressed_FrmBnkWbView
+{
+    [[assist shared] setneedsReload:NO]; //Going right back to Home, so don't really need to reload
+
+    [self.navigationItem setLeftBarButtonItem:nil];
+
+    Home * goHome = [Home new];
+    [self.navigationController pushViewController:goHome animated:YES];
 }
 
 -(void)DoneEditing_RequestMultiple:(id)sender

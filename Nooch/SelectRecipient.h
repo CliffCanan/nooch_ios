@@ -14,7 +14,7 @@
 #import <AddressBookUI/AddressBookUI.h>
 #import "SpinKit/RTSpinKitView.h"
 
-BOOL isphoneBook, isAddRequest;
+BOOL isphoneBook, isAddRequest, isFromBankWebView;
 NSMutableArray*arrRecipientsForRequest;
 int screenLoadedTimes;
 

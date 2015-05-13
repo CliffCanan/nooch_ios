@@ -1803,12 +1803,14 @@ UIImageView *picture;
                 self.SavePhoneNumber = @"";
             }
 
-            if ([[dictProfileinfo valueForKey:@"ContactNumber"] length] > 8)
+            if ([[dictProfileinfo valueForKey:@"ContactNumber"] length] > 8 &&
+                [[dictProfileinfo valueForKey:@"ContactNumber"] length] < 12)
             {
                 self.phone.text = [NSString stringWithFormat:@"(%@) %@-%@",
                                    [[dictProfileinfo objectForKey:@"ContactNumber"] substringWithRange:NSMakeRange(0, 3)],
                                    [[dictProfileinfo objectForKey:@"ContactNumber"] substringWithRange:NSMakeRange(3, 3)],
-                                   [[dictProfileinfo objectForKey:@"ContactNumber"] substringWithRange:NSMakeRange(6, [[dictProfileinfo objectForKey:@"ContactNumber"] length] - 6)]];
+                                   [[dictProfileinfo objectForKey:@"ContactNumber"] substringWithRange:NSMakeRange(6, [[dictProfileinfo objectForKey:@"ContactNumber"] length] - 6)]
+                                  ];
 
                 self.phone.text = [self.phone.text stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]];
 
@@ -1822,6 +1824,8 @@ UIImageView *picture;
             else if ([[dictProfileinfo valueForKey:@"ContactNumber"] length] > 0)
             {
                 self.phone.text = [dictProfileinfo objectForKey:@"ContactNumber"];
+                [dictSavedInfo setObject:self.phone.text forKey:@"phoneno"];
+                [ARProfileManager setUserPhoneNumber:self.phone.text];
             }
             else
             {

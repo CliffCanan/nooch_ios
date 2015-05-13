@@ -138,7 +138,6 @@
     NSDictionary * textAttributes = @{NSShadowAttributeName: shadow };
     
     if ( [[self.trans valueForKey:@"TransactionType"] isEqualToString:@"Transfer"] ||
-         [[self.trans valueForKey:@"TransactionType"] isEqualToString:@"Reward"] ||
         ([[self.trans valueForKey:@"TransactionType"] isEqualToString:@"Invite"] &&
          [[self.trans valueForKey:@"InvitationSentTo"] isEqualToString:[user valueForKey:@"UserName"]]))
     {
@@ -171,6 +170,11 @@
     {
         payment.attributedText = [[NSAttributedString alloc] initWithString:NSLocalizedString(@"TransDeets_RqstSntToTxt2", @"Transfer Details 'Request Sent To:' text (2nd)") attributes:textAttributes];
         [payment setStyleClass:@"details_intro_blue"];
+    }
+    else if([[self.trans valueForKey:@"TransactionType"] isEqualToString:@"Reward"])
+    {
+        [payment setText:@"REWARD FROM"];
+        [payment setStyleClass:@"details_intro_reward"];
     }
     else if([[self.trans valueForKey:@"TransactionType"] isEqualToString:@"Disputed"])
     {
@@ -1192,7 +1196,7 @@
         self.hud.mode = MBProgressHUDModeCustomView;
         self.hud.customView = spinner1;
         self.hud.delegate = self;
-        self.hud.labelText = NSLocalizedString(@"TransDeets_disputeHUDlbl", @"'Disputing this transfer...' HUD Text");
+        self.hud.labelText = @"Disputing this transfer...";
         [self.hud show:YES];
 
         self.responseData = [NSMutableData data];
