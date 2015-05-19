@@ -106,7 +106,7 @@
 
     NSString * baseUrl = @"";
 
-    if (![knoxOnOff isEqualToString:@"on"])
+    if ([knoxOnOff isEqualToString:@"on"])
     {
         baseUrl = [ARPowerHookManager getValueForHookById:@"knox_baseUrl"];
         NSString * k_Key = [ARPowerHookManager getValueForHookById:@"knox_Key"];

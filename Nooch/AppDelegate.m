@@ -194,7 +194,7 @@ bool modal;
                                            NSString *message = [NSString stringWithFormat:@"Awesome, %@!\n\n%@",
                                                                 [user objectForKey:@"firstName"],
                                                                 data[@"alertText"]];
-                                           
+
                                            UIAlertView *alertView = [[UIAlertView alloc]initWithTitle:@"Like Getting Paid?"
                                                                                               message:message
                                                                                              delegate:context

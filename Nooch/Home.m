@@ -2407,7 +2407,7 @@ void addressBookChanged(ABAddressBookRef addressBook, CFDictionaryRef info, void
         }
         BOOL shouldDisplayRefCampaign= [[ARPowerHookManager getValueForHookById:@"RefCmpgn_YorN"] boolValue];
         
-        if (!shouldDisplayRefCampaign)
+        if (shouldDisplayRefCampaign)
         {
             NSLog(@"ShouldDisplayRefCampaign block fired");
             [ARPowerHookManager executeBlockWithId:@"goToReferScrn"

@@ -347,7 +347,7 @@
         [UIView setAnimationDuration:0.3];
 
         self.list.frame = CGRectMake(-276, 84, 320, self.view.frame.size.height);
-        mapArea.frame = CGRectMake(0, 84,320,self.view.frame.size.height);
+        mapArea.frame = CGRectMake(0, 84, 320, self.view.frame.size.height);
         [UIView commitAnimations];
     }
 }
@@ -365,6 +365,7 @@
 
 -(void)displayEmptyMapArea
 {
+    //NSLog(@"displayEmptyMapArea FIRED");
     [mapArea setBackgroundColor:[Helpers hexColor:@"efeff4"]];
     
     NSShadow * shadow_white = [[NSShadow alloc] init];
@@ -466,6 +467,12 @@
     [UIView setAnimationDuration:0.4];
     if (!isMapOpen)
     {
+        if ([self.view.subviews containsObject:emptyText_localSearch])
+        {
+            [emptyText_localSearch setAlpha:0];
+            [self.glyph_emptyTable setAlpha:0];
+        }
+
         self.tableShadow.frame = CGRectMake(-276, 84, 320, self.view.frame.size.height);
         self.list.frame = CGRectMake(-276, 84, 320, self.view.frame.size.height);
         mapArea.frame = CGRectMake(0, 84, 320, self.view.frame.size.height);
@@ -713,11 +720,12 @@
 
 -(void)mapPoints
 {
+    [mapView_ clear];
+
     if (self.completed_selected)
     {
         if ([histShowArrayCompleted count] == 0)
         {
-            [mapView_ clear];
             return;
         }
         histArrayCommon = [histShowArrayCompleted copy];
@@ -726,13 +734,13 @@
     {
         if ([histShowArrayPending count] == 0)
         {
-            [mapView_ clear];
             return;
         }
         histArrayCommon = [histShowArrayPending copy];
     }
-    [mapView_ clear];
 
+    [mapView_ setAlpha:1];
+    [mapArea bringSubviewToFront:mapView_];
     _markers = [[NSMutableArray alloc] init];
     [_markers removeAllObjects];
 
@@ -946,7 +954,53 @@
     [[NSNotificationCenter defaultCenter] removeObserver:self name:@"dismissPopOver" object:nil];
     isSearch = NO;
 
-    if (![listType isEqualToString:@"CANCEL"] && isFilterSelected)
+    if (isMapOpen)
+    {
+        [UIView animateKeyframesWithDuration:0.35
+                                       delay:0
+                                     options:UIViewKeyframeAnimationOptionCalculationModeCubic
+                                  animations:^{
+                                      [UIView addKeyframeWithRelativeStartTime:0 relativeDuration:1.0 animations:^{
+                                          self.tableShadow.frame = CGRectMake(0, 84, 320, self.view.frame.size.height);
+                                          self.list.frame = CGRectMake(0, 84, 320, self.view.frame.size.height);
+                                          [self.view bringSubviewToFront:self.list];
+                                          mapArea.frame = CGRectMake(0, 84, 320, self.view.frame.size.height);
+                                      }];
+                                  } completion: ^(BOOL finished) {
+                                      isMapOpen = NO;
+
+                                      if (![listType isEqualToString:@"CANCEL"] && isFilterSelected)
+                                      {
+                                          [self.search setShowsCancelButton:NO];
+                                          [self.search setText:@""];
+                                          [self.search resignFirstResponder];
+                                          
+                                          [histShowArrayCompleted removeAllObjects];
+                                          [histShowArrayPending removeAllObjects];
+                                          
+                                          isLocalSearch = NO;
+                                          isFilter = YES;
+                                          index = 1;
+                                          isFilterSelected = NO;
+                                          
+                                          //Release memory cache
+                                          SDImageCache *imageCache = [SDImageCache sharedImageCache];
+                                          [imageCache clearMemory];
+                                          [imageCache clearDisk];
+                                          [imageCache cleanDisk];
+                                          countRows = 0;
+                                          //NSLog(@"ListType is: %@",listType);
+                                          
+                                          [self loadHist:listType index:index len:20 subType:subTypestr];
+                                      }
+                                      else {
+                                          isFilter = NO;
+                                      }
+                                  }
+         ];
+    }
+
+    else if (![listType isEqualToString:@"CANCEL"] && isFilterSelected)
     {
         [self.search setShowsCancelButton:NO];
         [self.search setText:@""];
@@ -970,8 +1024,9 @@
 
         [self loadHist:listType index:index len:20 subType:subTypestr];
     }
-    else
-        isFilter=NO;
+    else {
+        isFilter = NO;
+    }
 }
 
 -(void)loadHist:(NSString*)filter index:(int)ind len:(int)len subType:(NSString*)subType
@@ -2184,7 +2239,7 @@
     [dateFormatter setAMSymbol:@"AM"];
     [dateFormatter setPMSymbol:@"PM"];
     dateFormatter.dateFormat = @"M/dd/yyyy hh:mm:ss a";
-    
+
     NSDate *aDate = [dateFormatter dateFromString:aStr];
     return aDate;
 }
@@ -2259,7 +2314,7 @@
     [self.search resignFirstResponder];
 }
 
-- (void)searchTableView
+-(void)searchTableView
 {
     [histTempCompleted removeAllObjects];
     [histTempPending removeAllObjects];
@@ -2304,7 +2359,6 @@
 
     if (self.completed_selected)
     {
-
         if ([histTempCompleted count] == 0)
         {
             if ([self.list subviews])
@@ -2330,7 +2384,6 @@
 
                 emptyText_localSearch = [[UILabel alloc] initWithFrame:CGRectMake(40, 78, 240, 60)];
                 [emptyText_localSearch setFont:[UIFont fontWithName:@"Roboto-regular" size:20]];
-                //@"No payments found for that name."
                 [emptyText_localSearch setText:NSLocalizedString(@"History_NoPaymentsFoundByName", @"History screen 'No payments found for that name' Text")];
                 [emptyText_localSearch setTextColor:kNoochGrayLight];
                 [emptyText_localSearch setTextAlignment:NSTextAlignmentCenter];
@@ -2361,8 +2414,8 @@
 
             if ([self.list subviews])
             {
-                NSArray * viewsToHide = [self.list subviews];
-                for (UIView * v in viewsToHide)
+                NSArray * viewsToShow = [self.list subviews];
+                for (UIView * v in viewsToShow)
                 {
                     [UIView beginAnimations:nil context:nil];
                     [UIView setAnimationDuration:0.15];
@@ -2441,7 +2494,7 @@
         [self.view bringSubviewToFront:self.list];
         mapArea.frame = CGRectMake(0, 84, 320, self.view.frame.size.height);
         isMapOpen = NO;
-
+        
         [UIView commitAnimations];
     }
 }
@@ -2537,7 +2590,18 @@
         dispatch_async(dispatch_get_main_queue(), ^{
             [self.hud hide:YES];
         });
-        [self.hud hide:YES];
+
+        if ([self.list subviews])
+        {
+            NSArray * viewsToShow = [self.list subviews];
+            for (UIView * v in viewsToShow)
+            {
+                [UIView beginAnimations:nil context:nil];
+                [UIView setAnimationDuration:0.15];
+                [v setAlpha:1];
+                [UIView commitAnimations];
+            }
+        }
 
         histArray = [NSJSONSerialization JSONObjectWithData:[result dataUsingEncoding:NSUTF8StringEncoding] options:0 error:&error];
 
@@ -2592,7 +2656,7 @@
         else if ([histArray count] == 0)
         {
             isEnd = YES;
-            [mapView_ removeFromSuperview];
+            [mapView_ setAlpha:0];
             [self displayEmptyMapArea];
         }
 

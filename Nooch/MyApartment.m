@@ -70,7 +70,7 @@
     }
     
     [self.navigationItem setHidesBackButton:YES];
-    
+
     UIButton * hamburger = [UIButton buttonWithType:UIButtonTypeRoundedRect];
     [hamburger setStyleId:@"navbar_hamburger"];
     [hamburger addTarget:self action:@selector(showMenu) forControlEvents:UIControlEventTouchUpInside];
@@ -81,14 +81,14 @@
     [self.navigationItem setLeftBarButtonItem:menu1];
 
     [self.navigationItem setRightBarButtonItem:Nil];
-    
+
     UIButton * glyph_add = [UIButton buttonWithType:UIButtonTypeRoundedRect];
     [glyph_add setStyleClass:@"navbar_rightside_icon"];
     [glyph_add addTarget:self action:@selector(goToSelectAptScrn) forControlEvents:UIControlEventTouchUpInside];
     [glyph_add setTitle:[NSString fontAwesomeIconStringForIconIdentifier:@"fa-plus-circle"] forState:UIControlStateNormal];
     [glyph_add setTitleShadowColor:Rgb2UIColor(19, 32, 38, 0.24) forState:UIControlStateNormal];
     glyph_add.titleLabel.shadowOffset = CGSizeMake(0.0, -1.0);
-    
+
     UIBarButtonItem * addProperty = [[UIBarButtonItem alloc] initWithCustomView:glyph_add];
     [self.navigationItem setRightBarButtonItem: addProperty];
 

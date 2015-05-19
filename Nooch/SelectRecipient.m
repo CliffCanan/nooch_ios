@@ -212,7 +212,6 @@
         shadowNavText.shadowOffset = CGSizeMake(0, -1.0);
         NSDictionary * titleAttributes = @{NSShadowAttributeName: shadowNavText};
 
-        
         if (!isFromBankWebView)
         {
             UILabel * back_button = [UILabel new];
