@@ -74,7 +74,6 @@
     shadowUnder.layer.shadowOffset = CGSizeMake(0, 1.5);
     shadowUnder.layer.shadowOpacity = 0.5;
     shadowUnder.layer.shadowRadius = 3.0;
-    [self.view addSubview:shadowUnder];
 
     UILabel *other_party = [[UILabel alloc] initWithFrame:CGRectMake(20, 20, 280, 60)];  // Other user's NAME
     UIImageView *user_picture = [[UIImageView alloc] initWithFrame:CGRectMake(10, 27, 78, 78)];  // Other user's PICTURE
@@ -119,12 +118,25 @@
     }
     else // transfers with an existing Nooch user
     {
+        if ([[self.trans valueForKey:@"TransactionType"]isEqualToString:@"Reward"] ||
+            [[self.trans valueForKey:@"Name"]isEqualToString:@"Team Nooch"])
+        {
+            [shadowUnder setFrame:CGRectMake(15, 32, 63, 63)];
+            shadowUnder.layer.cornerRadius = 11;
+            [user_picture setImage:[UIImage imageNamed:@"Icon120"]];
+            [user_picture setFrame:CGRectMake(14, 31, 65, 65)];
+            user_picture.layer.cornerRadius = 11;
+        }
+        else
+        {
+            [user_picture sd_setImageWithURL:[NSURL URLWithString:[self.trans objectForKey:@"Photo"]]
+                            placeholderImage:[UIImage imageNamed:@"profile_picture.png"]];
+        }
         [other_party setText:[[self.trans objectForKey:@"Name"] capitalizedString]];
         [other_party setStyleClass:@"details_othername"];
-        [user_picture sd_setImageWithURL:[NSURL URLWithString:[self.trans objectForKey:@"Photo"]]
-             placeholderImage:[UIImage imageNamed:@"profile_picture.png"]];
     }
     [self.view addSubview:other_party];
+    [self.view addSubview:shadowUnder];
     [self.view addSubview:user_picture];
 
 
@@ -863,7 +875,7 @@
         }
 
         isPayBack = YES;
-        [[assist shared]setRequestMultiple:NO];
+        [[assist shared] setRequestMultiple:NO];
 
         // NSLog(@"%@",self.trans);
         HowMuch *payback = [[HowMuch alloc] initWithReceiver:input];
@@ -1661,7 +1673,7 @@
     if ([tagName isEqualToString:@"reject"])
     {
         UIAlertView *alert = [[UIAlertView alloc]initWithTitle:@"Request Rejected"
-                                                     message:@"You got it, you have rejected that request successfully."
+                                                     message:@"\xe2\x98\x9d\nYou got it, you have rejected that request successfully."
                                                     delegate:nil
                                            cancelButtonTitle:@"OK"
                                            otherButtonTitles:nil, nil];
@@ -1688,7 +1700,7 @@
     else if ([tagName isEqualToString:@"cancelRequestToExisting"] || [tagName isEqualToString:@"cancelRequestToNonNoochUser"])
     {
         UIAlertView *alert = [[UIAlertView alloc]initWithTitle:@"Request Cancelled"
-                                                       message:@"You got it. That request has been cancelled successfully."
+                                                       message:@"\xE2\x9D\x8C\nYou got it. That request has been cancelled successfully."
                                                       delegate:nil
                                              cancelButtonTitle:@"OK"
                                              otherButtonTitles:nil, nil];
@@ -1714,7 +1726,7 @@
     if ([tagName isEqualToString:@"cancel_invite"])
     {
         UIAlertView * alert = [[UIAlertView alloc]initWithTitle:@"Payment Cancelled"
-                                                        message:@"No problem, this transfer has been cancelled successfully."
+                                                        message:@"\xE2\x9D\x8C\nNo problem, this transfer has been cancelled successfully."
                                                        delegate:nil
                                               cancelButtonTitle:@"OK"
                                               otherButtonTitles:nil, nil];
@@ -1725,7 +1737,11 @@
 
     else if ([tagName isEqualToString:@"CancelMoneyTransferToNonMemberForSender"])
     {
-        UIAlertView *alert = [[UIAlertView alloc]initWithTitle:@"Transfer Cancelled" message:@"Aye aye. That transfer has been cancelled successfully." delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];
+        UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Transfer Cancelled"
+                                                        message:@"\xE2\x9D\x8C\nAye aye. That transfer has been cancelled successfully."
+                                                       delegate:nil
+                                              cancelButtonTitle:@"OK"
+                                              otherButtonTitles:nil, nil];
         [alert show];
 
         for (UIView *subview in self.view.subviews)
@@ -1790,11 +1806,14 @@
     else if ([tagName isEqualToString:@"remind"])
     {
         NSLog(@"Remind response was: %@",result);
-        UIAlertView * alert = [[UIAlertView alloc]initWithTitle:@"Reminder Sent Successfully" message:@"" delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];
+        UIAlertView * alert = [[UIAlertView alloc] initWithTitle:@"Reminder Sent Successfully"
+                                                         message:@"\xF0\x9F\x91\x8D"
+                                                        delegate:nil
+                                               cancelButtonTitle:@"OK"
+                                               otherButtonTitles:nil, nil];
         [alert show];
     }
 }
-
 
 - (void)didReceiveMemoryWarning
 {

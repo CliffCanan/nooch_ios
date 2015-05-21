@@ -15,34 +15,34 @@
 
 @interface TransferPIN : GAITrackedViewController<UITextFieldDelegate,serveD,NSURLConnectionDelegate,MFMailComposeViewControllerDelegate,MBProgressHUDDelegate>
 {
-    NSString*longitude;
-    NSString*latitude;
-    NSString*addressLine1;
-    NSString*city;
-    NSString*state;
-    NSString*country;
-    BOOL transferFinished;
-    BOOL sendingMoney;
-    NSString*receiverFirst;
-    NSMutableDictionary*resultValueTransfer;
-    NSString*transactionId;
-    NSString*responseString;
-    NSMutableURLRequest*requestTransfer;
-    NSURL*urlTransfer;
-    NSString*urlStrTranfer;
     NSData *postTransfer;
     NSData *postDataTransfer;
-    NSString *postLengthTransfer;
-    NSDictionary*dictResult;
-    NSMutableDictionary* transactionInputTransfer;
-    NSMutableDictionary*transactionTransfer;
+    NSString*addressLine1;
+    NSString*city;
+    NSString*country;
+    NSString*encryptedPINNonUser;
+    NSString*longitude;
+    NSString*latitude;
+    NSString*state;
+    NSString*postLengthTransfer;
+    NSString*receiverFirst;
+    NSString*receiverId;
+    NSString*transactionId;
+    NSString*responseString;
+    NSString*urlStrTranfer;
+    NSMutableURLRequest*requestTransfer;
+    NSURL*urlTransfer;
     float lon;
     float lat;
-    NSDictionary*dictLocation;
-    NSDictionary*dictResultTransfer;
+    NSMutableDictionary * resultSendMoneyExistingKnox;    // TransferMoneyUsingKnoxResult
+    NSMutableDictionary * resultSendMoneyExistingSynapse; // TransferMoneyUsingSynapseResult
+    NSMutableDictionary * resultForMakeRequest;           // RequestMoneyResult
+    NSMutableDictionary * resultForPayRequest;            // HandleRequestMoneyResult
+    NSMutableDictionary * transactionInputTransfer;
+    NSMutableDictionary * transactionTransfer;
+    NSDictionary * dictResult;         // in 'listen' for handling PIN result from server
+    NSDictionary * dictResultTransfer; // in 'connectionDidFinishLoading' Response from server
     NSDictionary*googleLocationResults;
-    NSString*encryptedPINNonUser;
-    NSString*receiverId;
 }
 @property(nonatomic,strong)UIButton*balance;
 - (id)initWithReceiver:(NSMutableDictionary *)receiver type:(NSString *)type amount:(float)amount;

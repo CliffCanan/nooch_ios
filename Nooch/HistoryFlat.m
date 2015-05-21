@@ -757,7 +757,7 @@
             if ([[[histArrayCommon objectAtIndex:i] valueForKey:@"TransactionType"]isEqualToString:@"Reward"])
             {
                 markerOBJ.icon=[UIImage imageNamed:@"n_Icon.png"];
-                markerOBJ.position = CLLocationCoordinate2DMake(339.9526f, -75.1634f);
+                markerOBJ.position = CLLocationCoordinate2DMake(39.9526f, -75.1634f);
             }
             else
             {

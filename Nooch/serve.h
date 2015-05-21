@@ -54,7 +54,6 @@
 
 //-(void)getNoteSettings;
 
-
 -(void)CancelMoneyRequestForExistingNoochUser:(NSString*)transactionId;
 -(void)CancelMoneyTransferToNonMemberForSender:(NSString *)transactionId;
 -(void)CancelMoneyRequestForNonNoochUser:(NSString*)transactionId;
@@ -76,6 +75,7 @@
 -(void)getTotalReferralCode:(NSString *)inviteCode;
 -(void)get_favorites;
 -(void)GetKnoxBankAccountDetails;
+-(void)GetSynapseBankAccountDetails;
 -(void)getPendingTransfersCount;
 -(void)GetServerCurrentTime;
 -(void)histMore:(NSString*)type sPos:(NSInteger)sPos len:(NSInteger)len subType:(NSString*)subType;
@@ -90,6 +90,7 @@
 -(void)pinCheck:(NSString*)memId pin:(NSString*)pin;
 -(void)ReferalCodeRequest:(NSString*)email;
 -(void)RemoveKnoxBankAccount;
+-(void)RemoveSynapseBankAccount;
 -(void)RaiseDispute:(NSDictionary*)Input;
 -(void)resendEmail;
 -(void)resetPassword:(NSString*)old new:(NSString*)new;

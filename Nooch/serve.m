@@ -68,7 +68,7 @@ NSString *responseString;
 @synthesize Delegate,tagName,responseData;
 
 NSString * const ServerUrl = @"https://www.noochme.com/NoochService/NoochService.svc";
-//NSString * const ServerUrl = @"https://54.68.252.238/NoochService/NoochService.svc";// dev server
+//NSString * const ServerUrl_Dev = @"http://54.201.43.89/NoochService/NoochService.svc";// dev server
 //NSString * const ServerUrl = @"https://172.17.60.150/NoochService/NoochService.svc";
 
 bool locationUpdate;
@@ -1143,6 +1143,23 @@ NSString *amnt;
         NSLog(@"connect error");
 }
 
+-(void)GetSynapseBankAccountDetails
+{
+    [[NSURLCache sharedURLCache] removeAllCachedResponses];
+    self.responseData = [[NSMutableData alloc] init];
+    NSUserDefaults*defaults=[NSUserDefaults standardUserDefaults];
+    NSString * memId = [defaults objectForKey:@"MemberId"];
+    NSString *urlString = [NSString stringWithFormat:@"%@/GetSynapseBankAccountDetails?memberId=%@&accessToken=%@",ServerUrl,memId,[defaults valueForKey:@"OAuthToken"]];
+    
+    NSURL *url = [NSURL URLWithString:urlString];
+    
+    requestList = [[NSMutableURLRequest alloc] initWithURL:url];
+    
+    connectionList = [[NSURLConnection alloc] initWithRequest:requestList delegate:self];
+    if (!connectionList)
+        NSLog(@"connect error");
+}
+
 -(void)getLocationBasedSearch:(NSString *)radius
 {
     ServiceType = @"LocationSearch";
@@ -1563,6 +1580,23 @@ NSString *amnt;
 
     requestList = [[NSMutableURLRequest alloc] initWithURL:url];
 
+    connectionList = [[NSURLConnection alloc] initWithRequest:requestList delegate:self];
+    if (!connectionList)
+        NSLog(@"connect error");
+}
+
+-(void)RemoveSynapseBankAccount
+{
+    [[NSURLCache sharedURLCache] removeAllCachedResponses];
+    self.responseData = [[NSMutableData alloc] init];
+    NSUserDefaults*defaults=[NSUserDefaults standardUserDefaults];
+    NSString * memId = [defaults objectForKey:@"MemberId"];
+    NSString *urlString = [NSString stringWithFormat:@"%@/RemoveSynapseBankAccount?memberId=%@&accessToken=%@",ServerUrl,memId,[defaults valueForKey:@"OAuthToken"]];
+    
+    NSURL *url = [NSURL URLWithString:urlString];
+    
+    requestList = [[NSMutableURLRequest alloc] initWithURL:url];
+    
     connectionList = [[NSURLConnection alloc] initWithRequest:requestList delegate:self];
     if (!connectionList)
         NSLog(@"connect error");

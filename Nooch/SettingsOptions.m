@@ -386,18 +386,43 @@
 
 -(void)getBankInfo
 {
-    serve * serveOBJ = [serve new];
-    serveOBJ.Delegate = self;
-    serveOBJ.tagName = @"knox_bank_info";
-    [serveOBJ GetKnoxBankAccountDetails];
+    NSString * knoxOnOff = [ARPowerHookManager getValueForHookById:@"knox_OnOff"];
+    NSString * SynapseOnOff = [ARPowerHookManager getValueForHookById:@"synps_OnOff"];
+
+    serve * getBankInfo = [serve new];
+    getBankInfo.Delegate = self;
+
+    if ([knoxOnOff isEqualToString:@"on"])
+    {
+        getBankInfo.tagName = @"knox_bank_info";
+        [getBankInfo GetKnoxBankAccountDetails];
+    }
+
+    else if ([SynapseOnOff isEqualToString:@"on"])
+    {
+        getBankInfo.tagName = @"synapse_bank_info";
+        [getBankInfo GetSynapseBankAccountDetails];
+    }
 }
 
--(void)RemoveKnoxBankAccount
+-(void)RemoveBankAccount
 {
+    NSString * knoxOnOff = [ARPowerHookManager getValueForHookById:@"knox_OnOff"];
+    NSString * SynapseOnOff = [ARPowerHookManager getValueForHookById:@"synps_OnOff"];
+    
     serve * serveOBJ = [serve new];
     serveOBJ.Delegate = self;
-    serveOBJ.tagName = @"RemoveKnoxBankAccount";
-    [serveOBJ RemoveKnoxBankAccount];
+    serveOBJ.tagName = @"RemoveBankAccount";
+    
+    if ([knoxOnOff isEqualToString:@"on"])
+    {
+        [serveOBJ RemoveKnoxBankAccount];
+    }
+    
+    else if ([SynapseOnOff isEqualToString:@"on"])
+    {
+        [serveOBJ RemoveSynapseBankAccount];
+    }
 }
 
 - (void)profile
@@ -429,7 +454,7 @@
     [self performSelector:@selector(navigate_to:) withObject:fb afterDelay:0.01];
 }
 
-- (void) navigate_to:(id)view
+- (void)navigate_to:(id)view
 {
     [self.navigationController pushViewController:view animated:YES];
 }
@@ -488,7 +513,7 @@
         }
     }
 
-    else if ([tagName isEqualToString:@"RemoveKnoxBankAccount"])
+    else if ([tagName isEqualToString:@"RemoveBankAccount"])
     {
         NSError* error;
         NSMutableDictionary*dictResponse = [NSJSONSerialization
@@ -578,7 +603,7 @@
             [glyph_lock setText:[NSString fontAwesomeIconStringForIconIdentifier:@"fa-lock"]];
             [glyph_lock setTextColor:kNoochGreen];
             [linked_background addSubview:glyph_lock];
-
+ 
             bank_image = [[UIImageView alloc]initWithFrame:CGRectMake(10, 8, 49, 48)];
             bank_image.contentMode = UIViewContentModeScaleToFill;
             [bank_image sd_setImageWithURL:[NSURL URLWithString:[dictResponse valueForKey:@"BankImageURL"]] placeholderImage:[UIImage imageNamed:@"bank.png"]];
@@ -604,7 +629,113 @@
             [linked_background addSubview:unlink_account];
 
             [ARProfileManager registerString:@"Bank_Name" withValue:[dictResponse valueForKey:@"BankName"]];
-            [ARProfileManager registerString:@"Bank_Logo" withValue:[dictResponse valueForKey:[dictResponse valueForKey:@"BankImageURL"]]];
+            [ARProfileManager registerString:@"Bank_Logo" withValue:[dictResponse valueForKey:@"BankImageURL"]];
+        }
+        else
+        {
+            [user setObject:@"0" forKey:@"IsBankAvailable"];
+
+            [introText setHidden:NO];
+            [glyph_noBank setHidden:NO];
+
+            isBankAttached = NO;
+
+            [linked_background removeFromSuperview];
+            [bank_image removeFromSuperview];
+            [unlink_account removeFromSuperview];
+
+            [ARProfileManager clearVariable:@"Bank_Name"];
+            [ARProfileManager clearVariable:@"Bank_Logo"];
+        }
+    }
+
+    else if ([tagName isEqualToString:@"synapse_bank_info"])
+    {
+        NSError * error;
+        NSMutableDictionary * responseForSynapseBank = [NSJSONSerialization
+                                             JSONObjectWithData:[result dataUsingEncoding:NSUTF8StringEncoding]
+                                             options:kNilOptions
+                                             error:&error];
+        NSLog(@"Synapse info is: %@",responseForSynapseBank);
+
+
+        if (![[responseForSynapseBank valueForKey:@"BankName"] isKindOfClass:[NSNull class]] &&
+            ![[responseForSynapseBank valueForKey:@"AccountStatus"] isKindOfClass:[NSNull class]])
+        {
+            [user setObject:@"1" forKey:@"IsBankAvailable"];
+            [user synchronize];
+
+            isBankAttached = YES;
+
+            [introText setHidden:YES];
+            [glyph_noBank setHidden:YES];
+
+            linked_background = [UIView new];
+            [linked_background setStyleId:@"account_background"];
+
+            if ([[UIScreen mainScreen] bounds].size.height == 480)
+            {
+                [scroll addSubview:linked_background];
+            }
+            else {
+                [self.view addSubview:linked_background];
+            }
+
+            UILabel * glyph_lock = [[UILabel alloc] initWithFrame:CGRectMake(73, 6, 13, 32)];
+            [glyph_lock setBackgroundColor:[UIColor clearColor]];
+            [glyph_lock setTextAlignment:NSTextAlignmentLeft];
+            [glyph_lock setFont:[UIFont fontWithName:@"FontAwesome" size:13]];
+            [glyph_lock setText:[NSString fontAwesomeIconStringForIconIdentifier:@"fa-lock"]];
+            [glyph_lock setTextColor:kNoochGreen];
+            [linked_background addSubview:glyph_lock];
+
+            bank_image = [[UIImageView alloc] initWithFrame:CGRectMake(10, 8, 49, 48)];
+            bank_image.contentMode = UIViewContentModeScaleToFill;
+            if (![[responseForSynapseBank valueForKey:@"BankImageURL"] isKindOfClass:[NSNull class]])
+            {
+                if ([[responseForSynapseBank valueForKey:@"BankImageURL"] rangeOfString:@"/no.png"].location != NSNotFound)
+                {
+                    [bank_image setImage:[UIImage imageNamed:@"bank.png"]];
+                }
+                else
+                {
+                    [bank_image setFrame:CGRectMake(10, 7, 50, 50)];
+                    [bank_image sd_setImageWithURL:[NSURL URLWithString:[responseForSynapseBank valueForKey:@"BankImageURL"]] placeholderImage:[UIImage imageNamed:@"bank.png"]];
+                }
+            }
+            else
+            {
+                [bank_image setImage:[UIImage imageNamed:@"bank.png"]];
+            }
+            bank_image.layer.cornerRadius = 5;
+            bank_image.clipsToBounds = YES;
+            [linked_background addSubview:bank_image];
+
+            bank_name = [UILabel new];
+            [bank_name setStyleId:@"linked_account_name"];
+            [bank_name setText:[responseForSynapseBank valueForKey:@"BankName"]];
+            [linked_background addSubview:bank_name];
+
+            lastFour_label = [UILabel new];
+            [lastFour_label setStyleId:@"linked_account_last4"];
+            if (![[responseForSynapseBank valueForKey:@"BankNickName"] isKindOfClass:[NSNull class]])
+            {
+                [lastFour_label setText:[responseForSynapseBank valueForKey:@"BankNickName"]];
+            }
+            else if (![[responseForSynapseBank valueForKey:@"AccountName"] isKindOfClass:[NSNull class]])
+            {
+                [lastFour_label setText:[responseForSynapseBank valueForKey:@"AccountName"]];
+            }
+            [linked_background addSubview:lastFour_label];
+
+            unlink_account = [UIButton buttonWithType:UIButtonTypeRoundedRect];
+            [unlink_account setStyleId:@"remove_account"];
+            [unlink_account setTitle:NSLocalizedString(@"Settings_EditTxt", @"Settings 'Edit' Txt") forState:UIControlStateNormal];
+            [unlink_account addTarget:self action:@selector(edit_attached_bank) forControlEvents:UIControlEventTouchUpInside];
+            [linked_background addSubview:unlink_account];
+
+            [ARProfileManager registerString:@"Bank_Name" withValue:[responseForSynapseBank valueForKey:@"BankName"]];
+            [ARProfileManager registerString:@"Bank_Logo" withValue:[responseForSynapseBank valueForKey:@"BankImageURL"]];
         }
         else
         {
@@ -680,7 +811,7 @@
 
     else if (alertView.tag == 2 && buttonIndex == 0)
     {
-        [self RemoveKnoxBankAccount];
+        [self RemoveBankAccount];
     }
 
     else if (alertView.tag == 10 && buttonIndex == 1)
