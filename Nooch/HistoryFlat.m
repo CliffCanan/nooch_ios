@@ -2165,7 +2165,8 @@
                     [alert show];
                     return;
                 }
-                else if (![[user objectForKey:@"IsBankAvailable"]isEqualToString:@"1"])
+                else if ((isKnoxOn && ![user boolForKey:@"IsKnoxBankAvailable"]) ||
+                         (isSynapseOn && ![user boolForKey:@"IsSynapseBankAvailable"]))
                 {
                     UIAlertView * alert = [[UIAlertView alloc] initWithTitle:@"Please Attach An Account"
                                                                   message:@"Before you can send or receive money, you must add a bank account."

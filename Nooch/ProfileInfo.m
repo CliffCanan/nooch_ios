@@ -213,7 +213,8 @@ UIImageView *picture;
     [goToSettings addSubview:bankLinkedTxt];
     [goToSettings addSubview:glyph_bank];
 
-    if ([[user objectForKey:@"IsBankAvailable"]isEqualToString:@"1"])
+    if ((isKnoxOn && [user boolForKey:@"IsKnoxBankAvailable"]) ||
+        (isSynapseOn && [user boolForKey:@"IsSynapseBankAvailable"]))
     {
         [bankLinkedTxt setFont:[UIFont fontWithName:@"Roboto-regular" size:13]];
         bankLinkedTxt.text = NSLocalizedString(@"Profile_BnkLnkd", @"Profile 'Bank Linked' text");

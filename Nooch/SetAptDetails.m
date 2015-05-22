@@ -66,13 +66,14 @@
     [super viewDidLoad];
     isBankAttached = NO;
 
-    if (![[user objectForKey:@"IsBankAvailable"]isEqualToString:@"1"])
+    if ((isKnoxOn && [user boolForKey:@"IsKnoxBankAvailable"]) ||
+        (isSynapseOn && [user boolForKey:@"IsSynapseBankAvailable"]))
     {
-        isBankAttached = NO;
+        isBankAttached = YES;
     }
     else
     {
-        isBankAttached = YES;
+        isBankAttached = NO;
     }
 
     [self.navigationItem setHidesBackButton:YES];

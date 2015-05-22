@@ -179,10 +179,11 @@
     else
     {
         [self.settings setStyleId:@"settings_icon_4"];
-        [self.view addSubview:self.settings];
+        [self.view addSubview:self.settings]; 
     }
 
-    if ([[user objectForKey:@"IsBankAvailable"]isEqualToString:@"1"])
+    if ((isKnoxOn && [user boolForKey:@"IsKnoxBankAvailable"]) ||
+        (isSynapseOn && [user boolForKey:@"IsSynapseBankAvailable"]))
     {
         [self.glyph_noBank removeFromSuperview];
     }
@@ -193,7 +194,7 @@
 
         if ([settingsIconPosition isEqualToString:@"topBar"])
         {
-            [self.glyph_noBank setFrame:CGRectMake(240, 31, 22, 22)];
+            [self.glyph_noBank setFrame:CGRectMake(238, 31, 22, 22)];
             [user_bar addSubview:self.glyph_noBank];
             [user_bar bringSubviewToFront:self.glyph_noBank];
         }

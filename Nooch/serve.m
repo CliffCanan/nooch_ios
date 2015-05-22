@@ -646,14 +646,35 @@ NSString *amnt;
             }
         }
 
-        // IsBankAvailable
+        // IsBankAvailable (KNOX)
         if ( [Dictresponse valueForKey:@"IsKnoxBankAdded"] &&
             [[Dictresponse valueForKey:@"IsKnoxBankAdded"] boolValue] == YES) {
-            [user setObject:@"1" forKey:@"IsBankAvailable"];
+            [user setBool:YES forKey:@"IsKnoxBankAvailable"];
         }
         else {
-            [user setObject:@"0" forKey:@"IsBankAvailable"];
+            [user setBool:NO forKey:@"IsKnoxBankAvailable"];
         }
+
+        // IsBankAvailable (SYNAPSE)
+        if ( [Dictresponse valueForKey:@"IsSynapseBankAdded"] &&
+            [[Dictresponse valueForKey:@"IsSynapseBankAdded"] boolValue] == YES)
+        {
+            [user setBool:YES forKey:@"IsSynapseBankAvailable"];
+            if (![[Dictresponse valueForKey:@"SynapseBankStatus"]isKindOfClass:[NSNull class]] &&
+                 [[Dictresponse valueForKey:@"SynapseBankStatus"]isEqualToString:@"Verified"])
+            {
+                [user setBool:YES forKey:@"IsSynapseBankVerified"];
+            }
+            else
+            {
+                [user setBool:NO forKey:@"IsSynapseBankVerified"];
+            }
+        }
+        else {
+            [user setBool:NO forKey:@"IsSynapseBankAvailable"];
+            [user setBool:NO forKey:@"IsSynapseBankVerified"];
+        }
+
 
         // FirstName & LastName
         if (![[Dictresponse objectForKey:@"FirstName"] isKindOfClass:[NSNull class]] &&
@@ -661,6 +682,10 @@ NSString *amnt;
         {
             [user setObject:[Dictresponse objectForKey:@"FirstName"] forKey:@"firstName"];
             [user setObject:[Dictresponse objectForKey:@"LastName"] forKey:@"lastName"];
+        }
+        else {
+            [user setObject:@"" forKey:@"firstName"];
+            [user setObject:@"" forKey:@"lastName"];
         }
 
         // facebook_id
@@ -680,11 +705,11 @@ NSString *amnt;
         }
 
         // DateCreated
-        if ( [Dictresponse valueForKey:@"DateCreated"] &&
+        if (  [Dictresponse valueForKey:@"DateCreated"] &&
             ([[user valueForKey:@"DateCreated"] isKindOfClass:[NSNull class]] ||
-             [user valueForKey:@"DateCreated"] == NULL ||
+              [user valueForKey:@"DateCreated"] == NULL ||
              [[user valueForKey:@"DateCreated"] isEqualToString:@""] ||
-             ![[user valueForKey:@"DateCreated"] isEqualToString:[Dictresponse valueForKey:@"DateCreated"]]))
+            ![[user valueForKey:@"DateCreated"] isEqualToString:[Dictresponse valueForKey:@"DateCreated"]]))
         {
             [user setObject:[Dictresponse valueForKey:@"DateCreated"] forKey:@"DateCreated"];
         }

@@ -64,7 +64,8 @@
     [super viewDidLoad];
     // isBankAttached = NO;
 
-    if ( ![[user objectForKey:@"IsBankAvailable"]isEqualToString:@"1"])
+    if ((isKnoxOn && ![user boolForKey:@"IsKnoxBankAvailable"]) ||
+        (isSynapseOn && ![user boolForKey:@"IsSynapseBankAvailable"]))
     {
         isBankAttached = NO;
 
@@ -193,6 +194,11 @@
     }
 
     // PUSH NOTIFICATIONS
+    [self checkAndRegisterPushNotifs];
+}
+
+-(void)checkAndRegisterPushNotifs
+{
     BOOL notifsEnabled;
     // Try to use the newer isRegisteredForRemoteNotifications otherwise use the enabledRemoteNotificationTypes.
     if ([[UIApplication sharedApplication] respondsToSelector:@selector(isRegisteredForRemoteNotifications)])
@@ -386,8 +392,8 @@
 
 -(void)getBankInfo
 {
-    NSString * knoxOnOff = [ARPowerHookManager getValueForHookById:@"knox_OnOff"];
-    NSString * SynapseOnOff = [ARPowerHookManager getValueForHookById:@"synps_OnOff"];
+    NSString * knoxOnOff = [[ARPowerHookManager getValueForHookById:@"knox_OnOff"] lowercaseString];
+    NSString * SynapseOnOff = [[ARPowerHookManager getValueForHookById:@"synps_OnOff"] lowercaseString];
 
     serve * getBankInfo = [serve new];
     getBankInfo.Delegate = self;
@@ -396,12 +402,22 @@
     {
         getBankInfo.tagName = @"knox_bank_info";
         [getBankInfo GetKnoxBankAccountDetails];
+        isKnoxOn = YES;
+        return;
+    }
+    else {
+        isKnoxOn = NO;
     }
 
-    else if ([SynapseOnOff isEqualToString:@"on"])
+    if ([SynapseOnOff isEqualToString:@"on"])
     {
         getBankInfo.tagName = @"synapse_bank_info";
         [getBankInfo GetSynapseBankAccountDetails];
+        isSynapseOn = YES;
+    }
+    else
+    {
+        isSynapseOn = NO;
     }
 }
 
@@ -461,11 +477,11 @@
 
 - (void)sign_out
 {
-    UIAlertView *av = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"Settings_SignOutAlrtTitle", @"Settings Screen sign out Alert Title")//@"Sign Out"
-                                                 message:NSLocalizedString(@"Settings_SignOutAlrtBody", @"Settings Screen sign out Alert Body Text")//@"Are you sure you want to sign out?"
+    UIAlertView *av = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"Settings_SignOutAlrtTitle", @"Settings Screen sign out Alert Title")
+                                                 message:NSLocalizedString(@"Settings_SignOutAlrtBody", @"Settings Screen sign out Alert Body Text")
                                                 delegate:self
                                        cancelButtonTitle:NSLocalizedString(@"CancelTxt", @"Any screen 'Cancel' Button Text")
-                                       otherButtonTitles:NSLocalizedString(@"Settings_SignOutAlrtBtn", @"Settings Screen sign out Alert Btn - 'I'm Sure'"), nil];//@"I'm Sure"
+                                       otherButtonTitles:NSLocalizedString(@"Settings_SignOutAlrtBtn", @"Settings Screen sign out Alert Btn - 'I'm Sure'"), nil];
     [av setTag:15];
     [av show];
 }
@@ -496,11 +512,11 @@
             {
                 [blankView removeFromSuperview];
                 [[NSFileManager defaultManager] removeItemAtPath:[self autoLogin] error:nil];
-                [user removeObjectForKey:@"email"];
-                [user removeObjectForKey:@"UserName"];
-                [user removeObjectForKey:@"MemberId"];
-                [user removeObjectForKey:@"hasPendingItems"];
-                [user removeObjectForKey:@"Pending_count"];
+
+                // Reset the values of all NSUserDefault items & keys
+                NSString *appDomain = [[NSBundle mainBundle] bundleIdentifier];
+                [[NSUserDefaults standardUserDefaults] removePersistentDomainForName:appDomain];
+                [[NSUserDefaults standardUserDefaults] synchronize];
 
                 [[assist shared] setisloggedout:YES];
 
@@ -530,21 +546,23 @@
                                                otherButtonTitles:nil, nil];
             [av show];
 
-            [user setObject:@"0" forKey:@"IsBankAvailable"];
+            [user setBool:NO forKey:@"IsKnoxBankAvailable"];
+            [user setBool:NO forKey:@"IsSynapseBankAvailable"];
+
             [user synchronize];
 
             [introText setHidden:NO];
             [glyph_noBank setHidden:NO];
-            
+
             isBankAttached = NO;
 
             [linked_background removeFromSuperview];
             [bank_image removeFromSuperview];
             [unlink_account removeFromSuperview];
         }
-        else if ([[dictResponse valueForKey:@"Result"] isEqualToString:@"No active bank account found for this user."])
+        else if ([[dictResponse valueForKey:@"Result"] rangeOfString:@"No active bank account found"].length != 0)
         {
-            UIAlertView *av = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"Settings_NoBnkFndAlrtTitle", @"Settings Screen 'Account Not Found' Alert Title")//@"Account Not Found"
+            UIAlertView *av = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"Settings_NoBnkFndAlrtTitle", @"Settings Screen 'Account Not Found' Alert Title")
                                                          message:[dictResponse valueForKey:@"Result"]
                                                         delegate:self
                                                cancelButtonTitle:@"OK"
@@ -571,13 +589,14 @@
                                             JSONObjectWithData:[result dataUsingEncoding:NSUTF8StringEncoding]
                                             options:kNilOptions
                                             error:&error];
-        NSLog(@"knox info is: %@",dictResponse);
+        NSLog(@"Knox info is: %@",dictResponse);
 
-        if (![[dictResponse valueForKey:@"AccountName"] isKindOfClass:[NSNull class]] &&
-            ![[dictResponse valueForKey:@"BankImageURL"] isKindOfClass:[NSNull class]] &&
-            ![[dictResponse valueForKey:@"BankName"] isKindOfClass:[NSNull class]])
+        if (dictResponse != NULL &&
+            (![[dictResponse valueForKey:@"AccountName"] isKindOfClass:[NSNull class]] &&
+             ![[dictResponse valueForKey:@"BankImageURL"] isKindOfClass:[NSNull class]] &&
+             ![[dictResponse valueForKey:@"BankName"] isKindOfClass:[NSNull class]]))
         {
-            [user setObject:@"1" forKey:@"IsBankAvailable"];
+            [user setBool:YES forKey:@"IsKnoxBankAvailable"];
             [user synchronize];
 
             isBankAttached = YES;
@@ -633,7 +652,8 @@
         }
         else
         {
-            [user setObject:@"0" forKey:@"IsBankAvailable"];
+            NSLog(@"Knox response was null.");
+            [user setBool:NO forKey:@"IsKnoxBankAvailable"];
 
             [introText setHidden:NO];
             [glyph_noBank setHidden:NO];
@@ -658,11 +678,11 @@
                                              error:&error];
         NSLog(@"Synapse info is: %@",responseForSynapseBank);
 
-
-        if (![[responseForSynapseBank valueForKey:@"BankName"] isKindOfClass:[NSNull class]] &&
-            ![[responseForSynapseBank valueForKey:@"AccountStatus"] isKindOfClass:[NSNull class]])
+        if (responseForSynapseBank != NULL &&
+            (![[responseForSynapseBank valueForKey:@"BankName"] isKindOfClass:[NSNull class]] &&
+             ![[responseForSynapseBank valueForKey:@"AccountStatus"] isKindOfClass:[NSNull class]]))
         {
-            [user setObject:@"1" forKey:@"IsBankAvailable"];
+            [user setBool:YES forKey:@"IsSynapseBankAvailable"];
             [user synchronize];
 
             isBankAttached = YES;
@@ -739,7 +759,8 @@
         }
         else
         {
-            [user setObject:@"0" forKey:@"IsBankAvailable"];
+            NSLog(@"Synapse response was null.");
+            [user setBool:NO forKey:@"IsSynapseBankAvailable"];
 
             [introText setHidden:NO];
             [glyph_noBank setHidden:NO];

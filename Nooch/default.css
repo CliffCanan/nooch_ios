@@ -436,8 +436,8 @@ navigation-bar title {
     box-shadow          : 0 2px 3px rgba(18,26,32,.16);
 }
 .button_LtBoxSm_right {
-    left                : 155px;
-    width				: 142px;
+    left                : 154px;
+    width				: 141px;
     height				: 44px;
     color 				: white;
     border-radius		: 5px;
@@ -448,8 +448,8 @@ navigation-bar title {
     border				: 1px solid #66AE3C;
 }
 .button_LtBoxSm_left {
-    left                : 9px;
-    width				: 142px;
+    left                : 7px;
+    width				: 141px;
     height				: 44px;
     color 				: white;
     border-radius		: 5px;
@@ -2372,13 +2372,14 @@ segmented-control#donatededication {
     color           : white;	
 }
 #settings_icon_topBarPosition {
-    left			: 226px;
-    top				: 35px;
-    width			: 34px;
-    height			: 36px;
+    left			: 220px;
+    top				: 34px;
+    width			: 36px;
+    height			: 38px;
     font-family     : "FontAwesome";
-    font-size       : 27px;
+    font-size       : 30px;
     color           : white;
+    text-align      : center;
 }
 #nooch_whitelogo {
     left			: 96px;

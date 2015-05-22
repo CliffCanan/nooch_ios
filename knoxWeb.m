@@ -101,12 +101,11 @@
     self.hud.labelText = @"Preparing Secure Connection";
     [self.hud show:YES];
 
-    NSString * knoxOnOff = [ARPowerHookManager getValueForHookById:@"knox_OnOff"];
-    NSString * SynapseOnOff = [ARPowerHookManager getValueForHookById:@"synps_OnOff"];
-
     NSString * baseUrl = @"";
 
-    if ([knoxOnOff isEqualToString:@"on"])
+    NSLog(@"isKnoxOn is: %d",isKnoxOn);
+    NSLog(@"isSynapseOn is: %d",isSynapseOn);
+    if (isKnoxOn)
     {
         baseUrl = [ARPowerHookManager getValueForHookById:@"knox_baseUrl"];
         NSString * k_Key = [ARPowerHookManager getValueForHookById:@"knox_Key"];
@@ -128,7 +127,7 @@
                                                    object:nil];
     }
 
-    else if ([SynapseOnOff isEqualToString:@"on"])
+    else if (isSynapseOn)
     {
         baseUrl = [ARPowerHookManager getValueForHookById:@"synps_baseUrl"];
         NSString * memberId = [user objectForKey:@"MemberId"];
@@ -205,10 +204,10 @@
     [btnHelp addTarget:self action:@selector(getHelpPressed) forControlEvents:UIControlEventTouchUpInside];
 
     UIButton * btnLink = [UIButton buttonWithType:UIButtonTypeCustom];
+    btnLink.frame = CGRectMake(10, mainView.frame.size.height - 56, 280, 50);
     [btnLink setStyleClass:@"button_LtBoxSm_right"];
     [btnLink setTitleShadowColor:Rgb2UIColor(26, 38, 19, 0.2) forState:UIControlStateNormal];
     btnLink.titleLabel.shadowOffset = CGSizeMake(0.0, -1.0);
-    btnLink.frame = CGRectMake(10, mainView.frame.size.height - 56, 280, 50);
     [btnLink setTitle:@"Got It" forState:UIControlStateNormal];
     [btnLink addTarget:self action:@selector(close_lightKnoxLtBox) forControlEvents:UIControlEventTouchUpInside];
 
@@ -440,7 +439,7 @@
 {
     NSLog(@"KnoxWeb.m -> resignViewSynapse fired");
 
-    [user setObject:@"1" forKey:@"IsBankAvailable"];
+    [user setBool:YES forKey:@"IsSynapseBankAvailable"];
 
     UIAlertView * alert = [[UIAlertView alloc]initWithTitle:@"Great Success"
                                                     message:@"\xF0\x9F\x98\x80\nYour bank was linked successfully."
@@ -484,7 +483,7 @@
 
         if ([[[dictResponse valueForKey:@"SaveMemberTransIdResult"]valueForKey:@"Result"]isEqualToString:@"Success"])
         {
-            [user setObject:@"1" forKey:@"IsBankAvailable"];
+            [user setBool:YES forKey:@"IsKnoxBankAvailable"];
 
             UIAlertView * alert = [[UIAlertView alloc]initWithTitle:@"Great Success"
                                                             message:@"\xF0\x9F\x98\x80\nYour bank was linked successfully."
@@ -498,7 +497,7 @@
         }
         else
         {
-            [user setObject:@"0" forKey:@"IsBankAvailable"];
+            [user setBool:NO forKey:@"IsKnoxBankAvailable"];
 
             UIAlertView * alert = [[UIAlertView alloc]initWithTitle:@"Please Try Again"
                                                             message:@"\xF0\x9F\x98\xAE\nBank linking failed, unfortunately your info was not saved. We hate it when this happens too."

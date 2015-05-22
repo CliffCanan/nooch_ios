@@ -732,6 +732,24 @@ void addressBookChanged(ABAddressBookRef addressBook, CFDictionaryRef info, void
         [serveOBJ getSettings];
 
         [[assist shared] setisloggedout:NO];
+
+        NSString * KnoxOnOff = [[ARPowerHookManager getValueForHookById:@"knox_OnOff"] lowercaseString];
+        NSString * SynapseOnOff = [[ARPowerHookManager getValueForHookById:@"synps_OnOff"] lowercaseString];
+
+        if ([KnoxOnOff isEqualToString:@"on"]) {
+            isKnoxOn = YES;
+        }
+        else {
+            isKnoxOn = NO;
+        }
+        if ([SynapseOnOff isEqualToString:@"on"]) {
+            isSynapseOn = YES;
+        }
+        else {
+            isSynapseOn = NO;
+        }
+        //NSLog(@"isKnoxOn is: %d",isKnoxOn);
+        //NSLog(@"isSynapseOn is: %d",isSynapseOn);
     }
     else
     {
@@ -806,16 +824,25 @@ void addressBookChanged(ABAddressBookRef addressBook, CFDictionaryRef info, void
     }
 
     dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
-        [ARProfileManager registerString:@"IsBankAttached" withValue:@"unknown"];
+        [ARProfileManager registerString:@"IsKnoxBankAttached" withValue:@"unknown"];
+        [ARProfileManager registerString:@"IsSynapseBankAttached" withValue:@"unknown"];
         [ARProfileManager registerString:@"IPaddress" withValue:@"unknown"];
 
-        if ([[user objectForKey:@"IsBankAvailable"]isEqualToString:@"1"])
+        if (isSynapseOn && [user boolForKey:@"IsSynapseBankAvailable"])
         {
-            [ARProfileManager setStringValue:@"YES" forVariable:@"IsBankAttached"];
+            [ARProfileManager setStringValue:@"YES" forVariable:@"IsSynapseBankAttached"];
         }
-        else
+        else if (isSynapseOn)
         {
-            [ARProfileManager setStringValue:@"NO" forVariable:@"IsBankAttached"];
+            [ARProfileManager setStringValue:@"NO" forVariable:@"IsSynapseBankAttached"];
+        }
+        else if (isKnoxOn && [user boolForKey:@"IsKnoxBankAvailable"])
+        {
+            [ARProfileManager setStringValue:@"YES" forVariable:@"IsKnoxBankAttached"];
+        }
+        else if (isKnoxOn)
+        {
+            [ARProfileManager setStringValue:@"NO" forVariable:@"IsKnoxBankAttached"];
         }
     });
 
@@ -1313,93 +1340,6 @@ void addressBookChanged(ABAddressBookRef addressBook, CFDictionaryRef info, void
     [self drawCarousel];
 }
 
--(void)drawCarousel
-{
-    if (bannerAlert == 1 && carouselTopValue != 75 )
-    {
-        carouselTopValue = 75;
-        topBtnTopValue = 284;
-    }
-    else if (bannerAlert >= 2 && carouselTopValue != 114)
-    {
-        carouselTopValue = 114;
-        topBtnTopValue = 320;
-    }
-    else if (bannerAlert == 0 && carouselTopValue != 48)
-    {
-        carouselTopValue = 48;
-        topBtnTopValue = 260;
-    }
-
-    [UIView animateKeyframesWithDuration:0.5
-                                   delay:0
-                                 options:2 << 16
-                              animations:^{
-                                  [UIView addKeyframeWithRelativeStartTime:0.2 relativeDuration:0.8 animations:^{
-                                      [top_button setFrame:CGRectMake(20, topBtnTopValue, 280, 54)];
-                                  }];
-                              } completion: nil
-     ];
-
-    if (top_button.alpha != 1)
-    {
-        [UIView animateKeyframesWithDuration:0.5
-                                       delay:0
-                                     options:2 << 16
-                                  animations:^{
-                                      [UIView addKeyframeWithRelativeStartTime:0.2 relativeDuration:.8 animations:^{
-                                          top_button.alpha = 1;
-                                      }];
-                                  } completion: nil
-         ];
-    }
-
-    if ([self.view.subviews containsObject:_carousel])
-    {
-        float duration = .35;
-        short randNum = 0;
-        
-        if (favorites && [favorites count] > 1)
-        {
-            randNum = arc4random() % [favorites count];
-            
-            if (abs(([_carousel currentItemIndex] - randNum) == 2))
-            {
-                duration = .6;
-            }
-            else if (abs(([_carousel currentItemIndex] - randNum) > 2))
-            {
-                duration = .7;
-            }
-        }
-
-        [UIView animateKeyframesWithDuration:duration
-                                       delay:0
-                                     options:2 << 16
-                                  animations:^{
-                                      [UIView addKeyframeWithRelativeStartTime:0 relativeDuration:1 animations:^{
-                                          [_carousel setFrame:CGRectMake(0, carouselTopValue, 320, 175)];
-                                      }];
-                                  } completion: ^(BOOL finished) {
-                                      [_carousel scrollToItemAtIndex:randNum duration:.7];
-                                  }
-         ];
-    }
-    else
-    {
-        //NSLog(@"drawCarousel --> Banner count is: %d  and carouselTopValue is: %d  and topBtnTopValue is: %d",bannerAlert, carouselTopValue, topBtnTopValue);
-
-        _carousel = [[iCarousel alloc] initWithFrame:CGRectMake(0, carouselTopValue, 320, 175)];
-        _carousel.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
-        _carousel.type = iCarouselTypeCylinder;
-        
-        [_carousel setNeedsLayout];
-        _carousel.delegate = self;
-        _carousel.dataSource = self;
-        [self.view addSubview:_carousel];
-    }
-}
-
 -(void)GetFavorite
 {
     serve *favoritesOBJ = [serve new];
@@ -1664,6 +1604,93 @@ void addressBookChanged(ABAddressBookRef addressBook, CFDictionaryRef info, void
 }
 
 #pragma mark - iCarousel methods
+-(void)drawCarousel
+{
+    if (bannerAlert == 1 && carouselTopValue != 75 )
+    {
+        carouselTopValue = 75;
+        topBtnTopValue = 284;
+    }
+    else if (bannerAlert >= 2 && carouselTopValue != 114)
+    {
+        carouselTopValue = 114;
+        topBtnTopValue = 320;
+    }
+    else if (bannerAlert == 0 && carouselTopValue != 48)
+    {
+        carouselTopValue = 48;
+        topBtnTopValue = 260;
+    }
+    
+    [UIView animateKeyframesWithDuration:0.5
+                                   delay:0
+                                 options:2 << 16
+                              animations:^{
+                                  [UIView addKeyframeWithRelativeStartTime:0.2 relativeDuration:0.8 animations:^{
+                                      [top_button setFrame:CGRectMake(20, topBtnTopValue, 280, 54)];
+                                  }];
+                              } completion: nil
+     ];
+    
+    if (top_button.alpha != 1)
+    {
+        [UIView animateKeyframesWithDuration:0.5
+                                       delay:0
+                                     options:2 << 16
+                                  animations:^{
+                                      [UIView addKeyframeWithRelativeStartTime:0.2 relativeDuration:.8 animations:^{
+                                          top_button.alpha = 1;
+                                      }];
+                                  } completion: nil
+         ];
+    }
+    
+    if ([self.view.subviews containsObject:_carousel])
+    {
+        float duration = .35;
+        short randNum = 0;
+        
+        if (favorites && [favorites count] > 1)
+        {
+            randNum = arc4random() % [favorites count];
+            
+            if (abs(([_carousel currentItemIndex] - randNum) == 2))
+            {
+                duration = .6;
+            }
+            else if (abs(([_carousel currentItemIndex] - randNum) > 2))
+            {
+                duration = .7;
+            }
+        }
+        
+        [UIView animateKeyframesWithDuration:duration
+                                       delay:0
+                                     options:2 << 16
+                                  animations:^{
+                                      [UIView addKeyframeWithRelativeStartTime:0 relativeDuration:1 animations:^{
+                                          [_carousel setFrame:CGRectMake(0, carouselTopValue, 320, 175)];
+                                      }];
+                                  } completion: ^(BOOL finished) {
+                                      [_carousel scrollToItemAtIndex:randNum duration:.7];
+                                  }
+         ];
+    }
+    else
+    {
+        //NSLog(@"drawCarousel --> Banner count is: %d  and carouselTopValue is: %d  and topBtnTopValue is: %d",bannerAlert, carouselTopValue, topBtnTopValue);
+        
+        _carousel = [[iCarousel alloc] initWithFrame:CGRectMake(0, carouselTopValue, 320, 175)];
+        _carousel.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
+        _carousel.type = iCarouselTypeCylinder;
+        
+        [_carousel setNeedsLayout];
+        _carousel.delegate = self;
+        _carousel.dataSource = self;
+        [self.view addSubview:_carousel];
+    }
+}
+
 - (NSInteger)numberOfItemsInCarousel:(iCarousel *)carousel
 {
     return 5;
@@ -2074,7 +2101,8 @@ void addressBookChanged(ABAddressBookRef addressBook, CFDictionaryRef info, void
         return NO;
     }
 
-    else if (![[user objectForKey:@"IsBankAvailable"]isEqualToString:@"1"])
+    else if ((isKnoxOn && ![user boolForKey:@"IsKnoxBankAvailable"]) ||
+             (isSynapseOn && ![user boolForKey:@"IsSynapseBankAvailable"]))
     {
         SIAlertView *alertView = [[SIAlertView alloc] initWithTitle:@"Connect A Funding Source \xF0\x9F\x92\xB0" andMessage:@"\xE2\x9A\xA1\nAdding a bank account to fund Nooch payments is lightning quick.\n\n• No routing or account number needed\n• Bank-grade encryption keeps your info safe\n\nWould you like to take care of this now?"];
         [alertView addButtonWithTitle:@"Later" type:SIAlertViewButtonTypeCancel handler:nil];
@@ -2091,6 +2119,14 @@ void addressBookChanged(ABAddressBookRef addressBook, CFDictionaryRef info, void
         [alertView show];
         return NO;
     }
+
+    else if (isSynapseOn)
+    {
+        
+        //return NO;
+    }
+
+
 
     return YES;
 }

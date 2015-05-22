@@ -917,7 +917,8 @@
         [alert show];
         return NO;
     }
-    else if (![[user objectForKey:@"IsBankAvailable"]isEqualToString:@"1"])
+    else if ((isKnoxOn && ![user boolForKey:@"IsKnoxBankAvailable"]) ||
+             (isSynapseOn && ![user boolForKey:@"IsSynapseBankAvailable"]))
     {
         UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Please Link A Bank Account"
                                                         message:@"Before you can make any transfer you must attach a bank account."

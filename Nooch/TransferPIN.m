@@ -727,13 +727,14 @@
             [alert show];
         }
 
-        else if (![[user objectForKey:@"IsBankAvailable"] isEqualToString:@"1"])
+        else if ((isKnoxOn && ![user boolForKey:@"IsKnoxBankAvailable"]) ||
+                 (isSynapseOn && ![user boolForKey:@"IsSynapseBankAvailable"]))
         {
             UIAlertView *av = [[UIAlertView alloc] initWithTitle:@"Connect A Funding Source \xF0\x9F\x92\xB0"
                                                          message:@"To make a payment, you must attach a bank account first - it's lightning quick!\n\n• No routing or account number needed\n• Bank-grade encryption keeps your info safe\n\nWould you like to take care of this now?"
                                                         delegate:self
-                                               cancelButtonTitle:@"Attach Now"
-                                               otherButtonTitles:@"Later", nil];
+                                               cancelButtonTitle:@"Later"
+                                               otherButtonTitles:@"Attach Now", nil];
             [av setTag:11];
             [av show];
         }

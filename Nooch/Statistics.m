@@ -729,7 +729,8 @@
     }
 
     // 4. DOES USER ALREADY HAVE A BANK ATTACHED?
-    else if (![[user objectForKey:@"IsBankAvailable"]isEqualToString:@"1"])
+    else if ((isKnoxOn && ![user boolForKey:@"IsKnoxBankAvailable"]) ||
+             (isSynapseOn && ![user boolForKey:@"IsSynapseBankAvailable"]))
     {
         UIAlertView *av = [[UIAlertView alloc] initWithTitle:@"Connect A Funding Source \xF0\x9F\x92\xB0"
                                                      message:@"\xE2\x9A\xA1\nAdding a bank account to fund Nooch payments is lightning quick.\n\n• No routing or account number needed\n• Bank-grade encryption keeps your info safe\n\nWould you like to take care of this now?"
