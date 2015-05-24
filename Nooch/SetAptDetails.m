@@ -1196,8 +1196,8 @@
 -(void)openAptWebsite
 {
     UIApplication * mySafari = [UIApplication sharedApplication];
-    NSURL * myURL = [[NSURL alloc]initWithString: aptWebsiteUrl];
-    [mySafari openURL:myURL];
+    NSURL * aptURL = [[NSURL alloc]initWithString: aptWebsiteUrl];
+    [mySafari openURL:aptURL];
 }
 
 -(void)goBackOneStep

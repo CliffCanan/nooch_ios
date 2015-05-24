@@ -763,7 +763,7 @@
 
     if ([[assist shared] getTranferImage])
     {
-        if ([UIAlertController class]) // for iOS 8
+      /*if ([UIAlertController class]) // for iOS 8
         {
             UIAlertController * alert = [UIAlertController
                                          alertControllerWithTitle:NSLocalizedString(@"HowMuch_ReplacePicAlertTitle", @"How Much replace picture alert title")
@@ -806,7 +806,7 @@
         }
         else
         {
-            UIAlertView * av = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"HowMuch_ReplacePicAlertTitle", @"How Much replace picture alert title")//@"Replace Picture?"
+          */UIAlertView * av = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"HowMuch_ReplacePicAlertTitle", @"How Much replace picture alert title")//@"Replace Picture?"
                                                           message:NSLocalizedString(@"HowMuch_ReplacePicAlertBody", @"How Much replace picture alert body text")//@"Do you want to remove the current picture?"
                                                          delegate:self
                                                 cancelButtonTitle:NSLocalizedString(@"HowMuch_No", @"How Much alert button NO text")
@@ -814,7 +814,7 @@
             [av show];
             [av setTag:11];
             return;
-        }
+      //}
     }
     else
     {

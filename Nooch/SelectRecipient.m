@@ -422,6 +422,7 @@
 
 -(void)lowerNavBar
 {
+    NSLog(@"LOWER NAV BAR FIRED!");
     //[nav_ctrl setNavigationBarHidden:NO animated:YES];
     [self.navigationController setNavigationBarHidden:NO animated:YES];
     [UIView animateKeyframesWithDuration:0.3
@@ -1147,22 +1148,19 @@
 
             [self.glyphEmail setFont:[UIFont fontWithName:@"FontAwesome" size:22]];
             [self.glyphEmail setText:[NSString fontAwesomeIconStringForIconIdentifier:@"fa-envelope-o"]];
-            int leftValue = ([[UIScreen mainScreen] bounds].size.width / 2) - 49 - (4.5 * [searchString length]);
-            if (leftValue < 3)
+            int leftValue = ([[UIScreen mainScreen] bounds].size.width / 2) - 49 - (4.9 * [searchString length]);
+            [UIView beginAnimations:nil context:nil];
+            [UIView setAnimationDuration:.2];
+            if (leftValue < 2)
             {
-                [UIView beginAnimations:nil context:nil];
-                [UIView setAnimationDuration:.15];
                 [self.glyphEmail setAlpha:0];
-                [UIView commitAnimations];
             }
             else
             {
-                [UIView beginAnimations:nil context:nil];
-                [UIView setAnimationDuration:.18];
                 [self.glyphEmail setAlpha: 1];
                 [self.glyphEmail setFrame:CGRectMake(leftValue, 125, 30, 30)];
-                [UIView commitAnimations];
             }
+            [UIView commitAnimations];
 
             if (isRange.location < searchText.length - 1)
             {
@@ -1235,21 +1233,18 @@
                     [self.glyphEmail setFont:[UIFont fontWithName:@"FontAwesome" size:27]];
                     [self.glyphEmail setText:[NSString fontAwesomeIconStringForIconIdentifier:@"fa-mobile"]];
                     int leftValue = ([[UIScreen mainScreen] bounds].size.width / 2) - 38 - (4.5 * [searchString length]);
+                    [UIView beginAnimations:nil context:nil];
+                    [UIView setAnimationDuration:.2];
                     if (leftValue < 3)
                     {
-                        [UIView beginAnimations:nil context:nil];
-                        [UIView setAnimationDuration:.2];
                         [self.glyphEmail setAlpha:0];
-                        [UIView commitAnimations];
                     }
                     else
                     {
-                        [UIView beginAnimations:nil context:nil];
-                        [UIView setAnimationDuration:.2];
                         [self.glyphEmail setFrame:CGRectMake(leftValue, 125, 30, 30)];
                         [self.glyphEmail setAlpha: 1];
-                        [UIView commitAnimations];
                     }
+                    [UIView commitAnimations];
                 }
                 else
                 {
@@ -2446,27 +2441,29 @@
         }
         else
         {
+            NSLog(@"Checkpoint Diego!");
             [search becomeFirstResponder];
-            if ([UIAlertController class]) // for iOS 8
+            /*if ([UIAlertController class]) // for iOS 8
             {
                 UIAlertController * alert = [UIAlertController
                                              alertControllerWithTitle:NSLocalizedString(@"SelectRecip_PhoneNumTroubleAlertTitle", @"Select Recipient Phone Number Trouble Alert Title")
                                              message:NSLocalizedString(@"SelectRecip_PhoneNumTroubleAlertBody", @"Select Recipient Phone Number Trouble Body Text")
                                              preferredStyle:UIAlertControllerStyleAlert];
-                
+
                 UIAlertAction * ok = [UIAlertAction
                                       actionWithTitle:@"OK"
                                       style:UIAlertActionStyleDefault
                                       handler:^(UIAlertAction * action)
                                       {
-                                          [alert dismissViewControllerAnimated:YES completion:nil];
+                                          //[alert dismissViewControllerAnimated:YES completion:nil];
                                       }];
                 [alert addAction:ok];
-                
+
                 [self presentViewController:alert animated:YES completion:nil];
             }
             else  // for iOS 7 and prior
             {
+              */NSLog(@"Checkpoint Diego #3");
                 UIAlertView * alert = [[UIAlertView alloc]initWithTitle:NSLocalizedString(@"SelectRecip_PhoneNumTroubleAlertTitle2", @"Select Recipient Phone Number Trouble Alert Title")
                                                                 message:NSLocalizedString(@"SelectRecip_PhoneNumTroubleAlertBody", @"Select Recipient Phone Number Trouble Body Text")//@"Please double check that you entered a valid 10-digit phone number."
                                                                delegate:nil
@@ -2474,7 +2471,7 @@
                                                       otherButtonTitles:nil, nil];
                 [alert show];
                 return;
-            }
+            //}
         }
         return;
     }
@@ -2501,7 +2498,7 @@
         }
         else
         {
-            if ([UIAlertController class]) // for iOS 8
+            /*if ([UIAlertController class]) // for iOS 8
             {
                 UIAlertController * alert = [UIAlertController
                                              alertControllerWithTitle:NSLocalizedString(@"SelectRecip_PlsCheckEmailAlertTitle", @"Select Recipient Please Check That Email Alert Title")
@@ -2517,17 +2514,17 @@
                                       }];
                 [alert addAction:ok];
                 
-                [self presentViewController:alert animated:YES completion:nil];
+                [self presentViewController:alert animated:NO completion:nil];
             }
             else  // for iOS 7 and prior
             {
-                UIAlertView * av = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"SelectRecip_PlsCheckEmailAlertTitle2", @"Select Recipient Please Check That Email Alert Title")
+              */UIAlertView * av = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"SelectRecip_PlsCheckEmailAlertTitle2", @"Select Recipient Please Check That Email Alert Title")
                                                               message:[NSString stringWithFormat:@"\xF0\x9F\x93\xA7\n%@", NSLocalizedString(@"SelectRecip_PlsCheckEmailAlertBody2", @"Select Recipient Please Check That Email Alert Body Text")]
                                                              delegate:nil
                                                     cancelButtonTitle:@"OK"
                                                     otherButtonTitles: nil];
                 [av show];
-            }
+            //}
         }
         return;
     }
@@ -2715,7 +2712,7 @@
     {
         [search becomeFirstResponder];
         
-        if ([UIAlertController class]) // for iOS 8
+        /*if ([UIAlertController class]) // for iOS 8
         {
             UIAlertController * alert = [UIAlertController
                                          alertControllerWithTitle:@"Try A Different Email"
@@ -2735,13 +2732,13 @@
         }
         else  // for iOS 7 and prior
         {
-            UIAlertView *av = [[UIAlertView alloc] initWithTitle:@"Try A Different Email"
+          */UIAlertView *av = [[UIAlertView alloc] initWithTitle:@"Try A Different Email"
                                                          message:@"\xF0\x9F\x93\xA7\nTo protect all Nooch accounts, we ask that you please only make payments to a regular (not anonymous) email address."
                                                         delegate:self
                                                cancelButtonTitle:@"OK"
                                                otherButtonTitles:nil];
             [av show];
-        }
+        //}
         return false;
     }
     else

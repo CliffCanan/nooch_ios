@@ -62,11 +62,13 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-    // isBankAttached = NO;
 
+    NSLog(@"boolForKey @'IsKnoxBankAvailable' is: %d",[user boolForKey:@"IsKnoxBankAvailable"]);
+    NSLog(@"boolForKey @'IsKnoxBankAvailable' is: %d",[user boolForKey:@"IsSynapseBankAvailable"]);
     if ((isKnoxOn && ![user boolForKey:@"IsKnoxBankAvailable"]) ||
         (isSynapseOn && ![user boolForKey:@"IsSynapseBankAvailable"]))
     {
+        NSLog(@"viewDidLoad -> Bank ain't attached!");
         isBankAttached = NO;
 
         glyph_noBank = [UILabel new];
@@ -680,7 +682,7 @@
 
         if (responseForSynapseBank != NULL &&
             (![[responseForSynapseBank valueForKey:@"BankName"] isKindOfClass:[NSNull class]] &&
-             ![[responseForSynapseBank valueForKey:@"AccountStatus"] isKindOfClass:[NSNull class]]))
+             ![[responseForSynapseBank valueForKey:@"BankImageURL"] isKindOfClass:[NSNull class]]))
         {
             [user setBool:YES forKey:@"IsSynapseBankAvailable"];
             [user synchronize];

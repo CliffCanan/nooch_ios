@@ -196,24 +196,24 @@ static const CGFloat kDetailsLabelFontSize = 15.0f;
         }
         else if ([colorFromArtisan isEqualToString:@"Blue"])
         {
-            self.color = Rgb2UIColor(24, 158, 225, .75);
+            self.color = Rgb2UIColor(5, 5, 12, .7);
+            //self.color = Rgb2UIColor(24, 158, 225, .75);
         }
         else
         {
-            self.color = Rgb2UIColor(4, 4, 12, .7);
+            self.color = Rgb2UIColor(5, 5, 12, .7);
         }
-        //self.color = Rgb2UIColor(11, 12, 53, .76);
 		self.labelFont = [UIFont boldSystemFontOfSize:kLabelFontSize];
         self.labelColor = [UIColor whiteColor];
 		self.detailsLabelFont = [UIFont boldSystemFontOfSize:kDetailsLabelFontSize];
         self.detailsLabelColor = [UIColor whiteColor];
 		self.xOffset = 0.0f;
-		self.yOffset = -30.0f;
+		self.yOffset = -35.0f;
 		self.dimBackground = NO;
 		self.margin = 16.0f;
-        self.cornerRadius = 10.0f;
+        self.cornerRadius = 14.0f;
 		self.graceTime = 0.0f;
-		self.minShowTime = 0.75f;
+		self.minShowTime = 0.8f;
 		self.removeFromSuperViewOnHide = NO;
 		self.minSize = CGSizeZero;
 		self.square = NO;

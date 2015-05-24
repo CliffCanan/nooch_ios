@@ -847,7 +847,7 @@
                 [transactionInputTransfer setValue:state forKey:@"State"];
                 [transactionInputTransfer setValue:country forKey:@"Country"];
                 [transactionInputTransfer setValue:@"" forKey:@"Zipcode"];
-     
+
                 if ([self.type isEqualToString:@"send"])
                 {
                     if ([self.receiver objectForKey:@"email"])
@@ -867,7 +867,6 @@
                                                self.phone,@"receiverPhoneNumer", nil];
                     }
                 }
-                NSLog(@"SEND/REQUEST --> transactionInputTransfer #1 is: %@", transactionInputTransfer);
 
                 if ([self.type isEqualToString:@"request"])
                 {
@@ -908,7 +907,7 @@
                     }
                 }
 
-                NSLog(@"SEND/REQUEST --> transactionINPUTTransfer #3 is: %@", transactionInputTransfer);
+                NSLog(@"SEND/REQUEST --> transactionINPUTTransfer is: %@", transactionInputTransfer);
                 NSLog(@"Type: %@ - transactionTransfer: %@", self.type, transactionTransfer);
 
                 postTransfer = [NSJSONSerialization dataWithJSONObject:transactionTransfer
@@ -921,22 +920,50 @@
                 {
                     if ([self.receiver objectForKey:@"email"])
                     {
-                        urlStrTranfer = [urlStrTranfer stringByAppendingFormat:@"/%@", @"RequestMoneyFromNonNoochUserUsingKnox"];
+                        if (isKnoxOn)
+                        {
+                            urlStrTranfer = [urlStrTranfer stringByAppendingFormat:@"/%@", @"RequestMoneyFromNonNoochUserUsingKnox"];
+                        }
+                        else if (isSynapseOn)
+                        {
+                            urlStrTranfer = [urlStrTranfer stringByAppendingFormat:@"/%@", @"RequestMoneyToNonNoochUserUsingSynapse"];
+                        }
                     }
                     else if ([self.receiver objectForKey:@"phone"])
                     {
-                        urlStrTranfer = [urlStrTranfer stringByAppendingFormat:@"/%@", @"RequestMoneyToNonNoochUserThroughPhoneUsingKnox"];
+                        if (isKnoxOn)
+                        {
+                            urlStrTranfer = [urlStrTranfer stringByAppendingFormat:@"/%@", @"RequestMoneyToNonNoochUserThroughPhoneUsingKnox"];
+                        }
+                        else if (isSynapseOn)
+                        {
+                            urlStrTranfer = [urlStrTranfer stringByAppendingFormat:@"/%@", @"RequestMoneyToNonNoochUserThroughPhoneUsingSynapse"];
+                        }
                     }
                 }
                 else if ([self.type isEqualToString:@"send"])
                 {
                     if ([self.receiver objectForKey:@"email"])
                     {
-                        urlStrTranfer = [urlStrTranfer stringByAppendingFormat:@"/%@", @"TransferMoneyToNonNoochUserUsingKnox"];
+                        if (isKnoxOn)
+                        {
+                            urlStrTranfer = [urlStrTranfer stringByAppendingFormat:@"/%@", @"TransferMoneyToNonNoochUserUsingKnox"];
+                        }
+                        else if (isSynapseOn)
+                        {
+                            urlStrTranfer = [urlStrTranfer stringByAppendingFormat:@"/%@", @"TransferMoneyToNonNoochUserUsingSynapse"];
+                        }
                     }
                     else if ([self.receiver objectForKey:@"phone"])
                     {
-                        urlStrTranfer = [urlStrTranfer stringByAppendingFormat:@"/%@", @"TransferMoneyToNonNoochUserThroughPhoneUsingKnox"];
+                        if (isKnoxOn)
+                        {
+                            urlStrTranfer = [urlStrTranfer stringByAppendingFormat:@"/%@", @"TransferMoneyToNonNoochUserThroughPhoneUsingKnox"];
+                        }
+                        else if (isSynapseOn)
+                        {
+                            urlStrTranfer = [urlStrTranfer stringByAppendingFormat:@"/%@", @"TransferMoneyToNonNoochUserThroughPhoneUsingSynapse"];
+                        }
                     }
                 }
 
@@ -1130,11 +1157,20 @@
         postLengthTransfer = [NSString stringWithFormat:@"%lu", (unsigned long)[postTransfer length]];
         self.respData = [NSMutableData data];
         urlStrTranfer = [[NSString alloc] initWithString:MyUrl];
-        if ([self.type isEqualToString:@"request"]) {
+        if ([self.type isEqualToString:@"request"])
+        {
             urlStrTranfer = [urlStrTranfer stringByAppendingFormat:@"/%@", @"RequestMoney"];
         }
-        else {
-            urlStrTranfer = [urlStrTranfer stringByAppendingFormat:@"/%@", @"TransferMoneyUsingKnox"];
+        else
+        {
+            if (isKnoxOn)
+            {
+                urlStrTranfer = [urlStrTranfer stringByAppendingFormat:@"/%@", @"TransferMoneyUsingKnox"];
+            }
+            else if (isSynapseOn)
+            {
+                urlStrTranfer = [urlStrTranfer stringByAppendingFormat:@"/%@", @"TransferMoneyUsingSynapse"];
+            }
         }
         urlTransfer = [NSURL URLWithString:urlStrTranfer];
 
@@ -1251,8 +1287,6 @@
         }
         else if (buttonIndex == 1)
         {
-            NSLog(@"buttonIndex was 0");
-            //[nav_ctrl popToRootViewControllerAnimated:NO];
             NSMutableDictionary *input = [self.trans mutableCopy];
             
             if ([[self.trans valueForKey:@"TransactionType"]isEqualToString:@"Request"] &&
@@ -1437,10 +1471,31 @@
 
     NSLog(@"TransferPIN --> This is the response:  %@",responseString);
 
+http://54.201.43.89/NoochService/NoochService.svc/RequestMoneyToNonNoochUserThroughPhoneUsingSynapse
+
     if ([self.receiver valueForKey:@"nonuser"])
     {
-        if ([[[dictResultTransfer valueForKey:@"TransferMoneyToNonNoochUserUsingKnoxResult"] valueForKey:@"Result"]isEqualToString:@"Your cash was sent successfully"] ||
-            [[[dictResultTransfer valueForKey:@"TransferMoneyToNonNoochUserThroughPhoneUsingKnoxResult"] valueForKey:@"Result"]isEqualToString:@"Your cash was sent successfully"])
+        // Specific 'Result' Strings - KNOX
+        NSString * sendNonNoochUserEmailKnoxResult = [[dictResultTransfer valueForKey:@"TransferMoneyToNonNoochUserUsingKnoxResult"] valueForKey:@"Result"];
+        NSString * sendNonNoochUserPhoneKnoxResult = [[dictResultTransfer valueForKey:@"TransferMoneyToNonNoochUserThroughPhoneUsingKnoxResult"] valueForKey:@"Result"];
+        NSString * requestNonNoochUserEmailKnoxResult = [[dictResultTransfer valueForKey:@"RequestMoneyFromNonNoochUserUsingKnoxResult"] valueForKey:@"Result"];
+        NSString * requestNonNoochUserPhoneKnoxResult = [[dictResultTransfer valueForKey:@"RequestMoneyToNonNoochUserThroughPhoneUsingKnoxResult"] valueForKey:@"Result"];
+
+        // Specific 'Result' Strings - SYNAPSE
+        NSString * sendNonNoochUserEmailSynapseResult = [[dictResultTransfer valueForKey:@"TransferMoneyToNonNoochUserUsingSynapseResult"] valueForKey:@"Result"];
+        NSString * sendNonNoochUserPhoneSynapseResult = [[dictResultTransfer valueForKey:@"TransferMoneyToNonNoochUserThroughPhoneUsingSynapseResult"] valueForKey:@"Result"];
+        NSString * requestNonNoochUserEmailSynapseResult = [[dictResultTransfer valueForKey:@"RequestMoneyToNonNoochUserUsingSynapseResult"] valueForKey:@"Result"];
+        NSString * requestNonNoochUserPhoneSynapseResult = [[dictResultTransfer valueForKey:@"RequestMoneyToNonNoochUserThroughPhoneUsingSynapseResult"] valueForKey:@"Result"];
+
+        NSLog(@"sendNonNoochUserEmailSynapseResult is: %@",sendNonNoochUserEmailSynapseResult);
+        NSLog(@"sendNonNoochUserPhoneSynapseResult is: %@",sendNonNoochUserPhoneSynapseResult);
+        NSLog(@"requestNonNoochUserEmailSynapseResult is: %@",requestNonNoochUserEmailSynapseResult);
+        NSLog(@"requestNonNoochUserPhoneSynapseResult is: %@",requestNonNoochUserPhoneSynapseResult);
+
+        if ([sendNonNoochUserEmailKnoxResult rangeOfString:@"cash was sent successfully"].length != 0 ||
+            [sendNonNoochUserPhoneKnoxResult rangeOfString:@"cash was sent successfully"].length != 0 ||
+            [sendNonNoochUserEmailSynapseResult rangeOfString:@"cash was sent successfully"].length != 0 ||
+            [sendNonNoochUserPhoneSynapseResult rangeOfString:@"cash was sent successfully"].length != 0)
         {
             [[assist shared] setTranferImage:nil];
             UIImage * imgempty = [UIImage imageNamed:@""];
@@ -1454,15 +1509,30 @@
             [av show];
             return;
         }
-        else if ([[dictResultTransfer valueForKey:@"TransferMoneyToNonNoochUserUsingKnoxResult"] valueForKey:@"Result"] ||
-                 [[dictResultTransfer valueForKey:@"TransferMoneyToNonNoochUserThroughPhoneUsingKnoxResult"] valueForKey:@"Result"])
+        else if ([sendNonNoochUserEmailKnoxResult rangeOfString:@"not have any active bank account"].length != 0 ||
+                 [sendNonNoochUserPhoneKnoxResult rangeOfString:@"not have any active bank account"].length != 0 ||
+                 [sendNonNoochUserEmailSynapseResult rangeOfString:@"not have any active bank account"].length != 0 ||
+                 [sendNonNoochUserPhoneSynapseResult rangeOfString:@"not linked to any bank account"].length != 0 ||
+                 [requestNonNoochUserEmailKnoxResult rangeOfString:@"not have any active bank account"].length != 0)
+        {
+            UIAlertView *av = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"EnterPIN_TrnsfrFaildAlrtTitle", @"Enter PIN Screen transfer failed Alert Title")
+                                                         message:[NSString stringWithFormat:@"\xF0\x9F\x98\xA9\n%@", NSLocalizedString(@"EnterPIN_TrnsfrFaildAlrtBody", @"Enter PIN Screen transfer failed Alert Body Text")]
+                                                        delegate:self
+                                               cancelButtonTitle:nil
+                                               otherButtonTitles:@"OK",nil];
+            [av show];
+            return;
+        }
+        else if (sendNonNoochUserEmailKnoxResult != NULL ||
+                 sendNonNoochUserPhoneKnoxResult != NULL ||
+                 requestNonNoochUserEmailSynapseResult != NULL)
         {
             [self errorAlerts:@"420"];
             return;
         }
 
-        if ([[[dictResultTransfer valueForKey:@"RequestMoneyFromNonNoochUserUsingKnoxResult"] valueForKey:@"Result"]isEqualToString:@"Request made successfully."] ||
-            [[[dictResultTransfer valueForKey:@"RequestMoneyToNonNoochUserThroughPhoneUsingKnoxResult"] valueForKey:@"Result"]isEqualToString:@"Request made successfully."])
+        if ([requestNonNoochUserEmailKnoxResult isEqualToString:@"Request made successfully."] ||
+            [requestNonNoochUserPhoneKnoxResult isEqualToString:@"Request made successfully."])
         {
             [[assist shared] setTranferImage:nil];
             UIImage * imgempty = [UIImage imageNamed:@""];
@@ -1476,58 +1546,22 @@
             [av show];
             return;
         }
-        else if ([[dictResultTransfer valueForKey:@"RequestMoneyFromNonNoochUserUsingKnoxResult"] valueForKey:@"Result"] ||
-                 [[dictResultTransfer valueForKey:@"RequestMoneyToNonNoochUserThroughPhoneUsingKnoxResult"] valueForKey:@"Result"])
+        else if (requestNonNoochUserEmailKnoxResult != NULL ||
+                 requestNonNoochUserPhoneKnoxResult != NULL)
         {
             [self errorAlerts:@"421"];
             return;
         }
+
+
+      /**/
     }
-    
-    if ([self.type isEqualToString:@"send"])
-    {
-        if (![[dictResultTransfer objectForKey:@"trnsactionId"] isKindOfClass:[NSNull class]])
-        {
-            transactionId = [dictResultTransfer valueForKey:@"trnsactionId"];
-        }
-    }
-    else if([self.type isEqualToString:@"request"])
-    {
-        if (![[dictResultTransfer objectForKey:@"requestId"] isKindOfClass:[NSNull class]])
-        {
-            transactionId = [dictResultTransfer valueForKey:@"requestId"];
-        }
-    }
-    NSLog(@"Transaction ID: %@",transactionId);
-
-    if ([self.receiver valueForKey:@"FirstName"] != NULL || [self.receiver valueForKey:@"LastName"] != NULL)
-    {
-        [transactionInputTransfer setObject:[self.receiver valueForKey:@"FirstName"] forKey:@"FirstName"];
-        [transactionInputTransfer setObject:[self.receiver valueForKey:@"LastName"] forKey:@"LastName"]; 
-    }
-
-    self.trans = [transactionInputTransfer copy];
-
-
-
-    // Result Mutable Dictionaries
-    resultSendMoneyExistingKnox = [dictResultTransfer valueForKey:@"TransferMoneyUsingKnoxResult"];       //  Send Money - Knox
-    resultSendMoneyExistingSynapse = [dictResultTransfer valueForKey:@"TransferMoneyUsingSynapseResult"]; //  Send Money (Synapse)
-    resultForMakeRequest = [dictResultTransfer objectForKey:@"RequestMoneyResult"];                 //  MAKING A REQUEST
-    resultForPayRequest = [dictResultTransfer objectForKey:@"HandleRequestMoneyResult"];            //  PAYING A REQUEST
 
     // Specific 'Result' Strings
-    NSString * sendMoneyToExistingUserKnoxResult = [resultSendMoneyExistingKnox valueForKey:@"Result"];
-    NSString * sendMoneyToExistingUserSynapseResult = [resultSendMoneyExistingSynapse valueForKey:@"Result"];
-    NSString * makeRequestToExistingUserResult = [resultForMakeRequest valueForKey:@"Result"];
-    NSString * payRequestResult = [resultForPayRequest valueForKey:@"Result"];
-
-
-    NSLog(@"sendMoneyToExistingUserKnoxResult is: %@",sendMoneyToExistingUserKnoxResult);
-    NSLog(@"sendMoneyToExistingUserSynapseResult is: %@",sendMoneyToExistingUserSynapseResult);
-    NSLog(@"makeRequestToExistingUserResult is: %@",makeRequestToExistingUserResult);
-    NSLog(@"payRequestResult is: %@",payRequestResult);
-
+    NSString * sendMoneyToExistingUserKnoxResult = [[dictResultTransfer valueForKey:@"TransferMoneyUsingKnoxResult"] valueForKey:@"Result"]; //  Send Money - Knox
+    NSString * sendMoneyToExistingUserSynapseResult = [[dictResultTransfer valueForKey:@"TransferMoneyUsingSynapseResult"] valueForKey:@"Result"]; //  Send Money (Synapse)
+    NSString * makeRequestToExistingUserResult = [[dictResultTransfer objectForKey:@"RequestMoneyResult"] valueForKey:@"Result"]; //  MAKING A REQUEST
+    NSString * payRequestResult = [[dictResultTransfer objectForKey:@"HandleRequestMoneyResult"] valueForKey:@"Result"]; //  PAYING A REQUEST
 
     if ([sendMoneyToExistingUserKnoxResult rangeOfString:@"cash was sent successfully"].length != 0 ||
         [sendMoneyToExistingUserSynapseResult rangeOfString:@"cash was sent successfully"].length != 0)
@@ -1718,7 +1752,7 @@
     }
 
 
-
+    // Making a Request to an Existing User
     else if ([makeRequestToExistingUserResult rangeOfString:@"successfully"].length != 0)
     {
         [[assist shared] setTranferImage:nil];
@@ -1767,7 +1801,7 @@
     }
 
 
-
+    // Paying a Request From An Existing User
     else if ([payRequestResult rangeOfString:@"successfully"].length != 0)
     {
         [[assist shared] setTranferImage:nil];
@@ -1792,6 +1826,7 @@
     }
 
 
+    // PIN-related errors common to all methods
     else if ([sendMoneyToExistingUserKnoxResult isEqualToString:@"PIN number you have entered is incorrect."] ||
              [sendMoneyToExistingUserSynapseResult isEqualToString:@"PIN number you have entered is incorrect."] ||
              [makeRequestToExistingUserResult isEqualToString:@"PIN number you have entered is incorrect."] ||
@@ -1908,6 +1943,31 @@
             [self errorAlerts:@"430"];
         }
     }
+
+
+    if ([self.type isEqualToString:@"send"])
+    {
+        if (![[dictResultTransfer objectForKey:@"trnsactionId"] isKindOfClass:[NSNull class]])
+        {
+            transactionId = [dictResultTransfer valueForKey:@"trnsactionId"];
+        }
+    }
+    else if([self.type isEqualToString:@"request"])
+    {
+        if (![[dictResultTransfer objectForKey:@"requestId"] isKindOfClass:[NSNull class]])
+        {
+            transactionId = [dictResultTransfer valueForKey:@"requestId"];
+        }
+    }
+    NSLog(@"Transaction ID: %@",transactionId);
+    
+    if ([self.receiver valueForKey:@"FirstName"] != NULL || [self.receiver valueForKey:@"LastName"] != NULL)
+    {
+        [transactionInputTransfer setObject:[self.receiver valueForKey:@"FirstName"] forKey:@"FirstName"];
+        [transactionInputTransfer setObject:[self.receiver valueForKey:@"LastName"] forKey:@"LastName"];
+    }
+    
+    self.trans = [transactionInputTransfer copy];
 }
 
 NSString * calculateArrivalDate()

@@ -73,7 +73,7 @@
         NSString * avTitle = NSLocalizedString(@"Login_Alrt1Ttl", @"'Please Enter Email And Password' Alert Title");
         NSString * avMsg = NSLocalizedString(@"Login_Alrt1Body", @"'We can't log you in if we don't know who you are!' Alert Body");
 
-        if ([UIAlertController class]) // for iOS 8
+      /*if ([UIAlertController class]) // for iOS 8
         {
             UIAlertController * alert = [UIAlertController
                                          alertControllerWithTitle:avTitle
@@ -92,13 +92,13 @@
         }
         else  // for iOS 7 and prior
         {
-            UIAlertView * av = [[UIAlertView alloc] initWithTitle:avTitle
+          */UIAlertView * av = [[UIAlertView alloc] initWithTitle:avTitle
                                                           message:avMsg
                                                          delegate:nil
                                                 cancelButtonTitle:@"OK"
                                                 otherButtonTitles: nil];
             [av show];
-        }
+        //}
     }
 }
 
@@ -560,6 +560,7 @@
 
 - (void)forgot_pass_Login
 {
+    NSLog(@"FORGOT_PASS_LOGIN fired");
     NSString * avTitle = NSLocalizedString(@"Login_ForgPwAlrtTtl", @"'Forgot Password' Alert Title");
     NSString * avMsg = NSLocalizedString(@"Login_ForgPwAlrtBody", @"'Please enter your email and we will send you a reset link.' Alert Body Text");
     NSString * avCancel = NSLocalizedString(@"Login_ForgPwAlrtCncl", @"'Cancel' Alert Button Text");
@@ -641,6 +642,7 @@
     }
     else // iOS 7 and prior
     {*/
+        [self.view endEditing:YES];
         UIAlertView * alert = [[UIAlertView alloc]initWithTitle:avTitle
                                                         message:avMsg
                                                        delegate:self
@@ -685,6 +687,7 @@
         }
         else
         {
+            [self.view endEditing:YES];
             UIAlertView * alert = [[UIAlertView alloc]initWithTitle:@"Forgot Password"
                                                             message:@"Please make sure you've entered a valid email address."
                                                            delegate:self

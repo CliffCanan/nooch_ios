@@ -34,10 +34,6 @@
     NSURL*urlTransfer;
     float lon;
     float lat;
-    NSMutableDictionary * resultSendMoneyExistingKnox;    // TransferMoneyUsingKnoxResult
-    NSMutableDictionary * resultSendMoneyExistingSynapse; // TransferMoneyUsingSynapseResult
-    NSMutableDictionary * resultForMakeRequest;           // RequestMoneyResult
-    NSMutableDictionary * resultForPayRequest;            // HandleRequestMoneyResult
     NSMutableDictionary * transactionInputTransfer;
     NSMutableDictionary * transactionTransfer;
     NSDictionary * dictResult;         // in 'listen' for handling PIN result from server

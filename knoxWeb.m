@@ -379,7 +379,7 @@
 
 -(void)cantSendMail
 {
-    if ([UIAlertController class]) // for iOS 8
+    /*if ([UIAlertController class]) // for iOS 8
     {
         UIAlertController * alert = [UIAlertController
                                      alertControllerWithTitle:@"No Email Detected"
@@ -400,7 +400,7 @@
     }
     else
     {
-        if (![MFMailComposeViewController canSendMail])
+      */if (![MFMailComposeViewController canSendMail])
         {
             UIAlertView * av = [[UIAlertView alloc] initWithTitle:@"No Email Detected"
                                                           message:@"You don't have an email account configured for this device."
@@ -409,7 +409,7 @@
                                                 otherButtonTitles: nil];
             [av show];
             return;
-        }
+      //}
     }
 }
 

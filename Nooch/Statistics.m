@@ -1652,6 +1652,7 @@
 #pragma mark Exporting History
 - (IBAction)ExportHistory:(id)sender
 {
+    [self.view endEditing:YES];
     UIAlertView * alert = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"Stats_ExprtAlrtTtl", @"Stats - 'Export Transfer Data'")
                                                      message:NSLocalizedString(@"Stats_ExprtAlrtBdy", @"Stats - 'Where should we email your data?'")
                                                     delegate:self
