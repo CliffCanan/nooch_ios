@@ -182,18 +182,16 @@ bool modal;
     [ARPowerHookManager registerBlockWithId:@"goToReferScrn"
                                friendlyName:@"Send user to Refer a Friend screen"
                                        data:@{ @"shouldDisplayAlert" : @"NO",
-                                               @"alertText" : @"This screen shows your unique Referral Code.\n\nSend it out to anyone as often as you'd like and you'll get $5 for each of the first 5 people sign up with your code and makes a payment."
+                                               @"alertText" : @"This screen shows your unique Referral Code. Send it out to anyone as often as you'd like and you'll get $5 for each new user who signs up with your code and makes a payment (up to 5 referrals)."
                                              }
                                    andBlock:^(NSDictionary *data, id context) {
                                        sentFromStatsScrn = false;
                                        SendInvite *inv = [SendInvite new];
                                        [nav_ctrl pushViewController:inv animated:YES];
 
-                                       if ([data[@"shouldDisplayAlert"] isEqualToString:@"YES"])
+                                       if ([[data[@"shouldDisplayAlert"] lowercaseString] isEqualToString:@"yes"])
                                        {
-                                           NSString *message = [NSString stringWithFormat:@"Awesome, %@!\n\n%@",
-                                                                [user objectForKey:@"firstName"],
-                                                                data[@"alertText"]];
+                                           NSString *message = data[@"alertText"];
 
                                            UIAlertView *alertView = [[UIAlertView alloc]initWithTitle:@"Like Getting Paid?"
                                                                                               message:message
@@ -206,39 +204,65 @@ bool modal;
     [ARPowerHookManager registerBlockWithId:@"MakeADonation"
                                friendlyName:@"Send user to How Much screen to donate to a Featured NonProfit"
                                        data:@{ @"shouldDisplayAlert" : @"NO",
-                                               @"memberId": @"B3A6CF7B-561F-4105-99E4-406A215CCF60",
+                                               @"recipMembId": @"B3A6CF7B-561F-4105-99E4-406A215CCF60",
                                                @"firstName": @"First Name",
                                                @"lastName": @"Last Name",
-                                               @"memo": @"memo?",
-                                               @"alertText" : @"Here you can see your unique Referral Code. Send it out to anyone as often as you'd like and you'll get $5 whenever signs up with your code and makes their first payment."
-                                               }
+                                               @"memo": @"",
+                                               @"alertTitle": @"Thank You!",
+                                               @"alertText" : @"100% of what you give in this transaction will go to supporting the cause!"
+                                            }
                                    andBlock:^(NSDictionary *data, id context) {
-                                       NSMutableDictionary * recipient = [NSMutableDictionary new];
-                                       [recipient setObject:data[@"memberId"] forKey:@"MemberId"];
-                                       [recipient setObject:data[@"firstName"] forKey:@"FirstName"];
-                                       [recipient setObject:data[@"lastName"] forKey:@"LastName"];
-                                       [recipient setObject:data[@"memo"] forKey:@"Memo"];
-                                       [recipient setObject:[NSString stringWithFormat:@"https://www.noochme.com/noochservice/UploadedPhotos/Photos/%@.png",data[@"memberId"]] forKey:@"Photo"];
-
-                                       NSLog(@"AppDelegate --> Recipient object is: %@", recipient);
-                                       isFromHome = YES;
-                                       isFromMyApt = NO;
-
-                                       HowMuch * howMuchScrn = [[HowMuch alloc] initWithReceiver:recipient];
-                                       [nav_ctrl pushViewController:howMuchScrn animated:YES];
-
-                                       if ([data[@"shouldDisplayAlert"] isEqualToString:@"YES"])
+                                       if ([[assist shared] getSuspended] &&
+                                            [[assist shared] isProfileCompleteAndValidated] &&
+                                           ((isKnoxOn && [user boolForKey:@"IsKnoxBankAvailable"]) ||
+                                            (isSynapseOn && [user boolForKey:@"IsSynapseBankAvailable"] && [user boolForKey:@"IsSynapseBankVerified"])))
                                        {
-                                           NSString *message = [NSString stringWithFormat:@"Awesome, %@!\n\n%@",
-                                                                [user objectForKey:@"firstName"],
-                                                                data[@"alertText"]];
+                                           NSMutableDictionary * recipient = [NSMutableDictionary new];
+                                           if (data[@"recipMembId"] != NULL)
+                                           {
+                                               [recipient setObject:data[@"recipMembId"] forKey:@"MemberId"];
+                                               [recipient setObject:data[@"firstName"] forKey:@"FirstName"];
+                                               [recipient setObject:data[@"lastName"] forKey:@"LastName"];
+                                               [recipient setObject:data[@"memo"] forKey:@"Memo"];
+                                               [recipient setObject:[NSString stringWithFormat:@"https://www.noochme.com/noochservice/UploadedPhotos/Photos/%@.png",data[@"recipMembId"]] forKey:@"Photo"];
+
+                                               NSLog(@"AppDelegate --> MakeADonation Powerhook Block --> Recipient object is: %@", recipient);
+                                               isFromHome = YES;
+                                               isFromMyApt = NO;
+                                               isFromArtisanDonationAlert = YES;
+
+                                               HowMuch * howMuchScrn = [[HowMuch alloc] initWithReceiver:recipient];
+                                               [nav_ctrl pushViewController:howMuchScrn animated:YES];
+
+                                               if ([[data[@"shouldDisplayAlert"] lowercaseString] isEqualToString:@"yes"])
+                                               {
+                                                   NSString *avTitle = data[@"alertTitle"];
+                                                   NSString *message = [NSString stringWithFormat:@"Awesome, %@!\n\n%@",
+                                                                        [user objectForKey:@"firstName"],
+                                                                        data[@"alertText"]];
+                                                   
+                                                   UIAlertView *alertView = [[UIAlertView alloc]initWithTitle:avTitle
+                                                                                                      message:message
+                                                                                                     delegate:context
+                                                                                            cancelButtonTitle:@"Ok"
+                                                                                            otherButtonTitles:nil, nil];
+                                                   [alertView show];
+                                               }
+                                           }
+                                           else
+                                           {
+                                               NSLog(@"MEMBER ID WAS NULL :-(");
+                                           }
+                                       }
+                                       else
+                                       {
+                                           NSMutableArray * arrNav = [nav_ctrl.viewControllers mutableCopy];
                                            
-                                           UIAlertView *alertView = [[UIAlertView alloc]initWithTitle:@"Here's a Coupon!"
-                                                                                              message:message
-                                                                                             delegate:context
-                                                                                    cancelButtonTitle:@"Ok"
-                                                                                    otherButtonTitles:nil, nil];
-                                           [alertView show];
+                                           Home * goHomeScrn = [Home new];
+                                           [arrNav replaceObjectAtIndex:0 withObject:goHomeScrn];
+                                           [nav_ctrl setViewControllers:arrNav animated:NO];
+
+                                           [nav_ctrl popToRootViewControllerAnimated:YES];
                                        }
                                    }];
 

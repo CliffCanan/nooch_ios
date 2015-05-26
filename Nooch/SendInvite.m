@@ -385,7 +385,7 @@
         SLComposeViewController *fbSheet = [SLComposeViewController composeViewControllerForServiceType:SLServiceTypeFacebook];
 
         [fbSheet setInitialText:[NSString stringWithFormat:@"Check out @Nooch, the simplest way to pay me back (and get paid by anyone - for free)! Use my invite code to sign up: \"%@\"",[code.text uppercaseString]]];
-        [fbSheet addURL:[NSURL URLWithString:@"https://itunes.apple.com/us/app/nooch/id917955306?mt=8"]];
+        [fbSheet addURL:[NSURL URLWithString:@"https://157054.measurementapi.com/serve?action=click&publisher_id=157054&site_id=91086"]];
         [self presentViewController:fbSheet animated:YES completion:nil];
 
         [fbSheet setCompletionHandler:^(SLComposeViewControllerResult result)
@@ -400,12 +400,13 @@
                      output = @"Post Shared Successfully";
                      [self dismissViewControllerAnimated:YES completion:nil];
                      [self callService:@"FB"];
-                     [ARTrackingManager trackEvent:@"Refer_FBshare_Success"];
                      break;
                  default: break;
              }
              if ([output isEqualToString:@"Post Shared Successfully"])
              {
+                 [ARTrackingManager trackEvent:@"Refer_SUCCESS"];
+                 [ARTrackingManager trackEvent:@"Refer_Via_FB_Success"];
                  UIAlertView * alert = [[UIAlertView alloc] initWithTitle:@"Facebook Message"
                                                                   message:output
                                                                  delegate:nil
@@ -473,7 +474,7 @@
     {
         SLComposeViewController *tweetSheet = [SLComposeViewController composeViewControllerForServiceType:SLServiceTypeTwitter];
         [tweetSheet setInitialText:[NSString stringWithFormat:@"Check out @NoochMoney, the simplest free way to pay me back! Use my invite code to sign up: \"%@\"",[code.text uppercaseString]]];
-        [tweetSheet addURL:[NSURL URLWithString:@"https://itunes.apple.com/us/app/nooch/id917955306?mt=8"]];
+        [tweetSheet addURL:[NSURL URLWithString:@"https://157058.measurementapi.com/serve?action=click&publisher_id=157058&site_id=91086"]];
         [self presentViewController:tweetSheet animated:YES completion:nil];
 
         [tweetSheet setCompletionHandler:^(SLComposeViewControllerResult result)
@@ -493,6 +494,8 @@
              }
              if ([output isEqualToString:@"Tweet Posted"])
              {
+                 [ARTrackingManager trackEvent:@"Refer_SUCCESS"];
+                 [ARTrackingManager trackEvent:@"Refer_Via_TWIT_Success"];
                  UIAlertView * alert = [[UIAlertView alloc] initWithTitle:@"Twitter Message"
                                                                   message:output
                                                                  delegate:nil
@@ -526,7 +529,7 @@
     NSString * emailTitle = @"Check out Nooch - a free app to pay me back";
 
     NSString * messageBody; // Change the message body to HTML
-    messageBody=[NSString stringWithFormat:@"Hey there,<br/><p>You should check out Nooch, a great <strong>free iOS app</strong> that lets me pay you back anytime, anywhere.  Since I know you don't like carrying cash around either, I thought you would love using Nooch!</p><p>You can <a href=\"https://itunes.apple.com/us/app/nooch/id917955306?mt=8\">download Nooch</a> from the App Store - and be sure to use my Referral Code to get exclusive access:</p><p style=\"text-align:center;font-size:1.5em;\"><strong>%@</strong></p><p>To learn more about Nooch, here's the website: <a href=\"https://www.nooch.com/overview/\">www.nooch.com</a>.</p><p>- %@</p>",code.text,[user objectForKey:@"firstName"]];
+    messageBody=[NSString stringWithFormat:@"Hey there,<br/><p>You should check out Nooch, a great <strong>free iOS app</strong> that lets me pay you back anytime, anywhere.  Since I know you don't like carrying cash around either, I thought you would love using Nooch!</p><p>You can <a href=\"https://157050.measurementapi.com/serve?action=click&publisher_id=157050&site_id=91086\">download Nooch</a> from the App Store - and be sure to use my Referral Code to get exclusive access:</p><p style=\"text-align:center;font-size:1.5em;\"><strong>%@</strong></p><p>To learn more about Nooch, here's the website: <a href=\"https://www.nooch.com/overview/\">www.Nooch.com</a>.</p><p>- %@</p>",code.text,[user objectForKey:@"firstName"]];
 
     MFMailComposeViewController *mc = [[MFMailComposeViewController alloc] init];
     mc.mailComposeDelegate = self;
@@ -550,7 +553,9 @@
             [alert show];
             break;
         case MFMailComposeResultSent:
-            [alert setTitle:@"Email sent"];
+            [ARTrackingManager trackEvent:@"Refer_SUCCESS"];
+            [ARTrackingManager trackEvent:@"Refer_Via_EMAIL_Success"];
+            [alert setTitle:@"Referral Sent Successfully"];
             [alert show];
             [self callService:@"EM"];
             break;
@@ -582,8 +587,11 @@
             break;
         }
         case MessageComposeResultSent:
+        {
+            [ARTrackingManager trackEvent:@"Refer_SUCCESS"];
+            [ARTrackingManager trackEvent:@"Refer_Via_SMS_Success"];
             break;
-
+        }
         default:
             break;
     }

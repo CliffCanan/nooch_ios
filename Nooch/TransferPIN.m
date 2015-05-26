@@ -99,7 +99,7 @@
     shadowNavText.shadowOffset = CGSizeMake(0, -1.0);
     NSDictionary * titleAttributes = @{NSShadowAttributeName: shadowNavText};
 
-    UITapGestureRecognizer * backTap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(backPressed:)];
+    UITapGestureRecognizer * backTap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(backToHowMuch)];
 
     UILabel * back_button = [UILabel new];
     [back_button setStyleId:@"navbar_back"];
@@ -443,7 +443,7 @@
                                                                             otherButtonTitles:nil];
                                       [alert show];
                                       
-                                      [self backPressed:nil];
+                                      [self backToHowMuch];
                                   });
                                   return;
                               }
@@ -466,7 +466,7 @@
                                                                             otherButtonTitles:nil];
                                       [alert show];
 
-                                      [self backPressed:nil];
+                                      [self backToHowMuch];
                                   });
                               }
                           }];
@@ -475,7 +475,7 @@
     [[assist shared] setneedsReload:YES];
 }
 
--(void)backPressed:(id)sender
+-(void)backToHowMuch
 {
     [self.navigationItem setLeftBarButtonItem:nil];
     [self.navigationController popViewControllerAnimated:YES];
@@ -739,6 +739,17 @@
             [av show];
         }
 
+        else if (!isKnoxOn && isSynapseOn && [user boolForKey:@"IsSynapseBankAvailable"] && ![user boolForKey:@"IsSynapseBankVerified"])
+        {
+            UIAlertView *av = [[UIAlertView alloc] initWithTitle:@"Bank Account Un-Verified"
+                                                         message:@"Looks like your bank account remains un-verified.  This usually happens when the contact info listed on the bank account does not match your Nooch profile information. Please contact Nooch support for more information."
+                                                        delegate:self
+                                               cancelButtonTitle:@"OK"
+                                               otherButtonTitles:@"Contact Support", nil];
+            [av setTag:54];
+            [av show];
+        }
+
         else
         {
             NSString * textLoading=@"";
@@ -898,7 +909,7 @@
                                                     transactionInputTransfer, @"requestInput",
                                                     [user valueForKey:@"OAuthToken"],@"accessToken", nil];
                     }
-                    else if ([self.receiver objectForKey:@"phone"] )
+                    else if ([self.receiver objectForKey:@"phone"])
                     {
                         transactionTransfer = [[NSMutableDictionary alloc] initWithObjectsAndKeys:
                                                transactionInputTransfer, @"requestInput",
@@ -962,7 +973,7 @@
                         }
                         else if (isSynapseOn)
                         {
-                            urlStrTranfer = [urlStrTranfer stringByAppendingFormat:@"/%@", @"TransferMoneyToNonNoochUserThroughPhoneUsingSynapse"];
+                            urlStrTranfer = [urlStrTranfer stringByAppendingFormat:@"/%@", @"TransferMoneyToNonNoochUserThroughPhoneUsingsynapse"];
                         }
                     }
                 }
@@ -1278,6 +1289,7 @@
 
 -(void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex
 {
+    //NSLog(@"AlertView.tag is: %ld  and buttonIndex is: %ld",(long)alertView.tag,(long)buttonIndex);
     if (alertView.tag == 1)
     {
         if (buttonIndex == 0)
@@ -1357,59 +1369,39 @@
         }
     }
     else if ((alertView.tag == 50 || alertView.tag == 51 ||
-              alertView.tag == 52 || alertView.tag == 53) && buttonIndex == 1)
+              alertView.tag == 52 || alertView.tag == 53 || alertView.tag == 54) &&
+             buttonIndex == 1)
     {
-        if (![MFMailComposeViewController canSendMail])
+        if (buttonIndex == 1)
         {
-            if ([UIAlertController class]) // for iOS 8
+            if (![MFMailComposeViewController canSendMail])
             {
-                UIAlertController * alert = [UIAlertController
-                                             alertControllerWithTitle:@"No Email Detected"
-                                             message:@"You don't have an email account configured for this device."
-                                             preferredStyle:UIAlertControllerStyleAlert];
-
-                UIAlertAction * ok = [UIAlertAction
-                                      actionWithTitle:@"OK"
-                                      style:UIAlertActionStyleDefault
-                                      handler:^(UIAlertAction * action)
-                                      {
-                                          [alert dismissViewControllerAnimated:YES completion:nil];
-                                      }];
-                [alert addAction:ok];
-
-                [self presentViewController:alert animated:YES completion:nil];
+                UIAlertView * av = [[UIAlertView alloc] initWithTitle:@"No Email Detected"
+                                                              message:@"You don't have an email account configured for this device."
+                                                             delegate:nil
+                                                    cancelButtonTitle:@"OK"
+                                                    otherButtonTitles: nil];
+                [av show];
                 return;
             }
-            else
-            {
-                if (![MFMailComposeViewController canSendMail])
-                {
-                    UIAlertView * av = [[UIAlertView alloc] initWithTitle:@"No Email Detected"
-                                                                  message:@"You don't have an email account configured for this device."
-                                                                 delegate:nil
-                                                        cancelButtonTitle:@"OK"
-                                                        otherButtonTitles: nil];
-                    [av show];
-                    return;
-                }
-            }
+            MFMailComposeViewController *mailComposer = [[MFMailComposeViewController alloc] init];
+            mailComposer.mailComposeDelegate = self;
+            mailComposer.navigationBar.tintColor=[UIColor whiteColor];
+            [mailComposer setSubject:[NSString stringWithFormat:@"Support Request: Version %@",[[[NSBundle mainBundle] infoDictionary] objectForKey:@"CFBundleVersion"]]];
+            [mailComposer setMessageBody:@"" isHTML:NO];
+            [mailComposer setToRecipients:[NSArray arrayWithObjects:@"support@nooch.com", nil]];
+            [mailComposer setCcRecipients:[NSArray arrayWithObject:@""]];
+            [mailComposer setBccRecipients:[NSArray arrayWithObject:@""]];
+            [mailComposer setModalTransitionStyle:UIModalTransitionStyleCoverVertical];
+            [self presentViewController:mailComposer animated:YES completion:nil];
         }
-        MFMailComposeViewController *mailComposer = [[MFMailComposeViewController alloc] init];
-        mailComposer.mailComposeDelegate = self;
-        mailComposer.navigationBar.tintColor=[UIColor whiteColor];
-        [mailComposer setSubject:[NSString stringWithFormat:@"Support Request: Version %@",[[[NSBundle mainBundle] infoDictionary] objectForKey:@"CFBundleVersion"]]];
-        [mailComposer setMessageBody:@"" isHTML:NO];
-        [mailComposer setToRecipients:[NSArray arrayWithObjects:@"support@nooch.com", nil]];
-        [mailComposer setCcRecipients:[NSArray arrayWithObject:@""]];
-        [mailComposer setBccRecipients:[NSArray arrayWithObject:@""]];
-        [mailComposer setModalTransitionStyle:UIModalTransitionStyleCoverVertical];
-        [self presentViewController:mailComposer animated:YES completion:nil];
+        else if (buttonIndex == 0)
+        {
+            [self.navigationController popToRootViewControllerAnimated:YES];
+        }
     }
-    else if (alertView.tag == 50 && buttonIndex == 1)
-    {
-        [self.navigationController popToRootViewControllerAnimated:YES];
-    }
-    else if (alertView.tag == 11 && buttonIndex == 1)
+    
+    else if (alertView.tag == 11 && buttonIndex == 1) // Bank Not Verified - Go To Bank Webview
     {
         NSMutableArray * arrNav = [nav_ctrl.viewControllers mutableCopy];
 
@@ -1425,9 +1417,28 @@
         knoxWeb * addBankWebView = [knoxWeb new];
         [nav_ctrl pushViewController:addBankWebView animated:YES];
     }
-    else
+
+    else if (alertView.tag == 31) // Attempt to send more than transaction limit (on server), go back to How Much screen
     {
-        //[self.navigationController popToRootViewControllerAnimated:YES];
+        [self backToHowMuch];
+    }
+
+    else if (alertView.tag == 61)
+    {
+        [self.navigationController popToRootViewControllerAnimated:YES];
+    }
+
+    else if (alertView.tag == 71) // Attempt to send to self, go back to Select Recipient screen
+    {
+        [self.navigationItem setLeftBarButtonItem:nil];
+        NSMutableArray * arrNav = [nav_ctrl.viewControllers mutableCopy];
+
+        SelectRecipient * selectRecipScrn = [SelectRecipient new];
+        [arrNav replaceObjectAtIndex:[arrNav count]-2 withObject:selectRecipScrn];
+
+        [nav_ctrl setViewControllers:arrNav animated:NO];
+
+        [self.navigationController popViewControllerAnimated:YES];
     }
 }
 
@@ -1471,37 +1482,50 @@
 
     NSLog(@"TransferPIN --> This is the response:  %@",responseString);
 
-http://54.201.43.89/NoochService/NoochService.svc/RequestMoneyToNonNoochUserThroughPhoneUsingSynapse
+
 
     if ([self.receiver valueForKey:@"nonuser"])
     {
         // Specific 'Result' Strings - KNOX
-        NSString * sendNonNoochUserEmailKnoxResult = [[dictResultTransfer valueForKey:@"TransferMoneyToNonNoochUserUsingKnoxResult"] valueForKey:@"Result"];
-        NSString * sendNonNoochUserPhoneKnoxResult = [[dictResultTransfer valueForKey:@"TransferMoneyToNonNoochUserThroughPhoneUsingKnoxResult"] valueForKey:@"Result"];
-        NSString * requestNonNoochUserEmailKnoxResult = [[dictResultTransfer valueForKey:@"RequestMoneyFromNonNoochUserUsingKnoxResult"] valueForKey:@"Result"];
-        NSString * requestNonNoochUserPhoneKnoxResult = [[dictResultTransfer valueForKey:@"RequestMoneyToNonNoochUserThroughPhoneUsingKnoxResult"] valueForKey:@"Result"];
+        NSString * sendNonNoochUser_Email_KnoxResult = [[dictResultTransfer valueForKey:@"TransferMoneyToNonNoochUserUsingKnoxResult"] valueForKey:@"Result"];
+        NSString * sendNonNoochUser_Phone_KnoxResult = [[dictResultTransfer valueForKey:@"TransferMoneyToNonNoochUserThroughPhoneUsingKnoxResult"] valueForKey:@"Result"];
+        NSString * requestNonNoochUser_Email_KnoxResult = [[dictResultTransfer valueForKey:@"RequestMoneyFromNonNoochUserUsingKnoxResult"] valueForKey:@"Result"];
+        NSString * requestNonNoochUser_Phone_KnoxResult = [[dictResultTransfer valueForKey:@"RequestMoneyToNonNoochUserThroughPhoneUsingKnoxResult"] valueForKey:@"Result"];
 
         // Specific 'Result' Strings - SYNAPSE
-        NSString * sendNonNoochUserEmailSynapseResult = [[dictResultTransfer valueForKey:@"TransferMoneyToNonNoochUserUsingSynapseResult"] valueForKey:@"Result"];
-        NSString * sendNonNoochUserPhoneSynapseResult = [[dictResultTransfer valueForKey:@"TransferMoneyToNonNoochUserThroughPhoneUsingSynapseResult"] valueForKey:@"Result"];
-        NSString * requestNonNoochUserEmailSynapseResult = [[dictResultTransfer valueForKey:@"RequestMoneyToNonNoochUserUsingSynapseResult"] valueForKey:@"Result"];
-        NSString * requestNonNoochUserPhoneSynapseResult = [[dictResultTransfer valueForKey:@"RequestMoneyToNonNoochUserThroughPhoneUsingSynapseResult"] valueForKey:@"Result"];
+        NSString * sendNonNoochUser_Email_SynapseResult = [[dictResultTransfer valueForKey:@"TransferMoneyToNonNoochUserUsingSynapseResult"] valueForKey:@"Result"];
+        NSString * sendNonNoochUser_Phone_SynapseResult = [[dictResultTransfer valueForKey:@"TransferMoneyToNonNoochUserThroughPhoneUsingSynapseResult"] valueForKey:@"Result"];
+        NSString * requestNonNoochUser_Email_SynapseResult = [[dictResultTransfer valueForKey:@"RequestMoneyToNonNoochUserUsingSynapseResult"] valueForKey:@"Result"];
+        NSString * requestNonNoochUser_Phone_SynapseResult = [[dictResultTransfer valueForKey:@"RequestMoneyToNonNoochUserThroughPhoneUsingSynapseResult"] valueForKey:@"Result"];
 
-        NSLog(@"sendNonNoochUserEmailSynapseResult is: %@",sendNonNoochUserEmailSynapseResult);
-        NSLog(@"sendNonNoochUserPhoneSynapseResult is: %@",sendNonNoochUserPhoneSynapseResult);
-        NSLog(@"requestNonNoochUserEmailSynapseResult is: %@",requestNonNoochUserEmailSynapseResult);
-        NSLog(@"requestNonNoochUserPhoneSynapseResult is: %@",requestNonNoochUserPhoneSynapseResult);
+        NSLog(@"sendNonNoochUser_Email_SynapseResult is: %@",sendNonNoochUser_Email_SynapseResult);
+        NSLog(@"sendNonNoochUser_Phone_SynapseResult is: %@",sendNonNoochUser_Phone_SynapseResult);
+        NSLog(@"requestNonNoochUser_Email_SynapseResult is: %@",requestNonNoochUser_Email_SynapseResult);
+        NSLog(@"requestNonNoochUser_Phone_SynapseResult is: %@",requestNonNoochUser_Phone_SynapseResult);
 
-        if ([sendNonNoochUserEmailKnoxResult rangeOfString:@"cash was sent successfully"].length != 0 ||
-            [sendNonNoochUserPhoneKnoxResult rangeOfString:@"cash was sent successfully"].length != 0 ||
-            [sendNonNoochUserEmailSynapseResult rangeOfString:@"cash was sent successfully"].length != 0 ||
-            [sendNonNoochUserPhoneSynapseResult rangeOfString:@"cash was sent successfully"].length != 0)
+        if ([sendNonNoochUser_Email_KnoxResult rangeOfString:@"successfully"].length != 0 ||
+            [sendNonNoochUser_Phone_KnoxResult rangeOfString:@"successfully"].length != 0 ||
+            [sendNonNoochUser_Email_SynapseResult rangeOfString:@"successfully"].length != 0 ||
+            [sendNonNoochUser_Phone_SynapseResult rangeOfString:@"successfully"].length != 0 ||
+            [requestNonNoochUser_Email_KnoxResult rangeOfString:@"successfully"].length != 0 ||
+            [requestNonNoochUser_Email_SynapseResult rangeOfString:@"successfully"].length != 0 ||
+            [requestNonNoochUser_Phone_KnoxResult rangeOfString:@"successfully"].length != 0 ||
+            [requestNonNoochUser_Phone_SynapseResult rangeOfString:@"successfully"].length != 0 )
         {
             [[assist shared] setTranferImage:nil];
             UIImage * imgempty = [UIImage imageNamed:@""];
             [[assist shared] setTranferImage:imgempty];
+            NSString * alertMsg = @"";
+            if ([self.type isEqualToString:@"request"])
+            {
+                alertMsg = NSLocalizedString(@"EnterPIN_NonUsrSuccessAlrtTitle", @"Enter PIN Screen send to nonuser success Alert Body Text");
+            }
+            else
+            {
+                alertMsg = NSLocalizedString(@"EnterPIN_NonUsrRqstSuccessAlrtTitle", @"Enter PIN Screen request to nonuser success Alert Body Text");
+            }
             UIAlertView * av = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"EnterPIN_GrtSuccessAlrtTitle", @"Enter PIN Screen Great Success Alert Title")
-                                                          message:[NSString stringWithFormat:@"\xF0\x9F\x91\x8D\n%@", NSLocalizedString(@"EnterPIN_NonUsrSuccessAlrtTitle", @"Enter PIN Screen send to nonuser success Alert Body Text")]
+                                                          message:[NSString stringWithFormat:@"\xF0\x9F\x91\x8D\n%@", alertMsg]
                                                          delegate:self
                                                 cancelButtonTitle:@"OK"
                                                 otherButtonTitles:NSLocalizedString(@"EnterPIN_SuccessAlrtViewDetails", @"Enter PIN Screen success alert button for View Details"),nil];
@@ -1509,64 +1533,88 @@ http://54.201.43.89/NoochService/NoochService.svc/RequestMoneyToNonNoochUserThro
             [av show];
             return;
         }
-        else if ([sendNonNoochUserEmailKnoxResult rangeOfString:@"not have any active bank account"].length != 0 ||
-                 [sendNonNoochUserPhoneKnoxResult rangeOfString:@"not have any active bank account"].length != 0 ||
-                 [sendNonNoochUserEmailSynapseResult rangeOfString:@"not have any active bank account"].length != 0 ||
-                 [sendNonNoochUserPhoneSynapseResult rangeOfString:@"not linked to any bank account"].length != 0 ||
-                 [requestNonNoochUserEmailKnoxResult rangeOfString:@"not have any active bank account"].length != 0)
+
+        else if ([sendNonNoochUser_Email_KnoxResult rangeOfString:@"not have any active bank account"].length != 0 ||
+                 [sendNonNoochUser_Phone_KnoxResult rangeOfString:@"not have any bank added"].length != 0 ||
+                 [sendNonNoochUser_Email_SynapseResult rangeOfString:@"not have any bank added"].length != 0 ||
+                 [sendNonNoochUser_Phone_SynapseResult rangeOfString:@"not have any bank added"].length != 0 ||
+                 [requestNonNoochUser_Email_KnoxResult rangeOfString:@"not have any active bank account"].length != 0 ||
+                 [requestNonNoochUser_Email_SynapseResult rangeOfString:@"not have any bank added"].length != 0 ||
+                 [requestNonNoochUser_Phone_KnoxResult rangeOfString:@"not have any bank added"].length != 0 ||
+                 [requestNonNoochUser_Phone_SynapseResult rangeOfString:@"not have any bank added"].length != 0)
         {
             UIAlertView *av = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"EnterPIN_TrnsfrFaildAlrtTitle", @"Enter PIN Screen transfer failed Alert Title")
                                                          message:[NSString stringWithFormat:@"\xF0\x9F\x98\xA9\n%@", NSLocalizedString(@"EnterPIN_TrnsfrFaildAlrtBody", @"Enter PIN Screen transfer failed Alert Body Text")]
                                                         delegate:self
                                                cancelButtonTitle:nil
                                                otherButtonTitles:@"OK",nil];
+            [av setTag:61];
             [av show];
             return;
         }
-        else if (sendNonNoochUserEmailKnoxResult != NULL ||
-                 sendNonNoochUserPhoneKnoxResult != NULL ||
-                 requestNonNoochUserEmailSynapseResult != NULL)
+
+        else if ([sendNonNoochUser_Email_KnoxResult rangeOfString:@"maximum amount you can"].length != 0 ||
+                 [sendNonNoochUser_Email_SynapseResult rangeOfString:@"maximum amount you can"].length != 0 ||
+                 [sendNonNoochUser_Phone_KnoxResult rangeOfString:@"maximum amount you can"].length != 0 ||
+                 [sendNonNoochUser_Phone_SynapseResult rangeOfString:@"maximum amount you can"].length != 0 ||
+                 [requestNonNoochUser_Email_KnoxResult rangeOfString:@"maximum amount you can"].length != 0 ||
+                 [requestNonNoochUser_Email_SynapseResult rangeOfString:@"maximum amount you can"].length != 0 ||
+                 [requestNonNoochUser_Phone_KnoxResult rangeOfString:@"maximum amount you can"].length != 0 ||
+                 [requestNonNoochUser_Phone_SynapseResult rangeOfString:@"maximum amount you can"].length != 0)
+        {
+            NSString * transLimitFromArtisan = [ARPowerHookManager getValueForHookById:@"transLimit"];
+            
+            UIAlertView *av = [[UIAlertView alloc] initWithTitle:@"Whoa Now"
+                                                         message:[NSString stringWithFormat:@"\xF0\x9F\x98\xB3\nTo keep Nooch safe, please don’t send or request more than $%@. We hope to raise this limit very soon!",transLimitFromArtisan]
+                                                        delegate:self
+                                               cancelButtonTitle:@"OK"
+                                               otherButtonTitles:nil];
+            [av setTag:31];
+            [av show];
+            return;
+        }
+
+        else if ([sendNonNoochUser_Email_KnoxResult rangeOfString:@"send money to the same user"].length != 0 ||
+                 [sendNonNoochUser_Email_SynapseResult rangeOfString:@"send money to the same user"].length != 0 ||
+                 [sendNonNoochUser_Phone_KnoxResult rangeOfString:@"send money to the same user"].length != 0 ||
+                 [sendNonNoochUser_Phone_SynapseResult rangeOfString:@"send money to the same user"].length != 0)
+        {
+            UIAlertView *av = [[UIAlertView alloc] initWithTitle:@"Very Sneaky"
+                                                         message:@"\xF0\x9F\x98\xB1\nYou are attempting a transfer paradox, the results of which could cause a chain reaction that would unravel the very fabric of the space-time continuum and destroy the entire universe!\n\nPlease try sending money to someone ELSE!"
+                                                        delegate:self
+                                               cancelButtonTitle:@"OK"
+                                               otherButtonTitles:nil];
+            [av setTag:71];
+            [av show];
+            return;
+        }
+
+        else if ([requestNonNoochUser_Email_SynapseResult rangeOfString:@"failed"].length != 0 ||
+                 [requestNonNoochUser_Phone_SynapseResult rangeOfString:@"failed"].length != 0)
         {
             [self errorAlerts:@"420"];
             return;
         }
 
-        if ([requestNonNoochUserEmailKnoxResult isEqualToString:@"Request made successfully."] ||
-            [requestNonNoochUserPhoneKnoxResult isEqualToString:@"Request made successfully."])
-        {
-            [[assist shared] setTranferImage:nil];
-            UIImage * imgempty = [UIImage imageNamed:@""];
-            [[assist shared] setTranferImage:imgempty];
-            UIAlertView * av = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"EnterPIN_GrtSuccessAlrtTitle", @"Enter PIN Screen Great Success Alert Title")
-                                                          message:[NSString stringWithFormat:@"\xF0\x9F\x91\x8D\n%@", NSLocalizedString(@"EnterPIN_NonUsrRqstSuccessAlrtTitle", @"Enter PIN Screen request to nonuser success Alert Body Text")]
-                                                         delegate:self
-                                                cancelButtonTitle:@"OK"
-                                                otherButtonTitles:NSLocalizedString(@"EnterPIN_SuccessAlrtViewDetails", @"Enter PIN Screen success alert button for View Details"),nil];
-            av.tag = 1;
-            [av show];
-            return;
-        }
-        else if (requestNonNoochUserEmailKnoxResult != NULL ||
-                 requestNonNoochUserPhoneKnoxResult != NULL)
+        else if (requestNonNoochUser_Email_KnoxResult != NULL ||
+                 requestNonNoochUser_Phone_KnoxResult != NULL ||
+                 requestNonNoochUser_Phone_SynapseResult != NULL)
         {
             [self errorAlerts:@"421"];
             return;
         }
 
-
-      /**/
     }
 
     // Specific 'Result' Strings
-    NSString * sendMoneyToExistingUserKnoxResult = [[dictResultTransfer valueForKey:@"TransferMoneyUsingKnoxResult"] valueForKey:@"Result"]; //  Send Money - Knox
-    NSString * sendMoneyToExistingUserSynapseResult = [[dictResultTransfer valueForKey:@"TransferMoneyUsingSynapseResult"] valueForKey:@"Result"]; //  Send Money (Synapse)
-    NSString * makeRequestToExistingUserResult = [[dictResultTransfer objectForKey:@"RequestMoneyResult"] valueForKey:@"Result"]; //  MAKING A REQUEST
-    NSString * payRequestResult = [[dictResultTransfer objectForKey:@"HandleRequestMoneyResult"] valueForKey:@"Result"]; //  PAYING A REQUEST
+    NSString * sendMoneyToExistingUserKnoxResult = [[dictResultTransfer valueForKey:@"TransferMoneyUsingKnoxResult"] valueForKey:@"Result"];
+    NSString * sendMoneyToExistingUserSynapseResult = [[dictResultTransfer valueForKey:@"TransferMoneyUsingSynapseResult"] valueForKey:@"Result"];
+    NSString * makeRequestToExistingUserResult = [[dictResultTransfer objectForKey:@"RequestMoneyResult"] valueForKey:@"Result"];
+    NSString * payRequestResult = [[dictResultTransfer objectForKey:@"HandleRequestMoneyResult"] valueForKey:@"Result"];
 
     if ([sendMoneyToExistingUserKnoxResult rangeOfString:@"cash was sent successfully"].length != 0 ||
         [sendMoneyToExistingUserSynapseResult rangeOfString:@"cash was sent successfully"].length != 0)
     {
-        NSLog(@"Somehow we got here!!!");
         [[assist shared] setTranferImage:nil];
         UIImage * imgempty = [UIImage imageNamed:@""];
         [[assist shared] setTranferImage:imgempty];
@@ -1581,8 +1629,7 @@ http://54.201.43.89/NoochService/NoochService.svc/RequestMoneyToNonNoochUserThro
         NSLog(@"arrivalDateForAlert is: %@", arrivalDateForAlert);
 
         UIAlertView *av;
-        [av setTag:1];
-
+        
         switch (randNum) {
             case 0:
                 av = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"EnterPIN_SuccessAlrt1", @"Enter PIN Screen success alert title - Nice Work")
@@ -1696,13 +1743,14 @@ http://54.201.43.89/NoochService/NoochService.svc/RequestMoneyToNonNoochUserThro
                                       otherButtonTitles:NSLocalizedString(@"EnterPIN_SuccessAlrtViewDetails", @"Enter PIN Screen success alert button for View Details"),nil];
                 break;
         }
-        
+
+        [av setTag:1];
         [av show];
         return;
     }
 
     else if ([sendMoneyToExistingUserKnoxResult rangeOfString:@"Recepient not found"].length != 0 ||
-             [sendMoneyToExistingUserSynapseResult rangeOfString:@"Recepient not found"].length != 0)
+             [sendMoneyToExistingUserSynapseResult rangeOfString:@"user details not found"].length != 0)
     {
         [self errorAlerts:@"510"];
         return;
@@ -1719,6 +1767,7 @@ http://54.201.43.89/NoochService/NoochService.svc/RequestMoneyToNonNoochUserThro
                                                     delegate:self
                                            cancelButtonTitle:@"OK"
                                            otherButtonTitles:nil];
+        [av setTag:31];
         [av show];
         return;
     }
@@ -1731,6 +1780,7 @@ http://54.201.43.89/NoochService/NoochService.svc/RequestMoneyToNonNoochUserThro
                                                     delegate:self
                                            cancelButtonTitle:@"OK"
                                            otherButtonTitles:nil];
+        [av setTag:71];
         [av show];
         return;
     }
@@ -1739,6 +1789,7 @@ http://54.201.43.89/NoochService/NoochService.svc/RequestMoneyToNonNoochUserThro
              [sendMoneyToExistingUserKnoxResult rangeOfString:@"not linked to any bank account"].length != 0 ||
              [sendMoneyToExistingUserSynapseResult rangeOfString:@"not have any active bank account"].length != 0 ||
              [sendMoneyToExistingUserSynapseResult rangeOfString:@"not linked to any bank account"].length != 0 ||
+             [sendMoneyToExistingUserSynapseResult rangeOfString:@"Recepient does not have any verified bank account"].length != 0 ||
              [payRequestResult rangeOfString:@"not have any active bank account"].length != 0 ||
              [payRequestResult rangeOfString:@"not linked to any bank account"].length != 0)
     {
@@ -1747,10 +1798,22 @@ http://54.201.43.89/NoochService/NoochService.svc/RequestMoneyToNonNoochUserThro
                                                     delegate:self
                                            cancelButtonTitle:nil
                                            otherButtonTitles:@"OK",nil];
+        [av setTag:61];
         [av show];
         return;
     }
 
+    else if ([sendMoneyToExistingUserSynapseResult rangeOfString:@"Sender does not have any verified bank account"].length != 0)
+    {
+        UIAlertView *av = [[UIAlertView alloc] initWithTitle:@"Bank Account Un-Verified"
+                                                     message:@"Looks like your bank account remains un-verified.  This usually happens when the contact info listed on the bank account does not match your Nooch profile information. Please contact Nooch support for more information."
+                                                    delegate:self
+                                           cancelButtonTitle:@"OK"
+                                           otherButtonTitles:@"Contact Support", nil];
+        [av setTag:54];
+        [av show];
+        return;
+    }
 
     // Making a Request to an Existing User
     else if ([makeRequestToExistingUserResult rangeOfString:@"successfully"].length != 0)
@@ -1779,6 +1842,7 @@ http://54.201.43.89/NoochService/NoochService.svc/RequestMoneyToNonNoochUserThro
         }
         else
         {
+            NSLog(@"Request to 1 existing user ALERT");
             UIAlertView *av = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"EnterPIN_RequestSuccessAlrtTitle", @"Enter PIN Screen request made successfully Alert Title")
                                                          message:[NSString stringWithFormat:@"\xF0\x9F\x98\x80\nYou requested $%.02f from %@ successfully.",self.amnt,[receiverFirst capitalizedString]]
                                                         delegate:self
@@ -1796,6 +1860,7 @@ http://54.201.43.89/NoochService/NoochService.svc/RequestMoneyToNonNoochUserThro
                                                     delegate:self
                                            cancelButtonTitle:@"OK"
                                            otherButtonTitles:nil];
+        [av setTag:71];
         [av show];
         return;
     }
@@ -1825,6 +1890,10 @@ http://54.201.43.89/NoochService/NoochService.svc/RequestMoneyToNonNoochUserThro
         [self errorAlerts:@"610"];
     }
 
+    else if ([payRequestResult rangeOfString:@"Internal error"].length != 0)
+    {
+        [self errorAlerts:@"620"];
+    }
 
     // PIN-related errors common to all methods
     else if ([sendMoneyToExistingUserKnoxResult isEqualToString:@"PIN number you have entered is incorrect."] ||
@@ -1924,6 +1993,17 @@ http://54.201.43.89/NoochService/NoochService.svc/RequestMoneyToNonNoochUserThro
                                            otherButtonTitles:NSLocalizedString(@"EnterPIN_ContactSupportBtn", @"Enter PIN Screen account suspended Alert Button Contact Support"),nil];
         [av setTag:51];
         [av show];
+    }
+
+    else if ([makeRequestToExistingUserResult rangeOfString:@"failed"].length != 0 ||
+             [payRequestResult rangeOfString:@"failed"].length != 0)
+    {
+        [self errorAlerts:@"710"];
+    }
+
+    else if ([sendMoneyToExistingUserKnoxResult rangeOfString:@"Sorry There Was A Problem with Knox"].length != 0)
+    {
+        [self errorAlerts:@"810"];
     }
 
     else

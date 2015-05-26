@@ -1285,51 +1285,51 @@ table-view#select_recipientwithoutSeperator {
 
 /**  Background box for all the content of the How Much? screen.  This element should also be assigned the ".raised_view" class. **/  
 .howmuch_mainbox {
-    left				: 8px;
-    top					: 10px;
-    width				: 304px;
-    height				: 250px;
-    border-radius		: 5px;
-    box-shadow			: 0 2px 2px rgba(88,90,92,0.45);
+    left			: 8px;
+    top				: 10px;
+    width			: 304px;
+    height			: 250px;
+    border-radius	: 5px;
+    box-shadow		: 0 2px 2px rgba(88,90,92,0.45);
 }
 .howmuch_mainbox_smscrn {
-    left				: 8px;
-    top					: 6px;
-    width				: 304px;
-    height				: 189px;
-    border-radius		: 5px;
-    box-shadow			: 0 2px 2px rgba(88,90,92,0.45);
+    left			: 8px;
+    top				: 6px;
+    width			: 304px;
+    height			: 189px;
+    border-radius	: 5px;
+    box-shadow		: 0 2px 2px rgba(88,90,92,0.45);
 }
 
 /**  Just the text "To:"  **/
 #label_howmuch_to  {
-    left				: 10px;
-    top					: 00px;
-    width				: 28px;
-    height				: 38px;
-    font-size			: 20px;
-    font-weight			: light;
-    color               : white;
+    left			: 10px;
+    top				: 00px;
+    width			: 28px;
+    height			: 38px;
+    font-size		: 20px;
+    font-weight		: light;
+    color           : white;
 }
 
 /**  Styles the recipient's name in the bar at the top of the main box. **/
 #label_howmuch_recipientname {
-    left				: 43px;
-    top					: 0px;
-    width				: 210px;
-    height				: 38px;
-    font-size			: 20px;
-    font-weight			: regular;
-    color               : white;
+    left			: 43px;
+    top				: 0px;
+    width			: 216px;
+    height			: 38px;
+    font-size		: 20px;
+    font-weight		: regular;
+    color           : white;
 }
 #label_howmuch_recipientnamenonuser {
-    left				: 43px;
-    top					: 0px;
-    width				: 220px;
-    height				: 39px;
-    font-size			: 18px;
-    font-weight			: regular;
-    color               : white;
+    left			: 42px;
+    top				: 0px;
+    width			: 262px;
+    height			: 39px;
+    font-size		: 17px;
+    font-weight		: regular;
+    color           : white;
 }
 
 .barbackground {

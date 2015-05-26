@@ -121,14 +121,14 @@
     [self.back addSubview:to];
 
     UILabel * to_label = [[UILabel alloc] initWithFrame:CGRectMake(43, 0, 300, 38)];
-    if ([self.receiver valueForKey:@"nonuser"])
+    if ([self.receiver valueForKey:@"nonuser"] || isFromArtisanDonationAlert)
     {
         [to_label setStyleId:@"label_howmuch_recipientnamenonuser"];
 
         UILabel * glyph_nonuserType = [UILabel new];
         [glyph_nonuserType setTextColor:[UIColor whiteColor]];
 
-        if ([self.receiver objectForKey:@"email"])
+        if ([self.receiver objectForKey:@"email"] && !isFromArtisanDonationAlert)
         {
             [glyph_nonuserType setFont:[UIFont fontWithName:@"FontAwesome" size:17]];
             glyph_nonuserType.attributedText = [[NSAttributedString alloc]initWithString:[NSString fontAwesomeIconStringForIconIdentifier:@"fa-envelope-o"] attributes:textAttributes];
@@ -148,6 +148,11 @@
             [glyph_nonuserType setFrame:CGRectMake(52 + numOfChars * 10, 1, 20, 37)];
             [self.back addSubview:glyph_nonuserType];
         }
+        else if (isFromArtisanDonationAlert && [self.receiver objectForKey:@"FirstName"] && [self.receiver objectForKey:@"LastName"])
+        {
+            to_label.attributedText = [[NSAttributedString alloc] initWithString:[NSString stringWithFormat:@"%@ %@", [self.receiver objectForKey:@"FirstName"], [self.receiver objectForKey:@"LastName"]] attributes:textAttributes];
+        }
+            
         else if ([self.receiver objectForKey:@"firstName"])
         {
             float numOfChars = [[self.receiver objectForKey:@"firstName"] length];
@@ -210,7 +215,7 @@
     }
     [self.back addSubview:to_label];
 
-    if (![self.receiver valueForKey:@"nonuser"] && !isUserByLocation && !isFromMyApt)
+    if (![self.receiver valueForKey:@"nonuser"] && !isUserByLocation && !isFromArtisanDonationAlert && !isFromMyApt)
     {
         UIButton * add = [[UIButton alloc]initWithFrame:CGRectMake(272, 15, 32, 30)];
         [add addTarget:self action:@selector(addRecipient:) forControlEvents:UIControlEventTouchUpInside];
@@ -395,14 +400,21 @@
         [self.request removeTarget:self action:@selector(initialize_request) forControlEvents:UIControlEventTouchUpInside];
         [self.request addTarget:self action:@selector(confirm_request) forControlEvents:UIControlEventTouchUpInside];
     }
-    else if (isFromMyApt)
+    else if (isFromMyApt || isFromArtisanDonationAlert)
     {
         [self.request removeFromSuperview];
 
         [self.send setStyleClass:@"howmuch_buttons"];
         [self.send setStyleId:@"howmuch_send"];
         [self.send setStyleId:@"howmuch_send_expand"];
-        [self.send setTitle:NSLocalizedString(@"HowMuch_ConfirmSend", @"How Much confirm send payment text") forState:UIControlStateNormal];
+        if (isFromArtisanDonationAlert)
+        {
+            [self.send setTitle:@"Confirm Donation" forState:UIControlStateNormal];
+        }
+        else
+        {
+            [self.send setTitle:NSLocalizedString(@"HowMuch_ConfirmSend", @"How Much confirm send payment text") forState:UIControlStateNormal];
+        }
         [self.send removeTarget:self action:@selector(initialize_send) forControlEvents:UIControlEventTouchUpInside];
         [self.send addTarget:self action:@selector(confirm_send) forControlEvents:UIControlEventTouchUpInside];
         [self.back addSubview:self.send];

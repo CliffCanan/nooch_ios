@@ -512,12 +512,12 @@ UIImageView *picture;
     if (isProfileOpenFromSideBar || sentFromHomeScrn || isFromTransDetails)
     {
         SettingsOptions *sets = [SettingsOptions new];
-        [nav_ctrl pushViewController:sets animated:YES];
+        NSMutableArray * arrNav = [nav_ctrl.viewControllers mutableCopy];
+        [arrNav insertObject:sets atIndex:[arrNav count]-1];
+        [nav_ctrl setViewControllers:arrNav animated:NO];
     }
-    else
-    {
-        [self.navigationController popViewControllerAnimated:YES];
-    }
+
+    [self.navigationController popViewControllerAnimated:YES];
 }
 
 -(void)savePrompt2

@@ -73,32 +73,12 @@
         NSString * avTitle = NSLocalizedString(@"Login_Alrt1Ttl", @"'Please Enter Email And Password' Alert Title");
         NSString * avMsg = NSLocalizedString(@"Login_Alrt1Body", @"'We can't log you in if we don't know who you are!' Alert Body");
 
-      /*if ([UIAlertController class]) // for iOS 8
-        {
-            UIAlertController * alert = [UIAlertController
-                                         alertControllerWithTitle:avTitle
-                                         message:avMsg
-                                         preferredStyle:UIAlertControllerStyleAlert];
-
-            UIAlertAction * ok = [UIAlertAction
-                                  actionWithTitle:@"OK"
-                                  style:UIAlertActionStyleDefault
-                                  handler:^(UIAlertAction * action)
-                                  {
-                                      [alert dismissViewControllerAnimated:YES completion:nil];
-                                  }];
-            [alert addAction:ok];
-            [self presentViewController:alert animated:YES completion:nil];
-        }
-        else  // for iOS 7 and prior
-        {
-          */UIAlertView * av = [[UIAlertView alloc] initWithTitle:avTitle
-                                                          message:avMsg
-                                                         delegate:nil
-                                                cancelButtonTitle:@"OK"
-                                                otherButtonTitles: nil];
-            [av show];
-        //}
+        UIAlertView * av = [[UIAlertView alloc] initWithTitle:avTitle
+                                                      message:avMsg
+                                                     delegate:nil
+                                            cancelButtonTitle:@"OK"
+                                            otherButtonTitles: nil];
+        [av show];
     }
 }
 
@@ -706,8 +686,9 @@
     else if (actionSheet.tag == 22 && buttonIndex == 0)
     {
         [actionSheet dismissWithClickedButtonIndex:0 animated:YES];
+        [self.email becomeFirstResponder];
     }
-    else if (actionSheet.tag == 568 && buttonIndex == 0)
+    else if (actionSheet.tag == 568 && buttonIndex == 1)
     {
         [self.navigationController popViewControllerAnimated:YES];
     }
@@ -847,8 +828,8 @@
             UIAlertView * alert = [[UIAlertView alloc]initWithTitle:NSLocalizedString(@"Login_FbFailedAlrtTitle", @"'Facebook Login Failed' Alert Title")
                                                             message:NSLocalizedString(@"Login_FbFailedAlrtBody", @"'Facebook Login Failed' Alert Body Text")//@"Your Facebook account is not associated with a Nooch account.\nWould you like to create a Nooch account now?"
                                                            delegate:self
-                                                  cancelButtonTitle:NSLocalizedString(@"Login_FbFailedAlrtBtn1", @"Facebook Login Failed 'Register Now' Alert Button text")
-                                                  otherButtonTitles:NSLocalizedString(@"Login_FbFailedAlrtBtn2", @"Facebook Login Failed 'Cancel' Alert Button text"), nil];
+                                                  cancelButtonTitle:NSLocalizedString(@"Login_FbFailedAlrtBtn2", @"Facebook Login Failed 'Cancel' Alert Button text")
+                                                  otherButtonTitles:NSLocalizedString(@"Login_FbFailedAlrtBtn1", @"Facebook Login Failed 'Register Now' Alert Button text"), nil];
             [alert setTag:568];
             [alert show];
             return;
@@ -909,34 +890,12 @@
             NSString * avTitle = NSLocalizedString(@"Login_InvldCredsAlrtTtl", @"Login Screen 'Invalid Email or Password' Alert Title");
             NSString * avMsg = NSLocalizedString(@"Login_InvldCredsBody", @"Login Screen Invalid Email or Password Alert Body Text");
 
-            if ([UIAlertController class]) // for iOS 8
-            {
-                UIAlertController * alert = [UIAlertController
-                                             alertControllerWithTitle:avTitle
-                                             message:avMsg
-                                             preferredStyle:UIAlertControllerStyleAlert];
-            
-                UIAlertAction * ok = [UIAlertAction
-                                      actionWithTitle:@"OK"
-                                      style:UIAlertActionStyleDefault
-                                      handler:^(UIAlertAction * action)
-                                      {
-                                          [alert dismissViewControllerAnimated:YES completion:nil];
-                                      }];
-            
-                [alert addAction:ok];
-
-                [self presentViewController:alert animated:YES completion:nil];
-            }
-            else // iOS 7 and prior
-            {
-                UIAlertView * alert = [[UIAlertView alloc]initWithTitle:avTitle
-                                                                message:avMsg
-                                                               delegate:Nil
-                                                      cancelButtonTitle:@"OK"
-                                                      otherButtonTitles:nil, nil];
-                [alert show];
-            }
+            UIAlertView * alert = [[UIAlertView alloc]initWithTitle:avTitle
+                                                            message:avMsg
+                                                           delegate:Nil
+                                                  cancelButtonTitle:@"OK"
+                                                  otherButtonTitles:nil, nil];
+            [alert show];
         }
 
         else if ([loginResult objectForKey:@"Result"] && [[loginResult objectForKey:@"Result"] isEqualToString:@"The password you have entered is incorrect."] && loginResult != nil)
@@ -946,43 +905,13 @@
             NSString * avTitle = NSLocalizedString(@"Login_InvldCredsAlrtTtl2", @"Login Screen 'This Is Awkward' Alert Title");
             NSString * avMsg = [NSString stringWithFormat:@"\xF0\x9F\x94\x90\n%@",  NSLocalizedString(@"Login_InvldCredsBody2", @"Login Screen This Is Awkward Alert Body Text")];
 
-            if ([UIAlertController class]) // for iOS 8
-            {
-                UIAlertController * alert = [UIAlertController
-                                         alertControllerWithTitle:avTitle
-                                         message:avMsg
-                                         preferredStyle:UIAlertControllerStyleAlert];
-            
-                UIAlertAction * ok = [UIAlertAction
-                                      actionWithTitle:@"OK"
-                                      style:UIAlertActionStyleDefault
-                                      handler:^(UIAlertAction * action)
-                                  {
-                                      [alert dismissViewControllerAnimated:YES completion:nil];
-                                  }];
-                UIAlertAction * forgotPassword = [UIAlertAction
-                                                  actionWithTitle:@"Forgot My Password"
-                                                  style:UIAlertActionStyleDefault
-                                                  handler:^(UIAlertAction * action)
-                                                  {
-                                                      [alert dismissViewControllerAnimated:YES completion:nil];
-                                                      [self forgot_pass_Login];
-                                                  }];
-                [alert addAction:ok];
-                [alert addAction:forgotPassword];
-            
-                [self presentViewController:alert animated:YES completion:nil];
-            }
-            else // iOS 7 and prior
-            {
-                UIAlertView * alert = [[UIAlertView alloc]initWithTitle:avTitle
-                                                                message:avMsg
-                                                               delegate:self
-                                                      cancelButtonTitle:@"OK"
-                                                      otherButtonTitles:@"Forgot Password", nil];
-                [alert setTag:510];
-                [alert show];
-            }
+            UIAlertView * alert = [[UIAlertView alloc]initWithTitle:avTitle
+                                                            message:avMsg
+                                                           delegate:self
+                                                  cancelButtonTitle:@"OK"
+                                                  otherButtonTitles:@"Forgot Password", nil];
+            [alert setTag:510];
+            [alert show];
         }
 
         else if ( ([loginResult objectForKey:@"Result"] && loginResult != nil) &&
@@ -1099,7 +1028,7 @@
     NSString * avTitle = NSLocalizedString(@"Login_SuspAlrtTtl", @"Login Screen 'Account Temporarily Suspended' Alert Title");
     NSString * avMsg = NSLocalizedString(@"Login_SuspAlrtBody", @"Login Screen Account Suspended Alert Body Text");
 
-    if ([UIAlertController class]) // for iOS 8
+  /*if ([UIAlertController class]) // for iOS 8
     {
         UIAlertController * alert = [UIAlertController
                                      alertControllerWithTitle:avTitle
@@ -1128,52 +1057,28 @@
     }
     else // iOS 7 and prior
     {
-        UIAlertView * alert = [[UIAlertView alloc]initWithTitle:avTitle
+      */UIAlertView * alert = [[UIAlertView alloc]initWithTitle:avTitle
                                                         message:avMsg
                                                        delegate:self
                                               cancelButtonTitle:@"OK"
                                               otherButtonTitles:@"Contact Support", nil];
         [alert setTag:600];
         [alert show];
-    }
+  //}
 }
 
 -(void)emailNoochSupport
 {
     if (![MFMailComposeViewController canSendMail])
     {
-        if ([UIAlertController class]) // for iOS 8
-        {
-            UIAlertController * alert = [UIAlertController
-                                         alertControllerWithTitle:@"No Email Detected"
-                                         message:@"You don't have an email account configured for this device."
-                                         preferredStyle:UIAlertControllerStyleAlert];
-            
-            UIAlertAction * ok = [UIAlertAction
-                                  actionWithTitle:@"OK"
-                                  style:UIAlertActionStyleDefault
-                                  handler:^(UIAlertAction * action)
-                                  {
-                                      [alert dismissViewControllerAnimated:YES completion:nil];
-                                  }];
-            [alert addAction:ok];
-            
-            [self presentViewController:alert animated:YES completion:nil];
-            return;
-        }
-        else
-        {
-            if (![MFMailComposeViewController canSendMail])
-            {
-                UIAlertView * av = [[UIAlertView alloc] initWithTitle:@"No Email Detected"
-                                                              message:@"You don't have an email account configured for this device."
-                                                             delegate:nil
-                                                    cancelButtonTitle:@"OK"
-                                                    otherButtonTitles: nil];
-                [av show];
-                return;
-            }
-        }
+        UIAlertView * av = [[UIAlertView alloc] initWithTitle:@"No Email Detected"
+                                                      message:@"You don't have an email account configured for this device."
+                                                     delegate:nil
+                                            cancelButtonTitle:@"OK"
+                                            otherButtonTitles: nil];
+        [av show];
+        return;
+
     }
 
     MFMailComposeViewController * mailComposer = [[MFMailComposeViewController alloc] init];

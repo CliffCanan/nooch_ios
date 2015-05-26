@@ -44,7 +44,7 @@ static assist * _sharedInstance = nil;
         [[user valueForKey:@"Status"] isEqualToString:@"Active"] &&
         [[user valueForKey:@"IsVerifiedPhone"] isEqualToString:@"YES"])
     {
-        NSLog(@"1.  Assist.m -> isProfileCompleteAndValidated -> isUserSuspended is: %d",isUserSuspended);
+        NSLog(@"1.  Assist.m -> isProfileCompleteAndValidated -> isUserSuspended is: FALSE");
         isProfileCompleteAndValidated = YES;
     }
     else

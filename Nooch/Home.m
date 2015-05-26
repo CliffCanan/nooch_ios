@@ -613,7 +613,7 @@ void addressBookChanged(ABAddressBookRef addressBook, CFDictionaryRef info, void
 {
     if (![MFMailComposeViewController canSendMail])
     {
-        if ([UIAlertController class]) // for iOS 8
+      /*if ([UIAlertController class]) // for iOS 8
         {
             UIAlertController * alert = [UIAlertController
                                          alertControllerWithTitle:@"No Email Detected"
@@ -634,17 +634,14 @@ void addressBookChanged(ABAddressBookRef addressBook, CFDictionaryRef info, void
         }
         else
         {
-            if (![MFMailComposeViewController canSendMail])
-            {
-                UIAlertView * av = [[UIAlertView alloc] initWithTitle:@"No Email Detected"
-                                                              message:@"You don't have an email account configured for this device."
-                                                             delegate:nil
-                                                    cancelButtonTitle:@"OK"
-                                                    otherButtonTitles: nil];
-                [av show];
-                return;
-            }
-        }
+          */UIAlertView * av = [[UIAlertView alloc] initWithTitle:@"No Email Detected"
+                                                          message:@"You don't have an email account configured for this device."
+                                                         delegate:nil
+                                                cancelButtonTitle:@"OK"
+                                                otherButtonTitles:nil];
+            [av show];
+            return;
+      //}
     }
 
     MFMailComposeViewController *mailComposer = [[MFMailComposeViewController alloc] init];
@@ -1398,11 +1395,8 @@ void addressBookChanged(ABAddressBookRef addressBook, CFDictionaryRef info, void
         [automatic setObject:[user valueForKey:@"UserName"] forKey:@"UserName"];
         [automatic writeToFile:[self autoLogin] atomically:YES];
     }
-    // for the red notification bubble if a user has a pending RECEIVED Request
-    /*serve * getPendingCount = [serve new];
-    [getPendingCount setDelegate:self];
-    [getPendingCount setTagName:@"getPendingTransfersCount"];
-    [getPendingCount getPendingTransfersCount];*/
+
+    isFromArtisanDonationAlert = NO;
 
     //do carousel
     [self.view addSubview:_carousel];
@@ -1874,7 +1868,8 @@ void addressBookChanged(ABAddressBookRef addressBook, CFDictionaryRef info, void
                                                   
                                                   isFromHome = YES;
                                                   isFromMyApt = NO;
-                                                  
+                                                  isFromArtisanDonationAlert = NO;
+
                                                   HowMuch * trans = [[HowMuch alloc] initWithReceiver:favorite];
                                                   [self.navigationController pushViewController:trans animated:YES];
                                                   
@@ -1970,28 +1965,13 @@ void addressBookChanged(ABAddressBookRef addressBook, CFDictionaryRef info, void
 
 - (void) alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex
 {
-    if ((alertView.tag == 147 || alertView.tag == 148) && buttonIndex==1)
+    if (alertView.tag == 201 && buttonIndex == 1)// GO TO THE ADD BANK WEBVIEW
     {
-        isFromSettingsOptions = NO;
-        isProfileOpenFromSideBar = NO;
-        sentFromHomeScrn = YES;
-        isFromTransDetails = NO;
-
-        ProfileInfo *prof = [ProfileInfo new];
-        [nav_ctrl pushViewController:prof animated:YES];
+        knoxWeb *knox = [knoxWeb new];
+        [nav_ctrl pushViewController:knox animated:YES];
         [self.slidingViewController resetTopView];
     }
-    else if (alertView.tag == 201)
-    {
-        if (buttonIndex == 1)
-        {
-            knoxWeb *knox = [knoxWeb new];
-            [nav_ctrl pushViewController:knox animated:YES];
-            [self.slidingViewController resetTopView];
-            // GOES TO THE KNOX WEBVIEW WITHIN
-        }
-    }
-    else if (alertView.tag == 50 && buttonIndex == 1)
+    else if ((alertView.tag == 50 || alertView.tag == 54) && buttonIndex == 1)
     {
         [self contact_support];
     }
@@ -2050,7 +2030,7 @@ void addressBookChanged(ABAddressBookRef addressBook, CFDictionaryRef info, void
 
     else if ([[user valueForKey:@"Status"]isEqualToString:@"Registered"])
     {
-        SIAlertView * alertView = [[SIAlertView alloc] initWithTitle:@"Please Verify Your Email" andMessage:@"Terribly sorry, but before you can send money, please confirm your email address by clicking the link we sent to the email address you used to sign up.\n\xF0\x9F\x99\x8F"];
+        SIAlertView * alertView = [[SIAlertView alloc] initWithTitle:@"Please Verify Your Email" andMessage:@"Terribly sorry, but before you send money, please confirm your email address by clicking the link we sent to the email address you used to sign up.\n\xF0\x9F\x99\x8F"];
         [alertView addButtonWithTitle:@"OK" type:SIAlertViewButtonTypeCancel handler:nil];
         [[SIAlertView appearance] setButtonColor:kNoochBlue];
         
@@ -2084,14 +2064,7 @@ void addressBookChanged(ABAddressBookRef addressBook, CFDictionaryRef info, void
         [alertView addButtonWithTitle:@"Later" type:SIAlertViewButtonTypeCancel handler:nil];
         [alertView addButtonWithTitle:@"Add Phone" type:SIAlertViewButtonTypeDefault
                               handler:^(SIAlertView *alert) {
-                                  isFromSettingsOptions = NO;
-                                  isProfileOpenFromSideBar = NO;
-                                  sentFromHomeScrn = YES;
-                                  isFromTransDetails = NO;
-                                  
-                                  ProfileInfo * prof = [ProfileInfo new];
-                                  [nav_ctrl pushViewController:prof animated:YES];
-                                  [self.slidingViewController resetTopView];
+                                  [self go_profileFromHome];
                               }];
         [[SIAlertView appearance] setButtonColor:kNoochBlue];
 
@@ -2120,12 +2093,17 @@ void addressBookChanged(ABAddressBookRef addressBook, CFDictionaryRef info, void
         return NO;
     }
 
-    else if (isSynapseOn)
+    else if (!isKnoxOn && isSynapseOn && [user boolForKey:@"IsSynapseBankAvailable"] && ![user boolForKey:@"IsSynapseBankVerified"])
     {
-        
-        //return NO;
+        UIAlertView *av = [[UIAlertView alloc] initWithTitle:@"Bank Account Un-Verified"
+                                                     message:@"Looks like your bank account remains un-verified.  This usually happens when the contact info listed on the bank account does not match your Nooch profile information. Please contact Nooch support for more information."
+                                                    delegate:self
+                                           cancelButtonTitle:@"OK"
+                                           otherButtonTitles:@"Contact Support", nil];
+        [av setTag:54];
+        [av show];
+        return NO;
     }
-
 
 
     return YES;
@@ -2363,6 +2341,7 @@ void addressBookChanged(ABAddressBookRef addressBook, CFDictionaryRef info, void
 
             isFromHome = YES;
             isFromMyApt = NO;
+            isFromArtisanDonationAlert = NO;
 
             HowMuch * how_much = [[HowMuch alloc] initWithReceiver:dict];
             [self.navigationController pushViewController:how_much animated:YES];
@@ -2380,6 +2359,7 @@ void addressBookChanged(ABAddressBookRef addressBook, CFDictionaryRef info, void
         error:&error];
         isFromHome = YES;
         isFromMyApt = NO;
+        isFromArtisanDonationAlert = NO;
 
         HowMuch * how_much = [[HowMuch alloc] initWithReceiver:dict];
         [self.navigationController pushViewController:how_much animated:YES];
@@ -2596,26 +2576,26 @@ void addressBookChanged(ABAddressBookRef addressBook, CFDictionaryRef info, void
 }
 
 #pragma mark- Date From String
-- (NSDate*) dateFromString:(NSString*)aStr
+-(NSDate*)dateFromString:(NSString*)aStr
 {
     NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
     [dateFormatter setLocale:[[NSLocale alloc] initWithLocaleIdentifier:@"en_US_POSIX"]];
-   
+
     [dateFormatter setAMSymbol:@"AM"];
     [dateFormatter setPMSymbol:@"PM"];
     dateFormatter.dateFormat = @"MM/dd/yyyy hh:mm:ss a";
-    
+
     NSDate * aDate = [dateFormatter dateFromString:aStr];
 
     return aDate;
 }
 
-- (void)dealloc
+-(void)dealloc
 {
     [[NSNotificationCenter defaultCenter] removeObserver:self name:UIApplicationWillEnterForegroundNotification object:nil];
 }
 
-- (void)didReceiveMemoryWarning
+-(void)didReceiveMemoryWarning
 {
     [super didReceiveMemoryWarning];
     // Dispose of any resources that can be recreated.

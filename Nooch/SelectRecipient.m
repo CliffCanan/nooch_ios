@@ -1735,6 +1735,7 @@
             [dict setObject:@"nonuser" forKey:@"nonuser"];
             isFromHome = NO;
             isFromMyApt = NO;
+            isFromArtisanDonationAlert = NO;
 
             HowMuch * how_much = [[HowMuch alloc] initWithReceiver:dict];
             [self.navigationController pushViewController:how_much animated:YES];
@@ -1811,6 +1812,7 @@
             [dict setObject:@"nonuser" forKey:@"nonuser"];
             isFromHome = NO;
             isFromMyApt = NO;
+            isFromArtisanDonationAlert = NO;
 
             HowMuch * how_much = [[HowMuch alloc] initWithReceiver:dict];
             [self.navigationController pushViewController:how_much animated:YES];
@@ -1881,6 +1883,7 @@
 
             isFromHome = NO;
             isFromMyApt = NO;
+            isFromArtisanDonationAlert = NO;
 
             HowMuch *how_much = [[HowMuch alloc] initWithReceiver:dict];
             [self.navigationController pushViewController:how_much animated:YES];
@@ -2667,6 +2670,7 @@
 
         isFromHome = NO;
         isFromMyApt = NO;
+        isFromArtisanDonationAlert = NO;
 
         HowMuch * how_much = [[HowMuch alloc] initWithReceiver:receiver];
         [self.navigationController pushViewController:how_much animated:YES];
@@ -2683,6 +2687,7 @@
         [self.navigationItem setLeftBarButtonItem:nil];
         isFromHome = NO;
         isFromMyApt = NO;
+        isFromArtisanDonationAlert = NO;
 
         NSDictionary * receiver = [self.recents objectAtIndex:indexPath.row];
 

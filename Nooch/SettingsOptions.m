@@ -64,11 +64,20 @@
     [super viewDidLoad];
 
     NSLog(@"boolForKey @'IsKnoxBankAvailable' is: %d",[user boolForKey:@"IsKnoxBankAvailable"]);
-    NSLog(@"boolForKey @'IsKnoxBankAvailable' is: %d",[user boolForKey:@"IsSynapseBankAvailable"]);
-    if ((isKnoxOn && ![user boolForKey:@"IsKnoxBankAvailable"]) ||
-        (isSynapseOn && ![user boolForKey:@"IsSynapseBankAvailable"]))
+    NSLog(@"boolForKey @'IsSynapseBankAvailable' is: %d",[user boolForKey:@"IsSynapseBankAvailable"]);
+
+    if ((isKnoxOn && [user boolForKey:@"IsKnoxBankAvailable"]) ||
+        (isSynapseOn && [user boolForKey:@"IsSynapseBankAvailable"]))
     {
-        NSLog(@"viewDidLoad -> Bank ain't attached!");
+        isBankAttached = YES;
+        if ([self.view.subviews containsObject:glyph_noBank])
+        {
+            [glyph_noBank removeFromSuperview];
+        }
+    }
+    else
+    {
+        //NSLog(@"viewDidLoad -> Bank ain't attached!");
         isBankAttached = NO;
 
         glyph_noBank = [UILabel new];
@@ -86,14 +95,6 @@
         [introText setTextAlignment:NSTextAlignmentCenter];
         [introText setStyleId:@"settings_introText"];
         [self.view addSubview:introText];
-    }
-    else
-    {
-        isBankAttached = YES;
-        if ([self.view.subviews containsObject:glyph_noBank])
-        {
-            [glyph_noBank removeFromSuperview];
-        }
     }
 
     [self.navigationItem setHidesBackButton:YES];
@@ -427,16 +428,16 @@
 {
     NSString * knoxOnOff = [ARPowerHookManager getValueForHookById:@"knox_OnOff"];
     NSString * SynapseOnOff = [ARPowerHookManager getValueForHookById:@"synps_OnOff"];
-    
+
     serve * serveOBJ = [serve new];
     serveOBJ.Delegate = self;
     serveOBJ.tagName = @"RemoveBankAccount";
-    
+
     if ([knoxOnOff isEqualToString:@"on"])
     {
         [serveOBJ RemoveKnoxBankAccount];
     }
-    
+
     else if ([SynapseOnOff isEqualToString:@"on"])
     {
         [serveOBJ RemoveSynapseBankAccount];
@@ -874,46 +875,19 @@
 {
     if (![MFMailComposeViewController canSendMail])
     {
-        if ([UIAlertController class]) // for iOS 8
-        {
-            UIAlertController * alert = [UIAlertController
-                                         alertControllerWithTitle:@"No Email Detected"
-                                         message:@"You don't have an email account configured for this device."
-                                         preferredStyle:UIAlertControllerStyleAlert];
-            
-            UIAlertAction * ok = [UIAlertAction
-                                  actionWithTitle:@"OK"
-                                  style:UIAlertActionStyleDefault
-                                  handler:^(UIAlertAction * action)
-                                  {
-                                      [alert dismissViewControllerAnimated:YES completion:nil];
-                                  }];
-            [alert addAction:ok];
-            
-            [self presentViewController:alert animated:YES completion:nil];
-            return;
-        }
-        else
-        {
-            if (![MFMailComposeViewController canSendMail])
-            {
-                UIAlertView * av = [[UIAlertView alloc] initWithTitle:@"No Email Detected"
-                                                              message:@"You don't have an email account configured for this device."
-                                                             delegate:nil
-                                                    cancelButtonTitle:@"OK"
-                                                    otherButtonTitles: nil];
-                [av show];
-                return;
-            }
-        }
+        UIAlertView * av = [[UIAlertView alloc] initWithTitle:@"No Email Detected"
+                                                      message:@"You don't have an email account configured for this device."
+                                                     delegate:nil
+                                            cancelButtonTitle:@"OK"
+                                            otherButtonTitles: nil];
+        [av show];
+        return;
     }
 
     MFMailComposeViewController *mailComposer = [[MFMailComposeViewController alloc] init];
     mailComposer.mailComposeDelegate = self;
     mailComposer.navigationBar.tintColor=[UIColor whiteColor];
-
     [mailComposer setSubject:[NSString stringWithFormat:@"Support Request: Version %@",[[[NSBundle mainBundle] infoDictionary] objectForKey:@"CFBundleVersion"]]];
-
     [mailComposer setMessageBody:@"" isHTML:NO];
     [mailComposer setToRecipients:[NSArray arrayWithObjects:@"support@nooch.com", nil]];
     [mailComposer setCcRecipients:[NSArray arrayWithObject:@""]];

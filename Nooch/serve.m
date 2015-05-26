@@ -68,7 +68,7 @@ NSString *responseString;
 @synthesize Delegate,tagName,responseData;
 
 NSString * const ServerUrl = @"https://www.noochme.com/NoochService/NoochService.svc";
-//NSString * const ServerUrl_Dev = @"http://54.201.43.89/NoochService/NoochService.svc";// dev server
+//NSString * const ServerUrl = @"http://54.201.43.89/NoochService/NoochService.svc";// dev server
 //NSString * const ServerUrl = @"https://172.17.60.150/NoochService/NoochService.svc";
 
 bool locationUpdate;
@@ -648,10 +648,12 @@ NSString *amnt;
 
         // IsBankAvailable (KNOX)
         if ( [Dictresponse valueForKey:@"IsKnoxBankAdded"] &&
-            [[Dictresponse valueForKey:@"IsKnoxBankAdded"] boolValue] == YES) {
+            [[Dictresponse valueForKey:@"IsKnoxBankAdded"] boolValue] == YES)
+        {
             [user setBool:YES forKey:@"IsKnoxBankAvailable"];
         }
-        else {
+        else
+        {
             [user setBool:NO forKey:@"IsKnoxBankAvailable"];
         }
 
@@ -660,8 +662,9 @@ NSString *amnt;
             [[Dictresponse valueForKey:@"IsSynapseBankAdded"] boolValue] == YES)
         {
             [user setBool:YES forKey:@"IsSynapseBankAvailable"];
-            if (![[Dictresponse valueForKey:@"SynapseBankStatus"]isKindOfClass:[NSNull class]] &&
-                 [[Dictresponse valueForKey:@"SynapseBankStatus"]isEqualToString:@"Verified"])
+
+            if ( ![[Dictresponse valueForKey:@"SynapseBankStatus"]isKindOfClass:[NSNull class]] &&
+                 [[[Dictresponse valueForKey:@"SynapseBankStatus"]lowercaseString]isEqualToString:@"verified"])
             {
                 [user setBool:YES forKey:@"IsSynapseBankVerified"];
             }
@@ -670,7 +673,8 @@ NSString *amnt;
                 [user setBool:NO forKey:@"IsSynapseBankVerified"];
             }
         }
-        else {
+        else
+        {
             [user setBool:NO forKey:@"IsSynapseBankAvailable"];
             [user setBool:NO forKey:@"IsSynapseBankVerified"];
         }

@@ -379,37 +379,15 @@
 
 -(void)cantSendMail
 {
-    /*if ([UIAlertController class]) // for iOS 8
+    if (![MFMailComposeViewController canSendMail])
     {
-        UIAlertController * alert = [UIAlertController
-                                     alertControllerWithTitle:@"No Email Detected"
-                                     message:@"You don't have an email account configured for this device."
-                                     preferredStyle:UIAlertControllerStyleAlert];
-        
-        UIAlertAction * ok = [UIAlertAction
-                              actionWithTitle:@"OK"
-                              style:UIAlertActionStyleDefault
-                              handler:^(UIAlertAction * action)
-                              {
-                                  [alert dismissViewControllerAnimated:YES completion:nil];
-                              }];
-        [alert addAction:ok];
-        
-        [self presentViewController:alert animated:YES completion:nil];
+        UIAlertView * av = [[UIAlertView alloc] initWithTitle:@"No Email Detected"
+                                                      message:@"You don't have an email account configured for this device."
+                                                     delegate:nil
+                                            cancelButtonTitle:@"OK"
+                                            otherButtonTitles: nil];
+        [av show];
         return;
-    }
-    else
-    {
-      */if (![MFMailComposeViewController canSendMail])
-        {
-            UIAlertView * av = [[UIAlertView alloc] initWithTitle:@"No Email Detected"
-                                                          message:@"You don't have an email account configured for this device."
-                                                         delegate:nil
-                                                cancelButtonTitle:@"OK"
-                                                otherButtonTitles: nil];
-            [av show];
-            return;
-      //}
     }
 }
 
@@ -478,7 +456,7 @@
         
         NSDictionary * dictResponse = [NSJSONSerialization JSONObjectWithData:[result dataUsingEncoding:NSUTF8StringEncoding] options:0 error:&error];
 
-        //NSLog(@"Knox dictResponse is: %@",[dictResponse valueForKey:@"SaveMemberTransIdResult"]);
+        NSLog(@"Knox dictResponse is: %@",[dictResponse valueForKey:@"SaveMemberTransIdResult"]);
         //NSLog(@"Knox dictResponse -> valueForKey@'Result' is: %@",[[dictResponse valueForKey:@"SaveMemberTransIdResult"]valueForKey:@"Result"]);
 
         if ([[[dictResponse valueForKey:@"SaveMemberTransIdResult"]valueForKey:@"Result"]isEqualToString:@"Success"])
