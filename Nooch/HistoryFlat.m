@@ -1031,7 +1031,7 @@
 
 -(void)loadHist:(NSString*)filter index:(int)ind len:(int)len subType:(NSString*)subType
 {
-    if (!isFromTransferPIN)
+    if (!isFromTransferPIN && ![self.view.subviews containsObject:self.hud])
     {
         RTSpinKitView *spinner1 = [[RTSpinKitView alloc] initWithStyle:RTSpinKitViewStyleWanderingCubes];
         spinner1.color = [UIColor whiteColor];
@@ -1670,7 +1670,7 @@
                 }
                 else
                 {
-                    if (indexPath.row > 6)
+                    if (indexPath.row > 9)
                     {
                         ishistLoading = YES;
                         index++;
@@ -1976,7 +1976,7 @@
                 }
                 else
                 {
-                    if (indexPath.row > 10)
+                    if (indexPath.row > 18)
                     {
                         ishistLoading = YES;
                         index++;

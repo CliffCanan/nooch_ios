@@ -553,13 +553,10 @@
 
 -(void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex
 {
-    NSLog(@"Checkpoint #1");
     if (alertView.tag == 11)
     {
-        NSLog(@"Checkpoint #2");
         if ([scrollView.subviews containsObject:touchIdMenu])
         {
-            NSLog(@"Checkpoint #3");
             [touchIdMenu removeFromSuperview];
             [user setObject:@"NO" forKey:@"requiredTouchId"];
         }
