@@ -760,7 +760,7 @@
         {
             UIAlertController * alert = [UIAlertController
                                     alertControllerWithTitle:@"Reset Link Sent"
-                                    message:@"\xF0\x9F\x93\xA5\nPlease check your email for a reset password link."
+                                    message:@"\xF0\x9F\x93\xA5\nIf that email address is associated with a Nooch account, you will receive an email with a link to reset your password."
                                     preferredStyle:UIAlertControllerStyleAlert];
         
             UIAlertAction * ok = [UIAlertAction

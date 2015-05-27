@@ -7,7 +7,7 @@
 //
 
 #import <UIKit/UIKit.h>
-BOOL isSignup;
+BOOL isSignup,shouldDisplayArtisanPopup,isSynapseTurnedOn;
 @interface Welcome : GAITrackedViewController
 {
     UIView*overlay,*mainView;

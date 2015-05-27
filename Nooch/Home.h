@@ -52,7 +52,7 @@ BOOL isSynapseOn,isKnoxOn,shouldDisplayAptsSection, noRecentContacts, isFromTran
     UIButton *top_button;
     int bannerAlert;
     short carouselTopValue, topBtnTopValue, loopIteration;
-    BOOL shouldBreakLoop;
+    BOOL shouldBreakLoop,isPendingGlyphShowing;
 }
 -(void)contact_support;
 -(void)hide;

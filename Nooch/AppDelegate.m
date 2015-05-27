@@ -15,6 +15,7 @@
 #import <AdSupport/AdSupport.h>
 #import "SendInvite.h"
 #import "HowMuch.h"
+#import "Welcome.h"
 
 @implementation AppDelegate
 
@@ -178,7 +179,18 @@ bool modal;
 
     [ARPowerHookManager registerHookWithId:@"RefCmpgn_YorN" friendlyName:@"Referral Campaign Alert - Should Display Y or N" defaultValue:@"no"];
 
+    [ARPowerHookManager registerHookWithId:@"wlcm_ArtPop" friendlyName:@"Welcome Scrn - Should Display Artisan Popup (or hard-coded bank popup)" defaultValue:@"no"];
 
+    [ARPowerHookManager registerBlockWithId:@"wlcm_goProfile"
+                               friendlyName:@"Send user to Profile screen from Welcome screen after signup"
+                                       data:@{ @"empty" : @"empty"
+                                               }
+                                   andBlock:^(NSDictionary *data, id context) {
+                                       //Go to Profile
+                                       isSignup = YES;
+                                       ProfileInfo * profileScrn = [ProfileInfo new];
+                                       [nav_ctrl pushViewController:profileScrn animated:YES];
+                                   }];
     [ARPowerHookManager registerBlockWithId:@"goToReferScrn"
                                friendlyName:@"Send user to Refer a Friend screen"
                                        data:@{ @"shouldDisplayAlert" : @"NO",
@@ -192,7 +204,6 @@ bool modal;
                                        if ([[data[@"shouldDisplayAlert"] lowercaseString] isEqualToString:@"yes"])
                                        {
                                            NSString *message = data[@"alertText"];
-
                                            UIAlertView *alertView = [[UIAlertView alloc]initWithTitle:@"Like Getting Paid?"
                                                                                               message:message
                                                                                              delegate:context
@@ -212,7 +223,7 @@ bool modal;
                                                @"alertText" : @"100% of what you give in this transaction will go to supporting the cause!"
                                             }
                                    andBlock:^(NSDictionary *data, id context) {
-                                       if ([[assist shared] getSuspended] &&
+                                       if (![[assist shared] getSuspended] &&
                                             [[assist shared] isProfileCompleteAndValidated] &&
                                            ((isKnoxOn && [user boolForKey:@"IsKnoxBankAvailable"]) ||
                                             (isSynapseOn && [user boolForKey:@"IsSynapseBankAvailable"] && [user boolForKey:@"IsSynapseBankVerified"])))

@@ -623,13 +623,15 @@
     {
         self.location = NO;
 
-        RTSpinKitView * spinner1 = [[RTSpinKitView alloc] initWithStyle:RTSpinKitViewStyleArcAlt];
-        spinner1.color = [UIColor whiteColor];
-        self.hud.customView = spinner1;
-        self.hud.labelText = NSLocalizedString(@"SelectRecip_RecentLoading2", @"Select Recipient Recent List Loading Text 2");
-        self.hud.detailsLabelText = nil;
-        [self.hud show:YES];
-
+        if (![self.view.subviews containsObject:self.hud])
+        {
+            RTSpinKitView * spinner1 = [[RTSpinKitView alloc] initWithStyle:RTSpinKitViewStyleArcAlt];
+            spinner1.color = [UIColor whiteColor];
+            self.hud.customView = spinner1;
+            self.hud.labelText = NSLocalizedString(@"SelectRecip_RecentLoading2", @"Select Recipient Recent List Loading Text 2");
+            self.hud.detailsLabelText = nil;
+            [self.hud show:YES];
+        }
         [self.glyph_recent setTextColor: [UIColor whiteColor]];
         [self.glyph_location setTextColor: kNoochBlue];
 
@@ -637,7 +639,7 @@
         [recents setTagName:@"recents"];
         [recents setDelegate:self];
         [recents getRecents];
-    } 
+    }
     else
     {
         [self.glyph_recent setTextColor:kNoochBlue];
@@ -828,6 +830,7 @@
     
     NSLog(@"Select Recipient - Location Tab: Location Mgr Error : %@",error);
 
+    [self.hud hide:YES];
     if ([error code] == kCLErrorDenied)
     {
         UIAlertView * alert = [[UIAlertView alloc]initWithTitle:NSLocalizedString(@"SelectRecip_NeedLocAccessTitle", @"Select Recipient Need Location Alert Title")
@@ -837,6 +840,23 @@
                                               otherButtonTitles:Nil, nil];
         [alert show];
     }
+    else
+    {
+        [self performSelector:@selector(simulateSegControlChanged) withObject:Nil afterDelay:1.5];
+
+        UIAlertView * alert = [[UIAlertView alloc]initWithTitle:@"Location Error"
+                                                        message:@"Sorry to say, but we're having trouble getting your location to find nearby users. Please try again or contact Nooch support so we can exterminate any bugs!"
+                                                       delegate:Nil
+                                              cancelButtonTitle:@"OK"
+                                              otherButtonTitles:Nil, nil];
+        [alert show];
+    }
+}
+
+- (void)simulateSegControlChanged
+{
+    self.recent_location.selectedSegmentIndex = 0;
+    [self.recent_location sendActionsForControlEvents:UIControlEventValueChanged];
 }
 
 -(void)phonebook:(id)sender
@@ -1275,7 +1295,7 @@
     }
 }
 
-- (void) searchTableView
+-(void)searchTableView
 {
     arrSearchedRecords = [[NSMutableArray alloc]init];
 

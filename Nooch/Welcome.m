@@ -88,34 +88,34 @@
     UILabel * prompt2 = [[UILabel alloc] initWithFrame:CGRectMake(10, 306, 300, 28)];
     [prompt2 setTextColor:kNoochGrayDark];
     [prompt2 setBackgroundColor:[UIColor clearColor]];
-    [prompt2 setText:NSLocalizedString(@"Welcome_Instruct2", @"'2. Link a funding source' instruction Text")];
+    [prompt2 setText:NSLocalizedString(@"Welcome_Instruct2", @"'2. Verify your phone number' instruction Text")];
     [prompt2 setTextAlignment:NSTextAlignmentCenter];
     [prompt2 setFont:[UIFont fontWithName:@"Roboto-regular" size:19]];
     prompt2.numberOfLines = 0;
     [self.view addSubview:prompt2];
 
-    UIButton * moreinfo = [UIButton buttonWithType:UIButtonTypeRoundedRect];
-    [moreinfo setBackgroundColor:[UIColor clearColor]];
-    [moreinfo setTitle:NSLocalizedString(@"Welcome_TellMoreTxt", @"'  Tell me more' Text") forState:UIControlStateNormal];
-    [moreinfo setFrame:CGRectMake(90, 336, 140, 23)];
-    [moreinfo setStyleId:@"moreinfo_button"];
-    [moreinfo addTarget:self action:@selector(moreinfo_lightBox) forControlEvents:UIControlEventTouchUpInside];
+    UIButton * moreInfo = [UIButton buttonWithType:UIButtonTypeRoundedRect];
+    [moreInfo setBackgroundColor:[UIColor clearColor]];
+    [moreInfo setTitle:NSLocalizedString(@"Welcome_TellMoreTxt", @"'  Tell me more' Text") forState:UIControlStateNormal];
+    [moreInfo setFrame:CGRectMake(90, 336, 140, 23)];
+    [moreInfo setStyleId:@"moreinfo_button"];
+    [moreInfo addTarget:self action:@selector(moreinfo_lightBox) forControlEvents:UIControlEventTouchUpInside];
 
-    UILabel * glyphinfo = [UILabel new];
-    [glyphinfo setFont:[UIFont fontWithName:@"FontAwesome" size:15]];
-    [glyphinfo setFrame:CGRectMake(5, 0, 15, 19)];
-    [glyphinfo setText:[NSString fontAwesomeIconStringForIconIdentifier:@"fa-question-circle"]];
-    [glyphinfo setTextColor:kNoochPurple];
-    [moreinfo addSubview:glyphinfo];
-    [self.view addSubview:moreinfo];
+    UILabel * glyphInfo = [UILabel new];
+    [glyphInfo setFont:[UIFont fontWithName:@"FontAwesome" size:15]];
+    [glyphInfo setFrame:CGRectMake(5, 0, 15, 23)];
+    [glyphInfo setText:[NSString fontAwesomeIconStringForIconIdentifier:@"fa-question-circle"]];
+    [glyphInfo setTextColor:kNoochPurple];
+    [moreInfo addSubview:glyphInfo];
+    [self.view addSubview:moreInfo];
 
-    UIButton * goToKnoxBtn = [UIButton buttonWithType:UIButtonTypeRoundedRect];
-    [goToKnoxBtn setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
-    [goToKnoxBtn setTitle:NSLocalizedString(@"Welcome_LnkBtn", @"'   Link Funding Source' Button Text") forState:UIControlStateNormal];
-    [goToKnoxBtn setTitleShadowColor:Rgb2UIColor(26, 38, 19, 0.2) forState:UIControlStateNormal];
-    goToKnoxBtn.titleLabel.shadowOffset = CGSizeMake(0.0, -1.0);
-    [goToKnoxBtn addTarget:self action:@selector(validate) forControlEvents:UIControlEventTouchUpInside];
-    [goToKnoxBtn setStyleClass:@"button_green"];
+    UIButton * goToProfile = [UIButton buttonWithType:UIButtonTypeRoundedRect];
+    [goToProfile setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
+    [goToProfile setTitle:NSLocalizedString(@"Welcome_LnkBtn", @"'   Complete Profile Now' Button Text") forState:UIControlStateNormal];
+    [goToProfile setTitleShadowColor:Rgb2UIColor(26, 38, 19, 0.2) forState:UIControlStateNormal];
+    goToProfile.titleLabel.shadowOffset = CGSizeMake(0.0, -1.0);
+    [goToProfile addTarget:self action:@selector(validate) forControlEvents:UIControlEventTouchUpInside];
+    [goToProfile setStyleClass:@"button_green"];
 
     NSShadow * shadow1 = [[NSShadow alloc] init];
     shadow1.shadowColor = Rgb2UIColor(26, 38, 19, .22);
@@ -128,26 +128,35 @@
     [glyphBank setTextColor:[UIColor whiteColor]];
     glyphBank.attributedText = [[NSAttributedString alloc] initWithString:[NSString fontAwesomeIconStringForIconIdentifier:@"fa-lock"]
                                                                attributes:textAttributes0];
-    [goToKnoxBtn addSubview:glyphBank];
+    [goToProfile addSubview:glyphBank];
 
     UIButton * later = [UIButton buttonWithType:UIButtonTypeRoundedRect];
     [later setTitleColor:kNoochGrayDark forState:UIControlStateNormal];
     [later setBackgroundColor:[UIColor clearColor]];
-    [later setTitle:NSLocalizedString(@"Welcome_later", @"'I'll link a bank later...' Button Text") forState:UIControlStateNormal];
+    [later setTitle:NSLocalizedString(@"Welcome_later", @"'I'll do this later...' Button Text") forState:UIControlStateNormal];
     [later setStyleClass:@"label_small"];
     [later addTarget:self action:@selector(later) forControlEvents:UIControlEventTouchUpInside];
     if ([[UIScreen mainScreen] bounds].size.height < 500)
     {
-        [goToKnoxBtn setFrame:CGRectMake(10, 384, 300, 50)];
+        [goToProfile setFrame:CGRectMake(10, 384, 300, 50)];
         [later setFrame:CGRectMake(10, [[UIScreen mainScreen] bounds].size.height - 42, 300, 42)];
     }
     else
     {
-        [goToKnoxBtn setFrame:CGRectMake(10, 402, 300, 50)];
+        [goToProfile setFrame:CGRectMake(10, 402, 300, 50)];
         [later setFrame:CGRectMake(10, [[UIScreen mainScreen] bounds].size.height - 90, 300, 65)];
     }
-    [self.view addSubview:goToKnoxBtn];
+    [self.view addSubview:goToProfile];
     [self.view addSubview:later];
+
+    NSString * displayArtisanPopup = [[ARPowerHookManager getValueForHookById:@"wlcm_ArtPop"] lowercaseString];
+    if ([displayArtisanPopup isEqualToString:@"yes"]) {
+        shouldDisplayArtisanPopup = YES;
+    }
+    else
+    {
+        shouldDisplayArtisanPopup = NO;
+    }
 }
 
 -(void)viewWillAppear:(BOOL)animated
@@ -160,15 +169,15 @@
 
 - (void)validate
 {
-    //navigate to settings
+    //Go to Profile
     [overlay removeFromSuperview];
 
     [self.navigationController setNavigationBarHidden:NO];
 
     isSignup = YES;
 
-    knoxWeb *knox = [knoxWeb new];
-    [self.navigationController pushViewController:knox animated:YES];
+    ProfileInfo * profileScrn = [ProfileInfo new];
+    [self.navigationController pushViewController:profileScrn animated:YES];
     [self.navigationController.view addGestureRecognizer:self.navigationController.slidingViewController.panGesture];
 }
 
@@ -186,122 +195,129 @@
 
 -(void)moreinfo_lightBox
 {
-    overlay = [[UIView alloc]init];
-    overlay.frame = CGRectMake(0, 0, 320, [[UIScreen mainScreen] bounds].size.height);
-    overlay.backgroundColor = [UIColor colorWithRed:0 green:0 blue:0 alpha:0];
-    [self.navigationController.view addSubview:overlay];
-
-    mainView = [[UIView alloc]init];
-    mainView.layer.cornerRadius = 5;
-    mainView.backgroundColor = [UIColor whiteColor];
-    mainView.layer.masksToBounds = NO;
-    if ([[UIScreen mainScreen] bounds].size.height < 500) {
-        mainView.frame = CGRectMake(9, -500, 302, 440);
-    }
-    else {
-        mainView.frame = CGRectMake(9, -540, 302, 499);
-    }
-
-    UIView * head_container = [[UIView alloc]initWithFrame:CGRectMake(0, 0, 302, 44)];
-    head_container.backgroundColor = [UIColor colorWithRed:244.0f/255.0f green:244.0f/255.0f blue:244.0f/255.0f alpha:1.0];
-    [mainView addSubview:head_container];
-    head_container.layer.cornerRadius = 10;
-
-    UIView * space_container = [[UIView alloc]initWithFrame:CGRectMake(0, 34, 302, 10)];
-    space_container.backgroundColor = [UIColor colorWithRed:244.0f/255.0f green:244.0f/255.0f blue:244.0f/255.0f alpha:1.0];
-    [mainView addSubview:space_container];
-
-    UILabel * title = [[UILabel alloc]initWithFrame:CGRectMake(0, 10, 302, 28)];
-    [title setBackgroundColor:[UIColor clearColor]];
-    [title setText:NSLocalizedString(@"Welcome_LtBxTtl", @"'Connect Your Bank' Lightbox Title")];
-    [title setStyleClass:@"lightbox_title"];
-    [head_container addSubview:title];
-
-    UILabel * glyph_lock = [UILabel new];
-    [glyph_lock setFont:[UIFont fontWithName:@"FontAwesome" size:20]];
-    [glyph_lock setFrame:CGRectMake(29, 11, 22, 29)];
-    [glyph_lock setText:[NSString fontAwesomeIconStringForIconIdentifier:@"fa-lock"]];
-    [glyph_lock setTextColor:kNoochBlue];
-    [head_container addSubview:glyph_lock];
-
-    UIImageView * imageShow = [[UIImageView alloc]initWithFrame:CGRectMake(1, 50, 300, 380)];
-    imageShow.image = [UIImage imageNamed:@"Knox_Infobox"];
-    imageShow.contentMode = UIViewContentModeScaleAspectFit;
-
-    UIButton * btnLink = [UIButton buttonWithType:UIButtonTypeCustom];
-    [btnLink setStyleClass:@"button_green_welcome"];
-    [btnLink setTitleShadowColor:Rgb2UIColor(26, 38, 19, 0.22) forState:UIControlStateNormal];
-    btnLink.titleLabel.shadowOffset = CGSizeMake(0.0, -1.0);
-    btnLink.frame = CGRectMake(10, mainView.frame.size.height - 56, 280, 50);
-    [btnLink setTitle:NSLocalizedString(@"Welcome_LtBxBtn", @"'  Link Now' Lightbox Button Text") forState:UIControlStateNormal];
-    [btnLink addTarget:self action:@selector(validate) forControlEvents:UIControlEventTouchUpInside];
-
-    NSShadow * shadow = [[NSShadow alloc] init];
-    shadow.shadowColor = Rgb2UIColor(26, 38, 32, .22);
-    shadow.shadowOffset = CGSizeMake(0, -1);
-    NSDictionary * textAttributes1 = @{NSShadowAttributeName: shadow };
-
-    UILabel * glyphLink = [UILabel new];
-    [glyphLink setFont:[UIFont fontWithName:@"FontAwesome" size:18]];
-    [glyphLink setFrame:CGRectMake(69, 9, 22, 27)];
-    glyphLink.attributedText = [[NSAttributedString alloc] initWithString:[NSString fontAwesomeIconStringForIconIdentifier:@"fa-link"]
-                                                               attributes:textAttributes1];
-    [glyphLink setTextColor:[UIColor whiteColor]];
-    [btnLink addSubview:glyphLink];
-
-    if ([[UIScreen mainScreen] bounds].size.height < 500)
+    if (shouldDisplayArtisanPopup)
     {
-        head_container.frame = CGRectMake(0, 0, 302, 38);
-        space_container.frame = CGRectMake(0, 28, 302, 10);
-        glyph_lock.frame = CGRectMake(28, 5, 22, 28);
-        title.frame = CGRectMake(0, 5, 302, 28);
-        imageShow.frame = CGRectMake(2, 42, 298, 338);
-        btnLink.frame = CGRectMake(10, mainView.frame.size.height - 51, 280, 44);
+        [ARTrackingManager trackEvent:@"Welcome_MoreInfo_NeedPopup"];
     }
+    else
+    {
+        overlay = [[UIView alloc]init];
+        overlay.frame = CGRectMake(0, 0, 320, [[UIScreen mainScreen] bounds].size.height);
+        overlay.backgroundColor = [UIColor colorWithRed:0 green:0 blue:0 alpha:0];
+        [self.navigationController.view addSubview:overlay];
 
-    UIImageView * btnClose = [[UIImageView alloc] initWithFrame:self.view.frame];
-    btnClose.image = [UIImage imageNamed:@"close_button"];
-    btnClose.frame = CGRectMake(9, 6, 35, 35);
+        mainView = [[UIView alloc]init];
+        mainView.layer.cornerRadius = 5;
+        mainView.backgroundColor = [UIColor whiteColor];
+        mainView.layer.masksToBounds = NO;
+        if ([[UIScreen mainScreen] bounds].size.height < 500) {
+            mainView.frame = CGRectMake(9, -500, 302, 440);
+        }
+        else {
+            mainView.frame = CGRectMake(9, -540, 302, 499);
+        }
 
-    UIButton * btnClose_shell = [UIButton buttonWithType:UIButtonTypeCustom];
-    btnClose_shell.frame = CGRectMake(mainView.frame.size.width - 35, head_container.frame.origin.y - 21, 48, 46);
-    [btnClose_shell addTarget:self action:@selector(close_lightBox) forControlEvents:UIControlEventTouchUpInside];
-    [btnClose_shell addSubview:btnClose];
+        UIView * head_container = [[UIView alloc]initWithFrame:CGRectMake(0, 0, 302, 44)];
+        head_container.backgroundColor = [UIColor colorWithRed:244.0f/255.0f green:244.0f/255.0f blue:244.0f/255.0f alpha:1.0];
+        [mainView addSubview:head_container];
+        head_container.layer.cornerRadius = 10;
 
-    [mainView addSubview:btnClose_shell];
-    [mainView addSubview:imageShow];
-    [mainView addSubview:btnLink];
-    [overlay addSubview:mainView];
+        UIView * space_container = [[UIView alloc]initWithFrame:CGRectMake(0, 34, 302, 10)];
+        space_container.backgroundColor = [UIColor colorWithRed:244.0f/255.0f green:244.0f/255.0f blue:244.0f/255.0f alpha:1.0];
+        [mainView addSubview:space_container];
+
+        UILabel * title = [[UILabel alloc]initWithFrame:CGRectMake(0, 10, 302, 28)];
+        [title setBackgroundColor:[UIColor clearColor]];
+        [title setText:NSLocalizedString(@"Welcome_LtBxTtl", @"'Connect Your Bank' Lightbox Title")];
+        [title setStyleClass:@"lightbox_title"];
+        [head_container addSubview:title];
+
+        UILabel * glyph_lock = [UILabel new];
+        [glyph_lock setFont:[UIFont fontWithName:@"FontAwesome" size:20]];
+        [glyph_lock setFrame:CGRectMake(29, 11, 22, 29)];
+        [glyph_lock setText:[NSString fontAwesomeIconStringForIconIdentifier:@"fa-lock"]];
+        [glyph_lock setTextColor:kNoochBlue];
+        [head_container addSubview:glyph_lock];
+
+        UIImageView * imageShow = [[UIImageView alloc]initWithFrame:CGRectMake(1, 50, 300, 380)];
+        imageShow.image = [UIImage imageNamed:@"Knox_Infobox"];
+        imageShow.contentMode = UIViewContentModeScaleAspectFit;
+
+        UIButton * btnLink = [UIButton buttonWithType:UIButtonTypeCustom];
+        [btnLink setStyleClass:@"button_green_welcome"];
+        [btnLink setTitleShadowColor:Rgb2UIColor(26, 38, 19, 0.22) forState:UIControlStateNormal];
+        btnLink.titleLabel.shadowOffset = CGSizeMake(0.0, -1.0);
+        btnLink.frame = CGRectMake(10, mainView.frame.size.height - 56, 280, 50);
+        [btnLink setTitle:NSLocalizedString(@"Welcome_LtBxBtn", @"'  Complete Now' Lightbox Button Text") forState:UIControlStateNormal];
+        [btnLink addTarget:self action:@selector(validate) forControlEvents:UIControlEventTouchUpInside];
+
+        NSShadow * shadow = [[NSShadow alloc] init];
+        shadow.shadowColor = Rgb2UIColor(26, 38, 32, .22);
+        shadow.shadowOffset = CGSizeMake(0, -1);
+        NSDictionary * textAttributes1 = @{NSShadowAttributeName: shadow };
+
+        UILabel * glyphLink = [UILabel new];
+        [glyphLink setFont:[UIFont fontWithName:@"FontAwesome" size:18]];
+        [glyphLink setFrame:CGRectMake(42, 9, 22, 27)];
+        glyphLink.attributedText = [[NSAttributedString alloc] initWithString:[NSString fontAwesomeIconStringForIconIdentifier:@"fa-link"]
+                                                                   attributes:textAttributes1];
+        [glyphLink setTextColor:[UIColor whiteColor]];
+        [btnLink addSubview:glyphLink];
+
+        if ([[UIScreen mainScreen] bounds].size.height < 500)
+        {
+            head_container.frame = CGRectMake(0, 0, 302, 38);
+            space_container.frame = CGRectMake(0, 28, 302, 10);
+            glyph_lock.frame = CGRectMake(28, 5, 22, 28);
+            title.frame = CGRectMake(0, 5, 302, 28);
+            imageShow.frame = CGRectMake(2, 42, 298, 338);
+            btnLink.frame = CGRectMake(10, mainView.frame.size.height - 51, 280, 44);
+        }
+
+        UIImageView * btnClose = [[UIImageView alloc] initWithFrame:self.view.frame];
+        btnClose.image = [UIImage imageNamed:@"close_button"];
+        btnClose.frame = CGRectMake(9, 6, 35, 35);
+
+        UIButton * btnClose_shell = [UIButton buttonWithType:UIButtonTypeCustom];
+        btnClose_shell.frame = CGRectMake(mainView.frame.size.width - 35, head_container.frame.origin.y - 21, 48, 46);
+        [btnClose_shell addTarget:self action:@selector(close_lightBox) forControlEvents:UIControlEventTouchUpInside];
+        [btnClose_shell addSubview:btnClose];
+
+        [mainView addSubview:btnClose_shell];
+        [mainView addSubview:imageShow];
+        [mainView addSubview:btnLink];
+        [overlay addSubview:mainView];
 
 
-    [UIView animateKeyframesWithDuration:.55
-                                   delay:0
-                                 options:0 << 16
-                              animations:^{
-                                  [UIView addKeyframeWithRelativeStartTime:0 relativeDuration:.8 animations:^{
-                                      overlay.backgroundColor = [UIColor colorWithRed:0 green:0 blue:0 alpha:0.7];
-                                  }];
-                                  [UIView addKeyframeWithRelativeStartTime:0 relativeDuration:.6 animations:^{
-                                      if ([[UIScreen mainScreen] bounds].size.height < 500) {
-                                          mainView.frame = CGRectMake(9, 74, 302, 440);
-                                      }
-                                      else {
-                                          mainView.frame = CGRectMake(9, 74, 302, 499);
-                                      }
-                                  }];
-                                  [UIView addKeyframeWithRelativeStartTime:0.6 relativeDuration:0.4 animations:^{
-                                      if ([[UIScreen mainScreen] bounds].size.height < 500) {
-                                          mainView.frame = CGRectMake(9, 35, 302, 440);
-                                      }
-                                      else {
-                                          mainView.frame = CGRectMake(9, 45, 302, 499);
-                                      }
-                                  }];
-                              }
-                              completion: nil
-     ];
-
-    [ARTrackingManager trackEvent:@"Welcome_TellMeMore_Tapped"];
+        [UIView animateKeyframesWithDuration:.55
+                                       delay:0
+                                     options:0 << 16
+                                  animations:^{
+                                      [UIView addKeyframeWithRelativeStartTime:0 relativeDuration:.8 animations:^{
+                                          overlay.backgroundColor = [UIColor colorWithRed:0 green:0 blue:0 alpha:0.7];
+                                      }];
+                                      [UIView addKeyframeWithRelativeStartTime:0 relativeDuration:.6 animations:^{
+                                          if ([[UIScreen mainScreen] bounds].size.height < 500) {
+                                              mainView.frame = CGRectMake(9, 74, 302, 440);
+                                          }
+                                          else {
+                                              mainView.frame = CGRectMake(9, 74, 302, 499);
+                                          }
+                                      }];
+                                      [UIView addKeyframeWithRelativeStartTime:0.6 relativeDuration:0.4 animations:^{
+                                          if ([[UIScreen mainScreen] bounds].size.height < 500) {
+                                              mainView.frame = CGRectMake(9, 35, 302, 440);
+                                          }
+                                          else {
+                                              mainView.frame = CGRectMake(9, 45, 302, 499);
+                                          }
+                                      }];
+                                  }
+                                  completion:^(BOOL finished) {
+                                      [ARTrackingManager trackEvent:@"Welcome_MoreInfo_FinishedAppear"];
+                                  }
+         ];
+    }
 }
 
 -(void)close_lightBox

@@ -37,7 +37,8 @@ NSMutableURLRequest *request;
 @property(nonatomic,strong) UIView *pending_requests;
 @property(nonatomic,strong) iCarousel *carousel;
 @property(nonatomic,strong) UILabel * selectedFavName;
-
+@property(nonatomic,strong) UILabel *glyphNoBank;
+@property(nonatomic,strong) UILabel *pending_notif;
 @end
 
 @implementation Home
@@ -141,6 +142,9 @@ NSMutableURLRequest *request;
         [fb setTagName:@"fb"];
         [fb storeFB:[user objectForKey:@"facebook_id"] isConnect:@"YES"];
     }
+
+    self.pending_notif = [UILabel new];
+    [self.pending_notif setHidden:YES];
 
     firstNameAB = @"";
     lastNameAB = @"";
@@ -717,7 +721,7 @@ void addressBookChanged(ABAddressBookRef addressBook, CFDictionaryRef info, void
             self.hud.labelColor = kNoochGrayDark;
             [self.hud show:YES];
 
-            //location
+            //Get Location
             [self checkIfLocAllowed];
 
             [ARTrackingManager trackEvent:@"Home_ViewDidAppear_ReloadInitiated" parameters:dictionary];
@@ -1164,7 +1168,9 @@ void addressBookChanged(ABAddressBookRef addressBook, CFDictionaryRef info, void
     //NSLog(@"Banner count is: %d",bannerAlert);
 
     //Update Pending Status
-    if ([[user objectForKey:@"Pending_count"] intValue] > 0)
+    if ([[user objectForKey:@"Pending_count"] intValue] > 0 &&
+        ((isKnoxOn && [user boolForKey:@"IsKnoxBankAvailable"]) ||
+         (isSynapseOn && [user boolForKey:@"IsSynapseBankAvailable"])) )
     {
         [self addPendingBanner];
     }
@@ -1229,12 +1235,7 @@ void addressBookChanged(ABAddressBookRef addressBook, CFDictionaryRef info, void
 -(void)addPendingBanner
 {
     //Update Pending Status
-
     [self.navigationItem setLeftBarButtonItem:nil];
-    UILabel * pending_notif = [UILabel new];
-    [pending_notif setText:[user objectForKey:@"Pending_count"]];
-    [pending_notif setFrame:CGRectMake(16, -2, 20, 20)];
-    [pending_notif setStyleId:@"pending_notif"];
 
     UIButton * hamburger = [UIButton buttonWithType:UIButtonTypeRoundedRect];
     [hamburger setStyleId:@"navbar_hamburger"];
@@ -1242,7 +1243,16 @@ void addressBookChanged(ABAddressBookRef addressBook, CFDictionaryRef info, void
     [hamburger setTitle:[NSString fontAwesomeIconStringForIconIdentifier:@"fa-bars"] forState:UIControlStateNormal];
     [hamburger setTitleShadowColor:Rgb2UIColor(19, 32, 38, 0.22) forState:UIControlStateNormal];
     hamburger.titleLabel.shadowOffset = CGSizeMake(0.0, -1.0);
-    [hamburger addSubview:pending_notif];
+
+    if ([self.pending_notif isHidden])
+    {
+        [self.pending_notif setHidden:NO];
+        [self.pending_notif setText:[user objectForKey:@"Pending_count"]];
+        [self.pending_notif setFrame:CGRectMake(16, -2, 22, 22)];
+        [self.pending_notif setStyleId:@"pending_notif"];
+    }
+    [hamburger addSubview:self.pending_notif];
+
     UIBarButtonItem * menu = [[UIBarButtonItem alloc] initWithCustomView:hamburger];
     [self.navigationItem setLeftBarButtonItem:menu];
 
@@ -1379,6 +1389,10 @@ void addressBookChanged(ABAddressBookRef addressBook, CFDictionaryRef info, void
     {
         [self dismiss_requestsPendingBanner];
     }
+    if ([self.view.subviews containsObject:self.pending_notif])
+    {
+        [self.pending_notif setHidden:YES];
+    }
 }
 
 - (void)viewWillAppear:(BOOL)animated
@@ -1502,9 +1516,7 @@ void addressBookChanged(ABAddressBookRef addressBook, CFDictionaryRef info, void
     bodyText.textColor = [Helpers hexColor:@"313233"];
     bodyText.textAlignment = NSTextAlignmentCenter;
     [mainView addSubview:bodyText];
-    
-    //NSLog(@"picWidth is: %d  and picHeight is: %d",picwidthInt,picHeightInt);
-    
+
     UIImageView * mainImage = [UIImageView new];
     [mainImage setFrame:CGRectMake((mainView.bounds.size.width - picwidthInt) / 2, head_container.bounds.size.height + 10, picwidthInt, picHeightInt)];
     mainImage.clipsToBounds = YES;
@@ -2230,30 +2242,39 @@ void addressBookChanged(ABAddressBookRef addressBook, CFDictionaryRef info, void
 
         NSDictionary * dict = [NSJSONSerialization JSONObjectWithData:[result dataUsingEncoding:NSUTF8StringEncoding] options:0 error:&error];
 
-        //NSLog(@"Home --> Listen --> getPendingTransfersCount Result: %@",dict);
         int pendingRequestsReceived = [[dict valueForKey:@"pendingRequestsReceived"] intValue];
         NSString * count;
 
-        [self.navigationItem setLeftBarButtonItem:nil];
+        //[self.navigationItem setLeftBarButtonItem:nil];
 
-        if (pendingRequestsReceived > 0)
+        if (pendingRequestsReceived > 0 &&
+            ((isSynapseOn && [user boolForKey:@"IsSynapseBankAvailable"]) ||
+             (isKnoxOn && [user boolForKey:@"IsKnoxBankAvailable"])))
         {
-            UILabel * pending_notif = [UILabel new];
-            [pending_notif setText:[NSString stringWithFormat:@"%d", pendingRequestsReceived]];
-            [pending_notif setFrame:CGRectMake(16, -2, 20, 20)];
-            [pending_notif setStyleId:@"pending_notif"];
+            if ([self.view.subviews containsObject:self.glyphNoBank])
+            {
+                [self.glyphNoBank removeFromSuperview];
+            }
 
+            if ([self.pending_notif isHidden])
+            {
+                [self.pending_notif setText:[NSString stringWithFormat:@"%d", pendingRequestsReceived]];
+                [self.pending_notif setFrame:CGRectMake(16, -2, 22, 22)];
+                [self.pending_notif setStyleId:@"pending_notif"];
+                [self.pending_notif setStyleClass:@"animate_bubble"];
+            }
             UIButton * hamburger = [UIButton buttonWithType:UIButtonTypeRoundedRect];
             [hamburger setStyleId:@"navbar_hamburger"];
             [hamburger addTarget:self action:@selector(showMenu) forControlEvents:UIControlEventTouchUpInside];
             [hamburger setTitle:[NSString fontAwesomeIconStringForIconIdentifier:@"fa-bars"] forState:UIControlStateNormal];
             [hamburger setTitleShadowColor:Rgb2UIColor(19, 32, 38, 0.22) forState:UIControlStateNormal];
             hamburger.titleLabel.shadowOffset = CGSizeMake(0.0, -1.0);
-            [hamburger addSubview:pending_notif];
+            [hamburger addSubview:self.pending_notif];
 
             UIBarButtonItem * menu = [[UIBarButtonItem alloc] initWithCustomView:hamburger];
             [self.navigationItem setLeftBarButtonItem:menu];
-
+            [self.pending_notif setHidden:NO];
+    
             [user setBool:true forKey:@"hasPendingItems"];
             count = [dict valueForKey:@"pendingRequestsReceived"];
 
@@ -2266,12 +2287,45 @@ void addressBookChanged(ABAddressBookRef addressBook, CFDictionaryRef info, void
         }
         else
         {
+            [self.pending_notif setHidden:YES];
             UIButton * hamburger = [UIButton buttonWithType:UIButtonTypeRoundedRect];
             [hamburger setStyleId:@"navbar_hamburger"];
             [hamburger addTarget:self action:@selector(showMenu) forControlEvents:UIControlEventTouchUpInside];
             [hamburger setTitle:[NSString fontAwesomeIconStringForIconIdentifier:@"fa-bars"] forState:UIControlStateNormal];
             [hamburger setTitleShadowColor:Rgb2UIColor(19, 32, 38, 0.22) forState:UIControlStateNormal];
             hamburger.titleLabel.shadowOffset = CGSizeMake(0.0, -1.0);
+
+            if ((isKnoxOn && ![user boolForKey:@"IsKnoxBankAvailable"]) ||
+                (isSynapseOn && ![user boolForKey:@"IsSynapseBankAvailable"]))
+            {
+                if (![self.view.subviews containsObject:self.glyphNoBank])
+                {
+                    self.glyphNoBank = [UILabel new];
+                    [self.glyphNoBank setText:[NSString fontAwesomeIconStringForIconIdentifier:@"fa-exclamation"]];
+                    [self.glyphNoBank setStyleId:@"noBank_Home"];
+                    [self.glyphNoBank setFrame:CGRectMake(16, -2, 22, 22)];
+                    [self.glyphNoBank setAlpha:1];
+                    [self.glyphNoBank setStyleClass:@"animate_bubble"];
+                    [hamburger addSubview:self.glyphNoBank];
+                }
+            }
+            else
+            {
+                if ([self.view.subviews containsObject:self.glyphNoBank])
+                {
+                    [UIView animateKeyframesWithDuration:.4
+                                                   delay:0
+                                                 options:UIViewKeyframeAnimationOptionCalculationModeCubic
+                                              animations:^{
+                                                  [UIView addKeyframeWithRelativeStartTime:0 relativeDuration:1 animations:^{
+                                                      [self.glyphNoBank setAlpha:0];
+                                                  }];
+                                                  
+                                              } completion:^(BOOL finished){
+                                                  [self.glyphNoBank removeFromSuperview];
+                                              }];
+                }
+            }
 
             UIBarButtonItem * menu = [[UIBarButtonItem alloc] initWithCustomView:hamburger];
             [self.navigationItem setLeftBarButtonItem:menu];

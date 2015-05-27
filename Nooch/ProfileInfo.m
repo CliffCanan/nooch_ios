@@ -442,6 +442,7 @@ UIImageView *picture;
 -(void)viewWillAppear:(BOOL)animated
 {
     [super viewWillAppear:animated];
+    [self.navigationController setNavigationBarHidden:NO];
 
     self.screenName = @"Profile Screen";
     self.artisanNameTag = @"Profile Screen";
@@ -1738,7 +1739,7 @@ UIImageView *picture;
             else
             {
                 UIAlertView *av = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"Profile_SvdSucAlrtTtle2", @"Profile 'Profile Saved' Alert Title (2nd)")
-                                                             message:NSLocalizedString(@"Profile_SvdSucAlrtBody2", @"Profile Profile Saved Alert Body Text")
+                                                             message:[NSString stringWithFormat:@"\xF0\x9F\x98\x8E\n%@",NSLocalizedString(@"Profile_SvdSucAlrtBody2", @"Profile Profile Saved Alert Body Text")]
                                                             delegate:self
                                                    cancelButtonTitle:@"OK"
                                                    otherButtonTitles:nil];
