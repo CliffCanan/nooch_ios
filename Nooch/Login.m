@@ -61,6 +61,7 @@
         self.hud.delegate = self;
         self.hud.labelText = NSLocalizedString(@"Login_HUDlbl", @"'Checking Login Credentials...' HUD Label");
         [self.hud show:YES];
+//[[assist shared]setPassValue:self.password.text]; //Cliff (7/4/15: why are we storing the pw value?? Can't imagine why it's needed...s
 
         serve *log = [serve new];
         [log setDelegate:self];
@@ -511,7 +512,7 @@
     {
         if ([CLLocationManager authorizationStatus] == kCLAuthorizationStatusAuthorized)
         {
-            NSLog(@"Location Services Allowed");
+            NSLog(@"Login -> Location Services Allowed");
 
             locationManager = [[CLLocationManager alloc] init];
 
@@ -522,7 +523,7 @@
             [locationManager startUpdatingLocation];
         }
         else {
-            NSLog(@"Location Services NOT Allowed");
+            NSLog(@"Login -> Location Services NOT Allowed");
         }
     }
 }

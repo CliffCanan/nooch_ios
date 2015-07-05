@@ -139,6 +139,10 @@
 
     [self.choose_pic setTitle:NSLocalizedString(@"SelPic_ChngPicBtn1", @"Select Picture screen 'Change Picture' Btn Text") forState:UIControlStateNormal];
 
+    if ([[UIScreen mainScreen] bounds].size.height > 500)
+    {
+        [self.next_button setFrame:CGRectMake(10, 456, 300, 60)];
+    }
     [self.next_button setTitle:NSLocalizedString(@"SelPic_ContinBtn3", @"Select Picture screen 'Continue' Btn Text") forState:UIControlStateNormal];
     [self.next_button removeTarget:self action:@selector(next) forControlEvents:UIControlEventTouchUpInside];
     [self.next_button addTarget:self action:@selector(cont) forControlEvents:UIControlEventTouchUpInside];
@@ -245,7 +249,7 @@
     [glyphcamera setTextColor:[UIColor whiteColor]];
     
     self.next_button = [UIButton buttonWithType:UIButtonTypeRoundedRect];
-    [self.next_button setFrame:CGRectMake(10, 458, 300, 60)];
+    [self.next_button setFrame:CGRectMake(10, 456, 300, 60)];
     [self.next_button addTarget:self action:@selector(next) forControlEvents:UIControlEventTouchUpInside];
     
     if ([[UIScreen mainScreen] bounds].size.height < 500)
@@ -283,6 +287,10 @@
 
         [self.choose_pic setTitle:NSLocalizedString(@"SelPic_ChoosePicBtn1", @"Select Picture screen '  Choose Picture' Btn Text") forState:UIControlStateNormal];
 
+        if ([[UIScreen mainScreen] bounds].size.height > 500)
+        {
+            [self.next_button setFrame:CGRectMake(10, 508, 300, 60)];
+        }
         [self.next_button setBackgroundColor:[UIColor clearColor]];
         [self.next_button setTitleColor:kNoochGrayDark forState:UIControlStateNormal];
         [self.next_button setTitle:NSLocalizedString(@"SelPic_LaterBtn1", @"Select Picture screen 'I don't want to add a picture now...' Btn Text") forState:UIControlStateNormal];
@@ -293,13 +301,19 @@
 
     [self.choose_pic addSubview:glyphcamera];
     [subview addSubview:welcome];
-    [subview addSubview:self.pic];
     [subview addSubview:self.message];
     [subview addSubview:self.choose_pic];
     [subview addSubview:self.next_button];
 
     self.picker = [[UIImagePickerController alloc] init];
     self.picker.delegate = self;
+}
+
+-(void)viewDidAppear:(BOOL)animated
+{
+    [super viewDidAppear:animated];
+    [self.view addSubview:self.pic];
+    [self.pic addStyleClass:@"animate_bubble_slow"];
 }
 
 - (void)toggleFacebookLogin
@@ -396,6 +410,10 @@
 
     [self.choose_pic setTitle:NSLocalizedString(@"SelPic_ChoosePicBtn2", @"Select Picture screen '  Choose Picture' Btn Text (2nd)") forState:UIControlStateNormal];
 
+    if ([[UIScreen mainScreen] bounds].size.height > 500)
+    {
+        [self.next_button setFrame:CGRectMake(10, 508, 300, 60)];
+    }
     [self.next_button setBackgroundColor:[UIColor clearColor]];
     [self.next_button setTitleColor:kNoochGrayDark forState:UIControlStateNormal];
     [self.next_button setTitle:NSLocalizedString(@"SelPic_LaterBtn2", @"Select Picture screen 'I don't want to add a picture now...' Btn Text (2nd)") forState:UIControlStateNormal];
@@ -433,7 +451,11 @@
             
             [self.message setText:NSLocalizedString(@"SelPic_InstrctTxt3", @"Select Picture screen Instruction Text after selecting a pic (3rd)")];
             [self.choose_pic setTitle:NSLocalizedString(@"SelPic_ChngPicBtn3", @"Select Picture screen '  Change Picture' Btn Text") forState:UIControlStateNormal];
-            
+
+            if ([[UIScreen mainScreen] bounds].size.height > 500)
+            {
+                [self.next_button setFrame:CGRectMake(10, 456, 300, 60)];
+            }
             [self.next_button setTitle:NSLocalizedString(@"SelPic_ContinBtn4", @"Select Picture screen 'Continue' Btn Text (3rd)") forState:UIControlStateNormal];
             [self.next_button removeTarget:self action:@selector(next) forControlEvents:UIControlEventTouchUpInside];
             [self.next_button addTarget:self action:@selector(cont) forControlEvents:UIControlEventTouchUpInside];

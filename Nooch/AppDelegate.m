@@ -220,7 +220,7 @@ bool modal;
                                                @"lastName": @"Last Name",
                                                @"memo": @"",
                                                @"alertTitle": @"Thank You!",
-                                               @"alertText" : @"100% of what you give in this transaction will go to supporting the cause!"
+                                               @"alertText" : @"100% of what you give in this transfer will go to supporting the cause!"
                                             }
                                    andBlock:^(NSDictionary *data, id context) {
                                        if (![[assist shared] getSuspended] &&

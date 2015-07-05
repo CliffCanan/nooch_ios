@@ -194,7 +194,7 @@
     else
     {
         [payRentBtn setTitle:@"Link a Bank Now" forState:UIControlStateNormal];
-        [payRentBtn addTarget:self action:@selector(attach_bank) forControlEvents:UIControlEventTouchUpInside];
+        [payRentBtn addTarget:self action:@selector(attach_bankApt) forControlEvents:UIControlEventTouchUpInside];
         [payRentBtn setStyleClass:@"button_blue_shorter"];
     }
     [payRentBtn setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
@@ -278,7 +278,7 @@
     [super viewDidDisappear:animated];
 }
 
--(void)attach_bank
+-(void)attach_bankApt
 {
     NSLog(@"My APARTMENT.M --> ATTACH BANK");
     if (isBankAttached)

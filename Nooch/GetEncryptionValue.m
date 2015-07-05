@@ -9,9 +9,6 @@
 #import "GetEncryptionValue.h"
 #import "Constant.h"
 #import "NSString+ASBase64.h"
-//#import "CJSONSerializer.h"
-//#import "CJSONDataSerializer.h"
-//#import "JSON.h"
 NSMutableURLRequest*requestEncryption;
 
 @implementation GetEncryptionValue
@@ -49,12 +46,11 @@ NSMutableURLRequest*requestEncryption;
 	NSLog(@"Connection failed: %@", [error description]);
 }
 
-- (void)connectionDidFinishLoading:(NSURLConnection *)connection {
-    
+- (void)connectionDidFinishLoading:(NSURLConnection *)connection
+{
     NSString *responseString = [[NSString alloc] initWithData:responseData encoding:NSASCIIStringEncoding];
-    
     NSError* error;
-    
+
     // SBJsonParser *parser = [[[SBJsonParser alloc] init] autorelease];
 //    id object = [NSJSONSerialization
 //                 JSONObjectWithData:[responseString dataUsingEncoding:NSUTF8StringEncoding]
@@ -77,27 +73,6 @@ NSMutableURLRequest*requestEncryption;
                                         error:&error];;
     NSString *resultStr = [[NSString alloc] initWithString:[loginResult objectForKey:@"Status"]];
     [self.Delegate encryptionDidFinish:resultStr TValue:self.tag];
-    // [self.Delegate decryptionDidFinish:loginResult TValue:self.tag];
-    
-    //[responseData release];
-    
 }
-
-//-(void)listen:(NSString *)result tagName:(NSString*)tagName {
-//    NSError* error;
-//
-//
-//    NSDictionary *loginResult = [NSJSONSerialization
-//                                 JSONObjectWithData:[result dataUsingEncoding:NSUTF8StringEncoding]
-//                                 options:kNilOptions
-//                                 error:&error];;
-//    NSLog(@"Dictionary value is : %@", loginResult);
-//
-//    NSString *resultStr = [[NSString alloc] initWithString:[loginResult objectForKey:@"Status"]];
-//
-//    [self.Delegate encryptionDidFinish:resultStr TValue:self.tag];
-//
-//}
-
 
 @end

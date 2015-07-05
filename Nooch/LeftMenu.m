@@ -72,8 +72,8 @@
     shadowUnder.layer.cornerRadius = 30;
     shadowUnder.layer.shadowColor = [UIColor blackColor].CGColor;
     shadowUnder.layer.shadowOffset = CGSizeMake(0, 2);
-    shadowUnder.layer.shadowOpacity = 0.75;
-    shadowUnder.layer.shadowRadius = 3.5;
+    shadowUnder.layer.shadowOpacity = 0.82;
+    shadowUnder.layer.shadowRadius = 4.0;
     shadowUnder.alpha = .8;
     [user_bar addSubview:shadowUnder];
 

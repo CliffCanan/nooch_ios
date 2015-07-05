@@ -18,11 +18,14 @@
     UILabel * introText;
     UILabel * bank_name;
     UILabel * lastFour_label;
+    UILabel * bnkStatus_label;
+    UILabel * bnkStatus_status;
     UIImageView * bank_image;
     UITableView * menu;
     UIView * linked_background;
     UIButton * unlink_account;
     UIButton * link_bank;
+    UIButton * addAnotherBnk;
     UILabel *glyph_noBank;
     UIScrollView * scroll;
 }
@@ -67,13 +70,19 @@
     NSLog(@"boolForKey @'IsSynapseBankAvailable' is: %d",[user boolForKey:@"IsSynapseBankAvailable"]);
 
     if ((isKnoxOn && [user boolForKey:@"IsKnoxBankAvailable"]) ||
-        (isSynapseOn && [user boolForKey:@"IsSynapseBankAvailable"]))
+        (isSynapseOn && [user boolForKey:@"IsSynapseBankAvailable"] && [user boolForKey:@"IsSynapseBankVerified"]))
     {
         isBankAttached = YES;
         if ([self.view.subviews containsObject:glyph_noBank])
         {
             [glyph_noBank removeFromSuperview];
         }
+
+        addAnotherBnk = [UIButton buttonWithType:UIButtonTypeRoundedRect];
+        [addAnotherBnk setStyleId:@"addAnotherBnk"];
+        [addAnotherBnk setTitle:[NSString fontAwesomeIconStringForIconIdentifier:@"fa-plus-circle"] forState:UIControlStateNormal];
+        [addAnotherBnk addTarget:self action:@selector(attach_bank) forControlEvents:UIControlEventTouchUpInside];
+        [self.view addSubview:addAnotherBnk];
     }
     else
     {
@@ -119,23 +128,15 @@
     [title setText:NSLocalizedString(@"Settings_LinkedBankHdr", @"Settings Screen header - 'Linked Bank Account'")];
     [self.view addSubview:title];
 
-    link_bank = [UIButton buttonWithType:UIButtonTypeRoundedRect];
-    [link_bank setFrame:CGRectMake(0, 123, 0, 0)];
-    if (isBankAttached)
-    {
-        [link_bank setTitle:NSLocalizedString(@"Settings_LinkNewBnk", @"Settings Screen button text when bank is attached") forState:UIControlStateNormal];
-    }
-    else
-    {
-        [link_bank setTitle:NSLocalizedString(@"Settings_LinkBnkNow", @"Settings Screen button text when bank is NOT attached") forState:UIControlStateNormal];
-    }
-    [link_bank setTitleShadowColor:Rgb2UIColor(19, 32, 38, 0.22) forState:UIControlStateNormal];
-    link_bank.titleLabel.shadowOffset = CGSizeMake(0.0, -1.0);
-
     NSShadow * shadow = [[NSShadow alloc] init];
     shadow.shadowColor = Rgb2UIColor(19, 32, 38, .22);
     shadow.shadowOffset = CGSizeMake(0, -1);
     NSDictionary * textAttributes1 = @{NSShadowAttributeName: shadow };
+
+    link_bank = [UIButton buttonWithType:UIButtonTypeRoundedRect];
+    [link_bank setFrame:CGRectMake(0, 123, 0, 0)];
+    [link_bank setTitleShadowColor:Rgb2UIColor(19, 32, 38, 0.22) forState:UIControlStateNormal];
+    link_bank.titleLabel.shadowOffset = CGSizeMake(0.0, -1.0);
 
     UILabel * glyph = [UILabel new];
     [glyph setFont:[UIFont fontWithName:@"FontAwesome" size:20]];
@@ -149,7 +150,15 @@
     [link_bank setStyleClass:@"button_blue"];
     [link_bank setStyleId:@"link_new_account"];
     [link_bank setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
-    [self.view addSubview:link_bank];
+    if (isBankAttached)
+    {
+        [link_bank setTitle:NSLocalizedString(@"Settings_LinkNewBnk", @"Settings Screen button text when bank is attached") forState:UIControlStateNormal];
+    }
+    else
+    {
+        [link_bank setTitle:NSLocalizedString(@"Settings_LinkBnkNow", @"Settings Screen button text when bank is NOT attached") forState:UIControlStateNormal];
+        [self.view addSubview:link_bank];
+    }
 
     menu = [[UITableView alloc] initWithFrame:CGRectMake(-1, 194, 322, 200) style:UITableViewStylePlain];
     [menu setStyleId:@"settings"];
@@ -511,10 +520,13 @@
                                             error:&error];
         if ([dictResponse valueForKey:@"Result"])
         {
-            if ([[dictResponse valueForKey:@"Result"] isEqualToString:@"Success."])
-            {
+          // if ([[dictResponse valueForKey:@"Result"] isEqualToString:@"Success."]) {
                 [blankView removeFromSuperview];
                 [[NSFileManager defaultManager] removeItemAtPath:[self autoLogin] error:nil];
+
+                [timer invalidate];
+                [nav_ctrl performSelector:@selector(disable)];
+                [nav_ctrl performSelector:@selector(reset)];
 
                 // Reset the values of all NSUserDefault items & keys
                 NSString *appDomain = [[NSBundle mainBundle] bundleIdentifier];
@@ -523,12 +535,17 @@
 
                 [[assist shared] setisloggedout:YES];
 
-                [nav_ctrl performSelector:@selector(disable)];
+                NSMutableArray * arrNav = [nav_ctrl.viewControllers mutableCopy];
+                for (short i = [arrNav count]; i > 1; i--) {
+                    [arrNav removeLastObject];
+                }
+
+                [nav_ctrl setViewControllers:arrNav animated:NO];
                 Register *reg = [Register new];
-                [self.navigationController pushViewController:reg animated:YES];
+                [nav_ctrl pushViewController:reg animated:YES];
                 me = [core new];
                 [ARProfileManager clearProfile];
-            }
+           // }
         }
     }
 
@@ -562,6 +579,9 @@
             [linked_background removeFromSuperview];
             [bank_image removeFromSuperview];
             [unlink_account removeFromSuperview];
+            [addAnotherBnk removeFromSuperview];
+
+            [self.view addSubview:link_bank];
         }
         else if ([[dictResponse valueForKey:@"Result"] rangeOfString:@"No active bank account found"].length != 0)
         {
@@ -618,7 +638,7 @@
                 [self.view addSubview:linked_background];
             }
 
-            UILabel * glyph_lock = [[UILabel alloc] initWithFrame:CGRectMake(73, 6, 13, 32)];
+            UILabel * glyph_lock = [[UILabel alloc] initWithFrame:CGRectMake(74, 6, 13, 24)];
             [glyph_lock setBackgroundColor:[UIColor clearColor]];
             [glyph_lock setTextAlignment:NSTextAlignmentLeft];
             [glyph_lock setFont:[UIFont fontWithName:@"FontAwesome" size:13]];
@@ -626,11 +646,11 @@
             [glyph_lock setTextColor:kNoochGreen];
             [linked_background addSubview:glyph_lock];
  
-            bank_image = [[UIImageView alloc]initWithFrame:CGRectMake(10, 8, 49, 48)];
+            bank_image = [[UIImageView alloc]initWithFrame:CGRectMake(10, 10, 49, 48)];
             bank_image.contentMode = UIViewContentModeScaleToFill;
             [bank_image sd_setImageWithURL:[NSURL URLWithString:[dictResponse valueForKey:@"BankImageURL"]] placeholderImage:[UIImage imageNamed:@"bank.png"]];
-            [bank_image setFrame:CGRectMake(10, 7, 50, 50)];
-            bank_image.layer.cornerRadius = 5;
+            [bank_image setFrame:CGRectMake(10, 10, 52, 52)];
+            bank_image.layer.cornerRadius = 6;
             bank_image.clipsToBounds = YES;
             [linked_background addSubview:bank_image];
 
@@ -644,11 +664,23 @@
             [lastFour_label setText:[NSString stringWithFormat:@"**** **** **** %@",[dictResponse valueForKey:@"AccountName"]  ]];
             [linked_background addSubview:lastFour_label];
 
+            bnkStatus_label = [UILabel new];
+            [bnkStatus_label setStyleId:@"bnkStatus_lbl"];
+            [bnkStatus_label setText:@"Status:"];
+            [linked_background addSubview:bnkStatus_label];
+
+            UILabel * bnkStatusStatus = [UILabel new];
+            [bnkStatusStatus setStyleClass:@"bnkStatus_status"];
+            [bnkStatusStatus setText:@"Not Verified"];
+            [linked_background addSubview:bnkStatusStatus];
+
             unlink_account = [UIButton buttonWithType:UIButtonTypeRoundedRect];
             [unlink_account setStyleId:@"remove_account"];
             [unlink_account setTitle:NSLocalizedString(@"Settings_EditTxt", @"Settings 'Edit' Txt") forState:UIControlStateNormal];
             [unlink_account addTarget:self action:@selector(edit_attached_bank) forControlEvents:UIControlEventTouchUpInside];
             [linked_background addSubview:unlink_account];
+
+            [linked_background addGestureRecognizer:[[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(profile)]];
 
             [ARProfileManager registerString:@"Bank_Name" withValue:[dictResponse valueForKey:@"BankName"]];
             [ARProfileManager registerString:@"Bank_Logo" withValue:[dictResponse valueForKey:@"BankImageURL"]];
@@ -712,7 +744,7 @@
             [glyph_lock setTextColor:kNoochGreen];
             [linked_background addSubview:glyph_lock];
 
-            bank_image = [[UIImageView alloc] initWithFrame:CGRectMake(10, 8, 49, 48)];
+            bank_image = [[UIImageView alloc] initWithFrame:CGRectMake(11, 12, 49, 48)];
             bank_image.contentMode = UIViewContentModeScaleToFill;
             if (![[responseForSynapseBank valueForKey:@"BankImageURL"] isKindOfClass:[NSNull class]])
             {
@@ -722,7 +754,7 @@
                 }
                 else
                 {
-                    [bank_image setFrame:CGRectMake(10, 7, 50, 50)];
+                    [bank_image setFrame:CGRectMake(10, 10, 52, 52)];
                     [bank_image sd_setImageWithURL:[NSURL URLWithString:[responseForSynapseBank valueForKey:@"BankImageURL"]] placeholderImage:[UIImage imageNamed:@"bank.png"]];
                 }
             }
@@ -750,6 +782,24 @@
                 [lastFour_label setText:[responseForSynapseBank valueForKey:@"AccountName"]];
             }
             [linked_background addSubview:lastFour_label];
+
+            bnkStatus_label = [UILabel new];
+            [bnkStatus_label setStyleId:@"bnkStatus_lbl"];
+            [bnkStatus_label setText:@"Status:"];
+            [linked_background addSubview:bnkStatus_label];
+
+            UILabel * bnkStatusStatus = [UILabel new];
+            [bnkStatusStatus setStyleClass:@"bnkStatus_status"];
+            if ([user boolForKey:@"IsSynapseBankVerified"])
+            {
+                [bnkStatusStatus setStyleId:@"bnkstatus_verified"];
+                [bnkStatusStatus setText:@"Verified"];
+            }
+            else {
+                [bnkStatusStatus setText:@"Not Verified"];
+            }
+            
+            [linked_background addSubview:bnkStatusStatus];
 
             unlink_account = [UIButton buttonWithType:UIButtonTypeRoundedRect];
             [unlink_account setStyleId:@"remove_account"];

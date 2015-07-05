@@ -110,13 +110,28 @@ NSMutableURLRequest *request;
     }
     else
     {
-        [user removeObjectForKey:@"MemberId"];
-        [user removeObjectForKey:@"UserName"];
-        [self.view removeGestureRecognizer:self.slidingViewController.panGesture];
-        [user removeObjectForKey:@"Balance"];
-
-        Register * reg = [Register new];
-        [nav_ctrl pushViewController:reg animated:NO];
+        [[NSFileManager defaultManager] removeItemAtPath:[self autoLogin] error:nil];
+        
+        [timer invalidate];
+        [nav_ctrl performSelector:@selector(disable)];
+        [nav_ctrl performSelector:@selector(reset)];
+        
+        // Reset the values of all NSUserDefault items & keys
+        NSString *appDomain = [[NSBundle mainBundle] bundleIdentifier];
+        [[NSUserDefaults standardUserDefaults] removePersistentDomainForName:appDomain];
+        [[NSUserDefaults standardUserDefaults] synchronize];
+        
+        [[assist shared] setisloggedout:YES];
+        
+        NSMutableArray * arrNav = [nav_ctrl.viewControllers mutableCopy];
+        for (short i = [arrNav count]; i > 1; i--) {
+            [arrNav removeLastObject];
+        }
+        
+        [nav_ctrl setViewControllers:arrNav animated:NO];
+        Register *reg = [Register new];
+        [nav_ctrl pushViewController:reg animated:YES];
+        me = [core new];
 
         [ARProfileManager clearProfile];
         [[assist shared] setisloggedout:YES];

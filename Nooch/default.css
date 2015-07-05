@@ -919,7 +919,7 @@ navigation-bar title {
     text-align      : center;
     color 			: #313233;
 }
-
+#instruction_text_lg{font-size: 20px;}
 .pin_entry_feedback {
     text-align: center;
     font-size: 14px;
@@ -1035,7 +1035,7 @@ navigation-bar title {
     height				: 30px;
     font-family			: "Roboto";
     font-weight         : light;
-    font-size			: 19px;
+    font-size			: 17px;
     text-align       	: center;
     color 				: #414042;
 }
@@ -3016,20 +3016,20 @@ table-view#emptyTable {
 .background_gray { background-color: #efeff4; }
 
 #account_background {
-    top: 44px;
+    top: 45px;
     left: -1px;
     width: 322px;
-    height: 64px;
+    height: 72px;
     background-color: white;
     border: 1px solid;
-    border-color: rgba(188, 190, 192, 0.85);
+    border-color: rgba(188, 190, 192, 0.8);
 }
 
 #linked_account_name {
-    left		: 87px;
+    left		: 88px;
     top			: 6px;
     width		: 200px;
-    height		: 32px;
+    height		: 24px;
     font-family	: "Roboto";
     font-weight	: medium;
     font-size	: 17px;
@@ -3038,23 +3038,59 @@ table-view#emptyTable {
 }
 
 #linked_account_last4 {
-    left		: 73px;
-    top			: 35px;
+    left		: 74px;
+    top			: 30px;
     width		: 200px;
-    height		: 16px;
+    height		: 15px;
     font-family	: "Roboto";
     font-weight	: light;
     font-size	: 14px;
     text-align	: left;
     color		: #313233;
 }
-
+#bnkStatus_lbl {
+    left		: 74px;
+    top			: 49px;
+    width		: 70px;
+    height		: 14px;
+    font-family	: "Roboto";
+    font-weight	: medium;
+    font-size	: 12px;
+    text-align	: left;
+    color		: #313233;
+}
+.bnkStatus_status {
+    left		: 116px;
+    top			: 49px;
+    width		: 70px;
+    height		: 14px;
+    font-family	: "Roboto";
+    font-weight	: light;
+    font-size	: 12px;
+    text-align	: left;
+    color		: #a94442;
+}
+#bnkstatus_verified {
+    color: #72bf44;
+    font-weight: regular;
+}
+#addAnotherBnk {
+    color		: #3fabe1;
+    top			: 7px;
+    left		: 258px;
+    width		: 60px;
+    height		: 40px;
+    font-family : "FontAwesome";
+    font-weight	: regular;
+    font-size   : 25px;
+    box-shadow  : 0px 1px 1px rgba(52, 58, 66, 0.16);
+}
 #remove_account {
     color		: #a94442;
     top			: 2px;
     left		: 262px;
     width		: 50px;
-    height		: 60px;
+    height		: 56px;
     font-family	: "Roboto";
     font-weight	: regular;
     font-size	: 12px;
@@ -3063,9 +3099,9 @@ table-view#emptyTable {
 #remove_account_glyph {
     font-family : "FontAwesome";
     font-size   : 24px;
-    animation-name				: zoom;
-    animation-duration			: 0.7s;
-    animation-timing-function	: ease;
+    animation-name			 : zoom;
+    animation-duration		 : 0.7s;
+    animation-timing-function: ease;
 }
 .divider {
     left: 40px;
