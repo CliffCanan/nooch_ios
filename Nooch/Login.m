@@ -923,6 +923,12 @@
             [self.hud hide:YES];
             [self userIsTempBlocked_3xWrong];
         }
+
+        else if (loginResult == nil)
+        {
+            NSLog(@"Login was null unfortunately :-(");
+            [self.hud hide:YES];
+        }
     }
     
     else if ([tagName isEqualToString:@"getMemberId"])

@@ -512,9 +512,9 @@ UIImageView *picture;
 {
     if (isProfileOpenFromSideBar || sentFromHomeScrn || isFromTransDetails)
     {
-        SettingsOptions *sets = [SettingsOptions new];
+        SettingsOptions * sets = [SettingsOptions new];
         NSMutableArray * arrNav = [nav_ctrl.viewControllers mutableCopy];
-        [arrNav insertObject:sets atIndex:[arrNav count]-1];
+        [arrNav insertObject:sets atIndex:[arrNav count] - 1];
         [nav_ctrl setViewControllers:arrNav animated:NO];
     }
 
@@ -1531,12 +1531,7 @@ UIImageView *picture;
         [timer invalidate];
         [nav_ctrl performSelector:@selector(disable)];
         [nav_ctrl performSelector:@selector(reset)];
-        NSMutableArray*arrNav=[nav_ctrl.viewControllers mutableCopy];
-        for (short i = [arrNav count]; i>1; i--) {
-            [arrNav removeLastObject];
-        }
 
-        [nav_ctrl setViewControllers:arrNav animated:NO];
         Register *reg = [Register new];
         [nav_ctrl pushViewController:reg animated:YES];
         me = [core new];

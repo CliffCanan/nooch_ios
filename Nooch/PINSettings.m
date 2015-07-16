@@ -157,9 +157,10 @@
     UILabel * info2 = [UILabel new];
     [info2 setFrame:CGRectMake(10, show_search.frame.origin.y + show_search.frame.size.height, 300, 48)];
     [info2 setNumberOfLines:0];
-    [info2 setTextAlignment:NSTextAlignmentCenter];
-    [info2 setFont:[UIFont fontWithName:@"Roboto-Light" size:15]];
-    [info2 setTextColor:[Helpers hexColor:@"6c6e71"]];
+    [info2 setStyleClass:@"helpText"];
+    //[info2 setTextAlignment:NSTextAlignmentCenter];
+    //[info2 setFont:[UIFont fontWithName:@"Roboto-Light" size:15]];
+    //[info2 setTextColor:[Helpers hexColor:@"6c6e71"]];
     [info2 setText:NSLocalizedString(@"SecSettings_ShowInSrchInstruc", @"Security Settings show in search instruction text")];
     [scrollView addSubview:info2];
 

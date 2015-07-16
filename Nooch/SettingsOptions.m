@@ -14,6 +14,7 @@
 #import "knoxWeb.h"
 #import "UIImageView+WebCache.h"
 #import "fbConnect.h"
+#import "IdVerifyImageUpload.h"
 @interface SettingsOptions (){
     UILabel * introText;
     UILabel * bank_name;
@@ -30,6 +31,8 @@
     UIScrollView * scroll;
 }
 @property(atomic,weak)UIButton *logout;
+@property(nonatomic) UIImagePickerController *picker;
+@property(nonatomic,strong) MBProgressHUD *hud;
 
 @end
 
@@ -44,59 +47,50 @@
     return self;
 }
 
--(void)viewWillAppear:(BOOL)animated
-{
-    [super viewWillAppear:animated];
-    [self.navigationItem setTitle:NSLocalizedString(@"Settings_ScrnTitle", @"Settings Screen Title")];
-    self.screenName = @"Settings Main Screen";
-    [self getBankInfo];
-}
-
--(void)viewDidAppear:(BOOL)animated
-{
-    [super viewDidAppear:animated];
-    [ARTrackingManager trackEvent:@"Settings_viewDidAppear"];
-}
-
--(void)viewDidDisappear:(BOOL)animated
-{
-    [super viewDidDisappear:animated];
-}
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-
-    NSLog(@"boolForKey @'IsKnoxBankAvailable' is: %d",[user boolForKey:@"IsKnoxBankAvailable"]);
+    
     NSLog(@"boolForKey @'IsSynapseBankAvailable' is: %d",[user boolForKey:@"IsSynapseBankAvailable"]);
-
-    if ((isKnoxOn && [user boolForKey:@"IsKnoxBankAvailable"]) ||
-        (isSynapseOn && [user boolForKey:@"IsSynapseBankAvailable"] && [user boolForKey:@"IsSynapseBankVerified"]))
+    
+    if (isSynapseOn && [user boolForKey:@"IsSynapseBankAvailable"])
     {
         isBankAttached = YES;
         if ([self.view.subviews containsObject:glyph_noBank])
         {
             [glyph_noBank removeFromSuperview];
         }
-
+        
         addAnotherBnk = [UIButton buttonWithType:UIButtonTypeRoundedRect];
         [addAnotherBnk setStyleId:@"addAnotherBnk"];
         [addAnotherBnk setTitle:[NSString fontAwesomeIconStringForIconIdentifier:@"fa-plus-circle"] forState:UIControlStateNormal];
         [addAnotherBnk addTarget:self action:@selector(attach_bank) forControlEvents:UIControlEventTouchUpInside];
         [self.view addSubview:addAnotherBnk];
+        
+        if (![user boolForKey:@"IsSynapseBankVerified"])
+        {
+            helpText = [UILabel new];
+            [helpText setFrame:CGRectMake(20, 128, 280, 48)];
+            helpText.numberOfLines = 0;
+            [helpText setStyleClass:@"helpText"];
+            [helpText setText:@"As an extra security measure, your bank must be verified. Learn more."];
+            [self.view addSubview:helpText];
+            [helpText setHidden:YES];
+        }
     }
     else
     {
         //NSLog(@"viewDidLoad -> Bank ain't attached!");
         isBankAttached = NO;
-
+        
         glyph_noBank = [UILabel new];
-
+        
         [glyph_noBank setText:[NSString fontAwesomeIconStringForIconIdentifier:@"fa-exclamation"]];
         [glyph_noBank setFrame:CGRectMake(180, 17, 22, 22)];
         [glyph_noBank setStyleId:@"glyph_noBank_sidebar"];
         [glyph_noBank setStyleId:@"glyph_noBank_settings"];
         [self.view addSubview:glyph_noBank];
-
+        
         introText = [UILabel new];
         [introText setFrame:CGRectMake(10, 38, 300, 76)];
         introText.numberOfLines = 0;
@@ -105,9 +99,9 @@
         [introText setStyleId:@"settings_introText"];
         [self.view addSubview:introText];
     }
-
+    
     [self.navigationItem setHidesBackButton:YES];
-
+    
     UIButton * hamburger = [UIButton buttonWithType:UIButtonTypeRoundedRect];
     [hamburger setStyleId:@"navbar_hamburger"];
     [hamburger addTarget:self action:@selector(showMenu) forControlEvents:UIControlEventTouchUpInside];
@@ -116,34 +110,34 @@
     hamburger.titleLabel.shadowOffset = CGSizeMake(0.0, -1.0);
     UIBarButtonItem * menu1 = [[UIBarButtonItem alloc] initWithCustomView:hamburger];
     [self.navigationItem setLeftBarButtonItem:menu1];
-
+    
     [self.navigationItem setTitle:@"Settings"];
     [self.slidingViewController.panGesture setEnabled:YES];
     [self.view addGestureRecognizer:self.slidingViewController.panGesture];
-
+    
     [self.view setStyleClass:@"background_gray"];
-
+    
     UILabel * title = [[UILabel alloc] initWithFrame:CGRectMake(15, 16, 250, 25)];
     [title setStyleClass:@"refer_header"];
     [title setText:NSLocalizedString(@"Settings_LinkedBankHdr", @"Settings Screen header - 'Linked Bank Account'")];
     [self.view addSubview:title];
-
+    
     NSShadow * shadow = [[NSShadow alloc] init];
     shadow.shadowColor = Rgb2UIColor(19, 32, 38, .22);
     shadow.shadowOffset = CGSizeMake(0, -1);
     NSDictionary * textAttributes1 = @{NSShadowAttributeName: shadow };
-
+    
     link_bank = [UIButton buttonWithType:UIButtonTypeRoundedRect];
     [link_bank setFrame:CGRectMake(0, 123, 0, 0)];
     [link_bank setTitleShadowColor:Rgb2UIColor(19, 32, 38, 0.22) forState:UIControlStateNormal];
     link_bank.titleLabel.shadowOffset = CGSizeMake(0.0, -1.0);
-
+    
     UILabel * glyph = [UILabel new];
     [glyph setFont:[UIFont fontWithName:@"FontAwesome" size:20]];
     [glyph setFrame:CGRectMake(26, 9, 30, 30)];
     [glyph setTextAlignment:NSTextAlignmentCenter];
     glyph.attributedText = [[NSAttributedString alloc] initWithString:[NSString fontAwesomeIconStringForIconIdentifier:@"fa-plus-circle"]
-                                                                 attributes:textAttributes1];
+                                                           attributes:textAttributes1];
     [glyph setTextColor:[UIColor whiteColor]];
     [link_bank addSubview:glyph];
     [link_bank addTarget:self action:@selector(attach_bank) forControlEvents:UIControlEventTouchUpInside];
@@ -159,7 +153,7 @@
         [link_bank setTitle:NSLocalizedString(@"Settings_LinkBnkNow", @"Settings Screen button text when bank is NOT attached") forState:UIControlStateNormal];
         [self.view addSubview:link_bank];
     }
-
+    
     menu = [[UITableView alloc] initWithFrame:CGRectMake(-1, 194, 322, 200) style:UITableViewStylePlain];
     [menu setStyleId:@"settings"];
     menu.layer.borderColor = Rgb2UIColor(188, 190, 192, 0.85).CGColor;
@@ -168,18 +162,18 @@
     [menu setDataSource:self];
     [menu setScrollEnabled:NO];
     [self.view addSubview:menu];
-
+    
     self.logout = [UIButton buttonWithType:UIButtonTypeRoundedRect];
     [self.logout setTitle:NSLocalizedString(@"Settings_SignOutBtn", @"Settings Screen 'Sign Out' button text") forState:UIControlStateNormal];
     [self.logout setTitleShadowColor:Rgb2UIColor(30, 31, 33, 0.24) forState:UIControlStateNormal];
     self.logout.titleLabel.shadowOffset = CGSizeMake(0.0, -1.0);
-
+    
     UILabel * glyphLogout = [UILabel new];
     [glyphLogout setFont:[UIFont fontWithName:@"FontAwesome" size:18]];
     [glyphLogout setFrame:CGRectMake(60, 7, 30, 30)];
     [glyphLogout setText:[NSString fontAwesomeIconStringForIconIdentifier:@"fa-sign-out"]];
     [glyphLogout setTextColor:[UIColor whiteColor]];
-
+    
     [self.logout addSubview:glyphLogout];
     [self.logout addTarget:self action:@selector(sign_out) forControlEvents:UIControlEventTouchUpInside];
     [self.logout setStyleClass:@"button_gray"];
@@ -189,9 +183,9 @@
     else {
         [self.logout setStyleId:@"button_signout"];
     }
-
+    
     [self.view addSubview: self.logout];
-
+    
     if ([[UIScreen mainScreen] bounds].size.height == 480)
     {
         scroll = [[UIScrollView alloc] initWithFrame:CGRectMake(0, 0,
@@ -204,9 +198,49 @@
         }
         [self.view addSubview:scroll];
     }
-
+    
     // PUSH NOTIFICATIONS
     [self checkAndRegisterPushNotifs];
+}
+
+-(void)viewWillAppear:(BOOL)animated
+{
+    [super viewWillAppear:animated];
+    [self.navigationItem setTitle:NSLocalizedString(@"Settings_ScrnTitle", @"Settings Screen Title")];
+    self.screenName = @"Settings Main Screen";
+    
+    [self getBankInfo];
+
+    NSLog(@"isBankAttahed is %d",isBankAttached);
+    if (isBankAttached)
+    {
+        RTSpinKitView *spinner1 = [[RTSpinKitView alloc] initWithStyle:RTSpinKitViewStyleFadingCircleAlt];
+        spinner1.color = [UIColor whiteColor];
+        self.hud = [[MBProgressHUD alloc] initWithView:self.navigationController.view];
+        [self.navigationController.view addSubview:self.hud];
+        self.hud.labelText = @"Assebling Your Settings";
+        self.hud.mode = MBProgressHUDModeCustomView;
+        self.hud.customView = spinner1;
+        self.hud.delegate = self;
+        [self.hud show:YES];
+    }
+}
+
+-(void)viewDidAppear:(BOOL)animated
+{
+    [super viewDidAppear:animated];
+    [ARTrackingManager trackEvent:@"Settings_viewDidAppear"];
+
+    if (fromHomeShowLtBox)
+    {
+        fromHomeShowLtBox = NO;
+        [self bnkStatus_lightBox];
+    }
+}
+
+-(void)viewDidDisappear:(BOOL)animated
+{
+    [super viewDidDisappear:animated];
 }
 
 -(void)checkAndRegisterPushNotifs
@@ -404,53 +438,31 @@
 
 -(void)getBankInfo
 {
-    NSString * knoxOnOff = [[ARPowerHookManager getValueForHookById:@"knox_OnOff"] lowercaseString];
-    NSString * SynapseOnOff = [[ARPowerHookManager getValueForHookById:@"synps_OnOff"] lowercaseString];
+    //NSString * SynapseOnOff = [[ARPowerHookManager getValueForHookById:@"synps_OnOff"] lowercaseString];
 
     serve * getBankInfo = [serve new];
     getBankInfo.Delegate = self;
-
-    if ([knoxOnOff isEqualToString:@"on"])
-    {
-        getBankInfo.tagName = @"knox_bank_info";
-        [getBankInfo GetKnoxBankAccountDetails];
-        isKnoxOn = YES;
-        return;
-    }
-    else {
-        isKnoxOn = NO;
-    }
-
-    if ([SynapseOnOff isEqualToString:@"on"])
-    {
-        getBankInfo.tagName = @"synapse_bank_info";
-        [getBankInfo GetSynapseBankAccountDetails];
-        isSynapseOn = YES;
-    }
-    else
-    {
-        isSynapseOn = NO;
-    }
+    getBankInfo.tagName = @"synapse_bank_info";
+    [getBankInfo GetSynapseBankAccountDetails];
+    isSynapseOn = YES;
 }
 
 -(void)RemoveBankAccount
 {
-    NSString * knoxOnOff = [ARPowerHookManager getValueForHookById:@"knox_OnOff"];
-    NSString * SynapseOnOff = [ARPowerHookManager getValueForHookById:@"synps_OnOff"];
-
     serve * serveOBJ = [serve new];
     serveOBJ.Delegate = self;
     serveOBJ.tagName = @"RemoveBankAccount";
+    [serveOBJ RemoveSynapseBankAccount];
 
-    if ([knoxOnOff isEqualToString:@"on"])
-    {
-        [serveOBJ RemoveKnoxBankAccount];
-    }
-
-    else if ([SynapseOnOff isEqualToString:@"on"])
-    {
-        [serveOBJ RemoveSynapseBankAccount];
-    }
+    RTSpinKitView *spinner1 = [[RTSpinKitView alloc] initWithStyle:RTSpinKitViewStyleThreeBounce];
+    spinner1.color = [UIColor whiteColor];
+    self.hud = [[MBProgressHUD alloc] initWithView:self.navigationController.view];
+    [self.navigationController.view addSubview:self.hud];
+    self.hud.labelText = @"Removing bank account";
+    self.hud.mode = MBProgressHUDModeCustomView;
+    self.hud.customView = spinner1;
+    self.hud.delegate = self;
+    [self.hud show:YES];
 }
 
 - (void)profile
@@ -535,12 +547,6 @@
 
                 [[assist shared] setisloggedout:YES];
 
-                NSMutableArray * arrNav = [nav_ctrl.viewControllers mutableCopy];
-                for (short i = [arrNav count]; i > 1; i--) {
-                    [arrNav removeLastObject];
-                }
-
-                [nav_ctrl setViewControllers:arrNav animated:NO];
                 Register *reg = [Register new];
                 [nav_ctrl pushViewController:reg animated:YES];
                 me = [core new];
@@ -551,11 +557,13 @@
 
     else if ([tagName isEqualToString:@"RemoveBankAccount"])
     {
-        NSError* error;
-        NSMutableDictionary*dictResponse = [NSJSONSerialization
+        NSError * error;
+        NSMutableDictionary * dictResponse = [NSJSONSerialization
                                             JSONObjectWithData:[result dataUsingEncoding:NSUTF8StringEncoding]
                                             options:kNilOptions
                                             error:&error];
+        NSLog(@"Settings -> Listen -> Remove Bank Account response was: %@", dictResponse);
+        [self.hud setHidden:YES];
 
         if ([[dictResponse valueForKey:@"Result"] isEqualToString:@"Bank account deleted successfully"])
         {
@@ -571,7 +579,20 @@
 
             [user synchronize];
 
+            if (![self.view.subviews containsObject:introText])
+            {
+                introText = [UILabel new];
+                [introText setFrame:CGRectMake(10, 38, 300, 76)];
+                introText.numberOfLines = 0;
+                
+                [introText setTextAlignment:NSTextAlignmentCenter];
+                [introText setStyleId:@"settings_introText"];
+                [self.view addSubview:introText];
+            }
+
+            [introText setText:NSLocalizedString(@"Settings_NoBankIntroTxt", @"Settings Screen instruction text when no bank is attached")];
             [introText setHidden:NO];
+
             [glyph_noBank setHidden:NO];
 
             isBankAttached = NO;
@@ -603,105 +624,6 @@
         }
         
         [self getBankInfo];
-    }
-    
-    else if ([tagName isEqualToString:@"knox_bank_info"])
-    {
-        NSError * error;
-        NSMutableDictionary *dictResponse = [NSJSONSerialization
-                                            JSONObjectWithData:[result dataUsingEncoding:NSUTF8StringEncoding]
-                                            options:kNilOptions
-                                            error:&error];
-        NSLog(@"Knox info is: %@",dictResponse);
-
-        if (dictResponse != NULL &&
-            (![[dictResponse valueForKey:@"AccountName"] isKindOfClass:[NSNull class]] &&
-             ![[dictResponse valueForKey:@"BankImageURL"] isKindOfClass:[NSNull class]] &&
-             ![[dictResponse valueForKey:@"BankName"] isKindOfClass:[NSNull class]]))
-        {
-            [user setBool:YES forKey:@"IsKnoxBankAvailable"];
-            [user synchronize];
-
-            isBankAttached = YES;
-
-            [introText setHidden:YES];
-            [glyph_noBank setHidden:YES];
-
-            linked_background = [UIView new];
-            [linked_background setStyleId:@"account_background"];
-
-            if ([[UIScreen mainScreen] bounds].size.height == 480)
-            {
-                [scroll addSubview:linked_background];
-            }
-            else {
-                [self.view addSubview:linked_background];
-            }
-
-            UILabel * glyph_lock = [[UILabel alloc] initWithFrame:CGRectMake(74, 6, 13, 24)];
-            [glyph_lock setBackgroundColor:[UIColor clearColor]];
-            [glyph_lock setTextAlignment:NSTextAlignmentLeft];
-            [glyph_lock setFont:[UIFont fontWithName:@"FontAwesome" size:13]];
-            [glyph_lock setText:[NSString fontAwesomeIconStringForIconIdentifier:@"fa-lock"]];
-            [glyph_lock setTextColor:kNoochGreen];
-            [linked_background addSubview:glyph_lock];
- 
-            bank_image = [[UIImageView alloc]initWithFrame:CGRectMake(10, 10, 49, 48)];
-            bank_image.contentMode = UIViewContentModeScaleToFill;
-            [bank_image sd_setImageWithURL:[NSURL URLWithString:[dictResponse valueForKey:@"BankImageURL"]] placeholderImage:[UIImage imageNamed:@"bank.png"]];
-            [bank_image setFrame:CGRectMake(10, 10, 52, 52)];
-            bank_image.layer.cornerRadius = 6;
-            bank_image.clipsToBounds = YES;
-            [linked_background addSubview:bank_image];
-
-            bank_name = [UILabel new];
-            [bank_name setStyleId:@"linked_account_name"];
-            [bank_name setText:[dictResponse valueForKey:@"BankName"]];
-            [linked_background addSubview:bank_name];
-
-            lastFour_label = [UILabel new];
-            [lastFour_label setStyleId:@"linked_account_last4"];
-            [lastFour_label setText:[NSString stringWithFormat:@"**** **** **** %@",[dictResponse valueForKey:@"AccountName"]  ]];
-            [linked_background addSubview:lastFour_label];
-
-            bnkStatus_label = [UILabel new];
-            [bnkStatus_label setStyleId:@"bnkStatus_lbl"];
-            [bnkStatus_label setText:@"Status:"];
-            [linked_background addSubview:bnkStatus_label];
-
-            UILabel * bnkStatusStatus = [UILabel new];
-            [bnkStatusStatus setStyleClass:@"bnkStatus_status"];
-            [bnkStatusStatus setText:@"Not Verified"];
-            [linked_background addSubview:bnkStatusStatus];
-
-            unlink_account = [UIButton buttonWithType:UIButtonTypeRoundedRect];
-            [unlink_account setStyleId:@"remove_account"];
-            [unlink_account setTitle:NSLocalizedString(@"Settings_EditTxt", @"Settings 'Edit' Txt") forState:UIControlStateNormal];
-            [unlink_account addTarget:self action:@selector(edit_attached_bank) forControlEvents:UIControlEventTouchUpInside];
-            [linked_background addSubview:unlink_account];
-
-            [linked_background addGestureRecognizer:[[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(profile)]];
-
-            [ARProfileManager registerString:@"Bank_Name" withValue:[dictResponse valueForKey:@"BankName"]];
-            [ARProfileManager registerString:@"Bank_Logo" withValue:[dictResponse valueForKey:@"BankImageURL"]];
-        }
-        else
-        {
-            NSLog(@"Knox response was null.");
-            [user setBool:NO forKey:@"IsKnoxBankAvailable"];
-
-            [introText setHidden:NO];
-            [glyph_noBank setHidden:NO];
-
-            isBankAttached = NO;
-
-            [linked_background removeFromSuperview];
-            [bank_image removeFromSuperview];
-            [unlink_account removeFromSuperview];
-
-            [ARProfileManager clearVariable:@"Bank_Name"];
-            [ARProfileManager clearVariable:@"Bank_Logo"];
-        }
     }
 
     else if ([tagName isEqualToString:@"synapse_bank_info"])
@@ -736,16 +658,16 @@
                 [self.view addSubview:linked_background];
             }
 
-            UILabel * glyph_lock = [[UILabel alloc] initWithFrame:CGRectMake(73, 6, 13, 32)];
+            UILabel * glyph_lock = [[UILabel alloc] initWithFrame:CGRectMake(81, 7, 13, 22)];
             [glyph_lock setBackgroundColor:[UIColor clearColor]];
             [glyph_lock setTextAlignment:NSTextAlignmentLeft];
-            [glyph_lock setFont:[UIFont fontWithName:@"FontAwesome" size:13]];
+            [glyph_lock setFont:[UIFont fontWithName:@"FontAwesome" size:15]];
             [glyph_lock setText:[NSString fontAwesomeIconStringForIconIdentifier:@"fa-lock"]];
             [glyph_lock setTextColor:kNoochGreen];
             [linked_background addSubview:glyph_lock];
 
             bank_image = [[UIImageView alloc] initWithFrame:CGRectMake(11, 12, 49, 48)];
-            bank_image.contentMode = UIViewContentModeScaleToFill;
+            bank_image.contentMode = UIViewContentModeScaleAspectFill;
             if (![[responseForSynapseBank valueForKey:@"BankImageURL"] isKindOfClass:[NSNull class]])
             {
                 if ([[responseForSynapseBank valueForKey:@"BankImageURL"] rangeOfString:@"/no.png"].location != NSNotFound)
@@ -754,7 +676,7 @@
                 }
                 else
                 {
-                    [bank_image setFrame:CGRectMake(10, 10, 52, 52)];
+                    [bank_image setFrame:CGRectMake(8, 14, 61, 45)];
                     [bank_image sd_setImageWithURL:[NSURL URLWithString:[responseForSynapseBank valueForKey:@"BankImageURL"]] placeholderImage:[UIImage imageNamed:@"bank.png"]];
                 }
             }
@@ -794,9 +716,33 @@
             {
                 [bnkStatusStatus setStyleId:@"bnkstatus_verified"];
                 [bnkStatusStatus setText:@"Verified"];
+                if (![helpText isHidden]) {
+                    [helpText setHidden:YES];
+                }
             }
-            else {
+            else
+            {
                 [bnkStatusStatus setText:@"Not Verified"];
+                
+                if (![self.view.subviews containsObject:helpText])
+                {
+                    helpText = [UILabel new];
+                    [helpText setFrame:CGRectMake(10, 120, 300, 80)];
+                    helpText.numberOfLines = 0;
+                    [helpText setStyleClass:@"helpText"];
+                    [self.view addSubview:helpText];
+                }
+                [helpText setUserInteractionEnabled:YES];
+                [helpText addGestureRecognizer:[[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(bnkStatus_lightBox)]];
+
+                [helpText setHidden:NO];
+
+                UIButton * helpGlyph = [UIButton buttonWithType:UIButtonTypeRoundedRect];
+                [helpGlyph setFrame:CGRectMake(201, 47, 26, 26)];
+                [helpGlyph setStyleId:@"settings_helpGlyph"];
+                [helpGlyph addTarget:self action:@selector(bnkStatus_lightBox) forControlEvents:UIControlEventTouchUpInside];
+                [helpGlyph setTitle:[NSString fontAwesomeIconStringForIconIdentifier:@"fa-question-circle"] forState:UIControlStateNormal];
+                [linked_background addSubview:helpGlyph];
             }
             
             [linked_background addSubview:bnkStatusStatus];
@@ -827,10 +773,12 @@
             [ARProfileManager clearVariable:@"Bank_Name"];
             [ARProfileManager clearVariable:@"Bank_Logo"];
         }
+        
+        [self.hud setHidden:YES];
     }
 }
 
-- (void) mailComposeController:(MFMailComposeViewController *)controller didFinishWithResult:(MFMailComposeResult)result error:(NSError *)error
+-(void) mailComposeController:(MFMailComposeViewController *)controller didFinishWithResult:(MFMailComposeResult)result error:(NSError *)error
 {
     UIAlertView *alert = [[UIAlertView alloc] init];
     [alert addButtonWithTitle:@"OK"];
@@ -865,6 +813,227 @@
     NSArray *paths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
     NSString *documentsDirectory = [paths objectAtIndex:0];
     return [documentsDirectory stringByAppendingPathComponent:[NSString stringWithFormat:@"autoLogin.plist"]];
+}
+
+#pragma mark - LightBox Handling
+-(void)bnkStatus_lightBox
+{
+    overlay = [[UIView alloc]init];
+    overlay.frame = CGRectMake(0, 0, 320, [[UIScreen mainScreen] bounds].size.height);
+    overlay.backgroundColor = [UIColor colorWithRed:0 green:0 blue:0 alpha:0.0];
+    [self.navigationController.view addSubview:overlay];
+
+    mainView = [[UIView alloc]init];
+    mainView.layer.cornerRadius = 5;
+    mainView.backgroundColor = [UIColor whiteColor];
+    mainView.layer.masksToBounds = NO;
+    if ([[UIScreen mainScreen] bounds].size.height < 500) {
+        mainView.frame = CGRectMake(9, -500, 302, 440);
+    }
+    else {
+        mainView.frame = CGRectMake(9, -540, 302, 464);
+    }
+
+    UIView * head_container = [[UIView alloc]initWithFrame:CGRectMake(0, 0, 302, 44)];
+    head_container.backgroundColor = [UIColor colorWithRed:244.0f/255.0f green:244.0f/255.0f blue:244.0f/255.0f alpha:1.0];
+    [mainView addSubview:head_container];
+    head_container.layer.cornerRadius = 10;
+
+    UIView * space_container = [[UIView alloc]initWithFrame:CGRectMake(0, 34, 302, 10)];
+    space_container.backgroundColor = [UIColor colorWithRed:244.0f/255.0f green:244.0f/255.0f blue:244.0f/255.0f alpha:1.0];
+    [mainView addSubview:space_container];
+
+    UILabel * title = [[UILabel alloc]initWithFrame:CGRectMake(0, 10, 302, 28)];
+    [title setBackgroundColor:[UIColor clearColor]];
+    [title setText:@"Verify Your Bank"];
+    [title setStyleClass:@"lightbox_title"];
+    [head_container addSubview:title];
+
+    UILabel * glyph_lock = [UILabel new];
+    [glyph_lock setFont:[UIFont fontWithName:@"FontAwesome" size:20]];
+    [glyph_lock setFrame:CGRectMake(29, 10, 22, 29)];
+    [glyph_lock setText:[NSString fontAwesomeIconStringForIconIdentifier:@"fa-lock"]];
+    [glyph_lock setTextColor:kNoochBlue];
+    [head_container addSubview:glyph_lock];
+
+
+    UILabel * bodyText = [UILabel new];
+    [bodyText setNumberOfLines:0];
+    [bodyText setFont:[UIFont fontWithName:@"Roboto" size:15]];
+    [bodyText setFrame:CGRectMake(13, 52, 276, 36)];
+    [bodyText setTextAlignment:NSTextAlignmentCenter];
+    [bodyText setText:@"Your bank account needs additional verification because either:"];
+    [bodyText setTextColor:[Helpers hexColor:@"313233"]];
+    [mainView addSubview:bodyText];
+
+    UILabel * bodyText2 = [UILabel new];
+    [bodyText2 setNumberOfLines:0];
+    [bodyText2 setFont:[UIFont fontWithName:@"Roboto-Light" size:15]];
+    [bodyText2 setFrame:CGRectMake(27, bodyText.frame.origin.y + bodyText.frame.size.height + 4, 264, 53)];
+    [bodyText2 setText:@"we were unable to match the profile information you entered with the info listed on this bank account"];
+    [bodyText2 setTextColor:[Helpers hexColor:@"313233"]];
+    [mainView addSubview:bodyText2];
+
+    UILabel * bodyTextBullet1 = [UILabel new];
+    [bodyTextBullet1 setFont:[UIFont fontWithName:@"Roboto-Light" size:15]];
+    [bodyTextBullet1 setFrame:CGRectMake(16, bodyText2.frame.origin.y, 15, 19)];
+    [bodyTextBullet1 setText:@"•"];
+    [bodyTextBullet1 setTextColor:[Helpers hexColor:@"313233"]];
+    [mainView addSubview:bodyTextBullet1];
+
+    UILabel * bodyText3 = [UILabel new];
+    [bodyText3 setNumberOfLines:0];
+    [bodyText3 setFont:[UIFont fontWithName:@"Roboto-Light" size:15]];
+    [bodyText3 setFrame:CGRectMake(27, 149, 264, 36)];
+    [bodyText3 setText:@"sometimes we just can't find any contact info from some accounts"];
+    [bodyText3 setTextColor:[Helpers hexColor:@"313233"]];
+    [mainView addSubview:bodyText3];
+
+    UILabel * bodyTextBullet2 = [UILabel new];
+    [bodyTextBullet2 setFont:[UIFont fontWithName:@"Roboto-Light" size:15]];
+    [bodyTextBullet2 setFrame:CGRectMake(16, bodyText3.frame.origin.y, 15, 19)];
+    [bodyTextBullet2 setText:@"•"];
+    [bodyTextBullet2 setTextColor:[Helpers hexColor:@"313233"]];
+    [mainView addSubview:bodyTextBullet2];
+
+    UILabel * bodyText4 = [UILabel new];
+    [bodyText4 setFont:[UIFont fontWithName:@"Roboto" size:15]];
+    [bodyText4 setFrame:CGRectMake(16, 200, 270, 18)];
+    [bodyText4 setText:@"What To Do Now..."];
+    [bodyText4 setTextColor:[Helpers hexColor:@"313233"]];
+    [mainView addSubview:bodyText4];
+
+    UILabel * bodyText5 = [UILabel new];
+    [bodyText5 setNumberOfLines:0];
+    [bodyText5 setFont:[UIFont fontWithName:@"Roboto-Light" size:15]];
+    [bodyText5 setFrame:CGRectMake(16, bodyText4.frame.origin.y + 22, 270, 88)];
+    [bodyText5 setText:@"If we found an email address on your bank, we sent a verification link to that address (which may be different than the email you used for Nooch). Just click the the link in that email."];
+    [bodyText5 setTextColor:[Helpers hexColor:@"313233"]];
+    [mainView addSubview:bodyText5];
+
+    UILabel * bodyText6 = [UILabel new];
+    [bodyText6 setNumberOfLines:0];
+    [bodyText6 setFont:[UIFont fontWithName:@"Roboto-Light" size:15]];
+    [bodyText6 setFrame:CGRectMake(16, 318, 270, 72)];
+    [bodyText6 setText:@"Or, if you didn't receive a verification email, just send us a picture of any photo ID. Email it to support@nooch.com, or tap \"Take Picture\" below."];
+    [bodyText6 setTextColor:[Helpers hexColor:@"313233"]];
+    [mainView addSubview:bodyText6];
+
+
+
+    UIButton * takePic = [UIButton buttonWithType:UIButtonTypeCustom];
+    [takePic setStyleClass:@"button_LtBoxSm_left"];
+    [takePic setTitleShadowColor:Rgb2UIColor(26, 38, 19, 0.2) forState:UIControlStateNormal];
+    takePic.titleLabel.shadowOffset = CGSizeMake(0.0, -1.0);
+    takePic.frame = CGRectMake(10, mainView.frame.size.height - 56, 280, 50);
+    [takePic setTitle:@"Take Picture" forState:UIControlStateNormal];
+    [takePic addTarget:self action:@selector(goToIdVerScrn) forControlEvents:UIControlEventTouchUpInside];
+
+    UIButton * btnLink = [UIButton buttonWithType:UIButtonTypeCustom];
+    btnLink.frame = CGRectMake(10, mainView.frame.size.height - 56, 280, 50);
+    [btnLink setStyleClass:@"button_LtBoxSm_right"];
+    [btnLink setTitleShadowColor:Rgb2UIColor(26, 38, 19, 0.2) forState:UIControlStateNormal];
+    btnLink.titleLabel.shadowOffset = CGSizeMake(0.0, -1.0);
+    [btnLink setTitle:@"Got It" forState:UIControlStateNormal];
+    [btnLink addTarget:self action:@selector(close_bnkStatusLb) forControlEvents:UIControlEventTouchUpInside];
+
+    if ([[UIScreen mainScreen] bounds].size.height < 500)
+    {
+        head_container.frame = CGRectMake(0, 0, 302, 38);
+        space_container.frame = CGRectMake(0, 28, 302, 10);
+        glyph_lock.frame = CGRectMake(28, 5, 22, 29);
+        title.frame = CGRectMake(0, 5, 302, 28);
+        btnLink.frame = CGRectMake(10,mainView.frame.size.height - 51, 280, 44);
+    }
+
+    UIImageView * btnClose = [[UIImageView alloc] initWithFrame:self.view.frame];
+    btnClose.image = [UIImage imageNamed:@"close_button"];
+    btnClose.frame = CGRectMake(9, 6, 35, 35);
+
+    UIButton * btnClose_shell = [UIButton buttonWithType:UIButtonTypeCustom];
+    btnClose_shell.frame = CGRectMake(mainView.frame.size.width - 35, head_container.frame.origin.y - 21, 48, 46);
+    [btnClose_shell addTarget:self action:@selector(close_bnkStatusLb) forControlEvents:UIControlEventTouchUpInside];
+    [btnClose_shell addSubview:btnClose];
+
+    [mainView addSubview:btnClose_shell];
+    [mainView addSubview:bodyText];
+    [mainView addSubview:btnLink];
+    [mainView addSubview:takePic];
+    [overlay addSubview:mainView];
+
+    [UIView animateKeyframesWithDuration:.55
+                                   delay:0
+                                 options:0 << 16
+                              animations:^{
+                                  [UIView addKeyframeWithRelativeStartTime:0 relativeDuration:.8 animations:^{
+                                      overlay.backgroundColor = [UIColor colorWithRed:0 green:0 blue:0 alpha:0.7];
+                                  }];
+                                  [UIView addKeyframeWithRelativeStartTime:0 relativeDuration:.6 animations:^{
+                                      if ([[UIScreen mainScreen] bounds].size.height < 500) {
+                                          mainView.frame = CGRectMake(9, 70, 302, 440);
+                                      }
+                                      else {
+                                          mainView.frame = CGRectMake(9, 70, 302, 464);
+                                      }
+                                  }];
+                                  [UIView addKeyframeWithRelativeStartTime:0.6 relativeDuration:0.4 animations:^{
+                                      if ([[UIScreen mainScreen] bounds].size.height < 500) {
+                                          mainView.frame = CGRectMake(9, 35, 302, 440);
+                                      }
+                                      else {
+                                          mainView.frame = CGRectMake(9, 45, 302, 464);
+                                      }
+                                  }];
+                              }
+                              completion: ^(BOOL finished){
+                                  
+                              }
+     ];
+
+    [ARTrackingManager trackEvent:@"MainSettings_BnkStatusLtBx_Appeared"];
+}
+
+-(void)close_bnkStatusLb
+{
+    [UIView animateKeyframesWithDuration:0.6
+                                   delay:0
+                                 options:0 << 16
+                              animations:^{
+                                  [UIView addKeyframeWithRelativeStartTime:0 relativeDuration:.35 animations:^{
+                                      if ([[UIScreen mainScreen] bounds].size.height < 500) {
+                                          mainView.frame = CGRectMake(9, 70, 302, 440);
+                                      }
+                                      else {
+                                          mainView.frame = CGRectMake(9, 70, 302, 460);
+                                      }
+                                  }];
+                                  [UIView addKeyframeWithRelativeStartTime:0.35 relativeDuration:0.65 animations:^{
+                                      overlay.alpha = 0;
+                                      if ([[UIScreen mainScreen] bounds].size.height < 500) {
+                                          mainView.frame = CGRectMake(9, -500, 302, 440);
+                                      }
+                                      else {
+                                          mainView.frame = CGRectMake(9, -540, 302, 400);
+                                      }
+                                  }];
+                              }
+                              completion:^(BOOL finished) {
+                                  [overlay removeFromSuperview];
+
+                                  if (shouldGoToIdVerScrn)
+                                  {
+                                      shouldGoToIdVerScrn = false;
+                                      IdVerifyImageUpload * idVerifyScrn = [IdVerifyImageUpload new];
+                                      [self.navigationController pushViewController:idVerifyScrn animated:YES];
+                                  }
+                              }
+     ];
+}
+
+-(void)goToIdVerScrn
+{
+    shouldGoToIdVerScrn = true;
+    [self close_bnkStatusLb];
 }
 
 #pragma mark - AlertView Handling

@@ -699,6 +699,13 @@ navigation-bar title {
     font-size		: 16px;
     text-align		: center;
 }
+.helpText {
+    color           : #6c6e71;
+    font-family		: "Roboto";
+    font-weight		: light;
+    font-size		: 15px;
+    text-align		: center;
+}
 .table_view_1 {
     row-height		: 45px;
     separator-style : single-line;
@@ -3016,57 +3023,57 @@ table-view#emptyTable {
 .background_gray { background-color: #efeff4; }
 
 #account_background {
-    top: 45px;
+    top: 46px;
     left: -1px;
     width: 322px;
-    height: 72px;
+    height: 79px;
     background-color: white;
     border: 1px solid;
     border-color: rgba(188, 190, 192, 0.8);
 }
 
 #linked_account_name {
-    left		: 88px;
-    top			: 6px;
+    left		: 96px;
+    top			: 7px;
     width		: 200px;
-    height		: 24px;
+    height		: 22px;
     font-family	: "Roboto";
     font-weight	: medium;
-    font-size	: 17px;
+    font-size	: 18px;
     text-align	: left;
     color		: #313233;
 }
 
 #linked_account_last4 {
-    left		: 74px;
-    top			: 30px;
+    left		: 80px;
+    top			: 31px;
     width		: 200px;
-    height		: 15px;
+    height		: 20px;
     font-family	: "Roboto";
-    font-weight	: light;
-    font-size	: 14px;
+    font-weight	: regular;
+    font-size	: 15px;
     text-align	: left;
     color		: #313233;
 }
 #bnkStatus_lbl {
-    left		: 74px;
-    top			: 49px;
+    left		: 80px;
+    top			: 53px;
     width		: 70px;
-    height		: 14px;
+    height		: 16px;
     font-family	: "Roboto";
-    font-weight	: medium;
-    font-size	: 12px;
+    font-weight	: regular;
+    font-size	: 14px;
     text-align	: left;
     color		: #313233;
 }
 .bnkStatus_status {
-    left		: 116px;
-    top			: 49px;
-    width		: 70px;
-    height		: 14px;
+    left		: 127px;
+    top			: 53px;
+    width		: 90px;
+    height		: 16px;
     font-family	: "Roboto";
-    font-weight	: light;
-    font-size	: 12px;
+    font-weight	: regular;
+    font-size	: 14px;
     text-align	: left;
     color		: #a94442;
 }
@@ -3102,6 +3109,14 @@ table-view#emptyTable {
     animation-name			 : zoom;
     animation-duration		 : 0.7s;
     animation-timing-function: ease;
+}
+#settings_helpGlyph {
+    width       : 26px;
+    height      : 26px;
+    color       : #3fabe1;
+    font-family : "FontAwesome";
+    font-size   : 18px;
+    text-align  : center;
 }
 .divider {
     left: 40px;
@@ -3301,7 +3316,7 @@ table-view#settings_resetpw {
     text-transform	: uppercase;
 }
 .refer_header {
-    left			: 15px;
+    left			: 16px;
     width			: 250px;
     height			: 24px;
     color			: #747779;

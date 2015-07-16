@@ -103,10 +103,9 @@
 
     NSString * baseUrl = @"";
 
-    NSLog(@"isKnoxOn is: %d",isKnoxOn);
+    //NSLog(@"isKnoxOn is: %d",isKnoxOn);
     NSLog(@"isSynapseOn is: %d",isSynapseOn);
-    if (isKnoxOn)
-    {
+  /*if (isKnoxOn) {
         baseUrl = [ARPowerHookManager getValueForHookById:@"knox_baseUrl"];
         NSString * k_Key = [ARPowerHookManager getValueForHookById:@"knox_Key"];
         NSString * k_pw = [ARPowerHookManager getValueForHookById:@"knox_Pw"];
@@ -122,18 +121,18 @@
         [self.web loadRequest: self.request];
 
         [[NSNotificationCenter defaultCenter] addObserver:self
-                                                 selector:@selector(resignViewKnox)
+                                                 selector:@selector(resignAddBankWebview)
                                                      name:@"KnoxResponse"
                                                    object:nil];
-    }
+    }*/
 
-    else if (isSynapseOn)
+    if (isSynapseOn)
     {
         baseUrl = [ARPowerHookManager getValueForHookById:@"synps_baseUrl"];
         NSString * memberId = [user objectForKey:@"MemberId"];
-        
+
         NSString *body = [NSString stringWithFormat: @"MemberId=%@&redUrl=nooch://banksuccess",memberId];
-    
+
         NSURL *url = [NSURL URLWithString: [NSString stringWithFormat:@"%@?%@",baseUrl,body]];
 
         NSLog(@"SYNPASE URL IS: %@",url);
@@ -143,9 +142,9 @@
         [self.request setValue:@"charset" forHTTPHeaderField:@"UTF-8"];
         [self.request setHTTPBody: [jsonString dataUsingEncoding: NSUTF8StringEncoding]];
         [self.web loadRequest: self.request];
-        
+
         [[NSNotificationCenter defaultCenter] addObserver:self
-                                                 selector:@selector(resignViewSynapse)
+                                                 selector:@selector(resignAddBankWebview)
                                                      name:@"SynapseResponse"
                                                    object:nil];
     }
@@ -308,7 +307,7 @@
     [actionSheetObject setTag:1];
     [actionSheetObject showInView:self.view];
 
-    [ARTrackingManager trackEvent:@"Knox_GetHelpTapped"];
+    [ARTrackingManager trackEvent:@"AddBank_GetHelpTapped"];
 }
 
 -(void)actionSheet:(UIActionSheet *)actionSheet clickedButtonAtIndex:(NSInteger)buttonIndex
@@ -397,28 +396,12 @@
     [self.navigationController popViewControllerAnimated:YES];
 }
 
--(void)resignViewKnox
+-(void)resignAddBankWebview
 {
-    self.hud.labelText = @"Finishing Up...";
-    [self.hud show:YES];
-
-    serve * obj = [serve new];
-    obj.tagName = @"saveMemberTransId";
-    [obj setDelegate:self];
-
-    NSLog(@"KnoxWeb.m -> resignViewKnox fired. TransId is: %@     MemberId is: %@",[user objectForKey:@"paymentID"],[user objectForKey:@"MemberId"]);
-    NSDictionary * dict = @{@"TransId":[user objectForKey:@"paymentID"],
-                            @"MemberId":[user objectForKey:@"MemberId"]};
-
-    [obj saveMemberTransId:[dict mutableCopy]];
-}
-
--(void)resignViewSynapse
-{
-    NSLog(@"KnoxWeb.m -> resignViewSynapse fired");
-
+    NSLog(@"KnoxWeb.m -> resignAddBankWebview fired");
+    
     [user setBool:YES forKey:@"IsSynapseBankAvailable"];
-
+    
     UIAlertView * alert = [[UIAlertView alloc]initWithTitle:@"Great Success"
                                                     message:@"\xF0\x9F\x98\x80\nYour bank was linked successfully."
                                                    delegate:Nil
@@ -426,10 +409,30 @@
                                           otherButtonTitles:Nil, nil];
     [alert show];
 
-    isFromBankWebView = YES;
+    if ([user boolForKey:@"IsSynapseBankVerified"])
+    {
+        isFromBankWebView = YES;
+        SelectRecipient * selectRecipScrn = [SelectRecipient new];
+        [nav_ctrl pushViewController:selectRecipScrn animated:YES];
+    }
+    else
+    {
+        [nav_ctrl popToRootViewControllerAnimated:YES];
+    }
 
-    SelectRecipient * selectRecipScrn = [SelectRecipient new];
-    [nav_ctrl pushViewController:selectRecipScrn animated:YES];
+    /* OLD KNOX CODE ...
+    self.hud.labelText = @"Finishing Up...";
+    [self.hud show:YES];
+
+    serve * obj = [serve new];
+    obj.tagName = @"saveMemberTransId";
+    [obj setDelegate:self];
+
+    NSLog(@"KnoxWeb.m -> resignAddBankWebview fired. TransId is: %@     MemberId is: %@",[user objectForKey:@"paymentID"],[user objectForKey:@"MemberId"]);
+    NSDictionary * dict = @{@"TransId":[user objectForKey:@"paymentID"],
+                            @"MemberId":[user objectForKey:@"MemberId"]};
+
+    [obj saveMemberTransId:[dict mutableCopy]]; */
 }
 
 -(void)Error:(NSError *)Error

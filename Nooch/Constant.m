@@ -7,4 +7,4 @@
 //
 
 NSString * const MyUrl=@"https://www.noochme.com/NoochService/NoochService.svc";
-//NSString * const MyUrl=@"http://54.201.43.89/NoochService/NoochService.svc";
+//NSString * const MyUrl=@"https://54.201.43.89/NoochService/NoochService.svc";

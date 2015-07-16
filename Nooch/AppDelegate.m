@@ -577,7 +577,16 @@ void exceptionHandler(NSException *exception){
         return YES;
     }
 
-    if ([[url absoluteString] rangeOfString:@"pay_id"].location != NSNotFound)
+    // If coming from Synapse add bank process
+    if ([[url absoluteString] rangeOfString:@"banksuccess"].location != NSNotFound)
+    {
+        NSLog(@"Bank linked via Synapse successfully");
+        //Send Notification to WebView so it can resign itself and to the parent view if desired to handle response and give success notification etc.
+        [[NSNotificationCenter defaultCenter]
+         postNotificationName:@"SynapseResponse" object:self];
+    }
+    // If coming from old Knox add bank process
+  /*else if ([[url absoluteString] rangeOfString:@"pay_id"].location != NSNotFound)
     {
         //Get the Response from Knox and parse it
         NSString *response = [[url absoluteString]stringByReplacingPercentEscapesUsingEncoding:NSUTF8StringEncoding];
@@ -604,14 +613,7 @@ void exceptionHandler(NSException *exception){
         //Send Notification to WebView so it can resign itself and to the parent view if desired to handle response and give success notification etc.
         [[NSNotificationCenter defaultCenter]
         postNotificationName:@"KnoxResponse" object:self];
-    }
-    else if ([[url absoluteString] rangeOfString:@"banksuccess"].location != NSNotFound)
-    {
-        NSLog(@"Bank linked via Synapse successfully");
-        //Send Notification to WebView so it can resign itself and to the parent view if desired to handle response and give success notification etc.
-        [[NSNotificationCenter defaultCenter]
-         postNotificationName:@"SynapseResponse" object:self];
-    }
+    }*/
 
     [MobileAppTracker applicationDidOpenURL:[url absoluteString] sourceApplication:sourceApplication];
 

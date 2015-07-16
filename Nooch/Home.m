@@ -21,6 +21,7 @@
 #import "HowMuch.h"
 #import <QuartzCore/QuartzCore.h>
 #import "knoxWeb.h"
+#import "SettingsOptions.h"
 #import <AddressBook/AddressBook.h>
 #import <AddressBook/ABAddressBook.h>
 #import "SpinKit/RTSpinKitView.h"
@@ -122,16 +123,9 @@ NSMutableURLRequest *request;
         [[NSUserDefaults standardUserDefaults] synchronize];
         
         [[assist shared] setisloggedout:YES];
-        
-        NSMutableArray * arrNav = [nav_ctrl.viewControllers mutableCopy];
-        for (short i = [arrNav count]; i > 1; i--) {
-            [arrNav removeLastObject];
-        }
-        
-        [nav_ctrl setViewControllers:arrNav animated:NO];
-        Register *reg = [Register new];
-        [nav_ctrl pushViewController:reg animated:YES];
-        me = [core new];
+
+        Register * reg = [Register new];
+        [nav_ctrl pushViewController:reg animated:NO];
 
         [ARProfileManager clearProfile];
         [[assist shared] setisloggedout:YES];
@@ -1998,9 +1992,16 @@ void addressBookChanged(ABAddressBookRef addressBook, CFDictionaryRef info, void
         [nav_ctrl pushViewController:knox animated:YES];
         [self.slidingViewController resetTopView];
     }
-    else if ((alertView.tag == 50 || alertView.tag == 54) && buttonIndex == 1)
+    else if ((alertView.tag == 50) && buttonIndex == 1)
     {
         [self contact_support];
+    }
+    else if (alertView.tag == 80 && buttonIndex == 1)
+    {
+        fromHomeShowLtBox = YES;
+        SettingsOptions * mainSettingsScrn = [SettingsOptions new];
+        [nav_ctrl pushViewController:mainSettingsScrn animated:YES];
+        [self.slidingViewController resetTopView];
     }
 }
 
@@ -2126,8 +2127,8 @@ void addressBookChanged(ABAddressBookRef addressBook, CFDictionaryRef info, void
                                                      message:@"Looks like your bank account remains un-verified.  This usually happens when the contact info listed on the bank account does not match your Nooch profile information. Please contact Nooch support for more information."
                                                     delegate:self
                                            cancelButtonTitle:@"OK"
-                                           otherButtonTitles:@"Contact Support", nil];
-        [av setTag:54];
+                                           otherButtonTitles:@"Learn More", nil];
+        [av setTag:80];
         [av show];
         return NO;
     }
