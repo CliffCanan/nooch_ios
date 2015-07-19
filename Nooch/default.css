@@ -324,14 +324,17 @@ navigation-bar title {
     background-color: rgba(250, 4, 4, .8);
     border          : 1px solid white;
     border-radius   : 11px;
-    box-shadow      : 0px 1px 2px rgba(26, 32, 38, 0.42);
+    box-shadow      : 0px 1px 2px rgba(26, 32, 38, 0.4);
     color           : white;
     font-family     : "FontAwesome";
     font-size       : 13px;
     text-align      : center;
 }
 #glyph_noBank_settings {
-    box-shadow      : 0px 1px 2px rgba(26, 32, 38, .28);
+    box-shadow      : 0px 1px 1px rgba(33, 34, 35, .25);
+}
+#glyph_noBank_settingsTbl {
+    box-shadow      : 0px 1px 1px rgba(33, 34, 35, .2);
 }
 
 /******************************/
@@ -449,7 +452,7 @@ navigation-bar title {
 }
 .button_LtBoxSm_right {
     left                : 154px;
-    width				: 141px;
+    width				: 135px;
     height				: 44px;
     color 				: white;
     border-radius		: 5px;
@@ -460,8 +463,8 @@ navigation-bar title {
     border				: 1px solid #66AE3C;
 }
 .button_LtBoxSm_left {
-    left                : 7px;
-    width				: 141px;
+    left                : 10px;
+    width				: 135px;
     height				: 44px;
     color 				: white;
     border-radius		: 5px;
@@ -727,8 +730,8 @@ navigation-bar title {
     color 				: #41ABE1;
 }
 .tableViewCell_Profile_leftSide {
-    left                : 10px;
-    width				: 96px;
+    left                : 5px;
+    width				: 99px;
     height				: 40px;
     font-family			: "Roboto";
     font-weight         : regular;
@@ -957,10 +960,10 @@ navigation-bar title {
     opacity : 0.6;
 }
 #profileTopSectionBg {
-    box-shadow: 0px 1px 2px rgba(88,90,92,.25);
+    box-shadow: 0px 1px 2px rgba(64,65,66,.16);
 }
 #profileTopSectionBg_susp {
-    box-shadow: 0px 1px 2px rgba(89, 10, 9, 0.3);
+    box-shadow: 0px 1px 2px rgba(89, 10, 9, 0.22);
 }
 .alertContainer {
     left: -1px;
@@ -3094,7 +3097,7 @@ table-view#emptyTable {
 }
 #remove_account {
     color		: #a94442;
-    top			: 2px;
+    top			: 11px;
     left		: 262px;
     width		: 50px;
     height		: 56px;
@@ -3111,11 +3114,11 @@ table-view#emptyTable {
     animation-timing-function: ease;
 }
 #settings_helpGlyph {
-    width       : 26px;
-    height      : 26px;
+    width       : 25px;
+    height      : 25px;
     color       : #3fabe1;
     font-family : "FontAwesome";
-    font-size   : 18px;
+    font-size   : 17px;
     text-align  : center;
 }
 .divider {

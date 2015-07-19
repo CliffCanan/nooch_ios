@@ -1088,12 +1088,16 @@
 
     }
 
+    NSString * currentScreen = @"Login";
+    NSString * iOSversion = [[UIDevice currentDevice] systemVersion];
+    NSString * msgBody = [NSString stringWithFormat:@"<!doctype html> <html><body><br><br><br><br><br><br><small>• Screen: %@<br>• iOS Version: %@<br></small></body></html>",currentScreen, iOSversion];
+
     MFMailComposeViewController * mailComposer = [[MFMailComposeViewController alloc] init];
     mailComposer.mailComposeDelegate = self;
     mailComposer.navigationBar.tintColor=[UIColor whiteColor];
 
     [mailComposer setSubject:[NSString stringWithFormat:@"Help Request: Version %@",[[[NSBundle mainBundle] infoDictionary] objectForKey:@"CFBundleVersion"]]];
-    [mailComposer setMessageBody:@"" isHTML:NO];
+    [mailComposer setMessageBody:msgBody isHTML:YES];
     [mailComposer setToRecipients:[NSArray arrayWithObjects:@"support@nooch.com", nil]];
     [mailComposer setCcRecipients:[NSArray arrayWithObject:@""]];
     [mailComposer setBccRecipients:[NSArray arrayWithObject:@""]];

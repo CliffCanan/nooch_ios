@@ -57,7 +57,7 @@
 -(void)actionSheet:(UIActionSheet *)actionSheet clickedButtonAtIndex:(NSInteger)buttonIndex
 {
     [self.view removeGestureRecognizer:self.slidingViewController.panGesture];
-    
+
     if (buttonIndex == 0)
     {
         [self toggleFacebookLogin];
@@ -74,7 +74,7 @@
             [myAlertView show];
             return;
         }
-       
+
         self.picker.sourceType = UIImagePickerControllerSourceTypeCamera;
         self.picker.allowsEditing = YES;
         [self presentViewController:self.picker animated:YES completion:Nil];
@@ -93,13 +93,13 @@
     }
 }
 
--(UIImage* )imageWithImage:(UIImage*)image scaledToSize:(CGSize)size
+-(UIImage*)imageWithImage:(UIImage*)image scaledToSize:(CGSize)size
 {
     float actualHeight = image.size.height;
     float actualWidth = image.size.width;
     float imgRatio = actualWidth/actualHeight;
     float maxRatio = 75.0/115.0;
-    
+
     if(imgRatio!=maxRatio){
         if (imgRatio < maxRatio){
             imgRatio = 115.0 / actualHeight;
@@ -125,13 +125,14 @@
     imageShow = [info objectForKey:UIImagePickerControllerEditedImage];
     imageShow = [imageShow resizedImageWithContentMode:UIViewContentModeScaleAspectFill bounds:CGSizeMake(150, 150) interpolationQuality:kCGInterpolationMedium];
     [self.pic setImage:imageShow];
-    
-    [[assist shared]setTranferImage:imageShow];
+
+    [[assist shared] setTranferImage:imageShow];
+
     [self dismissViewControllerAnimated:YES completion:^{
         self.slidingViewController.panGesture.enabled = NO;
         [self.view removeGestureRecognizer:self.slidingViewController.panGesture];
     }];
-    
+
     self.pic.layer.borderWidth = 3;
     self.pic.layer.borderColor = kNoochBlue.CGColor;
 

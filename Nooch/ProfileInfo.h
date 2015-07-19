@@ -14,7 +14,9 @@
 #import "SpinKit/RTSpinKitView.h"
 
 BOOL isProfileOpenFromSideBar, sentFromHomeScrn, isFromSettingsOptions, isFromTransDetails;
-@interface ProfileInfo : GAITrackedViewController<UINavigationControllerDelegate,UITextFieldDelegate,UITableViewDataSource,UITableViewDelegate,serveD,DecryptionDelegate,UIActionSheetDelegate,UIImagePickerControllerDelegate,UIScrollViewDelegate,MBProgressHUDDelegate,UIAlertViewDelegate>
+BOOL shouldFocusOnAddress, shouldFocusOnDob, shouldFocusOnSsn;
+
+@interface ProfileInfo : GAITrackedViewController<UINavigationControllerDelegate,UITextFieldDelegate,UITableViewDataSource,UITableViewDelegate,serveD,DecryptionDelegate,UIActionSheetDelegate,UIImagePickerControllerDelegate,MBProgressHUDDelegate,UIAlertViewDelegate>
 {
     short down,option,numberOfRowsToDisplay,heightOfTopSection;
     short hdrHt,rowHeight;
@@ -26,14 +28,11 @@ BOOL isProfileOpenFromSideBar, sentFromHomeScrn, isFromSettingsOptions, isFromTr
     NSMutableDictionary*dictProfileinfo;
     NSDictionary*GMTTimezonesDictionary;
     UIScrollView *scrollView;
-    BOOL isPhotoUpdate,emailVerifyRowIsShowing,smsVerifyRowIsShowing;
+    BOOL isPhotoUpdate, wasSSNadded;
+    BOOL emailVerifyRowIsShowing,smsVerifyRowIsShowing;
     NSRange start,end;
-    NSString*newString;
-    NSString*betweenBraces;
     NSString*strPhoneNumber;
     UIView*navBar;
-    UILabel*lbl;
-    UIButton*crossbtn;
     NSMutableDictionary*dictSavedInfo;
     UIView * shadowUnder;
     UITapGestureRecognizer * tapGesture;

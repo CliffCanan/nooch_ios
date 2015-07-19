@@ -15,6 +15,7 @@
 #import "TransferPIN.h"
 #import "ProfileInfo.h"
 #import "knoxWeb.h"
+#import "SettingsOptions.h"
 
 @interface HistoryFlat ()<GMSMapViewDelegate>
 {
@@ -156,7 +157,7 @@
     [self.view addSubview:self.search];
     [self.view bringSubviewToFront:completed_pending];
     [self.view bringSubviewToFront:self.search];
-    
+
     UIButton *filter = [UIButton buttonWithType:UIButtonTypeRoundedRect];
     [filter setStyleClass:@"label_filter"];
     [filter setTitleShadowColor:Rgb2UIColor(19, 32, 38, 0.22) forState:UIControlStateNormal];
@@ -801,7 +802,7 @@
             }
             else
             {
-                NSLog(@"Transaction Type is: %@", [[histArrayCommon objectAtIndex:i] valueForKey:@"TransactionType"]);
+                //NSLog(@"Transaction Type is: %@", [[histArrayCommon objectAtIndex:i] valueForKey:@"TransactionType"]);
                 markerOBJ.rotation = 1;
                 markerOBJ.icon=[UIImage imageNamed:@"n_Icon.png"];
             }
@@ -1155,14 +1156,14 @@
         if (isLocalSearch) {
             return [histTempCompleted count];
         }
-        return [histShowArrayCompleted count]+1;
+        return [histShowArrayCompleted count] + 1;
     }
     else
     {
         if (isLocalSearch) {
             return [histTempPending count];
         }
-        return [histShowArrayPending count]+1;
+        return [histShowArrayPending count] + 1;
     }
     return 0;
 }
@@ -1280,7 +1281,6 @@
             [subview removeFromSuperview];
         }
     }
-
 
     if (self.completed_selected)
     {
@@ -2030,7 +2030,7 @@
             if ([histShowArrayCompleted count] > indexPath.row)
             {
                 NSDictionary * dictRecord = [histShowArrayCompleted objectAtIndex:indexPath.row];
-                NSLog(@"Selected Entry is: %@", dictRecord);
+                //NSLog(@"Selected Entry is: %@", dictRecord);
                 TransactionDetails *details = [[TransactionDetails alloc] initWithData:dictRecord];
                 [self.navigationController pushViewController:details animated:YES];
             }
@@ -2165,17 +2165,27 @@
                     [alert show];
                     return;
                 }
-                else if ((isKnoxOn && ![user boolForKey:@"IsKnoxBankAvailable"]) ||
-                         (isSynapseOn && ![user boolForKey:@"IsSynapseBankAvailable"]))
+                else if (![user boolForKey:@"IsSynapseBankAvailable"])
                 {
                     UIAlertView * alert = [[UIAlertView alloc] initWithTitle:@"Please Attach An Account"
-                                                                  message:@"Before you can send or receive money, you must add a bank account."
+                                                                  message:@"\xE2\x9A\xA1\nAdding a bank account to fund Nooch payments is lightning quick.\n\n• No routing or account number needed\n• Bank-grade encryption keeps your info safe\n\nWould you like to take care of this now?"
                                                                  delegate:self
                                                         cancelButtonTitle:@"OK"
                                                         otherButtonTitles:@"Add Bank Now", nil];
                     [alert setTag:52];
                     [alert show];
                     return;
+                }
+                // ... and check if that bank account is 'Verified'
+                else if (![user boolForKey:@"IsSynapseBankVerified"])
+                {
+                    UIAlertView *av = [[UIAlertView alloc] initWithTitle:@"Bank Account Un-Verified"
+                                                                 message:@"Looks like your bank account remains un-verified.  This usually happens when the contact info listed on the bank account does not match your Nooch profile information. Please contact Nooch support for more information."
+                                                                delegate:self
+                                                       cancelButtonTitle:@"OK"
+                                                       otherButtonTitles:@"Learn More", nil];
+                    [av setTag:53];
+                    [av show];
                 }
                 else
                 {
@@ -3013,10 +3023,19 @@
         [email_verify resendEmail];
     }
 
-    else if (actionSheet.tag == 52 && buttonIndex == 1)  // go to Knox Webview
+    else if (actionSheet.tag == 52 && buttonIndex == 1)  // No bank attached, go to Settings
     {
-        knoxWeb * knox = [knoxWeb new];
-        [self.navigationController pushViewController:knox animated:YES];
+        SettingsOptions * mainSettingsScrn = [SettingsOptions new];
+        [nav_ctrl pushViewController:mainSettingsScrn animated:YES];
+        [self.slidingViewController resetTopView];
+    }
+
+    else if (actionSheet.tag == 53 && buttonIndex == 1)  // No bank attached, go to Settings
+    {
+        shouldDisplayBankNotVerifiedLtBox = YES;
+        SettingsOptions * mainSettingsScrn = [SettingsOptions new];
+        [nav_ctrl pushViewController:mainSettingsScrn animated:YES];
+        [self.slidingViewController resetTopView];
     }
 
     else if ((actionSheet.tag == 1010 || actionSheet.tag == 2010) && buttonIndex == 0) // CANCEL Request
@@ -3084,41 +3103,28 @@
     {
         if (![MFMailComposeViewController canSendMail])
         {
-          /*if ([UIAlertController class]) // for iOS 8
-            {
-                UIAlertController * alert = [UIAlertController
-                                             alertControllerWithTitle:@"No Email Detected"
-                                             message:@"You don't have an email account configured for this device."
-                                             preferredStyle:UIAlertControllerStyleAlert];
-                
-                UIAlertAction * ok = [UIAlertAction
-                                      actionWithTitle:@"OK"
-                                      style:UIAlertActionStyleDefault
-                                      handler:^(UIAlertAction * action)
-                                      {
-                                          [alert dismissViewControllerAnimated:YES completion:nil];
-                                      }];
-                [alert addAction:ok];
-                
-                [self presentViewController:alert animated:YES completion:nil];
-                return;
-            }
-            else
-            {
-                */UIAlertView * av = [[UIAlertView alloc] initWithTitle:@"No Email Detected"
+            UIAlertView * av = [[UIAlertView alloc] initWithTitle:@"No Email Detected"
                                                                 message:@"You don't have an email account configured for this device."
                                                                delegate:nil
                                                       cancelButtonTitle:@"OK"
                                                       otherButtonTitles: nil];
                 [av show];
                 return;
-          //}
         }
+
+        NSString * memberId = [user valueForKey:@"MemberId"];
+        NSString * fullName = [NSString stringWithFormat:@"%@ %@",[user valueForKey:@"firstName"],[user valueForKey:@"lastName"]];
+        NSString * userStatus = [user objectForKey:@"Status"];
+        NSString * userEmail = [user objectForKey:@"UserName"];
+        NSString * IsVerifiedPhone = [[user objectForKey:@"IsVerifiedPhone"] lowercaseString];
+        NSString * iOSversion = [[UIDevice currentDevice] systemVersion];
+        NSString * msgBody = [NSString stringWithFormat:@"<!doctype html> <html><body><br><br><br><br><br><br><small>• MemberID: %@<br>• Name: %@<br>• Status: %@<br>• Email: %@<br>• Is Phone Verified: %@<br>• iOS Version: %@<br></small></body></html>",memberId, fullName, userStatus, userEmail, IsVerifiedPhone, iOSversion];
+
         MFMailComposeViewController *mailComposer = [[MFMailComposeViewController alloc] init];
         mailComposer.mailComposeDelegate = self;
         mailComposer.navigationBar.tintColor=[UIColor whiteColor];
         [mailComposer setSubject:[NSString stringWithFormat:@"Support Request: Version %@",[[[NSBundle mainBundle] infoDictionary] objectForKey:@"CFBundleVersion"]]];
-        [mailComposer setMessageBody:@"" isHTML:NO];
+        [mailComposer setMessageBody:msgBody isHTML:YES];
         [mailComposer setToRecipients:[NSArray arrayWithObjects:@"support@nooch.com", nil]];
         [mailComposer setCcRecipients:[NSArray arrayWithObject:@""]];
         [mailComposer setBccRecipients:[NSArray arrayWithObject:@""]];

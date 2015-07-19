@@ -5,7 +5,7 @@
 //  Created by Clifford Canan on 7/16/15.
 //  Copyright (c) 2015 Nooch. All rights reserved.
 //
-
+#import "SettingsOptions.h"
 #import "IdVerifyImageUpload.h"
 #import <QuartzCore/QuartzCore.h>
 #import "assist.h"
@@ -13,7 +13,9 @@
 #import "UIImage+Resize.h"
 #import "UIImageView+WebCache.h"
 
-@interface IdVerifyImageUpload ()
+@interface IdVerifyImageUpload (){
+    UIScrollView * scrollView;
+}
 
 @property(nonatomic,strong) UIImageView *pic;
 @property(nonatomic,strong) UILabel *message;
@@ -57,10 +59,14 @@
 
     [self.navigationItem setLeftBarButtonItem:menu];
 
+    scrollView = [[UIScrollView alloc] initWithFrame:CGRectMake(0, 0,
+                                                                [[UIScreen mainScreen] bounds].size.width, [[UIScreen mainScreen] bounds].size.height)];
+    [scrollView setContentSize:CGSizeMake(320, 580)];
+
     UILabel * title = [[UILabel alloc] initWithFrame:CGRectMake(15, 16, 250, 25)];
     [title setStyleClass:@"refer_header"];
     [title setText:@"ID Verification"];
-    [self.view addSubview:title];
+    [scrollView addSubview:title];
 
     UILabel * introTxt = [UILabel new];
     [introTxt setNumberOfLines:0];
@@ -68,7 +74,7 @@
     [introTxt setFrame:CGRectMake(16, 43, 288, 72)];
     [introTxt setText:@"To complete the verification process, please upload any photo ID that includes your name and a clear picture. (Driver's License, university ID, etc.)"];
     [introTxt setTextColor:[Helpers hexColor:@"313233"]];
-    [self.view addSubview:introTxt];
+    [scrollView addSubview:introTxt];
 
     self.pic = [[UIImageView alloc] initWithFrame:CGRectMake(70, introTxt.frame.origin.y + introTxt.frame.size.height + 10, 182, 130)];
     self.pic.layer.cornerRadius = 8;
@@ -98,21 +104,23 @@
     self.btnGlyph.attributedText = [[NSAttributedString alloc] initWithString:[NSString fontAwesomeIconStringForIconIdentifier:@"fa-file-image-o"] attributes:textAttributes];
 
     [self.choose_pic addSubview:self.btnGlyph];
-    [self.view addSubview:self.choose_pic];
+    [scrollView addSubview:self.choose_pic];
 
     UILabel * header2 = [[UILabel alloc] initWithFrame:CGRectMake(16, self.choose_pic.frame.origin.y + self.choose_pic.frame.size.height + 17, 250, 25)];
     [header2 setStyleClass:@"refer_header"];
     [header2 setText:@"Why We Ask"];
-    [self.view addSubview:header2];
+    [scrollView addSubview:header2];
 
     UILabel * info = [UILabel new];
-    [info setFrame:CGRectMake(16, header2.frame.origin.y + header2.frame.size.height + 2, 288, 126)];
+    [info setFrame:CGRectMake(16, header2.frame.origin.y + header2.frame.size.height + 2, 288, 142)];
     [info setNumberOfLines:0];
     [info setTextAlignment:NSTextAlignmentLeft];
     [info setFont:[UIFont fontWithName:@"Roboto-Light" size:15]];
     [info setTextColor:[Helpers hexColor:@"6c6e71"]];
-    [info setText:@"Nooch is a money transfer business regulated by the US Treasury Department. To protect all users' accounts, we must collect certain information from our users to verify their identities. We never share your data without your permission and all data is stored with encryption on secure servers."];
-    [self.view addSubview:info];
+    [info setText:@"Nooch is a money transfer business regulated by the US Treasury Department. To protect all accounts, we must collect certain information from our users to verify their identities. We never share your data without your permission and all data is stored with encryption on secure servers."];
+    [scrollView addSubview:info];
+
+    [self.view addSubview:scrollView];
 
     self.picker = [[UIImagePickerController alloc] init];
     self.picker.delegate = self;
@@ -131,7 +139,7 @@
     [ARTrackingManager trackEvent:@"IdVerImg_viewDidAppear"];
 
     [self.pic addStyleClass:@"animate_bubble_slow"];
-    [self.view addSubview:self.pic];
+    [scrollView addSubview:self.pic];
 }
 
 -(void)viewDidDisappear:(BOOL)animated
@@ -181,7 +189,7 @@
 - (void)imagePickerController:(UIImagePickerController *)picker1 didFinishPickingMediaWithInfo:(NSDictionary *)info
 {
     imageShow = [info objectForKey:UIImagePickerControllerEditedImage];
-    imageShow = [imageShow resizedImageWithContentMode:UIViewContentModeScaleAspectFill bounds:CGSizeMake(150, 150) interpolationQuality:kCGInterpolationMedium];
+    imageShow = [imageShow resizedImageWithContentMode:UIViewContentModeScaleAspectFit bounds:CGSizeMake(150, 150) interpolationQuality:kCGInterpolationHigh];
     [self.pic setImage:imageShow];
 
     [self dismissViewControllerAnimated:YES completion:^{

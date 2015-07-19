@@ -827,13 +827,15 @@
                     uint8_t *bytes = (uint8_t *)[data bytes];
                     NSMutableString *result1 = [NSMutableString stringWithCapacity:len * 3];
 
-                    for (NSUInteger i = 0; i < len; i++) {
+                    for (NSUInteger i = 0; i < len; i++)
+                    {
                         if (i) {
                             [result1 appendString:@","];
                         }
                         [result1 appendFormat:@"%d", bytes[i]];
                     }
-                    NSArray*arr=[result1 componentsSeparatedByString:@","];
+
+                    NSArray * arr = [result1 componentsSeparatedByString:@","];
                     [transactionInputTransfer setValue:arr forKey:@"Picture"];
                 }
 
@@ -1384,11 +1386,20 @@
                 [av show];
                 return;
             }
+
+            NSString * memberId = [user valueForKey:@"MemberId"];
+            NSString * fullName = [NSString stringWithFormat:@"%@ %@",[user valueForKey:@"firstName"],[user valueForKey:@"lastName"]];
+            NSString * userStatus = [user objectForKey:@"Status"];
+            NSString * userEmail = [user objectForKey:@"UserName"];
+            NSString * IsVerifiedPhone = [[user objectForKey:@"IsVerifiedPhone"] lowercaseString];
+            NSString * iOSversion = [[UIDevice currentDevice] systemVersion];
+            NSString * msgBody = [NSString stringWithFormat:@"<!doctype html> <html><body><br><br><br><br><br><br><small>• MemberID: %@<br>• Name: %@<br>• Status: %@<br>• Email: %@<br>• Is Phone Verified: %@<br>• iOS Version: %@<br></small></body></html>",memberId, fullName, userStatus, userEmail, IsVerifiedPhone, iOSversion];
+
             MFMailComposeViewController *mailComposer = [[MFMailComposeViewController alloc] init];
             mailComposer.mailComposeDelegate = self;
             mailComposer.navigationBar.tintColor=[UIColor whiteColor];
             [mailComposer setSubject:[NSString stringWithFormat:@"Support Request: Version %@",[[[NSBundle mainBundle] infoDictionary] objectForKey:@"CFBundleVersion"]]];
-            [mailComposer setMessageBody:@"" isHTML:NO];
+            [mailComposer setMessageBody:msgBody isHTML:YES];
             [mailComposer setToRecipients:[NSArray arrayWithObjects:@"support@nooch.com", nil]];
             [mailComposer setCcRecipients:[NSArray arrayWithObject:@""]];
             [mailComposer setBccRecipients:[NSArray arrayWithObject:@""]];

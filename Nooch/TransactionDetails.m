@@ -14,6 +14,7 @@
 #import "SelectRecipient.h"
 #import "ProfileInfo.h"
 #import "DisputeDetail.h"
+#import "SettingsOptions.h"
 #import <FacebookSDK/FacebookSDK.h>
 
 @interface TransactionDetails ()
@@ -917,16 +918,27 @@
         [alert show];
         return NO;
     }
-    else if ((isKnoxOn && ![user boolForKey:@"IsKnoxBankAvailable"]) ||
-             (isSynapseOn && ![user boolForKey:@"IsSynapseBankAvailable"]))
+    else if (![user boolForKey:@"IsSynapseBankAvailable"])
     {
         UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Please Link A Bank Account"
-                                                        message:@"Before you can make any transfer you must attach a bank account."
+                                                        message:@"\xE2\x9A\xA1\nAdding a bank account to fund Nooch payments is lightning quick.\n\n• No routing or account number needed\n• Bank-grade encryption keeps your info safe\n\nWould you like to take care of this now?"
                                                        delegate:self
                                               cancelButtonTitle:@"OK"
-                                              otherButtonTitles:Nil, nil];
-        
+                                              otherButtonTitles:@"Go Now", nil];
+        [alert setTag:81];
         [alert show];
+        return NO;
+    }
+    // ... and check if that bank account is 'Verified'
+    else if (![user boolForKey:@"IsSynapseBankVerified"])
+    {
+        UIAlertView *av = [[UIAlertView alloc] initWithTitle:@"Bank Account Un-Verified"
+                                                     message:@"Looks like your bank account remains un-verified.  This usually happens when the contact info listed on the bank account does not match your Nooch profile information. Please contact Nooch support for more information."
+                                                    delegate:self
+                                           cancelButtonTitle:@"OK"
+                                           otherButtonTitles:@"Learn More", nil];
+        [av setTag:82];
+        [av show];
         return NO;
     }
     
@@ -1239,11 +1251,20 @@
             [av show];
             return;
         }
+
+        NSString * memberId = [user valueForKey:@"MemberId"];
+        NSString * fullName = [NSString stringWithFormat:@"%@ %@",[user valueForKey:@"firstName"],[user valueForKey:@"lastName"]];
+        NSString * userStatus = [user objectForKey:@"Status"];
+        NSString * userEmail = [user objectForKey:@"UserName"];
+        NSString * IsVerifiedPhone = [[user objectForKey:@"IsVerifiedPhone"] lowercaseString];
+        NSString * iOSversion = [[UIDevice currentDevice] systemVersion];
+        NSString * msgBody = [NSString stringWithFormat:@"<!doctype html> <html><body><br><br><br><br><br><br><small>• MemberID: %@<br>• Name: %@<br>• Status: %@<br>• Email: %@<br>• Is Phone Verified: %@<br>• iOS Version: %@<br></small></body></html>",memberId, fullName, userStatus, userEmail, IsVerifiedPhone, iOSversion];
+
         MFMailComposeViewController *mailComposer = [[MFMailComposeViewController alloc] init];
         mailComposer.mailComposeDelegate = self;
         mailComposer.navigationBar.tintColor=[UIColor whiteColor];
         [mailComposer setSubject:[NSString stringWithFormat:@"Support Request: Version %@",[[[NSBundle mainBundle] infoDictionary] objectForKey:@"CFBundleVersion"]]];
-        [mailComposer setMessageBody:@"" isHTML:NO];
+        [mailComposer setMessageBody:msgBody isHTML:YES];
         [mailComposer setToRecipients:[NSArray arrayWithObjects:@"support@nooch.com", nil]];
         [mailComposer setCcRecipients:[NSArray arrayWithObject:@""]];
         [mailComposer setBccRecipients:[NSArray arrayWithObject:@""]];
@@ -1313,6 +1334,21 @@
         [serveObj setDelegate:self];
         serveObj.tagName = @"reject";
         [serveObj CancelRejectTransaction:[self.trans valueForKey:@"TransactionId"] resp:@"Rejected"];
+    }
+
+    else if (alertView.tag == 81 && buttonIndex == 1)
+    {
+        SettingsOptions * mainSettingsScrn = [SettingsOptions new];
+        [nav_ctrl pushViewController:mainSettingsScrn animated:YES];
+        [self.slidingViewController resetTopView];
+    }
+
+    else if (alertView.tag == 82 && buttonIndex == 1)
+    {
+        shouldDisplayBankNotVerifiedLtBox = YES;
+        SettingsOptions * mainSettingsScrn = [SettingsOptions new];
+        [nav_ctrl pushViewController:mainSettingsScrn animated:YES];
+        [self.slidingViewController resetTopView];
     }
 }
 

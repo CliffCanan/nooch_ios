@@ -96,6 +96,8 @@
 -(void)resetPassword:(NSString*)old new:(NSString*)new;
 -(void)resetPIN:(NSString*)old new:(NSString*)new;
 -(void)resendSMS;
+-(void)saveDob:(NSString*)dob;
+-(void)saveSsn:(NSString*)ssn;
 -(void)saveUserIpAddress:(NSString*)IpAddress;
 -(void)SaveImmediateRequire:(BOOL)IsRequiredImmediatley;
 -(void)saveShareToFB_Twitter:(NSString*)PostTo;
@@ -108,6 +110,7 @@
 -(void)setPushSets:(NSDictionary*)notificationDictionary;
 -(void)setSets:(NSDictionary*)settingsDictionary;
 -(void)setSharing:(NSString*)sharingValue;
+-(void)submitIdDocument;
 -(void)TransferMoneyToNonNoochUser:(NSDictionary*)transactionInput email:(NSString*)email;
 -(void)UpDateLatLongOfUser:(NSString*)lat lng:(NSString*)lng;
 -(void)ValidatePinNumberToEnterForEnterForeground:(NSString*)memId pin:(NSString*)pin;
