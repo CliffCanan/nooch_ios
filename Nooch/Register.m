@@ -131,9 +131,10 @@
     [logo setStyleClass:@"animate_bubble_logo"];
     [self.view addSubview:logo];
 
-    UILabel * signup = [[UILabel alloc] initWithFrame:CGRectMake(0, 76, 320, 16)];
+    UILabel * signup = [[UILabel alloc] initWithFrame:CGRectMake(10, 72, 300, 16)];
     [signup setText:NSLocalizedString(@"Register_SgnUpWthTxt", @"Register Screen 'Sign Up With")];
     [signup setStyleClass:@"instruction_text"];
+    [signup setStyleId:@"instruction_text_lg"];
     [self.view addSubview:signup];
 
     self.facebookLogin = [UIButton buttonWithType:UIButtonTypeRoundedRect];
@@ -882,43 +883,14 @@
         {
             [self.hud hide:YES];
             
-            if ([UIAlertController class]) // for iOS 8
-            {
-                UIAlertController * alert = [UIAlertController
-                                             alertControllerWithTitle:@"Account Temporarily Suspended"
-                                             message:@"To keep Nooch safe your account has been temporarily suspended because you entered an incorrect password too many times.\n\nIn most cases your account will be automatically un-suspended in 24 hours. You can always contact support if this is a mistake or error.\n\nWe apologize for this inconvenience, please understand it is only to protect your account."
-                                             preferredStyle:UIAlertControllerStyleAlert];
+            UIAlertView * alert = [[UIAlertView alloc]initWithTitle:@"Account Temporarily Suspended"
+                                                            message:@"To keep Nooch safe your account has been temporarily suspended because you entered an incorrect password too many times.\n\nIn most cases your account will be automatically un-suspended in 24 hours. You can always contact support if this is a mistake or error.\n\nWe apologize for this inconvenience, please understand it is only to protect your account."
+                                                           delegate:self
+                                                  cancelButtonTitle:@"OK"
+                                                  otherButtonTitles:@"Contact Support", nil];
+            [alert setTag:50];
+            [alert show];
 
-                UIAlertAction * ok = [UIAlertAction
-                                      actionWithTitle:@"OK"
-                                      style:UIAlertActionStyleDefault
-                                      handler:^(UIAlertAction * action)
-                                      {
-                                          [alert dismissViewControllerAnimated:YES completion:nil];
-                                      }];
-                UIAlertAction * contactSupport = [UIAlertAction
-                                                  actionWithTitle:@"Contact Support"
-                                                  style:UIAlertActionStyleDefault
-                                                  handler:^(UIAlertAction * action)
-                                                  {
-                                                      [alert dismissViewControllerAnimated:YES completion:nil];
-                                                      [self emailNoochSupport];
-                                                  }];
-                [alert addAction:ok];
-                [alert addAction:contactSupport];
-                
-                [self presentViewController:alert animated:YES completion:nil];
-            }
-            else // iOS 7 and prior
-            {
-                UIAlertView * alert = [[UIAlertView alloc]initWithTitle:@"Account Temporarily Suspended"
-                                                                message:@"To keep Nooch safe your account has been temporarily suspended because you entered an incorrect password too many times.\n\nIn most cases your account will be automatically un-suspended in 24 hours. You can always contact support if this is a mistake or error.\n\nWe apologize for this inconvenience, please understand it is only to protect your account."
-                                                               delegate:self
-                                                      cancelButtonTitle:@"OK"
-                                                      otherButtonTitles:@"Contact Support", nil];
-                [alert setTag:50];
-                [alert show];
-            }
             [spinner stopAnimating];
         }
 
@@ -927,43 +899,15 @@
         {
             [self.hud hide:YES];
             
-            if ([UIAlertController class]) // for iOS 8
-            {
-                UIAlertController * alert = [UIAlertController
-                                             alertControllerWithTitle:@"Account Suspended"
-                                             message:@"Your account has been temporarily suspended pending a review. We will contact you as soon as possible, and you can always contact us via email if this is a mistake or error."
-                                             preferredStyle:UIAlertControllerStyleAlert];
-                
-                UIAlertAction * ok = [UIAlertAction
-                                      actionWithTitle:@"OK"
-                                      style:UIAlertActionStyleDefault
-                                      handler:^(UIAlertAction * action)
-                                      {
-                                          [alert dismissViewControllerAnimated:YES completion:nil];
-                                      }];
-                UIAlertAction * contactSupport = [UIAlertAction
-                                                  actionWithTitle:@"Contact Support"
-                                                  style:UIAlertActionStyleDefault
-                                                  handler:^(UIAlertAction * action)
-                                                  {
-                                                      [alert dismissViewControllerAnimated:YES completion:nil];
-                                                      [self emailNoochSupport];
-                                                  }];
-                [alert addAction:ok];
-                [alert addAction:contactSupport];
-                
-                [self presentViewController:alert animated:YES completion:nil];
-            }
-            else // iOS 7 and prior
-            {
-                UIAlertView * alert = [[UIAlertView alloc]initWithTitle:@"Account Suspended"
-                                                                message:@"Your account has been temporarily suspended pending a review. We will contact you as soon as possible, and you can always contact us via email if this is a mistake or error."
-                                                               delegate:self
-                                                      cancelButtonTitle:@"OK"
-                                                      otherButtonTitles:@"Contact Support", nil];
-                [alert setTag:51];
-                [alert show];
-            }
+
+            UIAlertView * alert = [[UIAlertView alloc]initWithTitle:@"Account Suspended"
+                                                            message:@"Your account has been temporarily suspended pending a review. We will contact you as soon as possible, and you can always contact us via email if this is a mistake or error."
+                                                           delegate:self
+                                                  cancelButtonTitle:@"OK"
+                                                  otherButtonTitles:@"Contact Support", nil];
+            [alert setTag:51];
+            [alert show];
+
             [spinner stopAnimating];
         }
 
@@ -973,7 +917,7 @@
             [spinner stopAnimating];
             [self.hud hide:YES];
 
-            if ([UIAlertController class]) // for iOS 8
+          /*if ([UIAlertController class]) // for iOS 8
             {
                 UIAlertController * alert = [UIAlertController
                                              alertControllerWithTitle:NSLocalizedString(@"Rgstr_SuspAlrtTtl1", @"Register screen 'Account Temporarily Suspended' Alert Title")
@@ -1002,14 +946,14 @@
             }
             else // iOS 7 and prior
             {
-                UIAlertView * alert = [[UIAlertView alloc]initWithTitle:NSLocalizedString(@"Rgstr_SuspAlrtTtl2", @"Register screen 'Account Temporarily Suspended' Alert Title (2nd)")
+              */UIAlertView * alert = [[UIAlertView alloc]initWithTitle:NSLocalizedString(@"Rgstr_SuspAlrtTtl2", @"Register screen 'Account Temporarily Suspended' Alert Title (2nd)")
                                                                 message:NSLocalizedString(@"Rgstr_SuspAlrtBody2", @"Register screen Account Temporarily Suspended Alert Body Text (2nd)")
                                                                delegate:self
                                                       cancelButtonTitle:@"OK"
                                                       otherButtonTitles:NSLocalizedString(@"Rgstr_SuspAlrtBtn2", @"Register screen 'Contact Support' Alert Btn (2nd)"), nil];
                 [alert show];
                 [alert setTag:52];
-            }
+          //}
         }
     }
 
@@ -1457,34 +1401,13 @@
         [self.emailValidator setTextColor:kNoochRed];
         
         [self.email_field becomeFirstResponder];
-        
-        if ([UIAlertController class]) // for iOS 8
-        {
-            UIAlertController * alert = [UIAlertController
-                                         alertControllerWithTitle:@"Try A Different Email"
-                                         message:@"\xF0\x9F\x93\xA7\nTo protect all Nooch accounts, we ask that you please use a regular email address to create your account."
-                                         preferredStyle:UIAlertControllerStyleAlert];
-            
-            UIAlertAction * ok = [UIAlertAction
-                                  actionWithTitle:@"OK"
-                                  style:UIAlertActionStyleDefault
-                                  handler:^(UIAlertAction * action)
-                                  {
-                                      [alert dismissViewControllerAnimated:YES completion:nil];
-                                  }];
-            [alert addAction:ok];
-            
-            [self presentViewController:alert animated:YES completion:nil];
-        }
-        else  // for iOS 7 and prior
-        {
-            UIAlertView *av = [[UIAlertView alloc] initWithTitle:@"Try A Different Email"
-                                                         message:@"To protect all Nooch accounts, we ask that you please use a regular email address to create your account."
-                                                        delegate:self
-                                               cancelButtonTitle:@"OK"
-                                               otherButtonTitles:nil];
-            [av show];
-        }
+
+        UIAlertView *av = [[UIAlertView alloc] initWithTitle:@"Try A Different Email"
+                                                     message:@"To protect all Nooch accounts, we ask that you please use a regular email address to create your account."
+                                                    delegate:self
+                                           cancelButtonTitle:@"OK"
+                                           otherButtonTitles:nil];
+        [av show];
         return false;
     }
     else
@@ -1502,44 +1425,18 @@
 {
     if (![MFMailComposeViewController canSendMail])
     {
-        if ([UIAlertController class]) // for iOS 8
-        {
-            UIAlertController * alert = [UIAlertController
-                                         alertControllerWithTitle:@"No Email Detected"
-                                         message:@"You don't have an email account configured for this device."
-                                         preferredStyle:UIAlertControllerStyleAlert];
-            
-            UIAlertAction * ok = [UIAlertAction
-                                  actionWithTitle:@"OK"
-                                  style:UIAlertActionStyleDefault
-                                  handler:^(UIAlertAction * action)
-                                  {
-                                      [alert dismissViewControllerAnimated:YES completion:nil];
-                                  }];
-            [alert addAction:ok];
-            
-            [self presentViewController:alert animated:YES completion:nil];
-            return;
-        }
-        else
-        {
-            if (![MFMailComposeViewController canSendMail])
-            {
-                UIAlertView * av = [[UIAlertView alloc] initWithTitle:@"No Email Detected"
-                                                              message:@"You don't have an email account configured for this device."
-                                                             delegate:nil
-                                                    cancelButtonTitle:@"OK"
-                                                    otherButtonTitles: nil];
-                [av show];
-                return;
-            }
-        }
+        UIAlertView * av = [[UIAlertView alloc] initWithTitle:@"No Email Detected"
+                                                      message:@"You don't have an email account configured for this device."
+                                                     delegate:nil
+                                            cancelButtonTitle:@"OK"
+                                            otherButtonTitles:nil];
+        [av show];
+        return;
     }
-    
+
     MFMailComposeViewController * mailComposer = [[MFMailComposeViewController alloc] init];
     mailComposer.mailComposeDelegate = self;
     mailComposer.navigationBar.tintColor=[UIColor whiteColor];
-    
     [mailComposer setSubject:[NSString stringWithFormat:@"Help Request: Version %@",[[[NSBundle mainBundle] infoDictionary] objectForKey:@"CFBundleVersion"]]];
     [mailComposer setMessageBody:@"" isHTML:NO];
     [mailComposer setToRecipients:[NSArray arrayWithObjects:@"support@nooch.com", nil]];

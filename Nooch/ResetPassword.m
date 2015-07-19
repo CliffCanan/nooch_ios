@@ -334,6 +334,7 @@
 
 - (void)forgot_pass
 {
+    [self.view endEditing:YES];
     UIAlertView * alert = [[UIAlertView alloc]initWithTitle:NSLocalizedString(@"ResetPw_ForgotAlrtTitle1", @"Reset PW Forgot Password Alert Title")//@"Forgot Password"
                                                     message:NSLocalizedString(@"ResetPw_ForgotAlrtBody1", @"Reset PW Forgot Password Alert Body Text")
                                                    delegate:self

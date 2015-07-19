@@ -72,8 +72,8 @@
     shadowUnder.layer.cornerRadius = 30;
     shadowUnder.layer.shadowColor = [UIColor blackColor].CGColor;
     shadowUnder.layer.shadowOffset = CGSizeMake(0, 2);
-    shadowUnder.layer.shadowOpacity = 0.75;
-    shadowUnder.layer.shadowRadius = 3.5;
+    shadowUnder.layer.shadowOpacity = 0.82;
+    shadowUnder.layer.shadowRadius = 4.0;
     shadowUnder.alpha = .8;
     [user_bar addSubview:shadowUnder];
 
@@ -179,10 +179,11 @@
     else
     {
         [self.settings setStyleId:@"settings_icon_4"];
-        [self.view addSubview:self.settings];
+        [self.view addSubview:self.settings]; 
     }
 
-    if ([[user objectForKey:@"IsBankAvailable"]isEqualToString:@"1"])
+    if ((isKnoxOn && [user boolForKey:@"IsKnoxBankAvailable"]) ||
+        (isSynapseOn && [user boolForKey:@"IsSynapseBankAvailable"]))
     {
         [self.glyph_noBank removeFromSuperview];
     }
@@ -193,7 +194,7 @@
 
         if ([settingsIconPosition isEqualToString:@"topBar"])
         {
-            [self.glyph_noBank setFrame:CGRectMake(240, 31, 22, 22)];
+            [self.glyph_noBank setFrame:CGRectMake(238, 31, 22, 22)];
             [user_bar addSubview:self.glyph_noBank];
             [user_bar bringSubviewToFront:self.glyph_noBank];
         }
@@ -455,6 +456,7 @@
             [imageCache clearDisk];
             [imageCache cleanDisk];
 
+            isFromTransferPIN = NO;
             HistoryFlat *hist = [[HistoryFlat alloc] init];
             [nav_ctrl pushViewController:hist animated:NO];
             [self.slidingViewController resetTopView];
@@ -553,39 +555,15 @@
             //report bug
             if (![MFMailComposeViewController canSendMail])
             {
-                if ([UIAlertController class]) // for iOS 8
-                {
-                    UIAlertController * alert = [UIAlertController
-                                                 alertControllerWithTitle:@"No Email Detected"
-                                                 message:@"You don't have an email account configured for this device."
-                                                 preferredStyle:UIAlertControllerStyleAlert];
-                    
-                    UIAlertAction * ok = [UIAlertAction
-                                          actionWithTitle:@"OK"
-                                          style:UIAlertActionStyleDefault
-                                          handler:^(UIAlertAction * action)
-                                          {
-                                              [alert dismissViewControllerAnimated:YES completion:nil];
-                                          }];
-                    [alert addAction:ok];
-                    
-                    [self presentViewController:alert animated:YES completion:nil];
-                    return;
-                }
-                else
-                {
-                    if (![MFMailComposeViewController canSendMail])
-                    {
-                        UIAlertView * av = [[UIAlertView alloc] initWithTitle:@"No Email Detected"
-                                                                      message:@"You don't have an email account configured for this device."
-                                                                     delegate:nil
-                                                            cancelButtonTitle:@"OK"
-                                                            otherButtonTitles: nil];
-                        [av show];
-                        return;
-                    }
-                }
+                UIAlertView * av = [[UIAlertView alloc] initWithTitle:@"No Email Detected"
+                                                              message:@"You don't have an email account configured for this device."
+                                                             delegate:nil
+                                                    cancelButtonTitle:@"OK"
+                                                    otherButtonTitles: nil];
+                [av show];
+                return;
             }
+            
             MFMailComposeViewController *mailComposer = [[MFMailComposeViewController alloc] init];
             mailComposer.mailComposeDelegate = self;
             [mailComposer setSubject:[NSString stringWithFormat:@"Bug Report: Version %@",[[[NSBundle mainBundle] infoDictionary] objectForKey:@"CFBundleVersion"]]];
@@ -603,44 +581,28 @@
             //email support
             if (![MFMailComposeViewController canSendMail])
             {
-                if ([UIAlertController class]) // for iOS 8
-                {
-                    UIAlertController * alert = [UIAlertController
-                                                 alertControllerWithTitle:@"No Email Detected"
-                                                 message:@"You don't have an email account configured for this device."
-                                                 preferredStyle:UIAlertControllerStyleAlert];
-                    
-                    UIAlertAction * ok = [UIAlertAction
-                                          actionWithTitle:@"OK"
-                                          style:UIAlertActionStyleDefault
-                                          handler:^(UIAlertAction * action)
-                                          {
-                                              [alert dismissViewControllerAnimated:YES completion:nil];
-                                          }];
-                    [alert addAction:ok];
-                    
-                    [self presentViewController:alert animated:YES completion:nil];
-                    return;
-                }
-                else
-                {
-                    if (![MFMailComposeViewController canSendMail])
-                    {
-                        UIAlertView * av = [[UIAlertView alloc] initWithTitle:@"No Email Detected"
-                                                                      message:@"You don't have an email account configured for this device."
-                                                                     delegate:nil
-                                                            cancelButtonTitle:@"OK"
-                                                            otherButtonTitles: nil];
-                        [av show];
-                        return;
-                    }
-                }
+                UIAlertView * av = [[UIAlertView alloc] initWithTitle:@"No Email Detected"
+                                                              message:@"You don't have an email account configured for this device."
+                                                             delegate:nil
+                                                    cancelButtonTitle:@"OK"
+                                                    otherButtonTitles: nil];
+                [av show];
+                return;
             }
+
+            NSString * memberId = [user valueForKey:@"MemberId"];
+            NSString * fullName = [NSString stringWithFormat:@"%@ %@",[user valueForKey:@"firstName"],[user valueForKey:@"lastName"]];
+            NSString * userStatus = [user objectForKey:@"Status"];
+            NSString * userEmail = [user objectForKey:@"UserName"];
+            NSString * IsVerifiedPhone = [[user objectForKey:@"IsVerifiedPhone"] lowercaseString];
+            NSString * iOSversion = [[UIDevice currentDevice] systemVersion];
+            NSString * msgBody = [NSString stringWithFormat:@"<!doctype html> <html><body><br><br><br><br><br><br><small>• MemberID: %@<br>• Name: %@<br>• Status: %@<br>• Email: %@<br>• Is Phone Verified: %@<br>• iOS Version: %@<br></small></body></html>",memberId, fullName, userStatus, userEmail, IsVerifiedPhone, iOSversion];
+
             MFMailComposeViewController *mailComposer = [[MFMailComposeViewController alloc] init];
             mailComposer.mailComposeDelegate = self;
             mailComposer.navigationBar.tintColor=[UIColor whiteColor];
             [mailComposer setSubject:[NSString stringWithFormat:@"Support Request: Version %@",[[[NSBundle mainBundle] infoDictionary] objectForKey:@"CFBundleVersion"]]];
-            [mailComposer setMessageBody:@"" isHTML:NO];
+            [mailComposer setMessageBody:msgBody isHTML:YES];
             [mailComposer setToRecipients:[NSArray arrayWithObjects:@"support@nooch.com", nil]];
             [mailComposer setCcRecipients:[NSArray arrayWithObject:@""]];
             [mailComposer setBccRecipients:[NSArray arrayWithObject:@""]];

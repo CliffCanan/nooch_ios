@@ -15,6 +15,7 @@
 #import "TransferPIN.h"
 #import "ProfileInfo.h"
 #import "knoxWeb.h"
+#import "SettingsOptions.h"
 
 @interface HistoryFlat ()<GMSMapViewDelegate>
 {
@@ -156,7 +157,7 @@
     [self.view addSubview:self.search];
     [self.view bringSubviewToFront:completed_pending];
     [self.view bringSubviewToFront:self.search];
-    
+
     UIButton *filter = [UIButton buttonWithType:UIButtonTypeRoundedRect];
     [filter setStyleClass:@"label_filter"];
     [filter setTitleShadowColor:Rgb2UIColor(19, 32, 38, 0.22) forState:UIControlStateNormal];
@@ -311,7 +312,7 @@
     _emptyText = [[UILabel alloc] initWithFrame:CGRectMake(15, 15, 290, 70)];
     _emptyPic = [[UIImageView alloc] initWithFrame:CGRectMake(33, 102, 253, 256)];
 
-    [ARTrackingManager trackEvent:@"HistoryMain_viewDidAppear_End"];
+    [ARTrackingManager trackEvent:@"HistoryMain_viewDidLoad_End"];
 
     indexPathForDeletion = nil;
 }
@@ -347,7 +348,7 @@
         [UIView setAnimationDuration:0.3];
 
         self.list.frame = CGRectMake(-276, 84, 320, self.view.frame.size.height);
-        mapArea.frame = CGRectMake(0, 84,320,self.view.frame.size.height);
+        mapArea.frame = CGRectMake(0, 84, 320, self.view.frame.size.height);
         [UIView commitAnimations];
     }
 }
@@ -365,6 +366,7 @@
 
 -(void)displayEmptyMapArea
 {
+    //NSLog(@"displayEmptyMapArea FIRED");
     [mapArea setBackgroundColor:[Helpers hexColor:@"efeff4"]];
     
     NSShadow * shadow_white = [[NSShadow alloc] init];
@@ -466,6 +468,12 @@
     [UIView setAnimationDuration:0.4];
     if (!isMapOpen)
     {
+        if ([self.view.subviews containsObject:emptyText_localSearch])
+        {
+            [emptyText_localSearch setAlpha:0];
+            [self.glyph_emptyTable setAlpha:0];
+        }
+
         self.tableShadow.frame = CGRectMake(-276, 84, 320, self.view.frame.size.height);
         self.list.frame = CGRectMake(-276, 84, 320, self.view.frame.size.height);
         mapArea.frame = CGRectMake(0, 84, 320, self.view.frame.size.height);
@@ -713,11 +721,12 @@
 
 -(void)mapPoints
 {
+    [mapView_ clear];
+
     if (self.completed_selected)
     {
         if ([histShowArrayCompleted count] == 0)
         {
-            [mapView_ clear];
             return;
         }
         histArrayCommon = [histShowArrayCompleted copy];
@@ -726,13 +735,13 @@
     {
         if ([histShowArrayPending count] == 0)
         {
-            [mapView_ clear];
             return;
         }
         histArrayCommon = [histShowArrayPending copy];
     }
-    [mapView_ clear];
 
+    [mapView_ setAlpha:1];
+    [mapArea bringSubviewToFront:mapView_];
     _markers = [[NSMutableArray alloc] init];
     [_markers removeAllObjects];
 
@@ -741,48 +750,62 @@
         NSDictionary *tempDict = [histArrayCommon objectAtIndex:i];
 
         markerOBJ = [[GMSMarker alloc] init];
-        markerOBJ.position = CLLocationCoordinate2DMake([[tempDict objectForKey:@"Latitude"] floatValue], [[tempDict objectForKey:@"Longitude"] floatValue]);
-        markerOBJ.infoWindowAnchor = CGPointMake(0.5, -0.05);
-        markerOBJ.appearAnimation = kGMSMarkerAnimationPop;
-        markerOBJ.zIndex = 10 + i;
-        markerOBJ.map = mapView_;
-        markerOBJ.title = [NSString stringWithFormat:@"%d",i];
 
-        [_markers addObject:markerOBJ];
-
-        if ( [[[histArrayCommon objectAtIndex:i] valueForKey:@"TransactionType"]isEqualToString:@"Transfer"])
+        // IF transaction has a location, OR if the transfer is type "Reward", meaning paid directly from Nooch
+        if (([[tempDict objectForKey:@"Latitude"] floatValue] != 0 && [[tempDict objectForKey:@"Longitude"] floatValue] != 0) ||
+            [[[histArrayCommon objectAtIndex:i] valueForKey:@"TransactionType"]isEqualToString:@"Reward"])
         {
-            if ([[user valueForKey:@"MemberId"] isEqualToString:[[histArrayCommon objectAtIndex:i] valueForKey:@"RecepientId"]])
+            if ([[[histArrayCommon objectAtIndex:i] valueForKey:@"TransactionType"]isEqualToString:@"Reward"])
             {
-                markerOBJ.icon = [GMSMarker markerImageWithColor:kNoochGreen];
-                markerOBJ.rotation = 11;
+                markerOBJ.icon=[UIImage imageNamed:@"n_Icon.png"];
+                markerOBJ.position = CLLocationCoordinate2DMake(39.9526f, -75.1634f);
             }
             else
             {
-                markerOBJ.icon = [GMSMarker markerImageWithColor:kNoochRed];
-                markerOBJ.rotation = -11;
+                markerOBJ.position = CLLocationCoordinate2DMake([[tempDict objectForKey:@"Latitude"] floatValue], [[tempDict objectForKey:@"Longitude"] floatValue]);
             }
-        }
-        else if ([[[histArrayCommon objectAtIndex:i] valueForKey:@"TransactionType"] isEqualToString:@"Request"])
-        {
-            markerOBJ.icon = [GMSMarker markerImageWithColor:kNoochBlue];
-            markerOBJ.rotation = -6;
-        }
-        else if ([[[histArrayCommon objectAtIndex:i] valueForKey:@"TransactionType"] isEqualToString:@"Disputed"])
-        {
-            markerOBJ.icon = [GMSMarker markerImageWithColor:kNoochGrayDark];
-            markerOBJ.rotation = 5;
-        }
-        else if ([[[histArrayCommon objectAtIndex:i] valueForKey:@"TransactionType"] isEqualToString:@"Invite"])
-        {
-            markerOBJ.icon = [GMSMarker markerImageWithColor:[UIColor whiteColor]];
-            markerOBJ.rotation = -4;
-        }
-        else
-        {
-            NSLog(@"Transaction Type is: %@", [[histArrayCommon objectAtIndex:i] valueForKey:@"TransactionType"]);
-            markerOBJ.rotation = 1;
-            //markerOBJ.icon=[UIImage imageNamed:@"n_Icon.png"];
+            markerOBJ.infoWindowAnchor = CGPointMake(0.5, -0.05);
+            markerOBJ.appearAnimation = kGMSMarkerAnimationPop;
+            markerOBJ.zIndex = 10 + i;
+            markerOBJ.map = mapView_;
+            markerOBJ.title = [NSString stringWithFormat:@"%d",i];
+
+            [_markers addObject:markerOBJ];
+
+            if ([[[histArrayCommon objectAtIndex:i] valueForKey:@"TransactionType"]isEqualToString:@"Transfer"])
+            {
+                if ([[user valueForKey:@"MemberId"] isEqualToString:[[histArrayCommon objectAtIndex:i] valueForKey:@"RecepientId"]])
+                {
+                    markerOBJ.icon = [GMSMarker markerImageWithColor:kNoochGreen];
+                    markerOBJ.rotation = 11;
+                }
+                else
+                {
+                    markerOBJ.icon = [GMSMarker markerImageWithColor:kNoochRed];
+                    markerOBJ.rotation = -11;
+                }
+            }
+            else if ([[[histArrayCommon objectAtIndex:i] valueForKey:@"TransactionType"] isEqualToString:@"Request"])
+            {
+                markerOBJ.icon = [GMSMarker markerImageWithColor:kNoochBlue];
+                markerOBJ.rotation = -6;
+            }
+            else if ([[[histArrayCommon objectAtIndex:i] valueForKey:@"TransactionType"] isEqualToString:@"Disputed"])
+            {
+                markerOBJ.icon = [GMSMarker markerImageWithColor:kNoochGrayDark];
+                markerOBJ.rotation = 5;
+            }
+            else if ([[[histArrayCommon objectAtIndex:i] valueForKey:@"TransactionType"] isEqualToString:@"Invite"])
+            {
+                markerOBJ.icon = [GMSMarker markerImageWithColor:[UIColor whiteColor]];
+                markerOBJ.rotation = -4;
+            }
+            else
+            {
+                //NSLog(@"Transaction Type is: %@", [[histArrayCommon objectAtIndex:i] valueForKey:@"TransactionType"]);
+                markerOBJ.rotation = 1;
+                markerOBJ.icon=[UIImage imageNamed:@"n_Icon.png"];
+            }
         }
     }
 }
@@ -791,7 +814,7 @@
 {
     if (locUpdateSuccessfully == true)
     {
-        NSLog(@"locationUser is: %f,%f", lat_hist,lon_hist);
+        //NSLog(@"locationUser is: %f,%f", lat_hist,lon_hist);
     }
     else
     {
@@ -932,7 +955,53 @@
     [[NSNotificationCenter defaultCenter] removeObserver:self name:@"dismissPopOver" object:nil];
     isSearch = NO;
 
-    if (![listType isEqualToString:@"CANCEL"] && isFilterSelected)
+    if (isMapOpen)
+    {
+        [UIView animateKeyframesWithDuration:0.35
+                                       delay:0
+                                     options:UIViewKeyframeAnimationOptionCalculationModeCubic
+                                  animations:^{
+                                      [UIView addKeyframeWithRelativeStartTime:0 relativeDuration:1.0 animations:^{
+                                          self.tableShadow.frame = CGRectMake(0, 84, 320, self.view.frame.size.height);
+                                          self.list.frame = CGRectMake(0, 84, 320, self.view.frame.size.height);
+                                          [self.view bringSubviewToFront:self.list];
+                                          mapArea.frame = CGRectMake(0, 84, 320, self.view.frame.size.height);
+                                      }];
+                                  } completion: ^(BOOL finished) {
+                                      isMapOpen = NO;
+
+                                      if (![listType isEqualToString:@"CANCEL"] && isFilterSelected)
+                                      {
+                                          [self.search setShowsCancelButton:NO];
+                                          [self.search setText:@""];
+                                          [self.search resignFirstResponder];
+                                          
+                                          [histShowArrayCompleted removeAllObjects];
+                                          [histShowArrayPending removeAllObjects];
+                                          
+                                          isLocalSearch = NO;
+                                          isFilter = YES;
+                                          index = 1;
+                                          isFilterSelected = NO;
+                                          
+                                          //Release memory cache
+                                          SDImageCache *imageCache = [SDImageCache sharedImageCache];
+                                          [imageCache clearMemory];
+                                          [imageCache clearDisk];
+                                          [imageCache cleanDisk];
+                                          countRows = 0;
+                                          //NSLog(@"ListType is: %@",listType);
+                                          
+                                          [self loadHist:listType index:index len:20 subType:subTypestr];
+                                      }
+                                      else {
+                                          isFilter = NO;
+                                      }
+                                  }
+         ];
+    }
+
+    else if (![listType isEqualToString:@"CANCEL"] && isFilterSelected)
     {
         [self.search setShowsCancelButton:NO];
         [self.search setText:@""];
@@ -946,31 +1015,35 @@
         index = 1;
         isFilterSelected = NO;
 
-        //Rlease memory cache
+        //Release memory cache
         SDImageCache *imageCache = [SDImageCache sharedImageCache];
         [imageCache clearMemory];
         [imageCache clearDisk];
         [imageCache cleanDisk];
         countRows = 0;
-        NSLog(@"ListType is: %@",listType);
+        //NSLog(@"ListType is: %@",listType);
 
         [self loadHist:listType index:index len:20 subType:subTypestr];
     }
-    else
-        isFilter=NO;
+    else {
+        isFilter = NO;
+    }
 }
 
 -(void)loadHist:(NSString*)filter index:(int)ind len:(int)len subType:(NSString*)subType
 {
-    RTSpinKitView *spinner1 = [[RTSpinKitView alloc] initWithStyle:RTSpinKitViewStyleWanderingCubes];
-    spinner1.color = [UIColor whiteColor];
-    self.hud = [[MBProgressHUD alloc] initWithView:self.navigationController.view];
-    [self.navigationController.view addSubview:self.hud];
-    self.hud.labelText = NSLocalizedString(@"History_HUDloadingTxt", @"History screen HUD loading text");
-    [self.hud show:YES];
-    self.hud.mode = MBProgressHUDModeCustomView;
-    self.hud.customView = spinner1;
-    self.hud.delegate = self;
+    if (!isFromTransferPIN && ![self.view.subviews containsObject:self.hud])
+    {
+        RTSpinKitView *spinner1 = [[RTSpinKitView alloc] initWithStyle:RTSpinKitViewStyleWanderingCubes];
+        spinner1.color = [UIColor whiteColor];
+        self.hud = [[MBProgressHUD alloc] initWithView:self.navigationController.view];
+        [self.navigationController.view addSubview:self.hud];
+        self.hud.labelText = NSLocalizedString(@"History_HUDloadingTxt", @"History screen HUD loading text");
+        [self.hud show:YES];
+        self.hud.mode = MBProgressHUDModeCustomView;
+        self.hud.customView = spinner1;
+        self.hud.delegate = self;
+    }
 
     isSearch = NO;
     isLocalSearch = NO;
@@ -1083,14 +1156,14 @@
         if (isLocalSearch) {
             return [histTempCompleted count];
         }
-        return [histShowArrayCompleted count]+1;
+        return [histShowArrayCompleted count] + 1;
     }
     else
     {
         if (isLocalSearch) {
             return [histTempPending count];
         }
-        return [histShowArrayPending count]+1;
+        return [histShowArrayPending count] + 1;
     }
     return 0;
 }
@@ -1209,7 +1282,6 @@
         }
     }
 
-
     if (self.completed_selected)
     {
         if ([histShowArrayCompleted count] > indexPath.row)
@@ -1242,10 +1314,9 @@
                 [amount setStyleClass:@"history_transferamount"];
                 [amount setText:[NSString stringWithFormat:@"$%.02f",[[dictRecord valueForKey:@"Amount"] floatValue]]];
 
-                UIImageView *pic = [[UIImageView alloc] initWithFrame:CGRectMake(7, 9, 50, 50)];
+                UIImageView *pic = [[UIImageView alloc] initWithFrame:CGRectMake(7, 7, 50, 50)];
                 pic.layer.cornerRadius = 25;
                 pic.clipsToBounds = YES;
-                [cell.contentView addSubview:pic];
 
 				UILabel *transferTypeLabel = [UILabel new];
                 [transferTypeLabel setStyleClass:@"history_cell_transTypeLabel"];
@@ -1274,18 +1345,17 @@
                     [statusIndicator setText:[NSString fontAwesomeIconStringForIconIdentifier:@"fa-times"]];
                     [statusIndicator setTextColor:kNoochRed];
                 }
-                else if ([[dictRecord valueForKey:@"TransactionStatus"]isEqualToString:@"Success"] ||
-                         [[dictRecord valueForKey:@"TransactionStatus"]isEqualToString:@"Reward"]) {
+                else if ( [[dictRecord valueForKey:@"TransactionStatus"]isEqualToString:@"Success"] ||
+                         ![[dictRecord valueForKey:@"TransactionStatus"]isEqualToString:@"Reward"]) {
                     [statusIndicator setText:[NSString fontAwesomeIconStringForIconIdentifier:@"fa-check"]];
                     [statusIndicator setTextColor:kNoochGreen];
                 }
-                
+    
                 NSString * username = [NSString stringWithFormat:@"%@",[user valueForKey:@"UserName"]];
                 NSString * fullName = [NSString stringWithFormat:@"%@ %@",[user valueForKey:@"firstName"],[user valueForKey:@"lastName"]];
                 NSString * invitationSentTo = [NSString stringWithFormat:@"%@",[dictRecord valueForKey:@"InvitationSentTo"]];
 
                 if ( [[dictRecord valueForKey:@"TransactionType"]isEqualToString:@"Transfer"] ||
-                     [[dictRecord valueForKey:@"TransactionType"]isEqualToString:@"Reward"] ||
                     ([[dictRecord valueForKey:@"TransactionType"]isEqualToString:@"Invite"] &&
                      invitationSentTo != NULL && ![invitationSentTo isEqualToString:username] &&
                     ![[dictRecord valueForKey:@"Name"] isEqualToString:fullName]))
@@ -1368,7 +1438,6 @@
                 else if ([[dictRecord valueForKey:@"TransactionType"]isEqualToString:@"Invite"] &&
                           [dictRecord valueForKey:@"InvitationSentTo"] != NULL)
                 {
-                    //ADDED BY CLIFF
                     if ([[dictRecord valueForKey:@"TransactionStatus"]isEqualToString:@"Cancelled"]) {
                         [amount setTextColor:kNoochGrayDark];
                     }
@@ -1377,7 +1446,6 @@
                     }
                     [pic setImage:[UIImage imageNamed:@"profile_picture.png"]];
 
-                    //@"Invite sent to"
                     [transferTypeLabel setText:NSLocalizedString(@"History_InviteSentToTxt", @"History screen 'Invite Sent To' Text")];
 					[transferTypeLabel setTextColor:kNoochGrayDark];
 
@@ -1404,6 +1472,21 @@
                         [name setText:[NSString stringWithFormat:@"%@ ",[dictRecord valueForKey:@"InvitationSentTo"]]];
                     }
                 }
+                else if ([[dictRecord valueForKey:@"TransactionType"]isEqualToString:@"Reward"])
+                {
+                    [amount setStyleClass:@"history_transferamount_pos"];
+                    [transferTypeLabel setText:@"REWARD FROM"];
+                    [transferTypeLabel setTextColor:kNoochGrayDark];
+                    [transferTypeLabel setBackgroundColor:[UIColor yellowColor]];
+                    [name setText:[NSString stringWithFormat:@"%@ ",[[dictRecord valueForKey:@"Name"] capitalizedString]]];
+                    [pic setFrame:CGRectMake(9, 7, 44, 44)];
+                    [pic setImage:[UIImage  imageNamed:@"Icon.png"]];
+                    pic.layer.cornerRadius = 7;
+                    [statusIndicator setText:[NSString fontAwesomeIconStringForIconIdentifier:@"fa-star"]];
+                    [statusIndicator setTextColor:[UIColor yellowColor]];
+                    [statusIndicator setFont:[UIFont fontWithName:@"FontAwesome" size:10]];
+                    [statusIndicator setStyleId:@"rewardIconShadow"];
+                }
                 else if ([[dictRecord valueForKey:@"TransactionType"]isEqualToString:@"Disputed"])
                 {
                     if ([[user valueForKey:@"MemberId"] isEqualToString:[dictRecord valueForKey:@"MemberId"]])
@@ -1429,7 +1512,6 @@
 
 				//  'updated_balance' now for displaying transfer STATUS, only if status is "cancelled" or "rejected"
                 //  (this used to display the user's updated balance, which no longer exists)
-                
                 UILabel * updated_balance = [UILabel new];
                 [updated_balance setStyleClass:@"transfer_status"];
                 
@@ -1560,6 +1642,7 @@
                     [name setStyleClass:@"history_cell_textlabel_wMemo"];
                 }
 
+                [cell.contentView addSubview:pic];
                 [cell.contentView addSubview:amount];
                 [cell.contentView addSubview:statusIndicator];
                 [cell.contentView addSubview:transferTypeLabel];
@@ -1587,7 +1670,7 @@
                 }
                 else
                 {
-                    if (indexPath.row > 6)
+                    if (indexPath.row > 9)
                     {
                         ishistLoading = YES;
                         index++;
@@ -1893,7 +1976,7 @@
                 }
                 else
                 {
-                    if (indexPath.row > 10)
+                    if (indexPath.row > 18)
                     {
                         ishistLoading = YES;
                         index++;
@@ -1947,7 +2030,7 @@
             if ([histShowArrayCompleted count] > indexPath.row)
             {
                 NSDictionary * dictRecord = [histShowArrayCompleted objectAtIndex:indexPath.row];
-                NSLog(@"Selected Entry is: %@", dictRecord);
+                //NSLog(@"Selected Entry is: %@", dictRecord);
                 TransactionDetails *details = [[TransactionDetails alloc] initWithData:dictRecord];
                 [self.navigationController pushViewController:details animated:YES];
             }
@@ -2082,16 +2165,27 @@
                     [alert show];
                     return;
                 }
-                else if (![[user objectForKey:@"IsBankAvailable"]isEqualToString:@"1"])
+                else if (![user boolForKey:@"IsSynapseBankAvailable"])
                 {
                     UIAlertView * alert = [[UIAlertView alloc] initWithTitle:@"Please Attach An Account"
-                                                                  message:@"Before you can send or receive money, you must add a bank account."
+                                                                  message:@"\xE2\x9A\xA1\nAdding a bank account to fund Nooch payments is lightning quick.\n\n• No routing or account number needed\n• Bank-grade encryption keeps your info safe\n\nWould you like to take care of this now?"
                                                                  delegate:self
                                                         cancelButtonTitle:@"OK"
                                                         otherButtonTitles:@"Add Bank Now", nil];
                     [alert setTag:52];
                     [alert show];
                     return;
+                }
+                // ... and check if that bank account is 'Verified'
+                else if (![user boolForKey:@"IsSynapseBankVerified"])
+                {
+                    UIAlertView *av = [[UIAlertView alloc] initWithTitle:@"Bank Account Un-Verified"
+                                                                 message:@"Looks like your bank account remains un-verified.  This usually happens when the contact info listed on the bank account does not match your Nooch profile information. Please contact Nooch support for more information."
+                                                                delegate:self
+                                                       cancelButtonTitle:@"OK"
+                                                       otherButtonTitles:@"Learn More", nil];
+                    [av setTag:53];
+                    [av show];
                 }
                 else
                 {
@@ -2156,7 +2250,7 @@
     [dateFormatter setAMSymbol:@"AM"];
     [dateFormatter setPMSymbol:@"PM"];
     dateFormatter.dateFormat = @"M/dd/yyyy hh:mm:ss a";
-    
+
     NSDate *aDate = [dateFormatter dateFromString:aStr];
     return aDate;
 }
@@ -2231,7 +2325,7 @@
     [self.search resignFirstResponder];
 }
 
-- (void)searchTableView
+-(void)searchTableView
 {
     [histTempCompleted removeAllObjects];
     [histTempPending removeAllObjects];
@@ -2276,7 +2370,6 @@
 
     if (self.completed_selected)
     {
-
         if ([histTempCompleted count] == 0)
         {
             if ([self.list subviews])
@@ -2302,7 +2395,6 @@
 
                 emptyText_localSearch = [[UILabel alloc] initWithFrame:CGRectMake(40, 78, 240, 60)];
                 [emptyText_localSearch setFont:[UIFont fontWithName:@"Roboto-regular" size:20]];
-                //@"No payments found for that name."
                 [emptyText_localSearch setText:NSLocalizedString(@"History_NoPaymentsFoundByName", @"History screen 'No payments found for that name' Text")];
                 [emptyText_localSearch setTextColor:kNoochGrayLight];
                 [emptyText_localSearch setTextAlignment:NSTextAlignmentCenter];
@@ -2333,8 +2425,8 @@
 
             if ([self.list subviews])
             {
-                NSArray * viewsToHide = [self.list subviews];
-                for (UIView * v in viewsToHide)
+                NSArray * viewsToShow = [self.list subviews];
+                for (UIView * v in viewsToShow)
                 {
                     [UIView beginAnimations:nil context:nil];
                     [UIView setAnimationDuration:0.15];
@@ -2413,7 +2505,7 @@
         [self.view bringSubviewToFront:self.list];
         mapArea.frame = CGRectMake(0, 84, 320, self.view.frame.size.height);
         isMapOpen = NO;
-
+        
         [UIView commitAnimations];
     }
 }
@@ -2509,7 +2601,18 @@
         dispatch_async(dispatch_get_main_queue(), ^{
             [self.hud hide:YES];
         });
-        [self.hud hide:YES];
+
+        if ([self.list subviews])
+        {
+            NSArray * viewsToShow = [self.list subviews];
+            for (UIView * v in viewsToShow)
+            {
+                [UIView beginAnimations:nil context:nil];
+                [UIView setAnimationDuration:0.15];
+                [v setAlpha:1];
+                [UIView commitAnimations];
+            }
+        }
 
         histArray = [NSJSONSerialization JSONObjectWithData:[result dataUsingEncoding:NSUTF8StringEncoding] options:0 error:&error];
 
@@ -2564,7 +2667,7 @@
         else if ([histArray count] == 0)
         {
             isEnd = YES;
-            [mapView_ removeFromSuperview];
+            [mapView_ setAlpha:0];
             [self displayEmptyMapArea];
         }
 
@@ -2626,7 +2729,6 @@
                     if (![self.list.subviews containsObject:_emptyPic] ||
                         ![self.list.subviews containsObject:_emptyText])
                     {
-                        NSLog(@"Checkpoint #4");
                         [self.list addSubview: _emptyPic];
                         [self.list addSubview: _emptyText];
 
@@ -2684,7 +2786,6 @@
     else if ([tagName isEqualToString:@"getPendingTransfersCount"])
     {
         NSDictionary * dict = [NSJSONSerialization JSONObjectWithData:[result dataUsingEncoding:NSUTF8StringEncoding] options:0 error:&error];
-        NSLog(@"getPendingTransfersCount is: %@", dict);
 
         int pendingDisputes = [[dict valueForKey:@"pendingDisputesNotSolved"] intValue];
         int pendingInvitations = [[dict valueForKey:@"pendingInvitationsSent"] intValue];
@@ -2807,7 +2908,6 @@
 
     else if ([tagName isEqualToString:@"remind"])
     {
-        // NSLog(@"Remind response was: %@",result);
         UIAlertView * alert = [[UIAlertView alloc]initWithTitle:NSLocalizedString(@"History_ReminderSuccessAlrtTitle", @"History screen reminder sent successfully Alert Title")
                                                         message:nil
                                                        delegate:nil
@@ -2923,10 +3023,19 @@
         [email_verify resendEmail];
     }
 
-    else if (actionSheet.tag == 52 && buttonIndex == 1)  // go to Knox Webview
+    else if (actionSheet.tag == 52 && buttonIndex == 1)  // No bank attached, go to Settings
     {
-        knoxWeb * knox = [knoxWeb new];
-        [self.navigationController pushViewController:knox animated:YES];
+        SettingsOptions * mainSettingsScrn = [SettingsOptions new];
+        [nav_ctrl pushViewController:mainSettingsScrn animated:YES];
+        [self.slidingViewController resetTopView];
+    }
+
+    else if (actionSheet.tag == 53 && buttonIndex == 1)  // No bank attached, go to Settings
+    {
+        shouldDisplayBankNotVerifiedLtBox = YES;
+        SettingsOptions * mainSettingsScrn = [SettingsOptions new];
+        [nav_ctrl pushViewController:mainSettingsScrn animated:YES];
+        [self.slidingViewController resetTopView];
     }
 
     else if ((actionSheet.tag == 1010 || actionSheet.tag == 2010) && buttonIndex == 0) // CANCEL Request
@@ -2994,44 +3103,28 @@
     {
         if (![MFMailComposeViewController canSendMail])
         {
-            if ([UIAlertController class]) // for iOS 8
-            {
-                UIAlertController * alert = [UIAlertController
-                                             alertControllerWithTitle:@"No Email Detected"
-                                             message:@"You don't have an email account configured for this device."
-                                             preferredStyle:UIAlertControllerStyleAlert];
-                
-                UIAlertAction * ok = [UIAlertAction
-                                      actionWithTitle:@"OK"
-                                      style:UIAlertActionStyleDefault
-                                      handler:^(UIAlertAction * action)
-                                      {
-                                          [alert dismissViewControllerAnimated:YES completion:nil];
-                                      }];
-                [alert addAction:ok];
-                
-                [self presentViewController:alert animated:YES completion:nil];
+            UIAlertView * av = [[UIAlertView alloc] initWithTitle:@"No Email Detected"
+                                                                message:@"You don't have an email account configured for this device."
+                                                               delegate:nil
+                                                      cancelButtonTitle:@"OK"
+                                                      otherButtonTitles: nil];
+                [av show];
                 return;
-            }
-            else
-            {
-                if (![MFMailComposeViewController canSendMail])
-                {
-                    UIAlertView * av = [[UIAlertView alloc] initWithTitle:@"No Email Detected"
-                                                                  message:@"You don't have an email account configured for this device."
-                                                                 delegate:nil
-                                                        cancelButtonTitle:@"OK"
-                                                        otherButtonTitles: nil];
-                    [av show];
-                    return;
-                }
-            }
         }
+
+        NSString * memberId = [user valueForKey:@"MemberId"];
+        NSString * fullName = [NSString stringWithFormat:@"%@ %@",[user valueForKey:@"firstName"],[user valueForKey:@"lastName"]];
+        NSString * userStatus = [user objectForKey:@"Status"];
+        NSString * userEmail = [user objectForKey:@"UserName"];
+        NSString * IsVerifiedPhone = [[user objectForKey:@"IsVerifiedPhone"] lowercaseString];
+        NSString * iOSversion = [[UIDevice currentDevice] systemVersion];
+        NSString * msgBody = [NSString stringWithFormat:@"<!doctype html> <html><body><br><br><br><br><br><br><small>• MemberID: %@<br>• Name: %@<br>• Status: %@<br>• Email: %@<br>• Is Phone Verified: %@<br>• iOS Version: %@<br></small></body></html>",memberId, fullName, userStatus, userEmail, IsVerifiedPhone, iOSversion];
+
         MFMailComposeViewController *mailComposer = [[MFMailComposeViewController alloc] init];
         mailComposer.mailComposeDelegate = self;
         mailComposer.navigationBar.tintColor=[UIColor whiteColor];
         [mailComposer setSubject:[NSString stringWithFormat:@"Support Request: Version %@",[[[NSBundle mainBundle] infoDictionary] objectForKey:@"CFBundleVersion"]]];
-        [mailComposer setMessageBody:@"" isHTML:NO];
+        [mailComposer setMessageBody:msgBody isHTML:YES];
         [mailComposer setToRecipients:[NSArray arrayWithObjects:@"support@nooch.com", nil]];
         [mailComposer setCcRecipients:[NSArray arrayWithObject:@""]];
         [mailComposer setBccRecipients:[NSArray arrayWithObject:@""]];

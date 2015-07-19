@@ -21,6 +21,7 @@
 #import "HowMuch.h"
 #import <QuartzCore/QuartzCore.h>
 #import "knoxWeb.h"
+#import "SettingsOptions.h"
 #import <AddressBook/AddressBook.h>
 #import <AddressBook/ABAddressBook.h>
 #import "SpinKit/RTSpinKitView.h"
@@ -37,7 +38,8 @@ NSMutableURLRequest *request;
 @property(nonatomic,strong) UIView *pending_requests;
 @property(nonatomic,strong) iCarousel *carousel;
 @property(nonatomic,strong) UILabel * selectedFavName;
-
+@property(nonatomic,strong) UILabel *glyphNoBank;
+@property(nonatomic,strong) UILabel *pending_notif;
 @end
 
 @implementation Home
@@ -51,6 +53,7 @@ NSMutableURLRequest *request;
     return self;
 }
 
+#pragma mark - Standard View Functions
 - (void)viewDidLoad
 {
     [super viewDidLoad];
@@ -109,10 +112,18 @@ NSMutableURLRequest *request;
     }
     else
     {
-        [user removeObjectForKey:@"MemberId"];
-        [user removeObjectForKey:@"UserName"];
-        [self.view removeGestureRecognizer:self.slidingViewController.panGesture];
-        [user removeObjectForKey:@"Balance"];
+        [[NSFileManager defaultManager] removeItemAtPath:[self autoLogin] error:nil];
+        
+        [timer invalidate];
+        [nav_ctrl performSelector:@selector(disable)];
+        [nav_ctrl performSelector:@selector(reset)];
+        
+        // Reset the values of all NSUserDefault items & keys
+        NSString *appDomain = [[NSBundle mainBundle] bundleIdentifier];
+        [[NSUserDefaults standardUserDefaults] removePersistentDomainForName:appDomain];
+        [[NSUserDefaults standardUserDefaults] synchronize];
+        
+        [[assist shared] setisloggedout:YES];
 
         Register * reg = [Register new];
         [nav_ctrl pushViewController:reg animated:NO];
@@ -142,6 +153,9 @@ NSMutableURLRequest *request;
         [fb storeFB:[user objectForKey:@"facebook_id"] isConnect:@"YES"];
     }
 
+    self.pending_notif = [UILabel new];
+    [self.pending_notif setHidden:YES];
+
     firstNameAB = @"";
     lastNameAB = @"";
 
@@ -152,6 +166,392 @@ NSMutableURLRequest *request;
 
     [ARProfileManager setSharedUserId:[user valueForKey:@"MemberId"]];
     [ARProfileManager registerLocation:@"lastKnownLocation"];
+}
+
+- (void)viewWillAppear:(BOOL)animated
+{
+    [super viewWillAppear:animated];
+    self.screenName = @"Home Screen";
+    self.artisanNameTag = @"Home Screen";
+
+    NSMutableDictionary * automatic = [[NSMutableDictionary alloc] init];
+    if ([user valueForKey:@"MemberId"] &&
+        [user valueForKey:@"UserName"])
+    {
+        [automatic setObject:[user valueForKey:@"MemberId"] forKey:@"MemberId"];
+        [automatic setObject:[user valueForKey:@"UserName"] forKey:@"UserName"];
+        [automatic writeToFile:[self autoLogin] atomically:YES];
+    }
+
+    isFromArtisanDonationAlert = NO;
+
+    //do carousel
+    [self.view addSubview:_carousel];
+    [_carousel reloadData];
+}
+
+-(void)viewDidAppear:(BOOL)animated
+{
+    [super viewDidAppear:animated];
+    [self.navigationItem setTitle:@"Nooch"];
+
+    if (![[assist shared] isPOP])
+    {
+        [[UIApplication sharedApplication] setStatusBarHidden:YES withAnimation:UIStatusBarAnimationSlide];
+
+        self.slidingViewController.panGesture.enabled = YES;
+        [self.view addGestureRecognizer:self.slidingViewController.panGesture];
+
+        if ([[user objectForKey:@"logged_in"] isKindOfClass:[NSNull class]])
+        {
+            //push login
+            return;
+        }
+
+        if ([[assist shared] needsReload])
+        {
+            NSDictionary * dictionary = @{@"MemberId": [user valueForKey:@"MemberId"]};
+
+            RTSpinKitView *spinner1 = [[RTSpinKitView alloc] initWithStyle:RTSpinKitViewStyleCircleFlip];
+            spinner1.color = [UIColor clearColor];
+            self.hud = [[MBProgressHUD alloc] initWithView:self.navigationController.view];
+            [self.navigationController.view addSubview:self.hud];
+
+            self.hud.color = Rgb2UIColor(238, 239, 240, .92);
+            self.hud.mode = MBProgressHUDModeCustomView;
+            self.hud.customView = spinner1;
+            self.hud.delegate = self;
+            self.hud.labelText = NSLocalizedString(@"Home_HUDlbl1", @"Home Screen 'Loading Your Nooch Account' HUD");
+            self.hud.labelColor = kNoochGrayDark;
+            [self.hud show:YES];
+
+            //Get Location
+            [self checkIfLocAllowed];
+
+            [ARTrackingManager trackEvent:@"Home_ViewDidAppear_ReloadInitiated" parameters:dictionary];
+            NSLog(@"Home: Reload Initiated");
+        }
+
+        serve * serveOBJ = [serve new];
+        [serveOBJ setTagName:@"sets"];
+        [serveOBJ getSettings];
+
+        [[assist shared] setisloggedout:NO];
+
+        NSString * KnoxOnOff = [[ARPowerHookManager getValueForHookById:@"knox_OnOff"] lowercaseString];
+        NSString * SynapseOnOff = [[ARPowerHookManager getValueForHookById:@"synps_OnOff"] lowercaseString];
+
+        if ([KnoxOnOff isEqualToString:@"on"]) {
+            isKnoxOn = YES;
+        }
+        else {
+            isKnoxOn = NO;
+        }
+        if ([SynapseOnOff isEqualToString:@"on"]) {
+            isSynapseOn = YES;
+        }
+        else {
+            isSynapseOn = NO;
+        }
+        //NSLog(@"isSynapseOn is: %d",isSynapseOn);
+    }
+    else
+    {
+        [[assist shared] setisloggedout:YES];
+
+        Register *reg = [Register new];
+        [nav_ctrl pushViewController:reg animated:YES];
+
+        me = [core new];
+
+        [ARProfileManager clearProfile];
+        return;
+    }
+
+    // Address Book Authorization grant
+    if (ABAddressBookGetAuthorizationStatus() == kABAuthorizationStatusDenied ||
+        ABAddressBookGetAuthorizationStatus() == kABAuthorizationStatusRestricted)
+    {
+        NSLog(@"AB Denied");
+    }
+    else if (ABAddressBookGetAuthorizationStatus() == kABAuthorizationStatusAuthorized)
+    {
+        NSLog(@"AB Authorized");
+        if ([[[assist shared]assosAll] count] == 0) {
+            [self address_book];
+        }
+    }
+    else
+    {
+        ABAddressBookRequestAccessWithCompletion(ABAddressBookCreateWithOptions(NULL, nil), ^(bool granted, CFErrorRef error)
+                                                 {
+                                                     if (!granted) {
+                                                         NSLog(@"AB Just denied");
+                                                         return;
+                                                     }
+                                                     if ([[[assist shared]assosAll] count] == 0) {
+                                                         [self address_book];
+                                                     }
+                                                     dispatch_async(dispatch_get_main_queue(), ^{
+                                                         [self GetFavorite];
+                                                     });
+                                                     NSLog(@"AB Just authorized");
+                                                 });
+        NSLog(@"AB Not determined");
+    }
+
+    [self GetFavorite];
+
+    [self checkAllBannerStatuses];
+
+    [[assist shared] setRequestMultiple:NO];
+    [[assist shared] setArray:nil];
+
+    BOOL shouldDisplayVersionUpdateAlert = [[ARPowerHookManager getValueForHookById:@"NV_YorN"] boolValue];
+
+    if (shouldDisplayVersionUpdateAlert)
+    {
+        NSString * versionNumFromArtisan = [ARPowerHookManager getValueForHookById:@"versionNum"];
+        versionNumFromArtisan = [versionNumFromArtisan stringByReplacingOccurrencesOfString:@"1." withString:@""];
+
+        NSString * versionNumFromBundle = [[[NSBundle mainBundle] infoDictionary] objectForKey:@"CFBundleVersion"];
+        versionNumFromBundle = [versionNumFromBundle stringByReplacingOccurrencesOfString:@"1." withString:@""];
+
+        float versionNumFromArtisanDouble = [versionNumFromArtisan floatValue];
+        float bundleVersionNumDouble = [versionNumFromBundle floatValue];
+
+        if (bundleVersionNumDouble < versionNumFromArtisanDouble &&
+            [user boolForKey:@"VersionUpdateNoticeDisplayed"] == false )
+        {
+            [self displayVersionUpdateNotice];
+        }
+    }
+
+    dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
+        [ARProfileManager registerString:@"IsKnoxBankAttached" withValue:@"unknown"];
+        [ARProfileManager registerString:@"IsSynapseBankAttached" withValue:@"unknown"];
+        [ARProfileManager registerString:@"IPaddress" withValue:@"unknown"];
+
+        if (isSynapseOn && [user boolForKey:@"IsSynapseBankAvailable"])
+        {
+            [ARProfileManager setStringValue:@"YES" forVariable:@"IsSynapseBankAttached"];
+        }
+        else if (isSynapseOn)
+        {
+            [ARProfileManager setStringValue:@"NO" forVariable:@"IsSynapseBankAttached"];
+        }
+        else if (isKnoxOn && [user boolForKey:@"IsKnoxBankAvailable"])
+        {
+            [ARProfileManager setStringValue:@"YES" forVariable:@"IsKnoxBankAttached"];
+        }
+        else if (isKnoxOn)
+        {
+            [ARProfileManager setStringValue:@"NO" forVariable:@"IsKnoxBankAttached"];
+        }
+    });
+
+    NSURL * theURL = [[NSURL alloc] initWithString:@"http://ip-api.com/line/?fields=query"];
+    NSString * myIP = [[NSString alloc] initWithData:[NSData dataWithContentsOfURL:theURL] encoding:NSUTF8StringEncoding];
+    
+    if ([myIP length] < 16)
+    {
+        [self saveIpAddress:myIP];
+    }
+}
+
+-(void)viewDidDisappear:(BOOL)animated
+{
+    [super viewDidDisappear:animated];
+
+    [top_button removeFromSuperview];
+
+    if ([self.view.subviews containsObject:self.pending_requests])
+    {
+        [self dismiss_requestsPendingBanner];
+    }
+    if ([self.view.subviews containsObject:self.pending_notif])
+    {
+        [self.pending_notif setHidden:YES];
+    }
+}
+
+#pragma mark - Address Book Functions
+-(void)address_book
+{
+    [additions removeAllObjects];
+    additions = [[NSMutableArray alloc]init];
+    ABAddressBookRef addressBook = ABAddressBookCreateWithOptions(nil, nil);
+    CFArrayRef people = ABAddressBookCopyArrayOfAllPeople(addressBook);
+    CFIndex nPeople = ABAddressBookGetPersonCount(addressBook);
+
+    for (int i = 0; i < nPeople; i++)
+    {
+        NSMutableDictionary * curContact = [[NSMutableDictionary alloc] init];
+
+        [curContact setObject:@"YES" forKey:@"addressbook"];
+
+        ABRecordRef person = CFArrayGetValueAtIndex(people, i);
+
+        NSString * contacName, * firstName, * lastName;
+        NSData * contactImage;
+        NSString * phone, * phone2, * phone3;
+
+        CFTypeRef contacNameValue = ABRecordCopyValue(person, kABPersonFirstNameProperty);
+        contacName = [[NSString stringWithFormat:@"%@", contacNameValue] stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceCharacterSet]];
+        if (contacNameValue)
+            CFRelease(contacNameValue);
+
+        // Get FirstName Ref
+        CFTypeRef firstNameValue = ABRecordCopyValue(person, kABPersonFirstNameProperty);
+        firstName = [[NSString stringWithFormat:@"%@", firstNameValue] stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceCharacterSet]];
+        if (firstNameValue)
+            CFRelease(firstNameValue);
+
+        // Get LastName Ref
+        CFTypeRef LastNameValue = ABRecordCopyValue(person, kABPersonLastNameProperty);
+        if (LastNameValue)
+        {
+            [contacName stringByAppendingString:[NSString stringWithFormat:@" %@", LastNameValue]];
+            lastName = [[NSString stringWithFormat:@"%@", LastNameValue] stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceCharacterSet]];
+            if (LastNameValue)
+                CFRelease(LastNameValue);
+        }
+
+        // Get Contact Image Ref
+        if (ABPersonHasImageData(person) > 0 )
+        {
+            CFTypeRef contactImageValue = ABPersonCopyImageDataWithFormat(person, kABPersonImageFormatThumbnail);
+            contactImage = (__bridge NSData *)(contactImageValue);
+
+            [curContact setObject:contactImage forKey:@"image"];
+
+            if (contactImageValue)
+                CFRelease(contactImageValue);
+        }
+        else
+        {
+            contactImage = UIImageJPEGRepresentation([UIImage imageNamed:@"profile_picture.png"], 1);
+            [curContact setObject:contactImage forKey:@"image"];
+        }
+
+        ABMultiValueRef phoneNumber = ABRecordCopyValue(person, kABPersonPhoneProperty);
+        ABMultiValueRef emailInfo = ABRecordCopyValue(person, kABPersonEmailProperty);
+
+        if (contacName != NULL) [curContact setObject: contacName forKey:@"Name"];
+        if (firstName != NULL) [curContact setObject: firstName forKey:@"FirstName"];
+        if (lastName != NULL) [curContact setObject: lastName forKey:@"LastName"];
+
+
+        if (ABMultiValueGetCount(phoneNumber) > 0)
+        {
+            CFTypeRef phoneValue = ABMultiValueCopyValueAtIndex(phoneNumber, 0);
+            phone = [[NSString stringWithFormat:@"%@", phoneValue] stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceCharacterSet]];
+            if (phoneValue)
+                CFRelease(phoneValue);
+        }
+
+        if (ABMultiValueGetCount(phoneNumber) > 1)
+        {
+            CFTypeRef phoneValue = ABMultiValueCopyValueAtIndex(phoneNumber, 1);
+            phone2 = [[NSString stringWithFormat:@"%@", phoneValue] stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceCharacterSet]];
+            if (phoneValue)
+                CFRelease(phoneValue);
+
+            phone2 = [phone2 stringByReplacingOccurrencesOfString:@"[^0-9]" withString:@"" options:NSRegularExpressionSearch range:NSMakeRange(0, [phone2 length])];
+            [curContact setObject:phone2 forKey:@"phoneNo2"];
+        }
+
+        if (ABMultiValueGetCount(phoneNumber) > 2)
+        {
+            CFTypeRef phoneValue = ABMultiValueCopyValueAtIndex(phoneNumber, 2);
+            phone3 = [[NSString stringWithFormat:@"%@", phoneValue] stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceCharacterSet]];
+            if (phoneValue)
+                CFRelease(phoneValue);
+
+            phone3 = [phone3 stringByReplacingOccurrencesOfString:@"[^0-9]" withString:@"" options:NSRegularExpressionSearch range:NSMakeRange(0, [phone3 length])];
+            [curContact setObject:phone3 forKey:@"phoneNo3"];
+        }
+
+        //Get emailInfo Ref
+        for (int j = 0; j < ABMultiValueGetCount(emailInfo); j++)
+        {
+            CFTypeRef emailIdValue = ABMultiValueCopyValueAtIndex(emailInfo, j);
+            NSString * emailId = [[NSString stringWithFormat:@"%@", emailIdValue] stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceCharacterSet]];
+
+            if ( emailId != NULL &&
+                [emailId rangeOfString:@"facebook.com"].location == NSNotFound &&
+                [emailId rangeOfString:@"hushmail.com"].location == NSNotFound &&
+                [emailId rangeOfString:@"mailinator."].location == NSNotFound &&
+                [emailId rangeOfString:@"mailinater."].location == NSNotFound &&
+                [emailId rangeOfString:@"hmamail.com"].location == NSNotFound &&
+                [emailId rangeOfString:@"guerrillamail"].location == NSNotFound &&
+                [emailId rangeOfString:@"sharklasers"].location == NSNotFound &&
+                [emailId rangeOfString:@"anonymousemail"].location == NSNotFound)
+            {
+                [curContact setObject:emailId forKey:@"UserName"];
+                [curContact setObject:emailId forKey:[NSString stringWithFormat:@"emailAdday%d",j]];
+                [curContact setObject:[NSString stringWithFormat:@"%d", j+1] forKey:@"emailCount"];
+            }
+            if (emailIdValue) {
+                CFRelease(emailIdValue);
+            }
+        }
+
+        if (emailInfo) {
+            CFRelease(emailInfo);
+        }
+
+        if (contacName != NULL)
+        {
+            NSString * strippedNumber = [phone stringByReplacingOccurrencesOfString:@"[^0-9]" withString:@"" options:NSRegularExpressionSearch range:NSMakeRange(0, [phone length])];
+            if ([strippedNumber length] == 11) {
+                strippedNumber = [strippedNumber substringFromIndex:1];
+            }
+            if (strippedNumber != NULL)
+                [curContact setObject:strippedNumber forKey:@"phoneNo"];
+        }
+        //NSLog(@"Address_Book --> curContact is: %@",curContact[@"Name"]);
+        [additions addObject:curContact];
+        if (phoneNumber)
+            CFRelease(phoneNumber);
+    }
+
+    [[assist shared] SaveAssos:additions.mutableCopy];
+
+    NSMutableArray * get_ids_input = [NSMutableArray new];
+    for (NSDictionary * person in additions)
+    {
+        NSMutableDictionary *person_input = [NSMutableDictionary new];
+
+        [person_input setObject:@"" forKey:@"memberId"];
+
+        if (person[@"emailAddy"])
+        {
+            [person_input setObject:person[@"emailAddy"] forKey:@"emailAddy"];
+        }
+        else
+        {
+            [person_input setObject:@"" forKey:@"emailAddy"];
+        }
+        if (person[@"phoneNo"])
+        {
+            [person_input setObject:person[@"phoneNo"] forKey:@"phoneNo"];
+        }
+        if (person[@"phoneNo2"])
+        {
+            [person_input setObject:person[@"phoneNo2"] forKey:@"phoneNo2"];
+        }
+        if (person[@"phoneNo3"])
+        {
+            [person_input setObject:person[@"phoneNo3"] forKey:@"phoneNo3"];
+        }
+        [get_ids_input addObject:person_input];
+    }
+    
+    if (people)
+        CFRelease(people);
+    if (addressBook)
+        CFRelease(addressBook);
 }
 
 void addressBookChanged(ABAddressBookRef addressBook, CFDictionaryRef info, void *context)
@@ -312,553 +712,7 @@ void addressBookChanged(ABAddressBookRef addressBook, CFDictionaryRef info, void
         CFRelease(addressBook);
 }
 
--(void)dismiss_suspended_alert
-{
-    [UIView animateKeyframesWithDuration:.34
-                                   delay:0
-                                 options:2 << 16
-                              animations:^{
-                                  [UIView addKeyframeWithRelativeStartTime:0 relativeDuration:1 animations:^{
-                                      CGRect frame = self.suspended.frame;
-                                      frame.origin.y = -56;
-                                      [self.suspended setFrame:frame];
-                                      
-                                      CGRect rect= self.profile_incomplete.frame;
-                                      rect.origin.y -= 56;
-                                      self.profile_incomplete.frame = rect;
-                                      
-                                      CGRect rect2 = self.phone_incomplete.frame;
-                                      rect2.origin.y -= 56;
-                                      self.phone_incomplete.frame = rect2;
-
-                                      CGRect carouselFrame = _carousel.frame;
-                                      carouselFrame.origin.y -= 40;
-                                      [_carousel setFrame:carouselFrame];
-
-                                      CGRect topBtnFrame = top_button.frame;
-                                      topBtnFrame.origin.y -= 30;
-                                      [top_button setFrame:topBtnFrame];
-                                  }];
-                              } completion: ^(BOOL finished){
-                                  [self.suspended removeFromSuperview];
-                              }
-     ];
-}
-
--(void)dismiss_profile_unvalidated
-{
-    [UIView animateKeyframesWithDuration:.34
-                                   delay:0
-                                 options:2 << 16
-                              animations:^{
-                                  [UIView addKeyframeWithRelativeStartTime:0 relativeDuration:1 animations:^{
-                                      CGRect frame = self.profile_incomplete.frame;
-                                      frame.origin.y = -57;
-                                      [self.profile_incomplete setFrame:frame];
-                                      
-                                      CGRect rect2 = self.phone_incomplete.frame;
-                                      rect2.origin.y -= 56;
-                                      self.phone_incomplete.frame = rect2;
-
-                                      CGRect carouselFrame = _carousel.frame;
-                                      carouselFrame.origin.y -= 40;
-                                      [_carousel setFrame:carouselFrame];
-
-                                      CGRect topBtnFrame = top_button.frame;
-                                      topBtnFrame.origin.y -= 30;
-                                      [top_button setFrame:topBtnFrame];
-                                  }];
-                              } completion: ^(BOOL finished){
-                                  [self.profile_incomplete removeFromSuperview];
-                              }
-     ];
-}
-
--(void)dismiss_phone_unvalidated
-{
-    if ([self.view.subviews containsObject:self.profile_incomplete])
-    {
-        [self.view bringSubviewToFront:self.profile_incomplete];
-    }
-
-    [UIView animateKeyframesWithDuration:.34
-                                   delay:0
-                                 options:2 << 16
-                              animations:^{
-                                  [UIView addKeyframeWithRelativeStartTime:0 relativeDuration:1 animations:^{
-                                      CGRect frame = self.phone_incomplete.frame;
-                                      frame.origin.y = -57;
-                                      [self.phone_incomplete setFrame:frame];
-
-                                      CGRect carouselFrame = _carousel.frame;
-                                      carouselFrame.origin.y -= 40;
-                                      [_carousel setFrame:carouselFrame];
-
-                                      CGRect topBtnFrame = top_button.frame;
-                                      topBtnFrame.origin.y -= 30;
-                                      [top_button setFrame:topBtnFrame];
-                                  }];
-                              } completion: ^(BOOL finished){
-                                  [self.phone_incomplete removeFromSuperview];
-                              }
-     ];
-}
-
--(void)dismiss_requestsPendingBanner
-{
-    [UIView setAnimationCurve:UIViewAnimationCurveEaseOut];
-    
-    [UIView animateKeyframesWithDuration:.38
-                                   delay:0
-                                 options:2 << 16
-                              animations:^{
-                                  [UIView addKeyframeWithRelativeStartTime:0 relativeDuration:1 animations:^{
-                                      CGRect frame = self.pending_requests.frame;
-                                      frame.origin.y = -57;
-                                      [self.pending_requests setFrame:frame];
-
-                                      CGRect carouselFrame = _carousel.frame;
-                                      carouselFrame.origin.y -= 30;
-                                      [_carousel setFrame:carouselFrame];
-
-                                      CGRect topBtnFrame = top_button.frame;
-                                      topBtnFrame.origin.y -= 25;
-                                      [top_button setFrame:topBtnFrame];
-                                  }];
-                              } completion: ^(BOOL finished){
-                                  [self.pending_requests removeFromSuperview];
-                              }
-     ];
-}
-
--(void)address_book
-{
-    [additions removeAllObjects];
-    additions = [[NSMutableArray alloc]init];
-    ABAddressBookRef addressBook = ABAddressBookCreateWithOptions(nil, nil);
-    CFArrayRef people = ABAddressBookCopyArrayOfAllPeople(addressBook);
-    CFIndex nPeople = ABAddressBookGetPersonCount(addressBook);
-
-    for (int i = 0; i < nPeople; i++)
-    {
-        NSMutableDictionary * curContact = [[NSMutableDictionary alloc] init];
-
-        [curContact setObject:@"YES" forKey:@"addressbook"];
-
-        ABRecordRef person = CFArrayGetValueAtIndex(people, i);
-
-        NSString * contacName, * firstName, * lastName;
-        NSData * contactImage;
-        NSString * phone, * phone2, * phone3;
-
-        CFTypeRef contacNameValue = ABRecordCopyValue(person, kABPersonFirstNameProperty);
-        contacName = [[NSString stringWithFormat:@"%@", contacNameValue] stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceCharacterSet]];
-        if (contacNameValue)
-            CFRelease(contacNameValue);
-        
-        // Get FirstName Ref
-        CFTypeRef firstNameValue = ABRecordCopyValue(person, kABPersonFirstNameProperty);
-        firstName = [[NSString stringWithFormat:@"%@", firstNameValue] stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceCharacterSet]];
-        if (firstNameValue)
-            CFRelease(firstNameValue);
-        
-        // Get LastName Ref
-        CFTypeRef LastNameValue = ABRecordCopyValue(person, kABPersonLastNameProperty);
-        if (LastNameValue)
-        {
-            [contacName stringByAppendingString:[NSString stringWithFormat:@" %@", LastNameValue]];
-            lastName = [[NSString stringWithFormat:@"%@", LastNameValue] stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceCharacterSet]];
-            if (LastNameValue)
-                CFRelease(LastNameValue);
-        }
-        
-        // Get Contact Image Ref
-        if (ABPersonHasImageData(person) > 0 )
-        {
-            CFTypeRef contactImageValue = ABPersonCopyImageDataWithFormat(person, kABPersonImageFormatThumbnail);
-            contactImage = (__bridge NSData *)(contactImageValue);
-
-            [curContact setObject:contactImage forKey:@"image"];
-
-            if (contactImageValue)
-                CFRelease(contactImageValue);
-        }
-        else
-        {
-            contactImage = UIImageJPEGRepresentation([UIImage imageNamed:@"profile_picture.png"], 1);
-            [curContact setObject:contactImage forKey:@"image"];
-        }
-
-        ABMultiValueRef phoneNumber = ABRecordCopyValue(person, kABPersonPhoneProperty);
-        ABMultiValueRef emailInfo = ABRecordCopyValue(person, kABPersonEmailProperty);
-
-        if (contacName != NULL) [curContact setObject: contacName forKey:@"Name"];
-        if (firstName != NULL) [curContact setObject: firstName forKey:@"FirstName"];
-        if (lastName != NULL) [curContact setObject: lastName forKey:@"LastName"];
-        
-       
-        if (ABMultiValueGetCount(phoneNumber) > 0)
-        {
-            CFTypeRef phoneValue = ABMultiValueCopyValueAtIndex(phoneNumber, 0);
-            phone = [[NSString stringWithFormat:@"%@", phoneValue] stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceCharacterSet]];
-            if (phoneValue)
-            CFRelease(phoneValue);
-        }
-        
-        if (ABMultiValueGetCount(phoneNumber) > 1)
-        {
-            CFTypeRef phoneValue = ABMultiValueCopyValueAtIndex(phoneNumber, 1);
-            phone2 = [[NSString stringWithFormat:@"%@", phoneValue] stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceCharacterSet]];
-            if (phoneValue)
-            CFRelease(phoneValue);
-           
-            phone2 = [phone2 stringByReplacingOccurrencesOfString:@"[^0-9]" withString:@"" options:NSRegularExpressionSearch range:NSMakeRange(0, [phone2 length])];
-            [curContact setObject:phone2 forKey:@"phoneNo2"];
-        }
-
-        if (ABMultiValueGetCount(phoneNumber) > 2)
-        {
-            CFTypeRef phoneValue = ABMultiValueCopyValueAtIndex(phoneNumber, 2);
-            phone3 = [[NSString stringWithFormat:@"%@", phoneValue] stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceCharacterSet]];
-            if (phoneValue)
-                CFRelease(phoneValue);
-            
-            phone3 = [phone3 stringByReplacingOccurrencesOfString:@"[^0-9]" withString:@"" options:NSRegularExpressionSearch range:NSMakeRange(0, [phone3 length])];
-            [curContact setObject:phone3 forKey:@"phoneNo3"];
-        }
-
-        //Get emailInfo Ref
-        for (int j = 0; j < ABMultiValueGetCount(emailInfo); j++)
-        {
-            CFTypeRef emailIdValue = ABMultiValueCopyValueAtIndex(emailInfo, j);
-            NSString * emailId = [[NSString stringWithFormat:@"%@", emailIdValue] stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceCharacterSet]];
-
-            if ( emailId != NULL &&
-                [emailId rangeOfString:@"facebook.com"].location == NSNotFound &&
-                [emailId rangeOfString:@"hushmail.com"].location == NSNotFound &&
-                [emailId rangeOfString:@"mailinator."].location == NSNotFound &&
-                [emailId rangeOfString:@"mailinater."].location == NSNotFound &&
-                [emailId rangeOfString:@"hmamail.com"].location == NSNotFound &&
-                [emailId rangeOfString:@"guerrillamail"].location == NSNotFound &&
-                [emailId rangeOfString:@"sharklasers"].location == NSNotFound &&
-                [emailId rangeOfString:@"anonymousemail"].location == NSNotFound)
-            {
-                [curContact setObject:emailId forKey:@"UserName"];
-                [curContact setObject:emailId forKey:[NSString stringWithFormat:@"emailAdday%d",j]];
-                [curContact setObject:[NSString stringWithFormat:@"%d", j+1] forKey:@"emailCount"];
-            }
-            if (emailIdValue) {
-                CFRelease(emailIdValue);
-            }
-        }
-
-        if (emailInfo) {
-            CFRelease(emailInfo);
-        }
-
-        if (contacName != NULL)
-        {
-            NSString * strippedNumber = [phone stringByReplacingOccurrencesOfString:@"[^0-9]" withString:@"" options:NSRegularExpressionSearch range:NSMakeRange(0, [phone length])];
-            if ([strippedNumber length] == 11) {
-                strippedNumber = [strippedNumber substringFromIndex:1];
-            }
-            if (strippedNumber != NULL)
-                [curContact setObject:strippedNumber forKey:@"phoneNo"];
-        }
-        //NSLog(@"Address_Book --> curContact is: %@",curContact[@"Name"]);
-        [additions addObject:curContact];
-        if (phoneNumber)
-            CFRelease(phoneNumber);
-    }
-
-    [[assist shared] SaveAssos:additions.mutableCopy];
-
-    NSMutableArray * get_ids_input = [NSMutableArray new];
-    for (NSDictionary * person in additions)
-    {
-        NSMutableDictionary *person_input = [NSMutableDictionary new];
-
-        [person_input setObject:@"" forKey:@"memberId"];
-
-        if (person[@"emailAddy"])
-        {
-            [person_input setObject:person[@"emailAddy"] forKey:@"emailAddy"];
-        }
-        else
-        {
-            [person_input setObject:@"" forKey:@"emailAddy"];
-        }
-        if (person[@"phoneNo"])
-        {
-            [person_input setObject:person[@"phoneNo"] forKey:@"phoneNo"];
-        }
-        if (person[@"phoneNo2"])
-        {
-            [person_input setObject:person[@"phoneNo2"] forKey:@"phoneNo2"];
-        }
-        if (person[@"phoneNo3"])
-        {
-            [person_input setObject:person[@"phoneNo3"] forKey:@"phoneNo3"];
-        }
-        [get_ids_input addObject:person_input];
-    }
-
-    if (people)
-    CFRelease(people);
-    if (addressBook)
-    CFRelease(addressBook);
-}
-
--(void)contact_support
-{
-    if (![MFMailComposeViewController canSendMail])
-    {
-        if ([UIAlertController class]) // for iOS 8
-        {
-            UIAlertController * alert = [UIAlertController
-                                         alertControllerWithTitle:@"No Email Detected"
-                                         message:@"You don't have an email account configured for this device."
-                                         preferredStyle:UIAlertControllerStyleAlert];
-            
-            UIAlertAction * ok = [UIAlertAction
-                                  actionWithTitle:@"OK"
-                                  style:UIAlertActionStyleDefault
-                                  handler:^(UIAlertAction * action)
-                                  {
-                                      [alert dismissViewControllerAnimated:YES completion:nil];
-                                  }];
-            [alert addAction:ok];
-            
-            [self presentViewController:alert animated:YES completion:nil];
-            return;
-        }
-        else
-        {
-            if (![MFMailComposeViewController canSendMail])
-            {
-                UIAlertView * av = [[UIAlertView alloc] initWithTitle:@"No Email Detected"
-                                                              message:@"You don't have an email account configured for this device."
-                                                             delegate:nil
-                                                    cancelButtonTitle:@"OK"
-                                                    otherButtonTitles: nil];
-                [av show];
-                return;
-            }
-        }
-    }
-
-    MFMailComposeViewController *mailComposer = [[MFMailComposeViewController alloc] init];
-    mailComposer.mailComposeDelegate = self;
-    mailComposer.navigationBar.tintColor=[UIColor whiteColor];
-    
-    [mailComposer setSubject:[NSString stringWithFormat:@"Support Request: Version %@",[[[NSBundle mainBundle] infoDictionary] objectForKey:@"CFBundleVersion"]]];
-    
-    [mailComposer setMessageBody:@"" isHTML:NO];
-    [mailComposer setToRecipients:[NSArray arrayWithObjects:@"support@nooch.com", nil]];
-    [mailComposer setCcRecipients:[NSArray arrayWithObject:@""]];
-    [mailComposer setBccRecipients:[NSArray arrayWithObject:@""]];
-    [mailComposer setModalTransitionStyle:UIModalTransitionStyleCoverVertical];
-    [self presentViewController:mailComposer animated:YES completion:nil];
-}
-
--(void)go_profileFromHome
-{
-    sentFromHomeScrn = YES;
-    isFromSettingsOptions = NO;
-    isProfileOpenFromSideBar = NO;
-    isFromTransDetails = NO;
-
-    
-}
-
--(void)go_history
-{
-    [self dismiss_requestsPendingBanner];
-    HistoryFlat *goToHistory = [HistoryFlat new];
-    [self.navigationController pushViewController:goToHistory animated:NO];
-}
-
-- (NSString *)autoLogin
-{
-    NSArray *paths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
-    NSString *documentsDirectory = [paths objectAtIndex:0];
-    return [documentsDirectory stringByAppendingPathComponent:[NSString stringWithFormat:@"autoLogin.plist"]];
-}
-
--(void)viewDidAppear:(BOOL)animated
-{
-    [super viewDidAppear:animated];
-    [self.navigationItem setTitle:@"Nooch"];
-
-    if (![[assist shared] isPOP])
-    {
-        [[UIApplication sharedApplication] setStatusBarHidden:YES withAnimation:UIStatusBarAnimationSlide];
-
-        self.slidingViewController.panGesture.enabled = YES;
-        [self.view addGestureRecognizer:self.slidingViewController.panGesture];
-
-        if ([[user objectForKey:@"logged_in"] isKindOfClass:[NSNull class]])
-        {
-            //push login
-            return;
-        }
-
-        if ([[assist shared] needsReload] &&
-            [[user valueForKey:@"ProfileComplete"]isEqualToString:@"YES"])
-        {
-            NSDictionary * dictionary = @{@"MemberId": [user valueForKey:@"MemberId"]};
-
-            [ARTrackingManager trackEvent:@"Home_ViewDidAppear_ReloadInitiated" parameters:dictionary];
-
-            RTSpinKitView *spinner1 = [[RTSpinKitView alloc] initWithStyle:RTSpinKitViewStyleCircleFlip];
-            spinner1.color = [UIColor clearColor];
-            self.hud = [[MBProgressHUD alloc] initWithView:self.navigationController.view];
-            [self.navigationController.view addSubview:self.hud];
-
-            self.hud.color = Rgb2UIColor(238, 239, 240, .92);
-            self.hud.mode = MBProgressHUDModeCustomView;
-            self.hud.customView = spinner1;
-            self.hud.delegate = self;
-            self.hud.labelText = NSLocalizedString(@"Home_HUDlbl1", @"Home Screen 'Loading Your Nooch Account' HUD");
-            self.hud.labelColor = kNoochGrayDark;
-            [self.hud show:YES];
-
-            //location
-            [self checkIfLocAllowed];
-
-            NSLog(@"Home: Reload Initiated");
-        }
-
-        serve * serveOBJ = [serve new];
-        [serveOBJ setTagName:@"sets"];
-        [serveOBJ getSettings];
-
-        [[assist shared] setisloggedout:NO];
-    }
-    else
-    {
-        [[assist shared] setisloggedout:YES];
-
-        Register *reg = [Register new];
-        [nav_ctrl pushViewController:reg animated:YES];
-
-        me = [core new];
-
-        [ARProfileManager clearProfile];
-        return;
-    }
-
-    // Address Book Authorization grant
-    if (ABAddressBookGetAuthorizationStatus() == kABAuthorizationStatusDenied ||
-        ABAddressBookGetAuthorizationStatus() == kABAuthorizationStatusRestricted)
-    {
-        NSLog(@"AB Denied");
-    }
-    else if (ABAddressBookGetAuthorizationStatus() == kABAuthorizationStatusAuthorized)
-    {
-        NSLog(@"AB Authorized");
-        if ([[[assist shared]assosAll] count] == 0) {
-            [self address_book];
-        }
-    }
-    else
-    {
-        ABAddressBookRequestAccessWithCompletion(ABAddressBookCreateWithOptions(NULL, nil), ^(bool granted, CFErrorRef error)
-                                                 {
-                                                     if (!granted) {
-                                                         NSLog(@"AB Just denied");
-                                                         return;
-                                                     }
-                                                     if ([[[assist shared]assosAll] count] == 0) {
-                                                         [self address_book];
-                                                     }
-                                                     dispatch_async(dispatch_get_main_queue(), ^{
-                                                         [self GetFavorite];
-                                                     });
-                                                     NSLog(@"AB Just authorized");
-                                                 });
-        NSLog(@"AB Not determined");
-    }
-
-    [self GetFavorite];
-
-    [self checkAllBannerStatuses];
-
-    [[assist shared] setRequestMultiple:NO];
-    [[assist shared] setArray:nil];
-
-    BOOL shouldDisplayVersionUpdateAlert = [[ARPowerHookManager getValueForHookById:@"NV_YorN"] boolValue];
-
-    if (shouldDisplayVersionUpdateAlert)
-    {
-        NSString * versionNumFromArtisan = [ARPowerHookManager getValueForHookById:@"versionNum"];
-        versionNumFromArtisan = [versionNumFromArtisan stringByReplacingOccurrencesOfString:@"1." withString:@""];
-
-        NSString * versionNumFromBundle = [[[NSBundle mainBundle] infoDictionary] objectForKey:@"CFBundleVersion"];
-        versionNumFromBundle = [versionNumFromBundle stringByReplacingOccurrencesOfString:@"1." withString:@""];
-
-        float versionNumFromArtisanDouble = [versionNumFromArtisan floatValue];
-        float bundleVersionNumDouble = [versionNumFromBundle floatValue];
-
-        if (bundleVersionNumDouble < versionNumFromArtisanDouble &&
-            [user boolForKey:@"VersionUpdateNoticeDisplayed"] == false )
-        {
-            [self displayVersionUpdateNotice];
-        }
-    }
-
-    dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
-        [ARProfileManager registerString:@"IsBankAttached" withValue:@"unknown"];
-        [ARProfileManager registerString:@"IPaddress" withValue:@"unknown"];
-
-        if ([[user objectForKey:@"IsBankAvailable"]isEqualToString:@"1"])
-        {
-            [ARProfileManager setStringValue:@"YES" forVariable:@"IsBankAttached"];
-        }
-        else
-        {
-            [ARProfileManager setStringValue:@"NO" forVariable:@"IsBankAttached"];
-        }
-    });
-
-    NSURL * theURL = [[NSURL alloc] initWithString:@"http://ip-api.com/line/?fields=query"];
-    NSString * myIP = [[NSString alloc] initWithData:[NSData dataWithContentsOfURL:theURL] encoding:NSUTF8StringEncoding];
-    
-    if ([myIP length] < 16)
-    {
-        [self saveIpAddress:myIP];
-    }
-}
-
--(void)saveIpAddress:(NSString*)Ip
-{
-    if ([Ip rangeOfString:@"\n"].location != NSNotFound)
-    {
-        Ip = [Ip substringWithRange: NSMakeRange(0, [Ip rangeOfString: @"\n"].location)];
-    }
-    //NSLog(@"IP: %@", Ip);
-
-    serve * saveIP = [serve new];
-    [saveIP setTagName:@"saveIpAddress"];
-    [saveIP setDelegate:self];
-    [saveIP saveUserIpAddress:Ip];
-
-    [ARProfileManager setStringValue:Ip forVariable:@"IPaddress"];
-}
-
-- (void)applicationWillEnterFG_Home:(NSNotification *)notification
-{
-    //NSLog(@"Home -> ApplicationWillEnterFG fired");
-
-    if ([[assist shared] isloggedout] == false)
-    {
-        serve * serveOBJ = [serve new];
-        [serveOBJ setTagName:@"sets"];
-        [serveOBJ getSettings];
-
-        [self performSelector:@selector(checkAllBannerStatuses) withObject:nil afterDelay:1];
-    }
-}
+#pragma mark - Banner Related Functions
 
 -(void)checkAllBannerStatuses
 {
@@ -988,10 +842,10 @@ void addressBookChanged(ABAddressBookRef addressBook, CFDictionaryRef info, void
             [dis setTitleColor:[Helpers hexColor:@"F49593"] forState:UIControlStateHighlighted];
             dis.titleLabel.shadowOffset = CGSizeMake(0.0, 1.0);
             [dis addTarget:self action:@selector(dismiss_profile_unvalidated) forControlEvents:UIControlEventTouchUpInside];
-            
+
             [self.profile_incomplete addSubview:dis];
             [self.view addSubview:self.profile_incomplete];
-            
+
             [UIView animateKeyframesWithDuration:.4
                                            delay:0
                                          options:2 << 16
@@ -1033,11 +887,11 @@ void addressBookChanged(ABAddressBookRef addressBook, CFDictionaryRef info, void
         if (![self.view.subviews containsObject:self.phone_incomplete])
         {
             [self.phone_incomplete removeFromSuperview];
-            
+
             self.phone_incomplete = [UIView new];
             [self.phone_incomplete setStyleId:@"phone_unverified"];
             [self.phone_incomplete addGestureRecognizer:[[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(go_profileFromHome)]];
-            
+
             UILabel * em = [UILabel new];
             [em setStyleClass:@"banner_header"];
             em.attributedText = [[NSAttributedString alloc] initWithString:NSLocalizedString(@"PhoneUnverifiedTitle", @"Home Screen Phone Unverified Title") attributes:textAttributes];
@@ -1142,7 +996,9 @@ void addressBookChanged(ABAddressBookRef addressBook, CFDictionaryRef info, void
     //NSLog(@"Banner count is: %d",bannerAlert);
 
     //Update Pending Status
-    if ([[user objectForKey:@"Pending_count"] intValue] > 0)
+    if ([[user objectForKey:@"Pending_count"] intValue] > 0 &&
+        ((isKnoxOn && [user boolForKey:@"IsKnoxBankAvailable"]) ||
+         (isSynapseOn && [user boolForKey:@"IsSynapseBankAvailable"])) )
     {
         [self addPendingBanner];
     }
@@ -1207,12 +1063,7 @@ void addressBookChanged(ABAddressBookRef addressBook, CFDictionaryRef info, void
 -(void)addPendingBanner
 {
     //Update Pending Status
-
     [self.navigationItem setLeftBarButtonItem:nil];
-    UILabel * pending_notif = [UILabel new];
-    [pending_notif setText:[user objectForKey:@"Pending_count"]];
-    [pending_notif setFrame:CGRectMake(16, -2, 20, 20)];
-    [pending_notif setStyleId:@"pending_notif"];
 
     UIButton * hamburger = [UIButton buttonWithType:UIButtonTypeRoundedRect];
     [hamburger setStyleId:@"navbar_hamburger"];
@@ -1220,7 +1071,16 @@ void addressBookChanged(ABAddressBookRef addressBook, CFDictionaryRef info, void
     [hamburger setTitle:[NSString fontAwesomeIconStringForIconIdentifier:@"fa-bars"] forState:UIControlStateNormal];
     [hamburger setTitleShadowColor:Rgb2UIColor(19, 32, 38, 0.22) forState:UIControlStateNormal];
     hamburger.titleLabel.shadowOffset = CGSizeMake(0.0, -1.0);
-    [hamburger addSubview:pending_notif];
+
+    if ([self.pending_notif isHidden])
+    {
+        [self.pending_notif setHidden:NO];
+        [self.pending_notif setText:[user objectForKey:@"Pending_count"]];
+        [self.pending_notif setFrame:CGRectMake(16, -2, 22, 22)];
+        [self.pending_notif setStyleId:@"pending_notif"];
+    }
+    [hamburger addSubview:self.pending_notif];
+
     UIBarButtonItem * menu = [[UIBarButtonItem alloc] initWithCustomView:hamburger];
     [self.navigationItem setLeftBarButtonItem:menu];
 
@@ -1311,96 +1171,261 @@ void addressBookChanged(ABAddressBookRef addressBook, CFDictionaryRef info, void
         }
         [self dismiss_requestsPendingBanner];
     }
-
+    
     [self drawCarousel];
 }
 
--(void)drawCarousel
+#pragma mark Dismiss Banner Functions
+-(void)dismiss_suspended_alert
 {
-    if (bannerAlert == 1 && carouselTopValue != 75 )
-    {
-        carouselTopValue = 75;
-        topBtnTopValue = 284;
-    }
-    else if (bannerAlert >= 2 && carouselTopValue != 114)
-    {
-        carouselTopValue = 114;
-        topBtnTopValue = 320;
-    }
-    else if (bannerAlert == 0 && carouselTopValue != 48)
-    {
-        carouselTopValue = 48;
-        topBtnTopValue = 260;
-    }
-
-    [UIView animateKeyframesWithDuration:0.5
+    [UIView animateKeyframesWithDuration:.34
                                    delay:0
                                  options:2 << 16
                               animations:^{
-                                  [UIView addKeyframeWithRelativeStartTime:0.2 relativeDuration:0.8 animations:^{
-                                      [top_button setFrame:CGRectMake(20, topBtnTopValue, 280, 54)];
+                                  [UIView addKeyframeWithRelativeStartTime:0 relativeDuration:1 animations:^{
+                                      CGRect frame = self.suspended.frame;
+                                      frame.origin.y = -56;
+                                      [self.suspended setFrame:frame];
+                                      
+                                      CGRect rect= self.profile_incomplete.frame;
+                                      rect.origin.y -= 56;
+                                      self.profile_incomplete.frame = rect;
+                                      
+                                      CGRect rect2 = self.phone_incomplete.frame;
+                                      rect2.origin.y -= 56;
+                                      self.phone_incomplete.frame = rect2;
+
+                                      CGRect carouselFrame = _carousel.frame;
+                                      carouselFrame.origin.y -= 40;
+                                      [_carousel setFrame:carouselFrame];
+
+                                      CGRect topBtnFrame = top_button.frame;
+                                      topBtnFrame.origin.y -= 30;
+                                      [top_button setFrame:topBtnFrame];
                                   }];
-                              } completion: nil
+                              } completion: ^(BOOL finished){
+                                  [self.suspended removeFromSuperview];
+                              }
      ];
+}
 
-    if (top_button.alpha != 1)
+-(void)dismiss_profile_unvalidated
+{
+    [UIView animateKeyframesWithDuration:.34
+                                   delay:0
+                                 options:2 << 16
+                              animations:^{
+                                  [UIView addKeyframeWithRelativeStartTime:0 relativeDuration:1 animations:^{
+                                      CGRect frame = self.profile_incomplete.frame;
+                                      frame.origin.y = -57;
+                                      [self.profile_incomplete setFrame:frame];
+                                      
+                                      CGRect rect2 = self.phone_incomplete.frame;
+                                      rect2.origin.y -= 56;
+                                      self.phone_incomplete.frame = rect2;
+
+                                      CGRect carouselFrame = _carousel.frame;
+                                      carouselFrame.origin.y -= 40;
+                                      [_carousel setFrame:carouselFrame];
+
+                                      CGRect topBtnFrame = top_button.frame;
+                                      topBtnFrame.origin.y -= 30;
+                                      [top_button setFrame:topBtnFrame];
+                                  }];
+                              } completion: ^(BOOL finished){
+                                  [self.profile_incomplete removeFromSuperview];
+                              }
+     ];
+}
+
+-(void)dismiss_phone_unvalidated
+{
+    if ([self.view.subviews containsObject:self.profile_incomplete])
     {
-        [UIView animateKeyframesWithDuration:0.5
-                                       delay:0
-                                     options:2 << 16
-                                  animations:^{
-                                      [UIView addKeyframeWithRelativeStartTime:0.2 relativeDuration:.8 animations:^{
-                                          top_button.alpha = 1;
-                                      }];
-                                  } completion: nil
-         ];
+        [self.view bringSubviewToFront:self.profile_incomplete];
     }
 
-    if ([self.view.subviews containsObject:_carousel])
+    [UIView animateKeyframesWithDuration:.34
+                                   delay:0
+                                 options:2 << 16
+                              animations:^{
+                                  [UIView addKeyframeWithRelativeStartTime:0 relativeDuration:1 animations:^{
+                                      CGRect frame = self.phone_incomplete.frame;
+                                      frame.origin.y = -57;
+                                      [self.phone_incomplete setFrame:frame];
+
+                                      CGRect carouselFrame = _carousel.frame;
+                                      carouselFrame.origin.y -= 40;
+                                      [_carousel setFrame:carouselFrame];
+
+                                      CGRect topBtnFrame = top_button.frame;
+                                      topBtnFrame.origin.y -= 30;
+                                      [top_button setFrame:topBtnFrame];
+                                  }];
+                              } completion: ^(BOOL finished){
+                                  [self.phone_incomplete removeFromSuperview];
+                              }
+     ];
+}
+
+-(void)dismiss_requestsPendingBanner
+{
+    [UIView setAnimationCurve:UIViewAnimationCurveEaseOut];
+    
+    [UIView animateKeyframesWithDuration:.38
+                                   delay:0
+                                 options:2 << 16
+                              animations:^{
+                                  [UIView addKeyframeWithRelativeStartTime:0 relativeDuration:1 animations:^{
+                                      CGRect frame = self.pending_requests.frame;
+                                      frame.origin.y = -57;
+                                      [self.pending_requests setFrame:frame];
+
+                                      CGRect carouselFrame = _carousel.frame;
+                                      carouselFrame.origin.y -= 30;
+                                      [_carousel setFrame:carouselFrame];
+
+                                      CGRect topBtnFrame = top_button.frame;
+                                      topBtnFrame.origin.y -= 25;
+                                      [top_button setFrame:topBtnFrame];
+                                  }];
+                              } completion: ^(BOOL finished){
+                                  [self.pending_requests removeFromSuperview];
+                              }
+     ];
+}
+
+-(void)contact_support
+{
+    if (![MFMailComposeViewController canSendMail])
     {
-        float duration = .35;
-        short randNum = 0;
-        
-        if (favorites && [favorites count] > 1)
+      /*if ([UIAlertController class]) // for iOS 8
         {
-            randNum = arc4random() % [favorites count];
+            UIAlertController * alert = [UIAlertController
+                                         alertControllerWithTitle:@"No Email Detected"
+                                         message:@"You don't have an email account configured for this device."
+                                         preferredStyle:UIAlertControllerStyleAlert];
             
-            if (abs(([_carousel currentItemIndex] - randNum) == 2))
-            {
-                duration = .6;
-            }
-            else if (abs(([_carousel currentItemIndex] - randNum) > 2))
-            {
-                duration = .7;
-            }
+            UIAlertAction * ok = [UIAlertAction
+                                  actionWithTitle:@"OK"
+                                  style:UIAlertActionStyleDefault
+                                  handler:^(UIAlertAction * action)
+                                  {
+                                      [alert dismissViewControllerAnimated:YES completion:nil];
+                                  }];
+            [alert addAction:ok];
+            
+            [self presentViewController:alert animated:YES completion:nil];
+            return;
         }
-
-        [UIView animateKeyframesWithDuration:duration
-                                       delay:0
-                                     options:2 << 16
-                                  animations:^{
-                                      [UIView addKeyframeWithRelativeStartTime:0 relativeDuration:1 animations:^{
-                                          [_carousel setFrame:CGRectMake(0, carouselTopValue, 320, 175)];
-                                      }];
-                                  } completion: ^(BOOL finished) {
-                                      [_carousel scrollToItemAtIndex:randNum duration:.7];
-                                  }
-         ];
+        else
+        {
+          */UIAlertView * av = [[UIAlertView alloc] initWithTitle:@"No Email Detected"
+                                                          message:@"You don't have an email account configured for this device."
+                                                         delegate:nil
+                                                cancelButtonTitle:@"OK"
+                                                otherButtonTitles:nil];
+            [av show];
+            return;
+      //}
     }
-    else
-    {
-        //NSLog(@"drawCarousel --> Banner count is: %d  and carouselTopValue is: %d  and topBtnTopValue is: %d",bannerAlert, carouselTopValue, topBtnTopValue);
 
-        _carousel = [[iCarousel alloc] initWithFrame:CGRectMake(0, carouselTopValue, 320, 175)];
-        _carousel.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
-        _carousel.type = iCarouselTypeCylinder;
-        
-        [_carousel setNeedsLayout];
-        _carousel.delegate = self;
-        _carousel.dataSource = self;
-        [self.view addSubview:_carousel];
+    NSString * memberId = [user valueForKey:@"MemberId"];
+    NSString * fullName = [NSString stringWithFormat:@"%@ %@",[user valueForKey:@"firstName"],[user valueForKey:@"lastName"]];
+    NSString * userStatus = [user objectForKey:@"Status"];
+    NSString * userEmail = [user objectForKey:@"UserName"];
+    NSString * IsVerifiedPhone = [[user objectForKey:@"IsVerifiedPhone"] lowercaseString];
+    NSString * iOSversion = [[UIDevice currentDevice] systemVersion];
+    NSString * msgBody = [NSString stringWithFormat:@"<!doctype html> <html><body><br><br><br><br><br><br><small>• MemberID: %@<br>• Name: %@<br>• Status: %@<br>• Email: %@<br>• Is Phone Verified: %@<br>• iOS Version: %@<br></small></body></html>",memberId, fullName, userStatus, userEmail, IsVerifiedPhone, iOSversion];
+
+    MFMailComposeViewController *mailComposer = [[MFMailComposeViewController alloc] init];
+    mailComposer.mailComposeDelegate = self;
+    mailComposer.navigationBar.tintColor=[UIColor whiteColor];
+    [mailComposer setSubject:[NSString stringWithFormat:@"Support Request: Version %@",[[[NSBundle mainBundle] infoDictionary] objectForKey:@"CFBundleVersion"]]];
+    [mailComposer setMessageBody:msgBody isHTML:YES];
+    [mailComposer setToRecipients:[NSArray arrayWithObjects:@"support@nooch.com", nil]];
+    [mailComposer setCcRecipients:[NSArray arrayWithObject:@""]];
+    [mailComposer setBccRecipients:[NSArray arrayWithObject:@""]];
+    [mailComposer setModalTransitionStyle:UIModalTransitionStyleCoverVertical];
+    [self presentViewController:mailComposer animated:YES completion:nil];
+}
+
+#pragma mark - Navigation Functions
+-(void)go_profileFromHome
+{
+    sentFromHomeScrn = YES;
+    isFromSettingsOptions = NO;
+    isProfileOpenFromSideBar = NO;
+    isFromTransDetails = NO;
+
+    ProfileInfo *info = [ProfileInfo new];
+    [self.navigationController pushViewController:info animated:YES];
+}
+
+-(void)go_history
+{
+    [self dismiss_requestsPendingBanner];
+    HistoryFlat *goToHistory = [HistoryFlat new];
+    [self.navigationController pushViewController:goToHistory animated:NO];
+}
+
+-(void)goToReferFriend
+{
+    sentFromStatsScrn = false;
+
+    SendInvite *inv = [SendInvite new];
+    [self.navigationController pushViewController:inv animated:YES];
+}
+
+-(void)OpenAppInAppStore
+{
+    NSString *iTunesLink = @"https://itunes.apple.com/us/app/nooch/id917955306?mt=8&uo=4";
+    [[UIApplication sharedApplication] openURL:[NSURL URLWithString:iTunesLink]];
+}
+
+-(void)showMenu
+{
+    [[assist shared]setneedsReload:NO];
+    [self.slidingViewController anchorTopViewTo:ECRight];
+}
+
+- (NSString *)autoLogin
+{
+    NSArray *paths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
+    NSString *documentsDirectory = [paths objectAtIndex:0];
+    return [documentsDirectory stringByAppendingPathComponent:[NSString stringWithFormat:@"autoLogin.plist"]];
+}
+
+-(void)saveIpAddress:(NSString*)Ip
+{
+    if ([Ip rangeOfString:@"\n"].location != NSNotFound)
+    {
+        Ip = [Ip substringWithRange: NSMakeRange(0, [Ip rangeOfString: @"\n"].location)];
+    }
+    //NSLog(@"IP: %@", Ip);
+
+    serve * saveIP = [serve new];
+    [saveIP setTagName:@"saveIpAddress"];
+    [saveIP setDelegate:self];
+    [saveIP saveUserIpAddress:Ip];
+
+    [ARProfileManager setStringValue:Ip forVariable:@"IPaddress"];
+}
+
+- (void)applicationWillEnterFG_Home:(NSNotification *)notification
+{
+    //NSLog(@"Home -> ApplicationWillEnterFG fired");
+
+    if ([[assist shared] isloggedout] == false)
+    {
+        serve * serveOBJ = [serve new];
+        [serveOBJ setTagName:@"sets"];
+        [serveOBJ getSettings];
+
+        [self performSelector:@selector(checkAllBannerStatuses) withObject:nil afterDelay:1];
     }
 }
+
 
 -(void)GetFavorite
 {
@@ -1410,67 +1435,7 @@ void addressBookChanged(ABAddressBookRef addressBook, CFDictionaryRef info, void
     [favoritesOBJ get_favorites];
 }
 
--(void)checkIfLocAllowed
-{
-    if ([CLLocationManager locationServicesEnabled])
-    {
-        if ([CLLocationManager authorizationStatus] == kCLAuthorizationStatusAuthorized  ||
-            [CLLocationManager authorizationStatus] == kCLAuthorizationStatusAuthorizedWhenInUse)
-        {
-            NSLog(@"Home --> Location Services Allowed");
-            
-            locationManager = [[CLLocationManager alloc] init];
-            
-            locationManager.delegate = self;
-            locationManager.distanceFilter = kCLDistanceFilterNone; // whenever we move
-            locationManager.desiredAccuracy = kCLLocationAccuracyHundredMeters; // 100 m
-            
-            [locationManager startUpdatingLocation];
-        }
-        else
-        {
-            NSLog(@"Home --> Location Services NOT Allowed");
-        }
-    }
-}
-
--(void)viewDidDisappear:(BOOL)animated
-{
-    [super viewDidDisappear:animated];
-
-    [top_button removeFromSuperview];
-
-    if ([self.view.subviews containsObject:self.pending_requests])
-    {
-        [self dismiss_requestsPendingBanner];
-    }
-}
-
-- (void)viewWillAppear:(BOOL)animated
-{
-    [super viewWillAppear:animated];
-    self.screenName = @"Home Screen";
-    self.artisanNameTag = @"Home Screen";
-
-    NSMutableDictionary * automatic = [[NSMutableDictionary alloc] init];
-    if ([user valueForKey:@"MemberId"] &&
-        [user valueForKey:@"UserName"])
-    {
-        [automatic setObject:[user valueForKey:@"MemberId"] forKey:@"MemberId"];
-        [automatic setObject:[user valueForKey:@"UserName"] forKey:@"UserName"];
-        [automatic writeToFile:[self autoLogin] atomically:YES];
-    }
-    // for the red notification bubble if a user has a pending RECEIVED Request
-    /*serve * getPendingCount = [serve new];
-    [getPendingCount setDelegate:self];
-    [getPendingCount setTagName:@"getPendingTransfersCount"];
-    [getPendingCount getPendingTransfersCount];*/
-
-    //do carousel
-    [self.view addSubview:_carousel];
-    [_carousel reloadData];
-}
-
+#pragma mark - Version Update Lightbox
 -(void)displayVersionUpdateNotice
 {
     [ARTrackingManager trackEvent:@"VersionUpdateNotice_Displayed"];
@@ -1570,9 +1535,7 @@ void addressBookChanged(ABAddressBookRef addressBook, CFDictionaryRef info, void
     bodyText.textColor = [Helpers hexColor:@"313233"];
     bodyText.textAlignment = NSTextAlignmentCenter;
     [mainView addSubview:bodyText];
-    
-    //NSLog(@"picWidth is: %d  and picHeight is: %d",picwidthInt,picHeightInt);
-    
+
     UIImageView * mainImage = [UIImageView new];
     [mainImage setFrame:CGRectMake((mainView.bounds.size.width - picwidthInt) / 2, head_container.bounds.size.height + 10, picwidthInt, picHeightInt)];
     mainImage.clipsToBounds = YES;
@@ -1651,21 +1614,95 @@ void addressBookChanged(ABAddressBookRef addressBook, CFDictionaryRef info, void
      ];
 }
 
--(void)OpenAppInAppStore
-{
-    NSString *iTunesLink = @"https://itunes.apple.com/us/app/nooch/id917955306?mt=8&uo=4";
-    [[UIApplication sharedApplication] openURL:[NSURL URLWithString:iTunesLink]];
-}
-
--(void)goToReferFriend
-{
-    sentFromStatsScrn = false;
-
-    SendInvite *inv = [SendInvite new];
-    [self.navigationController pushViewController:inv animated:YES];
-}
 
 #pragma mark - iCarousel methods
+-(void)drawCarousel
+{
+    if (bannerAlert == 1 && carouselTopValue != 75 )
+    {
+        carouselTopValue = 75;
+        topBtnTopValue = 284;
+    }
+    else if (bannerAlert >= 2 && carouselTopValue != 114)
+    {
+        carouselTopValue = 114;
+        topBtnTopValue = 320;
+    }
+    else if (bannerAlert == 0 && carouselTopValue != 48)
+    {
+        carouselTopValue = 48;
+        topBtnTopValue = 260;
+    }
+    
+    [UIView animateKeyframesWithDuration:0.5
+                                   delay:0
+                                 options:2 << 16
+                              animations:^{
+                                  [UIView addKeyframeWithRelativeStartTime:0.2 relativeDuration:0.8 animations:^{
+                                      [top_button setFrame:CGRectMake(20, topBtnTopValue, 280, 54)];
+                                  }];
+                              } completion: nil
+     ];
+    
+    if (top_button.alpha != 1)
+    {
+        [UIView animateKeyframesWithDuration:0.5
+                                       delay:0
+                                     options:2 << 16
+                                  animations:^{
+                                      [UIView addKeyframeWithRelativeStartTime:0.2 relativeDuration:.8 animations:^{
+                                          top_button.alpha = 1;
+                                      }];
+                                  } completion: nil
+         ];
+    }
+    
+    if ([self.view.subviews containsObject:_carousel])
+    {
+        float duration = .35;
+        short randNum = 0;
+        
+        if (favorites && [favorites count] > 1)
+        {
+            randNum = arc4random() % [favorites count];
+            
+            if (abs(([_carousel currentItemIndex] - randNum) == 2))
+            {
+                duration = .6;
+            }
+            else if (abs(([_carousel currentItemIndex] - randNum) > 2))
+            {
+                duration = .7;
+            }
+        }
+        
+        [UIView animateKeyframesWithDuration:duration
+                                       delay:0
+                                     options:2 << 16
+                                  animations:^{
+                                      [UIView addKeyframeWithRelativeStartTime:0 relativeDuration:1 animations:^{
+                                          [_carousel setFrame:CGRectMake(0, carouselTopValue, 320, 175)];
+                                      }];
+                                  } completion: ^(BOOL finished) {
+                                      [_carousel scrollToItemAtIndex:randNum duration:.7];
+                                  }
+         ];
+    }
+    else
+    {
+        //NSLog(@"drawCarousel --> Banner count is: %d  and carouselTopValue is: %d  and topBtnTopValue is: %d",bannerAlert, carouselTopValue, topBtnTopValue);
+        
+        _carousel = [[iCarousel alloc] initWithFrame:CGRectMake(0, carouselTopValue, 320, 175)];
+        _carousel.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
+        _carousel.type = iCarouselTypeCylinder;
+        
+        [_carousel setNeedsLayout];
+        _carousel.delegate = self;
+        _carousel.dataSource = self;
+        [self.view addSubview:_carousel];
+    }
+}
+
 - (NSInteger)numberOfItemsInCarousel:(iCarousel *)carousel
 {
     return 5;
@@ -1767,9 +1804,6 @@ void addressBookChanged(ABAddressBookRef addressBook, CFDictionaryRef info, void
     return view;
 }
 
-- (void)carouselCurrentItemIndexDidChange:(iCarousel *)carousel
-{}
-
 - (void)carousel:(iCarousel *)carousel didSelectItemAtIndex:(NSInteger)index
 {
     [_carousel scrollToItemAtIndex:index duration:.5];
@@ -1849,7 +1883,8 @@ void addressBookChanged(ABAddressBookRef addressBook, CFDictionaryRef info, void
                                                   
                                                   isFromHome = YES;
                                                   isFromMyApt = NO;
-                                                  
+                                                  isFromArtisanDonationAlert = NO;
+
                                                   HowMuch * trans = [[HowMuch alloc] initWithReceiver:favorite];
                                                   [self.navigationController pushViewController:trans animated:YES];
                                                   
@@ -1866,7 +1901,7 @@ void addressBookChanged(ABAddressBookRef addressBook, CFDictionaryRef info, void
                                               return;
                                           }];
             }
-            
+
             else if (favorite[@"UserName"])
             {
                 if ([favorite[@"emailCount"]intValue] > 1)
@@ -1923,6 +1958,7 @@ void addressBookChanged(ABAddressBookRef addressBook, CFDictionaryRef info, void
     }    
 }
 
+#pragma mark - Alertview & Actionsheet Handlers
 - (void)actionSheet:(UIActionSheet *)actionSheet clickedButtonAtIndex:(NSInteger)buttonIndex
 {
     NSString *title = [actionSheet buttonTitleAtIndex:buttonIndex];
@@ -1937,38 +1973,35 @@ void addressBookChanged(ABAddressBookRef addressBook, CFDictionaryRef info, void
     }
 }
 
--(void)showMenu
-{
-    [[assist shared]setneedsReload:NO];
-    [self.slidingViewController anchorTopViewTo:ECRight];
-}
-
 - (void) alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex
 {
-    if ((alertView.tag == 147 || alertView.tag == 148) && buttonIndex==1)
+    if (alertView.tag == 201 && buttonIndex == 1)// GO TO THE ADD BANK WEBVIEW
     {
-        isFromSettingsOptions = NO;
-        isProfileOpenFromSideBar = NO;
-        sentFromHomeScrn = YES;
-        isFromTransDetails = NO;
-
-        ProfileInfo *prof = [ProfileInfo new];
-        [nav_ctrl pushViewController:prof animated:YES];
+        knoxWeb *knox = [knoxWeb new];
+        [nav_ctrl pushViewController:knox animated:YES];
         [self.slidingViewController resetTopView];
     }
-    else if (alertView.tag == 201)
-    {
-        if (buttonIndex == 1)
-        {
-            knoxWeb *knox = [knoxWeb new];
-            [nav_ctrl pushViewController:knox animated:YES];
-            [self.slidingViewController resetTopView];
-            // GOES TO THE KNOX WEBVIEW WITHIN
-        }
-    }
-    else if (alertView.tag == 50 && buttonIndex == 1)
+    else if ((alertView.tag == 50) && buttonIndex == 1)
     {
         [self contact_support];
+    }
+    else if (alertView.tag == 80 && buttonIndex == 1)
+    {
+        shouldDisplayBankNotVerifiedLtBox = YES;
+        SettingsOptions * mainSettingsScrn = [SettingsOptions new];
+        [nav_ctrl pushViewController:mainSettingsScrn animated:YES];
+        [self.slidingViewController resetTopView];
+    }
+
+    else if (alertView.tag == 42 && buttonIndex == 1)
+    {
+        [self go_profileFromHome];
+    }
+
+    else if (alertView.tag == 42 && buttonIndex == 0)
+    {
+        shouldFocusOnDob = NO;
+        shouldFocusOnSsn = NO;
     }
 }
 
@@ -2009,9 +2042,13 @@ void addressBookChanged(ABAddressBookRef addressBook, CFDictionaryRef info, void
 {
     if ([[assist shared] getSuspended])
     {
-        SIAlertView * alertView = [[SIAlertView alloc] initWithTitle:@"Account Suspended" andMessage:@"\xF0\x9F\x98\xA7\nFor security your account has been suspended pending a review.\n\nWe really apologize for the inconvenience and ask for your patience. Our top priority is keeping Nooch safe and secure.\n\nPlease contact us at support@nooch.com if this is a mistake or for more information."];
-        [alertView addButtonWithTitle:@"OK" type:SIAlertViewButtonTypeCancel handler:nil];
-        [alertView addButtonWithTitle:@"Contact Nooch" type:SIAlertViewButtonTypeDefault
+        SIAlertView * alertView = [[SIAlertView alloc] initWithTitle:@"Account Suspended"
+                                                          andMessage:@"\xF0\x9F\x98\xA7\nFor security your account has been suspended pending a review.\n\nWe really apologize for the inconvenience and ask for your patience. Our top priority is keeping Nooch safe and secure.\n\nPlease contact us at support@nooch.com if this is a mistake or for more information."];
+        [alertView addButtonWithTitle:@"OK"
+                                 type:SIAlertViewButtonTypeCancel
+                              handler:nil];
+        [alertView addButtonWithTitle:@"Contact Nooch"
+                                 type:SIAlertViewButtonTypeDefault
                               handler:^(SIAlertView *alert) {
                                   [self contact_support];
                               }];
@@ -2025,8 +2062,13 @@ void addressBookChanged(ABAddressBookRef addressBook, CFDictionaryRef info, void
 
     else if ([[user valueForKey:@"Status"]isEqualToString:@"Registered"])
     {
-        SIAlertView * alertView = [[SIAlertView alloc] initWithTitle:@"Please Verify Your Email" andMessage:@"Terribly sorry, but before you can send money, please confirm your email address by clicking the link we sent to the email address you used to sign up.\n\xF0\x9F\x99\x8F"];
-        [alertView addButtonWithTitle:@"OK" type:SIAlertViewButtonTypeCancel handler:nil];
+        SIAlertView * alertView = [[SIAlertView alloc] initWithTitle:@"Please Verify Your Email"
+                                                        andMessage:@"Terribly sorry, but before you send money, please confirm your email address by clicking the link we sent to the email address you used to sign up.\n\xF0\x9F\x99\x8F"];
+
+        [alertView addButtonWithTitle:@"OK"
+                                 type:SIAlertViewButtonTypeCancel
+                              handler:nil];
+
         [[SIAlertView appearance] setButtonColor:kNoochBlue];
         
         alertView.transitionStyle = SIAlertViewTransitionStyleDropDown;
@@ -2056,18 +2098,16 @@ void addressBookChanged(ABAddressBookRef addressBook, CFDictionaryRef info, void
     else if (![[user valueForKey:@"IsVerifiedPhone"]isEqualToString:@"YES"] )
     {
         SIAlertView * alertView = [[SIAlertView alloc] initWithTitle:@"Blame The Lawyers" andMessage:@"To keep Nooch safe, we ask all users to verify a phone number before sending money.\n\nIf you've already added your phone number, just respond 'Go' to the text message we sent."];
-        [alertView addButtonWithTitle:@"Later" type:SIAlertViewButtonTypeCancel handler:nil];
-        [alertView addButtonWithTitle:@"Add Phone" type:SIAlertViewButtonTypeDefault
+
+        [alertView addButtonWithTitle:@"Later"
+                                 type:SIAlertViewButtonTypeCancel
+                              handler:nil];
+        [alertView addButtonWithTitle:@"Add Phone"
+                                 type:SIAlertViewButtonTypeDefault
                               handler:^(SIAlertView *alert) {
-                                  isFromSettingsOptions = NO;
-                                  isProfileOpenFromSideBar = NO;
-                                  sentFromHomeScrn = YES;
-                                  isFromTransDetails = NO;
-                                  
-                                  ProfileInfo * prof = [ProfileInfo new];
-                                  [nav_ctrl pushViewController:prof animated:YES];
-                                  [self.slidingViewController resetTopView];
+                                  [self go_profileFromHome];
                               }];
+
         [[SIAlertView appearance] setButtonColor:kNoochBlue];
 
         alertView.transitionStyle = SIAlertViewTransitionStyleDropDown;
@@ -2076,14 +2116,66 @@ void addressBookChanged(ABAddressBookRef addressBook, CFDictionaryRef info, void
         return NO;
     }
 
-    else if (![[user objectForKey:@"IsBankAvailable"]isEqualToString:@"1"])
+    // 4. HAS USER COMPLETED & VERIFIED PROFILE INFO? (EMAIL, PHONE, ADDRESS)?
+    if (![[assist shared] isProfileCompleteAndValidated] ||  // this line covers: being suspended, IsVerifiedPhone, and status = active
+        ![[user objectForKey:@"ProfileComplete"] isEqualToString:@"YES"]) // this line covers that the address is not empty or null
+    {
+        SIAlertView * alertView = [[SIAlertView alloc] initWithTitle:@"Help Us Keep Nooch Safe"
+                                                          andMessage:@"Please take 1 minute to verify your identity by completing your Nooch profile."];
+        [alertView addButtonWithTitle:@"Later" type:SIAlertViewButtonTypeCancel handler:nil];
+        [alertView addButtonWithTitle:@"Go Now" type:SIAlertViewButtonTypeDefault
+                              handler:^(SIAlertView *alert) {
+                                  shouldFocusOnAddress = YES;
+                                  [self go_profileFromHome];
+                              }];
+        [[SIAlertView appearance] setButtonColor:kNoochBlue];
+
+        alertView.transitionStyle = SIAlertViewTransitionStyleDropDown;
+        alertView.buttonsListStyle = SIAlertViewButtonsListStyleNormal;
+        [alertView show];
+
+        return NO;
+    }
+
+    // 5. HAS USER SUBMITTED DOB AND SSN LAST 4?
+    if (![[assist shared] isUsersIdInfoSubmitted])
+    {
+        // Body text if both DoB and SSN are not submitted yet
+        NSString * alertBody = @"Please take 30 seconds to verify your identity by entering your:\n\n• Date of birth, and\n• Just the LAST 4 digits of your SSN\n\nFederal regulations require us to verify each user's identity. We will only ask for this info once and all data is stored with encryption on secure servers.\n\xF0\x9F\x94\x92";
+
+        if ([user boolForKey:@"wasSsnAdded"] == YES)
+        {
+            // Body text if SSN was submitted, but not DoB
+            alertBody = @"Please take 30 seconds to finish verifying your identity by entering your:\n\n• Date of birth\n\nFederal regulations require us to verify each user's identity. We will only ask for this info once and all data is stored with encryption on secure servers.\n\xF0\x9F\x94\x92";
+            shouldFocusOnDob = YES;
+        }
+        else if (![[user objectForKey:@"dob"] isKindOfClass:[NSNull class]] &&
+                 [user objectForKey:@"dob"] != NULL)
+        {
+            // Body text if DoB was submitted, but not SSN
+            alertBody = @"Please take 30 seconds to finish verifying your identity by entering your:\n\n• Just the LAST 4 digits of your SSN\n\nFederal regulations require us to verify each user's identity. We will only ask for this info once and all data is stored with encryption on secure servers.\n\xF0\x9F\x94\x92";
+            shouldFocusOnSsn = YES;
+        }
+
+        UIAlertView * alert = [[UIAlertView alloc]initWithTitle:@"Help Us Keep Nooch Safe"
+                                                        message:alertBody
+                                                       delegate:self
+                                              cancelButtonTitle:@"Later"
+                                              otherButtonTitles:@"Go Now", nil];
+        [alert setTag:42];
+        [alert show];
+        return NO;
+    }
+
+    // Finally check if the user has a bank account
+    else if (![user boolForKey:@"IsSynapseBankAvailable"])
     {
         SIAlertView *alertView = [[SIAlertView alloc] initWithTitle:@"Connect A Funding Source \xF0\x9F\x92\xB0" andMessage:@"\xE2\x9A\xA1\nAdding a bank account to fund Nooch payments is lightning quick.\n\n• No routing or account number needed\n• Bank-grade encryption keeps your info safe\n\nWould you like to take care of this now?"];
         [alertView addButtonWithTitle:@"Later" type:SIAlertViewButtonTypeCancel handler:nil];
         [alertView addButtonWithTitle:@"Go Now" type:SIAlertViewButtonTypeDefault
                               handler:^(SIAlertView *alert) {
-                                  knoxWeb *knox = [knoxWeb new];
-                                  [nav_ctrl pushViewController:knox animated:YES];
+                                  knoxWeb * addBankWebView = [knoxWeb new];
+                                  [nav_ctrl pushViewController:addBankWebView animated:YES];
                                   [self.slidingViewController resetTopView];
                               }];
         [[SIAlertView appearance] setButtonColor:kNoochBlue];
@@ -2094,10 +2186,50 @@ void addressBookChanged(ABAddressBookRef addressBook, CFDictionaryRef info, void
         return NO;
     }
 
+    // ... and check if that bank account is 'Verified'
+    else if ([user boolForKey:@"IsSynapseBankAvailable"] &&
+            ![user boolForKey:@"IsSynapseBankVerified"])
+    {
+        UIAlertView *av = [[UIAlertView alloc] initWithTitle:@"Bank Account Un-Verified"
+                                                     message:@"Looks like your bank account remains un-verified.  This usually happens when the contact info listed on the bank account does not match your Nooch profile information. Please contact Nooch support for more information."
+                                                    delegate:self
+                                           cancelButtonTitle:@"OK"
+                                           otherButtonTitles:@"Learn More", nil];
+        [av setTag:80];
+        [av show];
+        return NO;
+    }
+
+
     return YES;
 }
 
 # pragma mark - CLLocationManager Delegate Methods
+
+-(void)checkIfLocAllowed
+{
+    if ([CLLocationManager locationServicesEnabled])
+    {
+        if ([CLLocationManager authorizationStatus] == kCLAuthorizationStatusAuthorized  ||
+            [CLLocationManager authorizationStatus] == kCLAuthorizationStatusAuthorizedWhenInUse)
+        {
+            NSLog(@"Home --> Location Services Allowed");
+
+            locationManager = [[CLLocationManager alloc] init];
+
+            locationManager.delegate = self;
+            locationManager.distanceFilter = kCLDistanceFilterNone; // whenever we move
+            locationManager.desiredAccuracy = kCLLocationAccuracyHundredMeters; // 100 m
+
+            [locationManager startUpdatingLocation];
+        }
+        else
+        {
+            NSLog(@"Home --> Location Services NOT Allowed");
+        }
+    }
+}
+
 - (void)locationManager:(CLLocationManager *)manager
      didUpdateLocations:(NSArray *)locations
 {
@@ -2129,21 +2261,8 @@ void addressBookChanged(ABAddressBookRef addressBook, CFDictionaryRef info, void
     }
 }
 
--(void)Error:(NSError *)Error
-{
-    [self.hud hide:YES];
-
-    UIAlertView *alert = [[UIAlertView alloc]
-                          initWithTitle:@"Trouble Connecting"
-                          message:@"We aren't able to connect to the server right now, the internet must be unusually congested.  Sorry about that, please try again!"
-                          delegate:nil
-                          cancelButtonTitle:@"OK"
-                          otherButtonTitles:nil];
-    [alert show];
-}
-
 #pragma mark - server delegation
-- (void) listen:(NSString *)result tagName:(NSString *)tagName
+-(void) listen:(NSString *)result tagName:(NSString *)tagName
 {
     dispatch_async(dispatch_get_main_queue(), ^{
         [self.hud hide:YES];
@@ -2218,30 +2337,39 @@ void addressBookChanged(ABAddressBookRef addressBook, CFDictionaryRef info, void
 
         NSDictionary * dict = [NSJSONSerialization JSONObjectWithData:[result dataUsingEncoding:NSUTF8StringEncoding] options:0 error:&error];
 
-        //NSLog(@"Home --> Listen --> getPendingTransfersCount Result: %@",dict);
         int pendingRequestsReceived = [[dict valueForKey:@"pendingRequestsReceived"] intValue];
         NSString * count;
 
-        [self.navigationItem setLeftBarButtonItem:nil];
+        //[self.navigationItem setLeftBarButtonItem:nil];
 
-        if (pendingRequestsReceived > 0)
+        if (pendingRequestsReceived > 0 &&
+            ((isSynapseOn && [user boolForKey:@"IsSynapseBankAvailable"]) ||
+             (isKnoxOn && [user boolForKey:@"IsKnoxBankAvailable"])))
         {
-            UILabel * pending_notif = [UILabel new];
-            [pending_notif setText:[NSString stringWithFormat:@"%d", pendingRequestsReceived]];
-            [pending_notif setFrame:CGRectMake(16, -2, 20, 20)];
-            [pending_notif setStyleId:@"pending_notif"];
+            if ([self.view.subviews containsObject:self.glyphNoBank])
+            {
+                [self.glyphNoBank removeFromSuperview];
+            }
 
+            if ([self.pending_notif isHidden])
+            {
+                [self.pending_notif setText:[NSString stringWithFormat:@"%d", pendingRequestsReceived]];
+                [self.pending_notif setFrame:CGRectMake(16, -2, 22, 22)];
+                [self.pending_notif setStyleId:@"pending_notif"];
+                [self.pending_notif setStyleClass:@"animate_bubble"];
+            }
             UIButton * hamburger = [UIButton buttonWithType:UIButtonTypeRoundedRect];
             [hamburger setStyleId:@"navbar_hamburger"];
             [hamburger addTarget:self action:@selector(showMenu) forControlEvents:UIControlEventTouchUpInside];
             [hamburger setTitle:[NSString fontAwesomeIconStringForIconIdentifier:@"fa-bars"] forState:UIControlStateNormal];
             [hamburger setTitleShadowColor:Rgb2UIColor(19, 32, 38, 0.22) forState:UIControlStateNormal];
             hamburger.titleLabel.shadowOffset = CGSizeMake(0.0, -1.0);
-            [hamburger addSubview:pending_notif];
+            [hamburger addSubview:self.pending_notif];
 
             UIBarButtonItem * menu = [[UIBarButtonItem alloc] initWithCustomView:hamburger];
             [self.navigationItem setLeftBarButtonItem:menu];
-
+            [self.pending_notif setHidden:NO];
+    
             [user setBool:true forKey:@"hasPendingItems"];
             count = [dict valueForKey:@"pendingRequestsReceived"];
 
@@ -2254,12 +2382,45 @@ void addressBookChanged(ABAddressBookRef addressBook, CFDictionaryRef info, void
         }
         else
         {
+            [self.pending_notif setHidden:YES];
             UIButton * hamburger = [UIButton buttonWithType:UIButtonTypeRoundedRect];
             [hamburger setStyleId:@"navbar_hamburger"];
             [hamburger addTarget:self action:@selector(showMenu) forControlEvents:UIControlEventTouchUpInside];
             [hamburger setTitle:[NSString fontAwesomeIconStringForIconIdentifier:@"fa-bars"] forState:UIControlStateNormal];
             [hamburger setTitleShadowColor:Rgb2UIColor(19, 32, 38, 0.22) forState:UIControlStateNormal];
             hamburger.titleLabel.shadowOffset = CGSizeMake(0.0, -1.0);
+
+            if ((isKnoxOn && ![user boolForKey:@"IsKnoxBankAvailable"]) ||
+                (isSynapseOn && ![user boolForKey:@"IsSynapseBankAvailable"]))
+            {
+                if (![self.view.subviews containsObject:self.glyphNoBank])
+                {
+                    self.glyphNoBank = [UILabel new];
+                    [self.glyphNoBank setText:[NSString fontAwesomeIconStringForIconIdentifier:@"fa-exclamation"]];
+                    [self.glyphNoBank setStyleId:@"noBank_Home"];
+                    [self.glyphNoBank setFrame:CGRectMake(16, -2, 22, 22)];
+                    [self.glyphNoBank setAlpha:1];
+                    [self.glyphNoBank setStyleClass:@"animate_bubble"];
+                    [hamburger addSubview:self.glyphNoBank];
+                }
+            }
+            else
+            {
+                if ([self.view.subviews containsObject:self.glyphNoBank])
+                {
+                    [UIView animateKeyframesWithDuration:.4
+                                                   delay:0
+                                                 options:UIViewKeyframeAnimationOptionCalculationModeCubic
+                                              animations:^{
+                                                  [UIView addKeyframeWithRelativeStartTime:0 relativeDuration:1 animations:^{
+                                                      [self.glyphNoBank setAlpha:0];
+                                                  }];
+                                                  
+                                              } completion:^(BOOL finished){
+                                                  [self.glyphNoBank removeFromSuperview];
+                                              }];
+                }
+            }
 
             UIBarButtonItem * menu = [[UIBarButtonItem alloc] initWithCustomView:hamburger];
             [self.navigationItem setLeftBarButtonItem:menu];
@@ -2329,6 +2490,7 @@ void addressBookChanged(ABAddressBookRef addressBook, CFDictionaryRef info, void
 
             isFromHome = YES;
             isFromMyApt = NO;
+            isFromArtisanDonationAlert = NO;
 
             HowMuch * how_much = [[HowMuch alloc] initWithReceiver:dict];
             [self.navigationController pushViewController:how_much animated:YES];
@@ -2346,6 +2508,7 @@ void addressBookChanged(ABAddressBookRef addressBook, CFDictionaryRef info, void
         error:&error];
         isFromHome = YES;
         isFromMyApt = NO;
+        isFromArtisanDonationAlert = NO;
 
         HowMuch * how_much = [[HowMuch alloc] initWithReceiver:dict];
         [self.navigationController pushViewController:how_much animated:YES];
@@ -2407,11 +2570,38 @@ void addressBookChanged(ABAddressBookRef addressBook, CFDictionaryRef info, void
         {
             NSLog(@"Home -> Server response error for saveIpAddress: %@  & Error: %@", dict, error);
         }
+        BOOL shouldDisplayRefCampaign= [[ARPowerHookManager getValueForHookById:@"RefCmpgn_YorN"] boolValue];
+        
+        if (shouldDisplayRefCampaign)
+        {
+            NSLog(@"ShouldDisplayRefCampaign block fired");
+            [ARPowerHookManager executeBlockWithId:@"goToReferScrn"
+                                              data:@{ @"shouldDisplayAlert" : @"YES",
+                                                      @"alertText" : @"Here you can see your unique Referral Code. Send it out to anyone as often as you'd like and you'll get $5 when the first 5 people sign up with your code and makes a payment."
+                                                      }
+                                           context:self];
+        }
     }
 
 }
 
-- (void) mailComposeController:(MFMailComposeViewController *)controller didFinishWithResult:(MFMailComposeResult)result error:(NSError *)error
+
+-(void)Error:(NSError *)Error
+{
+    [self.hud hide:YES];
+
+    UIAlertView *alert = [[UIAlertView alloc]
+                          initWithTitle:@"Trouble Connecting"
+                          message:@"We aren't able to connect to the server right now, the internet must be unusually congested.  Sorry about that, please try again!"
+                          delegate:nil
+                          cancelButtonTitle:@"OK"
+                          otherButtonTitles:nil];
+    [alert show];
+}
+
+#pragma mark - Mail Controller Hanlder
+-(void)mailComposeController:(MFMailComposeViewController *)controller
+           didFinishWithResult:(MFMailComposeResult)result error:(NSError *)error
 {
     UIAlertView *alert = [[UIAlertView alloc] init];
     [alert addButtonWithTitle:@"OK"];
@@ -2551,26 +2741,26 @@ void addressBookChanged(ABAddressBookRef addressBook, CFDictionaryRef info, void
 }
 
 #pragma mark- Date From String
-- (NSDate*) dateFromString:(NSString*)aStr
+-(NSDate*)dateFromString:(NSString*)aStr
 {
     NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
     [dateFormatter setLocale:[[NSLocale alloc] initWithLocaleIdentifier:@"en_US_POSIX"]];
-   
+
     [dateFormatter setAMSymbol:@"AM"];
     [dateFormatter setPMSymbol:@"PM"];
     dateFormatter.dateFormat = @"MM/dd/yyyy hh:mm:ss a";
-    
+
     NSDate * aDate = [dateFormatter dateFromString:aStr];
 
     return aDate;
 }
 
-- (void)dealloc
+-(void)dealloc
 {
     [[NSNotificationCenter defaultCenter] removeObserver:self name:UIApplicationWillEnterForegroundNotification object:nil];
 }
 
-- (void)didReceiveMemoryWarning
+-(void)didReceiveMemoryWarning
 {
     [super didReceiveMemoryWarning];
     // Dispose of any resources that can be recreated.

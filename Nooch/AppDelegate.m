@@ -13,6 +13,9 @@
 #import "ProfileInfo.h"
 #import "Appirater.h"
 #import <AdSupport/AdSupport.h>
+#import "SendInvite.h"
+#import "HowMuch.h"
+#import "Welcome.h"
 
 @implementation AppDelegate
 
@@ -115,16 +118,7 @@ bool modal;
     // Check if deferred deeplink can be opened, with a max timeout value in seconds
     // Uncomment this line if your MAT account has enabled deferred deeplinks
     //[MobileAppTracker checkForDeferredDeeplinkWithTimeout:0.75];
-    
-    // If your app already has a pre-existing user base before you implement the MAT SDK, then
-    // identify the pre-existing users with this code snippet.
-    // Otherwise, MAT counts your pre-existing users as new installs the first time they run your app.
-    // Omit this section if you're upgrading to a newer version of the MAT SDK.
-    // This section only applies to NEW implementations of the MAT SDK.
-    //BOOL isExistingUser = ...
-    //if (isExistingUser) {
-    //    [MobileAppTracker setExistingUser:YES];
-    //}
+
     [MobileAppTracker measureSession];
 
     // Whenever a person opens the app, check for a cached FB session
@@ -175,13 +169,113 @@ bool modal;
     [ARPowerHookManager registerHookWithId:@"transSuccessAlertMsg" friendlyName:@"Alert Message After Transfer Success" defaultValue:@"\xF0\x9F\x92\xB8\nYour cash was sent successfully."];
 
     [ARPowerHookManager registerHookWithId:@"knox_OnOff" friendlyName:@"Knox On or Off" defaultValue:@"on"];
-    [ARPowerHookManager registerHookWithId:@"synps_OnOff" friendlyName:@"Synapse On or Off" defaultValue:@"on"];
+    [ARPowerHookManager registerHookWithId:@"synps_OnOff" friendlyName:@"Synapse On or Off" defaultValue:@"off"];
     [ARPowerHookManager registerHookWithId:@"synps_baseUrl" friendlyName:@"Synapse Base URL" defaultValue:@"http://54.201.43.89/noochweb/MyAccounts/Add-Bank.aspx"];
 
     [ARPowerHookManager registerHookWithId:@"knox_baseUrl" friendlyName:@"Knox Base URL" defaultValue:@"https://knoxpayments.com/pay/index.php"];
     [ARPowerHookManager registerHookWithId:@"knox_Key" friendlyName:@"Knox API Key" defaultValue:@"7068_59cd5c1f5a75c31"];
     [ARPowerHookManager registerHookWithId:@"knox_Pw" friendlyName:@"Knox API Pw" defaultValue:@"7068_da64134cc66a5f0"];
     [ARPowerHookManager registerHookWithId:@"knox_xtraTime" friendlyName:@"Extra No. of days for Knox processing" defaultValue:@"1"];
+
+    [ARPowerHookManager registerHookWithId:@"RefCmpgn_YorN" friendlyName:@"Referral Campaign Alert - Should Display Y or N" defaultValue:@"no"];
+
+    [ARPowerHookManager registerHookWithId:@"wlcm_ArtPop" friendlyName:@"Welcome Scrn - Should Display Artisan Popup (or hard-coded bank popup)" defaultValue:@"no"];
+
+    [ARPowerHookManager registerBlockWithId:@"wlcm_goProfile"
+                               friendlyName:@"Send user to Profile screen from Welcome screen after signup"
+                                       data:@{ @"empty" : @"empty"
+                                               }
+                                   andBlock:^(NSDictionary *data, id context) {
+                                       //Go to Profile
+                                       isSignup = YES;
+                                       ProfileInfo * profileScrn = [ProfileInfo new];
+                                       [nav_ctrl pushViewController:profileScrn animated:YES];
+                                   }];
+    [ARPowerHookManager registerBlockWithId:@"goToReferScrn"
+                               friendlyName:@"Send user to Refer a Friend screen"
+                                       data:@{ @"shouldDisplayAlert" : @"NO",
+                                               @"alertText" : @"This screen shows your unique Referral Code. Send it out to anyone as often as you'd like and you'll get $5 for each new user who signs up with your code and makes a payment (up to 5 referrals)."
+                                             }
+                                   andBlock:^(NSDictionary *data, id context) {
+                                       sentFromStatsScrn = false;
+                                       SendInvite *inv = [SendInvite new];
+                                       [nav_ctrl pushViewController:inv animated:YES];
+
+                                       if ([[data[@"shouldDisplayAlert"] lowercaseString] isEqualToString:@"yes"])
+                                       {
+                                           NSString *message = data[@"alertText"];
+                                           UIAlertView *alertView = [[UIAlertView alloc]initWithTitle:@"Like Getting Paid?"
+                                                                                              message:message
+                                                                                             delegate:context
+                                                                                    cancelButtonTitle:@"Ok"
+                                                                                    otherButtonTitles:nil, nil];
+                                           [alertView show];
+                                       }
+                                   }];
+    [ARPowerHookManager registerBlockWithId:@"MakeADonation"
+                               friendlyName:@"Send user to How Much screen to donate to a Featured NonProfit"
+                                       data:@{ @"shouldDisplayAlert" : @"NO",
+                                               @"recipMembId": @"B3A6CF7B-561F-4105-99E4-406A215CCF60",
+                                               @"firstName": @"First Name",
+                                               @"lastName": @"Last Name",
+                                               @"memo": @"",
+                                               @"alertTitle": @"Thank You!",
+                                               @"alertText" : @"100% of what you give in this transfer will go to supporting the cause!"
+                                            }
+                                   andBlock:^(NSDictionary *data, id context) {
+                                       if (![[assist shared] getSuspended] &&
+                                            [[assist shared] isProfileCompleteAndValidated] &&
+                                           ((isKnoxOn && [user boolForKey:@"IsKnoxBankAvailable"]) ||
+                                            (isSynapseOn && [user boolForKey:@"IsSynapseBankAvailable"] && [user boolForKey:@"IsSynapseBankVerified"])))
+                                       {
+                                           NSMutableDictionary * recipient = [NSMutableDictionary new];
+                                           if (data[@"recipMembId"] != NULL)
+                                           {
+                                               [recipient setObject:data[@"recipMembId"] forKey:@"MemberId"];
+                                               [recipient setObject:data[@"firstName"] forKey:@"FirstName"];
+                                               [recipient setObject:data[@"lastName"] forKey:@"LastName"];
+                                               [recipient setObject:data[@"memo"] forKey:@"Memo"];
+                                               [recipient setObject:[NSString stringWithFormat:@"https://www.noochme.com/noochservice/UploadedPhotos/Photos/%@.png",data[@"recipMembId"]] forKey:@"Photo"];
+
+                                               NSLog(@"AppDelegate --> MakeADonation Powerhook Block --> Recipient object is: %@", recipient);
+                                               isFromHome = YES;
+                                               isFromMyApt = NO;
+                                               isFromArtisanDonationAlert = YES;
+
+                                               HowMuch * howMuchScrn = [[HowMuch alloc] initWithReceiver:recipient];
+                                               [nav_ctrl pushViewController:howMuchScrn animated:YES];
+
+                                               if ([[data[@"shouldDisplayAlert"] lowercaseString] isEqualToString:@"yes"])
+                                               {
+                                                   NSString *avTitle = data[@"alertTitle"];
+                                                   NSString *message = [NSString stringWithFormat:@"Awesome, %@!\n\n%@",
+                                                                        [user objectForKey:@"firstName"],
+                                                                        data[@"alertText"]];
+                                                   
+                                                   UIAlertView *alertView = [[UIAlertView alloc]initWithTitle:avTitle
+                                                                                                      message:message
+                                                                                                     delegate:context
+                                                                                            cancelButtonTitle:@"Ok"
+                                                                                            otherButtonTitles:nil, nil];
+                                                   [alertView show];
+                                               }
+                                           }
+                                           else
+                                           {
+                                               NSLog(@"MEMBER ID WAS NULL :-(");
+                                           }
+                                       }
+                                       else
+                                       {
+                                           NSMutableArray * arrNav = [nav_ctrl.viewControllers mutableCopy];
+                                           
+                                           Home * goHomeScrn = [Home new];
+                                           [arrNav replaceObjectAtIndex:0 withObject:goHomeScrn];
+                                           [nav_ctrl setViewControllers:arrNav animated:NO];
+
+                                           [nav_ctrl popToRootViewControllerAnimated:YES];
+                                       }
+                                   }];
 
     [ARManager startWithAppId:@"5487d09c2b22204361000011"];
 
@@ -483,31 +577,43 @@ void exceptionHandler(NSException *exception){
         return YES;
     }
 
-    //Get the Response from Knox and parse it
-    NSString *response = [[url absoluteString]stringByReplacingPercentEscapesUsingEncoding:NSUTF8StringEncoding];
-    NSArray *URLParse = [response componentsSeparatedByString:@"?"];
-    NSString *responseBody = URLParse[1];
-    NSLog(@"%@",URLParse);
-    NSLog(@"%@",responseBody);
+    // If coming from Synapse add bank process
+    if ([[url absoluteString] rangeOfString:@"banksuccess"].location != NSNotFound)
+    {
+        NSLog(@"Bank linked via Synapse successfully");
+        //Send Notification to WebView so it can resign itself and to the parent view if desired to handle response and give success notification etc.
+        [[NSNotificationCenter defaultCenter]
+         postNotificationName:@"SynapseResponse" object:self];
+    }
+    // If coming from old Knox add bank process
+  /*else if ([[url absoluteString] rangeOfString:@"pay_id"].location != NSNotFound)
+    {
+        //Get the Response from Knox and parse it
+        NSString *response = [[url absoluteString]stringByReplacingPercentEscapesUsingEncoding:NSUTF8StringEncoding];
+        NSArray *URLParse = [response componentsSeparatedByString:@"?"];
+        NSString *responseBody = URLParse[1];
+        NSLog(@"%@",URLParse);
+        NSLog(@"%@",responseBody);
 
-    NSArray *responseParse = [responseBody componentsSeparatedByString:@"&"];
-    
-    //Parse the components of the response
-    NSLog(@"%@",responseParse);
-    NSArray * isPaid = [responseParse[0] componentsSeparatedByString:@"pst="][1];
-    NSLog(@"%@",isPaid);
-    NSString * paymentID = [responseParse[2] componentsSeparatedByString:@"pay_id="][1];
+        NSArray *responseParse = [responseBody componentsSeparatedByString:@"&"];
 
-    //Components of response are Logged here
-    NSLog(@"fired in Delegate - URL Encoded --> IsPaid: %@   paymentID: %@", isPaid, paymentID);
-    [user setObject:isPaid forKey:@"isPaid"];
-    [user setObject:paymentID forKey:@"paymentID"];
+        //Parse the components of the response
+        NSLog(@"%@",responseParse);
+        NSArray * isPaid = [responseParse[0] componentsSeparatedByString:@"pst="][1];
+        NSLog(@"%@",isPaid);
+        NSString * paymentID = [responseParse[2] componentsSeparatedByString:@"pay_id="][1];
 
-    [user synchronize];
-    
-    //Send Notification to WebView so it can resign itself and to the parent view if desired to handle response and give success notification etc.
-    [[NSNotificationCenter defaultCenter]
-    postNotificationName:@"KnoxResponse" object:self];
+        //Components of response are Logged here
+        NSLog(@"fired in Delegate - URL Encoded --> IsPaid: %@   paymentID: %@", isPaid, paymentID);
+        [user setObject:isPaid forKey:@"isPaid"];
+        [user setObject:paymentID forKey:@"paymentID"];
+
+        [user synchronize];
+
+        //Send Notification to WebView so it can resign itself and to the parent view if desired to handle response and give success notification etc.
+        [[NSNotificationCenter defaultCenter]
+        postNotificationName:@"KnoxResponse" object:self];
+    }*/
 
     [MobileAppTracker applicationDidOpenURL:[url absoluteString] sourceApplication:sourceApplication];
 

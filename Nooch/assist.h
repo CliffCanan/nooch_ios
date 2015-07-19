@@ -12,12 +12,14 @@
 #import "serve.h"
 #import <Social/Social.h>
 #import <Accounts/Accounts.h>
+
 NSTimer*timer;
 bool histSafe;
 bool needsUpdating;
 NSString *histSearching;
+
 @interface assist : NSObject<serveD>{
-    NSArray*ArrAllContacts;
+    NSArray *ArrAllContacts;
     NSMutableDictionary *usr;
     NSMutableDictionary *assosciateCache;
     NSMutableArray *arrRequestMultiple;
@@ -26,13 +28,14 @@ NSString *histSearching;
     NSMutableData *archivedData;
     NSMutableData *pic;
     NSMutableData *responseData;
-    NSString*passValue;
-    UIImage*imageOBJFortransfer;
+    NSString *passValue;
+    UIImage *imageOBJFortransfer;
+    UIImage *imageOBJForIdDoc;
     BOOL isPrimaryBankVerified;
     BOOL islogout;
     BOOL islocationAllowed;
     BOOL isNeed;
-    BOOL isUserSuspended, isProfileCompleteAndValidated;
+    BOOL isUserSuspended;
     BOOL isMutipleRequest;
     BOOL isPOP;
     BOOL isLoginFromOther;
@@ -64,6 +67,7 @@ NSString *histSearching;
 -(UIColor*)hexColor:(NSString*)hex;
 -(UIFont *)nFont:(NSString*)weight size:(int)size;
 -(UIImage*)getTranferImage;
+-(UIImage*)getIdDocImage;
 
 -(BOOL)isAlive:(NSString*)path;
 -(BOOL)isClean:(id)object;
@@ -73,6 +77,7 @@ NSString *histSearching;
 -(BOOL)isPOP;
 -(BOOL)isProfileCompleteAndValidated;
 -(BOOL)isRequestMultiple;
+-(BOOL)isUsersIdInfoSubmitted;
 -(BOOL)checkIfLocAllowed;
 -(BOOL)checkIfTouchIdAvailable;
 -(BOOL)getSuspended;
@@ -99,5 +104,6 @@ NSString *histSearching;
 -(void)setRequestMultiple:(BOOL)istrue;
 -(void)setSusPended:(BOOL)istrue;
 -(void)setTranferImage:(UIImage*)image;
+-(void)setIdDocImage:(UIImage*)image;
 
 @end

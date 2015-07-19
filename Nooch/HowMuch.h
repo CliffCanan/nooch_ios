@@ -10,9 +10,8 @@
 #import "Home.h"
 #import "serve.h"
 BOOL isFromHome;
-BOOL isFromStats;
-BOOL isFromMyApt;
-BOOL isPayBack;
+BOOL isFromStats,isFromMyApt;
+BOOL isPayBack,isFromArtisanDonationAlert;
 BOOL isUserByLocation;
 
 @interface HowMuch : GAITrackedViewController<UITextFieldDelegate,serveD,UIImagePickerControllerDelegate, UINavigationControllerDelegate>

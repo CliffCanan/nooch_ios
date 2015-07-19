@@ -54,7 +54,6 @@
 
 //-(void)getNoteSettings;
 
-
 -(void)CancelMoneyRequestForExistingNoochUser:(NSString*)transactionId;
 -(void)CancelMoneyTransferToNonMemberForSender:(NSString *)transactionId;
 -(void)CancelMoneyRequestForNonNoochUser:(NSString*)transactionId;
@@ -76,6 +75,7 @@
 -(void)getTotalReferralCode:(NSString *)inviteCode;
 -(void)get_favorites;
 -(void)GetKnoxBankAccountDetails;
+-(void)GetSynapseBankAccountDetails;
 -(void)getPendingTransfersCount;
 -(void)GetServerCurrentTime;
 -(void)histMore:(NSString*)type sPos:(NSInteger)sPos len:(NSInteger)len subType:(NSString*)subType;
@@ -90,11 +90,14 @@
 -(void)pinCheck:(NSString*)memId pin:(NSString*)pin;
 -(void)ReferalCodeRequest:(NSString*)email;
 -(void)RemoveKnoxBankAccount;
+-(void)RemoveSynapseBankAccount;
 -(void)RaiseDispute:(NSDictionary*)Input;
 -(void)resendEmail;
 -(void)resetPassword:(NSString*)old new:(NSString*)new;
 -(void)resetPIN:(NSString*)old new:(NSString*)new;
 -(void)resendSMS;
+-(void)saveDob:(NSString*)dob;
+-(void)saveSsn:(NSString*)ssn;
 -(void)saveUserIpAddress:(NSString*)IpAddress;
 -(void)SaveImmediateRequire:(BOOL)IsRequiredImmediatley;
 -(void)saveShareToFB_Twitter:(NSString*)PostTo;
@@ -107,6 +110,7 @@
 -(void)setPushSets:(NSDictionary*)notificationDictionary;
 -(void)setSets:(NSDictionary*)settingsDictionary;
 -(void)setSharing:(NSString*)sharingValue;
+-(void)submitIdDocument;
 -(void)TransferMoneyToNonNoochUser:(NSDictionary*)transactionInput email:(NSString*)email;
 -(void)UpDateLatLongOfUser:(NSString*)lat lng:(NSString*)lng;
 -(void)ValidatePinNumberToEnterForEnterForeground:(NSString*)memId pin:(NSString*)pin;

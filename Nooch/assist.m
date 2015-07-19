@@ -44,30 +44,52 @@ static assist * _sharedInstance = nil;
         [[user valueForKey:@"Status"] isEqualToString:@"Active"] &&
         [[user valueForKey:@"IsVerifiedPhone"] isEqualToString:@"YES"])
     {
-        NSLog(@"1.  Assist.m -> isProfileCompleteAndValidated -> isUserSuspended is: %d",isUserSuspended);
-        isProfileCompleteAndValidated = YES;
+        return YES;
     }
     else
     {
-        NSLog(@"2.  Assist.m -> isProfileCompleteAndValidated -> isUserSuspended is: %d",isUserSuspended);
-        isProfileCompleteAndValidated = NO;
+        return NO;
     }
-
-    return isProfileCompleteAndValidated;
 }
+-(BOOL)isUsersIdInfoSubmitted // To check if user has added Date of Birth AND SSN last 4
+{
+    if (   [user boolForKey:@"wasSsnAdded"] == YES &&
+        (![[user objectForKey:@"dob"] isKindOfClass:[NSNull class]] &&
+           [user objectForKey:@"dob"] != NULL))
+    {
+        return YES;
+    }
+    else
+    {
+        return NO;
+    }
+}
+
 
 -(BOOL)getSuspended {
     return isUserSuspended;
 }
 -(void)setSusPended:(BOOL)istrue {
-    isUserSuspended=istrue;
+    isUserSuspended = istrue;
 }
+
+
 -(void)setTranferImage:(UIImage*)image {
-    imageOBJFortransfer=image;
+    imageOBJFortransfer = image;
 }
 -(UIImage*)getTranferImage {
     return imageOBJFortransfer;
 }
+
+
+-(void)setIdDocImage:(UIImage *)image {
+    imageOBJForIdDoc = image;
+}
+-(UIImage*)getIdDocImage {
+    return imageOBJForIdDoc;
+}
+
+
 -(BOOL)isloggedout {
     return islogout;
 }

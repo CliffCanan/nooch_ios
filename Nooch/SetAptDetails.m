@@ -66,13 +66,14 @@
     [super viewDidLoad];
     isBankAttached = NO;
 
-    if (![[user objectForKey:@"IsBankAvailable"]isEqualToString:@"1"])
+    if ((isKnoxOn && [user boolForKey:@"IsKnoxBankAvailable"]) ||
+        (isSynapseOn && [user boolForKey:@"IsSynapseBankAvailable"]))
     {
-        isBankAttached = NO;
+        isBankAttached = YES;
     }
     else
     {
-        isBankAttached = YES;
+        isBankAttached = NO;
     }
 
     [self.navigationItem setHidesBackButton:YES];
@@ -1195,8 +1196,8 @@
 -(void)openAptWebsite
 {
     UIApplication * mySafari = [UIApplication sharedApplication];
-    NSURL * myURL = [[NSURL alloc]initWithString: aptWebsiteUrl];
-    [mySafari openURL:myURL];
+    NSURL * aptURL = [[NSURL alloc]initWithString: aptWebsiteUrl];
+    [mySafari openURL:aptURL];
 }
 
 -(void)goBackOneStep

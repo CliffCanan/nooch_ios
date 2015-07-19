@@ -36,7 +36,7 @@ core *me;
 
 UINavigationController *nav_ctrl;
 NSUserDefaults *user;
-BOOL shouldDisplayAptsSection, noRecentContacts;
+BOOL isSynapseOn,isKnoxOn,shouldDisplayAptsSection, noRecentContacts, isFromTransferPIN;
 
 @interface Home : GAITrackedViewController<serveD,CLLocationManagerDelegate,MBProgressHUDDelegate,MFMailComposeViewControllerDelegate,iCarouselDataSource,iCarouselDelegate,UIAlertViewDelegate,UIActionSheetDelegate>
 {
@@ -52,7 +52,7 @@ BOOL shouldDisplayAptsSection, noRecentContacts;
     UIButton *top_button;
     int bannerAlert;
     short carouselTopValue, topBtnTopValue, loopIteration;
-    BOOL shouldBreakLoop;
+    BOOL shouldBreakLoop,isPendingGlyphShowing;
 }
 -(void)contact_support;
 -(void)hide;

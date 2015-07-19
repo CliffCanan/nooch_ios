@@ -51,11 +51,6 @@
 
     [self.navigationItem setLeftBarButtonItem:nil];
     UIButton * back_button = [UIButton buttonWithType:UIButtonTypeRoundedRect];
-    [back_button setStyleId:@"navbar_back"];
-    [back_button addTarget:self action:@selector(backPressed_SelectRecip:) forControlEvents:UIControlEventTouchUpInside];
-    [back_button setTitle:[NSString fontAwesomeIconStringForIconIdentifier:@"fa-angle-left"] forState:UIControlStateNormal];
-    [back_button setTitleShadowColor:Rgb2UIColor(19, 32, 38, 0.15) forState:UIControlStateNormal];
-    back_button.titleLabel.shadowOffset = CGSizeMake(0.0, -1.0);
     UIBarButtonItem * menu = [[UIBarButtonItem alloc] initWithCustomView:back_button];
     [self.navigationItem setLeftBarButtonItem:menu];
 
@@ -160,7 +155,8 @@
         self.location = NO;
         [self.navigationItem setHidesBackButton:YES];
         [self.navigationItem setLeftBarButtonItem:nil];
-        [self.recent_location setSelectedSegmentIndex:0];
+        [self.navigationItem setTitle:@"Group Request"];
+        [self.navigationItem setRightBarButtonItem:Nil];
 
         UIAlertView *av = [[UIAlertView alloc] initWithTitle:@"Add Recipients"
                                                      message:@"To request money from more than one person, search for friends then tap each additional person (up to 10).\n\nTap 'Done' when finished."
@@ -168,9 +164,6 @@
                                            cancelButtonTitle:@"OK"
                                            otherButtonTitles:nil];
         [av show];
-
-        [self.navigationItem setTitle:@"Group Request"];
-        [self.navigationItem setRightBarButtonItem:Nil];
 
         UIButton * Done = [UIButton buttonWithType:UIButtonTypeRoundedRect];
         Done.frame = CGRectMake(307, 25, 16, 35);
@@ -219,21 +212,37 @@
         shadowNavText.shadowOffset = CGSizeMake(0, -1.0);
         NSDictionary * titleAttributes = @{NSShadowAttributeName: shadowNavText};
 
-        UITapGestureRecognizer * backTap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(backPressed_SelectRecip:)];
+        if (!isFromBankWebView)
+        {
+            UILabel * back_button = [UILabel new];
+            [back_button setUserInteractionEnabled:YES];
+            UITapGestureRecognizer * backTap;
+            [back_button setStyleId:@"navbar_back"];
+            back_button.attributedText = [[NSAttributedString alloc] initWithString:[NSString fontAwesomeIconStringForIconIdentifier:@"fa-angle-left"] attributes:titleAttributes];
+            backTap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(backPressed_SelectRecip)];
+            [back_button addGestureRecognizer: backTap];
 
-        UILabel * back_button = [UILabel new];
-        [back_button setStyleId:@"navbar_back"];
-        [back_button setUserInteractionEnabled:YES];
-        [back_button addGestureRecognizer: backTap];
-        back_button.attributedText = [[NSAttributedString alloc] initWithString:[NSString fontAwesomeIconStringForIconIdentifier:@"fa-angle-left"] attributes:titleAttributes];
+            UIBarButtonItem * menu = [[UIBarButtonItem alloc] initWithCustomView:back_button];
+            [self.navigationItem setLeftBarButtonItem:menu];
+        }
+        else
+        {
+            UIButton * Done = [UIButton buttonWithType:UIButtonTypeRoundedRect];
+            Done.frame = CGRectMake(307, 25, 16, 35);
+            [Done setStyleId:@"icon_RequestMultiple"];
+            [Done setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
+            [Done setTitle:@"Home" forState:UIControlStateNormal];
+            [Done setTitleShadowColor:Rgb2UIColor(19, 32, 38, 0.16) forState:UIControlStateNormal];
+            Done.titleLabel.shadowOffset = CGSizeMake(0.0, -1.0);
+            [Done addTarget:self action:@selector(backPressed_FrmBnkWbView) forControlEvents:UIControlEventTouchUpInside];
 
-        UIBarButtonItem * menu = [[UIBarButtonItem alloc] initWithCustomView:back_button];
+            UIBarButtonItem * backItem = [[UIBarButtonItem alloc] initWithCustomView:Done];
+            [self.navigationItem setLeftBarButtonItem:backItem];
+        }
 
-        [self.navigationItem setLeftBarButtonItem:menu];
         [self.navigationItem setRightBarButtonItem:Nil];
 
         [[assist shared]setRequestMultiple:NO];
-        [self.recent_location setSelectedSegmentIndex:0];
         self.location = NO;
 
         if (emailEntry || phoneNumEntry)
@@ -241,6 +250,8 @@
             [self searchBarTextDidBeginEditing:search];
         }
     }
+
+    [self.recent_location setSelectedSegmentIndex:0];
 
     if (!emailEntry && !phoneNumEntry)
     {
@@ -363,12 +374,22 @@
     [super viewDidDisappear:animated];
 }
 
--(void)backPressed_SelectRecip:(id)sender
+-(void)backPressed_SelectRecip
 {
     [[assist shared]setneedsReload:NO]; //Going right back to Home, so don't really need to reload
 
     [self.navigationItem setLeftBarButtonItem:nil];
     [self.navigationController popViewControllerAnimated:YES];
+}
+
+-(void)backPressed_FrmBnkWbView
+{
+    [[assist shared] setneedsReload:NO]; //Going right back to Home, so don't really need to reload
+
+    [self.navigationItem setLeftBarButtonItem:nil];
+
+    Home * goHome = [Home new];
+    [self.navigationController pushViewController:goHome animated:YES];
 }
 
 -(void)DoneEditing_RequestMultiple:(id)sender
@@ -401,6 +422,7 @@
 
 -(void)lowerNavBar
 {
+    NSLog(@"LOWER NAV BAR FIRED!");
     //[nav_ctrl setNavigationBarHidden:NO animated:YES];
     [self.navigationController setNavigationBarHidden:NO animated:YES];
     [UIView animateKeyframesWithDuration:0.3
@@ -601,13 +623,15 @@
     {
         self.location = NO;
 
-        RTSpinKitView * spinner1 = [[RTSpinKitView alloc] initWithStyle:RTSpinKitViewStyleArcAlt];
-        spinner1.color = [UIColor whiteColor];
-        self.hud.customView = spinner1;
-        self.hud.labelText = NSLocalizedString(@"SelectRecip_RecentLoading2", @"Select Recipient Recent List Loading Text 2");
-        self.hud.detailsLabelText = nil;
-        [self.hud show:YES];
-
+        if (![self.view.subviews containsObject:self.hud])
+        {
+            RTSpinKitView * spinner1 = [[RTSpinKitView alloc] initWithStyle:RTSpinKitViewStyleArcAlt];
+            spinner1.color = [UIColor whiteColor];
+            self.hud.customView = spinner1;
+            self.hud.labelText = NSLocalizedString(@"SelectRecip_RecentLoading2", @"Select Recipient Recent List Loading Text 2");
+            self.hud.detailsLabelText = nil;
+            [self.hud show:YES];
+        }
         [self.glyph_recent setTextColor: [UIColor whiteColor]];
         [self.glyph_location setTextColor: kNoochBlue];
 
@@ -615,7 +639,7 @@
         [recents setTagName:@"recents"];
         [recents setDelegate:self];
         [recents getRecents];
-    } 
+    }
     else
     {
         [self.glyph_recent setTextColor:kNoochBlue];
@@ -806,6 +830,7 @@
     
     NSLog(@"Select Recipient - Location Tab: Location Mgr Error : %@",error);
 
+    [self.hud hide:YES];
     if ([error code] == kCLErrorDenied)
     {
         UIAlertView * alert = [[UIAlertView alloc]initWithTitle:NSLocalizedString(@"SelectRecip_NeedLocAccessTitle", @"Select Recipient Need Location Alert Title")
@@ -815,6 +840,23 @@
                                               otherButtonTitles:Nil, nil];
         [alert show];
     }
+    else
+    {
+        [self performSelector:@selector(simulateSegControlChanged) withObject:Nil afterDelay:1.5];
+
+        UIAlertView * alert = [[UIAlertView alloc]initWithTitle:@"Location Error"
+                                                        message:@"Sorry to say, but we're having trouble getting your location to find nearby users. Please try again or contact Nooch support so we can exterminate any bugs!"
+                                                       delegate:Nil
+                                              cancelButtonTitle:@"OK"
+                                              otherButtonTitles:Nil, nil];
+        [alert show];
+    }
+}
+
+- (void)simulateSegControlChanged
+{
+    self.recent_location.selectedSegmentIndex = 0;
+    [self.recent_location sendActionsForControlEvents:UIControlEventValueChanged];
 }
 
 -(void)phonebook:(id)sender
@@ -915,7 +957,7 @@
         {
             [search resignFirstResponder];
 
-            RTSpinKitView * spinner2 = [[RTSpinKitView alloc] initWithStyle:RTSpinKitViewStyleWave];
+            RTSpinKitView * spinner2 = [[RTSpinKitView alloc] initWithStyle:RTSpinKitViewStyleCircleFlip];
             spinner2.color = [UIColor whiteColor];
             self.hud.customView = spinner2;
             self.hud.labelText = NSLocalizedString(@"SelectRecip_HUDchecking", @"Select Recipient HUD Checking Text");
@@ -1126,22 +1168,19 @@
 
             [self.glyphEmail setFont:[UIFont fontWithName:@"FontAwesome" size:22]];
             [self.glyphEmail setText:[NSString fontAwesomeIconStringForIconIdentifier:@"fa-envelope-o"]];
-            int leftValue = ([[UIScreen mainScreen] bounds].size.width / 2) - 49 - (4.5 * [searchString length]);
-            if (leftValue < 3)
+            int leftValue = ([[UIScreen mainScreen] bounds].size.width / 2) - 49 - (4.9 * [searchString length]);
+            [UIView beginAnimations:nil context:nil];
+            [UIView setAnimationDuration:.2];
+            if (leftValue < 2)
             {
-                [UIView beginAnimations:nil context:nil];
-                [UIView setAnimationDuration:.15];
                 [self.glyphEmail setAlpha:0];
-                [UIView commitAnimations];
             }
             else
             {
-                [UIView beginAnimations:nil context:nil];
-                [UIView setAnimationDuration:.18];
                 [self.glyphEmail setAlpha: 1];
                 [self.glyphEmail setFrame:CGRectMake(leftValue, 125, 30, 30)];
-                [UIView commitAnimations];
             }
+            [UIView commitAnimations];
 
             if (isRange.location < searchText.length - 1)
             {
@@ -1214,21 +1253,18 @@
                     [self.glyphEmail setFont:[UIFont fontWithName:@"FontAwesome" size:27]];
                     [self.glyphEmail setText:[NSString fontAwesomeIconStringForIconIdentifier:@"fa-mobile"]];
                     int leftValue = ([[UIScreen mainScreen] bounds].size.width / 2) - 38 - (4.5 * [searchString length]);
+                    [UIView beginAnimations:nil context:nil];
+                    [UIView setAnimationDuration:.2];
                     if (leftValue < 3)
                     {
-                        [UIView beginAnimations:nil context:nil];
-                        [UIView setAnimationDuration:.2];
                         [self.glyphEmail setAlpha:0];
-                        [UIView commitAnimations];
                     }
                     else
                     {
-                        [UIView beginAnimations:nil context:nil];
-                        [UIView setAnimationDuration:.2];
                         [self.glyphEmail setFrame:CGRectMake(leftValue, 125, 30, 30)];
                         [self.glyphEmail setAlpha: 1];
-                        [UIView commitAnimations];
                     }
+                    [UIView commitAnimations];
                 }
                 else
                 {
@@ -1259,7 +1295,7 @@
     }
 }
 
-- (void) searchTableView
+-(void)searchTableView
 {
     arrSearchedRecords = [[NSMutableArray alloc]init];
 
@@ -1719,6 +1755,7 @@
             [dict setObject:@"nonuser" forKey:@"nonuser"];
             isFromHome = NO;
             isFromMyApt = NO;
+            isFromArtisanDonationAlert = NO;
 
             HowMuch * how_much = [[HowMuch alloc] initWithReceiver:dict];
             [self.navigationController pushViewController:how_much animated:YES];
@@ -1795,6 +1832,7 @@
             [dict setObject:@"nonuser" forKey:@"nonuser"];
             isFromHome = NO;
             isFromMyApt = NO;
+            isFromArtisanDonationAlert = NO;
 
             HowMuch * how_much = [[HowMuch alloc] initWithReceiver:dict];
             [self.navigationController pushViewController:how_much animated:YES];
@@ -1865,6 +1903,7 @@
 
             isFromHome = NO;
             isFromMyApt = NO;
+            isFromArtisanDonationAlert = NO;
 
             HowMuch *how_much = [[HowMuch alloc] initWithReceiver:dict];
             [self.navigationController pushViewController:how_much animated:YES];
@@ -2414,7 +2453,7 @@
     {
         if ([search.text length] == 14)
         {
-            RTSpinKitView * spinner2 = [[RTSpinKitView alloc] initWithStyle:RTSpinKitViewStyleWave];
+            RTSpinKitView * spinner2 = [[RTSpinKitView alloc] initWithStyle:RTSpinKitViewStyleThreeBounce];
             spinner2.color = [UIColor whiteColor];
             self.hud.customView = spinner2;
             self.hud.labelText = NSLocalizedString(@"SelectRecip_HUD_CheckingPhoneNum", @"Select Recipient HUD Checking That Phone Text");
@@ -2426,34 +2465,13 @@
         else
         {
             [search becomeFirstResponder];
-            if ([UIAlertController class]) // for iOS 8
-            {
-                UIAlertController * alert = [UIAlertController
-                                             alertControllerWithTitle:NSLocalizedString(@"SelectRecip_PhoneNumTroubleAlertTitle", @"Select Recipient Phone Number Trouble Alert Title")
-                                             message:NSLocalizedString(@"SelectRecip_PhoneNumTroubleAlertBody", @"Select Recipient Phone Number Trouble Body Text")
-                                             preferredStyle:UIAlertControllerStyleAlert];
-                
-                UIAlertAction * ok = [UIAlertAction
-                                      actionWithTitle:@"OK"
-                                      style:UIAlertActionStyleDefault
-                                      handler:^(UIAlertAction * action)
-                                      {
-                                          [alert dismissViewControllerAnimated:YES completion:nil];
-                                      }];
-                [alert addAction:ok];
-                
-                [self presentViewController:alert animated:YES completion:nil];
-            }
-            else  // for iOS 7 and prior
-            {
-                UIAlertView * alert = [[UIAlertView alloc]initWithTitle:NSLocalizedString(@"SelectRecip_PhoneNumTroubleAlertTitle2", @"Select Recipient Phone Number Trouble Alert Title")
-                                                                message:NSLocalizedString(@"SelectRecip_PhoneNumTroubleAlertBody", @"Select Recipient Phone Number Trouble Body Text")//@"Please double check that you entered a valid 10-digit phone number."
-                                                               delegate:nil
-                                                      cancelButtonTitle:@"OK"
-                                                      otherButtonTitles:nil, nil];
-                [alert show];
-                return;
-            }
+
+            UIAlertView * alert = [[UIAlertView alloc]initWithTitle:NSLocalizedString(@"SelectRecip_PhoneNumTroubleAlertTitle2", @"Select Recipient Phone Number Trouble Alert Title")
+                                                            message:NSLocalizedString(@"SelectRecip_PhoneNumTroubleAlertBody", @"Select Recipient Phone Number Trouble Body Text")
+                                                           delegate:nil
+                                                  cancelButtonTitle:@"OK"
+                                                  otherButtonTitles:nil, nil];
+            [alert show];
         }
         return;
     }
@@ -2468,7 +2486,7 @@
         {
             if ([self checkEmailForShadyDomainSelectRecip] == true)
             {
-                RTSpinKitView * spinner2 = [[RTSpinKitView alloc] initWithStyle:RTSpinKitViewStyleWave];
+                RTSpinKitView * spinner2 = [[RTSpinKitView alloc] initWithStyle:RTSpinKitViewStyleThreeBounce];
                 spinner2.color = [UIColor whiteColor];
                 self.hud.customView = spinner2;
                 self.hud.labelText = @"Checking that email address...";
@@ -2480,7 +2498,7 @@
         }
         else
         {
-            if ([UIAlertController class]) // for iOS 8
+            /*if ([UIAlertController class]) // for iOS 8
             {
                 UIAlertController * alert = [UIAlertController
                                              alertControllerWithTitle:NSLocalizedString(@"SelectRecip_PlsCheckEmailAlertTitle", @"Select Recipient Please Check That Email Alert Title")
@@ -2496,17 +2514,17 @@
                                       }];
                 [alert addAction:ok];
                 
-                [self presentViewController:alert animated:YES completion:nil];
+                [self presentViewController:alert animated:NO completion:nil];
             }
             else  // for iOS 7 and prior
             {
-                UIAlertView * av = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"SelectRecip_PlsCheckEmailAlertTitle2", @"Select Recipient Please Check That Email Alert Title")
+              */UIAlertView * av = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"SelectRecip_PlsCheckEmailAlertTitle2", @"Select Recipient Please Check That Email Alert Title")
                                                               message:[NSString stringWithFormat:@"\xF0\x9F\x93\xA7\n%@", NSLocalizedString(@"SelectRecip_PlsCheckEmailAlertBody2", @"Select Recipient Please Check That Email Alert Body Text")]
                                                              delegate:nil
                                                     cancelButtonTitle:@"OK"
                                                     otherButtonTitles: nil];
                 [av show];
-            }
+            //}
         }
         return;
     }
@@ -2571,7 +2589,7 @@
                 }
                 else
                 {
-                    RTSpinKitView * spinner2 = [[RTSpinKitView alloc] initWithStyle:RTSpinKitViewStylePulse];
+                    RTSpinKitView * spinner2 = [[RTSpinKitView alloc] initWithStyle:RTSpinKitViewStyleArcAlt];
                     spinner2.color = [UIColor whiteColor];
                     self.hud.customView = spinner2;
                     self.hud.labelText = NSLocalizedString(@"SelectRecip_HUD_GeneratingTrnsfr", @"Select Recipient HUD Generating Transfer Text");
@@ -2612,7 +2630,7 @@
                 }
                 else // only 1 Phone Number
                 {
-                    RTSpinKitView * spinner2 = [[RTSpinKitView alloc] initWithStyle:RTSpinKitViewStyleWave];
+                    RTSpinKitView * spinner2 = [[RTSpinKitView alloc] initWithStyle:RTSpinKitViewStyleFadingCircleAlt];
                     spinner2.color = [UIColor whiteColor];
                     self.hud.customView = spinner2;
                     self.hud.labelText = NSLocalizedString(@"SelectRecip_HUD_GeneratingTrnsfr2", @"Select Recipient HUD Generating Transfer Text");
@@ -2649,6 +2667,7 @@
 
         isFromHome = NO;
         isFromMyApt = NO;
+        isFromArtisanDonationAlert = NO;
 
         HowMuch * how_much = [[HowMuch alloc] initWithReceiver:receiver];
         [self.navigationController pushViewController:how_much animated:YES];
@@ -2665,6 +2684,7 @@
         [self.navigationItem setLeftBarButtonItem:nil];
         isFromHome = NO;
         isFromMyApt = NO;
+        isFromArtisanDonationAlert = NO;
 
         NSDictionary * receiver = [self.recents objectAtIndex:indexPath.row];
 
@@ -2694,7 +2714,7 @@
     {
         [search becomeFirstResponder];
         
-        if ([UIAlertController class]) // for iOS 8
+        /*if ([UIAlertController class]) // for iOS 8
         {
             UIAlertController * alert = [UIAlertController
                                          alertControllerWithTitle:@"Try A Different Email"
@@ -2714,13 +2734,13 @@
         }
         else  // for iOS 7 and prior
         {
-            UIAlertView *av = [[UIAlertView alloc] initWithTitle:@"Try A Different Email"
+          */UIAlertView *av = [[UIAlertView alloc] initWithTitle:@"Try A Different Email"
                                                          message:@"\xF0\x9F\x93\xA7\nTo protect all Nooch accounts, we ask that you please only make payments to a regular (not anonymous) email address."
                                                         delegate:self
                                                cancelButtonTitle:@"OK"
                                                otherButtonTitles:nil];
             [av show];
-        }
+        //}
         return false;
     }
     else

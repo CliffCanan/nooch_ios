@@ -7,10 +7,10 @@
 //
 
 #import "knoxWeb.h"
-#import "ProfileInfo.h"
 #import "Home.h"
 #import "Welcome.h"
 #import "webView.h"
+#import "SelectRecipient.h"
 
 @interface knoxWeb ()<serveD,UIWebViewDelegate>
 {
@@ -24,7 +24,7 @@
 
 @implementation knoxWeb
 
-- (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
+-(id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
 {
     self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil];
     if (self) {
@@ -46,7 +46,7 @@
     [super viewDidDisappear:animated];
 }
 
-- (void)viewDidLoad
+-(void)viewDidLoad
 {
     [super viewDidLoad];
     // Do any additional setup after loading the view.
@@ -62,7 +62,7 @@
     shadowNavText.shadowOffset = CGSizeMake(0, -1.0);
     NSDictionary * titleAttributes = @{NSShadowAttributeName: shadowNavText};
 
-    UITapGestureRecognizer * backTap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(backToHome)];
+    UITapGestureRecognizer * backTap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(backToSettings)];
 
     UILabel * back_button = [UILabel new];
     [back_button setStyleId:@"navbar_back"];
@@ -86,9 +86,9 @@
 
     self.web = [UIWebView new];
     [self.web setDelegate:self];
-    [self.web setFrame:CGRectMake(0, -2, 320, [[UIScreen mainScreen] bounds].size.height - 61)];
+    [self.web setFrame:CGRectMake(0, -1, 320, [[UIScreen mainScreen] bounds].size.height - 63)];
     [self.view addSubview:self.web];
-    [self.web.scrollView setScrollEnabled:NO];
+    [self.web.scrollView setScrollEnabled:YES];
 
     RTSpinKitView * spinner1 = [[RTSpinKitView alloc] initWithStyle:RTSpinKitViewStyleWanderingCubes];
     spinner1.color = [UIColor whiteColor];
@@ -101,13 +101,11 @@
     self.hud.labelText = @"Preparing Secure Connection";
     [self.hud show:YES];
 
-    NSString * knoxOnOff = [ARPowerHookManager getValueForHookById:@"knox_OnOff"];
-    NSString * SynapseOnOff = [ARPowerHookManager getValueForHookById:@"synps_OnOff"];
-
     NSString * baseUrl = @"";
 
-    if (![knoxOnOff isEqualToString:@"on"])
-    {
+    //NSLog(@"isKnoxOn is: %d",isKnoxOn);
+    NSLog(@"isSynapseOn is: %d",isSynapseOn);
+  /*if (isKnoxOn) {
         baseUrl = [ARPowerHookManager getValueForHookById:@"knox_baseUrl"];
         NSString * k_Key = [ARPowerHookManager getValueForHookById:@"knox_Key"];
         NSString * k_pw = [ARPowerHookManager getValueForHookById:@"knox_Pw"];
@@ -123,30 +121,31 @@
         [self.web loadRequest: self.request];
 
         [[NSNotificationCenter defaultCenter] addObserver:self
-                                                 selector:@selector(resignView)
+                                                 selector:@selector(resignAddBankWebview)
                                                      name:@"KnoxResponse"
                                                    object:nil];
-    }
+    }*/
 
-    else if ([SynapseOnOff isEqualToString:@"on"])
+    if (isSynapseOn)
     {
         baseUrl = [ARPowerHookManager getValueForHookById:@"synps_baseUrl"];
         NSString * memberId = [user objectForKey:@"MemberId"];
-        
-        NSString *body = [NSString stringWithFormat: @"MemberId=%@",memberId];
-    
+
+        NSString *body = [NSString stringWithFormat: @"MemberId=%@&redUrl=nooch://banksuccess",memberId];
+
         NSURL *url = [NSURL URLWithString: [NSString stringWithFormat:@"%@?%@",baseUrl,body]];
 
+        NSLog(@"SYNPASE URL IS: %@",url);
         self.request = [[NSMutableURLRequest alloc]initWithURL: url];
         [self.request setHTTPMethod: @"GET"];
         [self.request setValue:@"application/json" forHTTPHeaderField:@"Content-Type"];
         [self.request setValue:@"charset" forHTTPHeaderField:@"UTF-8"];
         [self.request setHTTPBody: [jsonString dataUsingEncoding: NSUTF8StringEncoding]];
         [self.web loadRequest: self.request];
-        
+
         [[NSNotificationCenter defaultCenter] addObserver:self
-                                                 selector:@selector(resignView)
-                                                     name:@"KnoxResponse"
+                                                 selector:@selector(resignAddBankWebview)
+                                                     name:@"SynapseResponse"
                                                    object:nil];
     }
 }
@@ -204,10 +203,10 @@
     [btnHelp addTarget:self action:@selector(getHelpPressed) forControlEvents:UIControlEventTouchUpInside];
 
     UIButton * btnLink = [UIButton buttonWithType:UIButtonTypeCustom];
+    btnLink.frame = CGRectMake(10, mainView.frame.size.height - 56, 280, 50);
     [btnLink setStyleClass:@"button_LtBoxSm_right"];
     [btnLink setTitleShadowColor:Rgb2UIColor(26, 38, 19, 0.2) forState:UIControlStateNormal];
     btnLink.titleLabel.shadowOffset = CGSizeMake(0.0, -1.0);
-    btnLink.frame = CGRectMake(10, mainView.frame.size.height - 56, 280, 50);
     [btnLink setTitle:@"Got It" forState:UIControlStateNormal];
     [btnLink addTarget:self action:@selector(close_lightKnoxLtBox) forControlEvents:UIControlEventTouchUpInside];
 
@@ -308,7 +307,7 @@
     [actionSheetObject setTag:1];
     [actionSheetObject showInView:self.view];
 
-    [ARTrackingManager trackEvent:@"Knox_GetHelpTapped"];
+    [ARTrackingManager trackEvent:@"AddBank_GetHelpTapped"];
 }
 
 -(void)actionSheet:(UIActionSheet *)actionSheet clickedButtonAtIndex:(NSInteger)buttonIndex
@@ -363,11 +362,20 @@
                 [self cantSendMail];
                 return;
             }
+
+            NSString * memberId = [user valueForKey:@"MemberId"];
+            NSString * fullName = [NSString stringWithFormat:@"%@ %@",[user valueForKey:@"firstName"],[user valueForKey:@"lastName"]];
+            NSString * userStatus = [user objectForKey:@"Status"];
+            NSString * userEmail = [user objectForKey:@"UserName"];
+            NSString * IsVerifiedPhone = [[user objectForKey:@"IsVerifiedPhone"] lowercaseString];
+            NSString * iOSversion = [[UIDevice currentDevice] systemVersion];
+            NSString * msgBody = [NSString stringWithFormat:@"<!doctype html> <html><body><br><br><br><br><br><br><small>• MemberID: %@<br>• Name: %@<br>• Status: %@<br>• Email: %@<br>• Is Phone Verified: %@<br>• iOS Version: %@<br></small></body></html>",memberId, fullName, userStatus, userEmail, IsVerifiedPhone, iOSversion];
+
             MFMailComposeViewController *mailComposer = [[MFMailComposeViewController alloc] init];
             mailComposer.mailComposeDelegate = self;
             mailComposer.navigationBar.tintColor=[UIColor whiteColor];
             [mailComposer setSubject:[NSString stringWithFormat:@"Support Request: Version %@",[[[NSBundle mainBundle] infoDictionary] objectForKey:@"CFBundleVersion"]]];
-            [mailComposer setMessageBody:@"" isHTML:NO];
+            [mailComposer setMessageBody:msgBody isHTML:YES];
             [mailComposer setToRecipients:[NSArray arrayWithObjects:@"Support@nooch.com", nil]];
             [mailComposer setCcRecipients:[NSArray arrayWithObject:@""]];
             [mailComposer setBccRecipients:[NSArray arrayWithObject:@""]];
@@ -379,48 +387,49 @@
 
 -(void)cantSendMail
 {
-    if ([UIAlertController class]) // for iOS 8
+    if (![MFMailComposeViewController canSendMail])
     {
-        UIAlertController * alert = [UIAlertController
-                                     alertControllerWithTitle:@"No Email Detected"
-                                     message:@"You don't have an email account configured for this device."
-                                     preferredStyle:UIAlertControllerStyleAlert];
-        
-        UIAlertAction * ok = [UIAlertAction
-                              actionWithTitle:@"OK"
-                              style:UIAlertActionStyleDefault
-                              handler:^(UIAlertAction * action)
-                              {
-                                  [alert dismissViewControllerAnimated:YES completion:nil];
-                              }];
-        [alert addAction:ok];
-        
-        [self presentViewController:alert animated:YES completion:nil];
+        UIAlertView * av = [[UIAlertView alloc] initWithTitle:@"No Email Detected"
+                                                      message:@"You don't have an email account configured for this device."
+                                                     delegate:nil
+                                            cancelButtonTitle:@"OK"
+                                            otherButtonTitles: nil];
+        [av show];
         return;
-    }
-    else
-    {
-        if (![MFMailComposeViewController canSendMail])
-        {
-            UIAlertView * av = [[UIAlertView alloc] initWithTitle:@"No Email Detected"
-                                                          message:@"You don't have an email account configured for this device."
-                                                         delegate:nil
-                                                cancelButtonTitle:@"OK"
-                                                otherButtonTitles: nil];
-            [av show];
-            return;
-        }
     }
 }
 
--(void)backToHome
+-(void)backToSettings
 {
     [self.navigationItem setLeftBarButtonItem:nil];
     [self.navigationController popViewControllerAnimated:YES];
 }
 
-- (void)resignView
+-(void)resignAddBankWebview
 {
+    NSLog(@"KnoxWeb.m -> resignAddBankWebview fired");
+    
+    [user setBool:YES forKey:@"IsSynapseBankAvailable"];
+    
+    UIAlertView * alert = [[UIAlertView alloc]initWithTitle:@"Great Success"
+                                                    message:@"\xF0\x9F\x98\x80\nYour bank was linked successfully."
+                                                   delegate:Nil
+                                          cancelButtonTitle:@"OK"
+                                          otherButtonTitles:Nil, nil];
+    [alert show];
+
+    if ([user boolForKey:@"IsSynapseBankVerified"])
+    {
+        isFromBankWebView = YES;
+        SelectRecipient * selectRecipScrn = [SelectRecipient new];
+        [nav_ctrl pushViewController:selectRecipScrn animated:YES];
+    }
+    else
+    {
+        [nav_ctrl popToRootViewControllerAnimated:YES];
+    }
+
+    /* OLD KNOX CODE ...
     self.hud.labelText = @"Finishing Up...";
     [self.hud show:YES];
 
@@ -428,10 +437,11 @@
     obj.tagName = @"saveMemberTransId";
     [obj setDelegate:self];
 
+    NSLog(@"KnoxWeb.m -> resignAddBankWebview fired. TransId is: %@     MemberId is: %@",[user objectForKey:@"paymentID"],[user objectForKey:@"MemberId"]);
     NSDictionary * dict = @{@"TransId":[user objectForKey:@"paymentID"],
                             @"MemberId":[user objectForKey:@"MemberId"]};
 
-    [obj saveMemberTransId:[dict mutableCopy]];
+    [obj saveMemberTransId:[dict mutableCopy]]; */
 }
 
 -(void)Error:(NSError *)Error
@@ -458,12 +468,12 @@
         
         NSDictionary * dictResponse = [NSJSONSerialization JSONObjectWithData:[result dataUsingEncoding:NSUTF8StringEncoding] options:0 error:&error];
 
+        NSLog(@"Knox dictResponse is: %@",[dictResponse valueForKey:@"SaveMemberTransIdResult"]);
+        //NSLog(@"Knox dictResponse -> valueForKey@'Result' is: %@",[[dictResponse valueForKey:@"SaveMemberTransIdResult"]valueForKey:@"Result"]);
+
         if ([[[dictResponse valueForKey:@"SaveMemberTransIdResult"]valueForKey:@"Result"]isEqualToString:@"Success"])
         {
-            [user setObject:@"1" forKey:@"IsBankAvailable"];
-
-            isProfileOpenFromSideBar = NO;
-            sentFromHomeScrn = NO;
+            [user setBool:YES forKey:@"IsKnoxBankAvailable"];
 
             UIAlertView * alert = [[UIAlertView alloc]initWithTitle:@"Great Success"
                                                             message:@"\xF0\x9F\x98\x80\nYour bank was linked successfully."
@@ -477,7 +487,7 @@
         }
         else
         {
-            [user setObject:@"0" forKey:@"IsBankAvailable"];
+            [user setBool:NO forKey:@"IsKnoxBankAvailable"];
 
             UIAlertView * alert = [[UIAlertView alloc]initWithTitle:@"Please Try Again"
                                                             message:@"\xF0\x9F\x98\xAE\nBank linking failed, unfortunately your info was not saved. We hate it when this happens too."

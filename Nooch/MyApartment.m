@@ -60,7 +60,8 @@
     [super viewDidLoad];
     isBankAttached = NO;
     
-    if ([[user objectForKey:@"IsBankAvailable"]isEqualToString:@"1"])
+    if ((isKnoxOn && [user boolForKey:@"IsKnoxBankAvailable"]) ||
+        (isSynapseOn && [user boolForKey:@"IsSynapseBankAvailable"]))
     {
         isBankAttached = YES;
     }
@@ -70,7 +71,7 @@
     }
     
     [self.navigationItem setHidesBackButton:YES];
-    
+
     UIButton * hamburger = [UIButton buttonWithType:UIButtonTypeRoundedRect];
     [hamburger setStyleId:@"navbar_hamburger"];
     [hamburger addTarget:self action:@selector(showMenu) forControlEvents:UIControlEventTouchUpInside];
@@ -81,14 +82,14 @@
     [self.navigationItem setLeftBarButtonItem:menu1];
 
     [self.navigationItem setRightBarButtonItem:Nil];
-    
+
     UIButton * glyph_add = [UIButton buttonWithType:UIButtonTypeRoundedRect];
     [glyph_add setStyleClass:@"navbar_rightside_icon"];
     [glyph_add addTarget:self action:@selector(goToSelectAptScrn) forControlEvents:UIControlEventTouchUpInside];
     [glyph_add setTitle:[NSString fontAwesomeIconStringForIconIdentifier:@"fa-plus-circle"] forState:UIControlStateNormal];
     [glyph_add setTitleShadowColor:Rgb2UIColor(19, 32, 38, 0.24) forState:UIControlStateNormal];
     glyph_add.titleLabel.shadowOffset = CGSizeMake(0.0, -1.0);
-    
+
     UIBarButtonItem * addProperty = [[UIBarButtonItem alloc] initWithCustomView:glyph_add];
     [self.navigationItem setRightBarButtonItem: addProperty];
 
@@ -193,7 +194,7 @@
     else
     {
         [payRentBtn setTitle:@"Link a Bank Now" forState:UIControlStateNormal];
-        [payRentBtn addTarget:self action:@selector(attach_bank) forControlEvents:UIControlEventTouchUpInside];
+        [payRentBtn addTarget:self action:@selector(attach_bankApt) forControlEvents:UIControlEventTouchUpInside];
         [payRentBtn setStyleClass:@"button_blue_shorter"];
     }
     [payRentBtn setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
@@ -277,7 +278,7 @@
     [super viewDidDisappear:animated];
 }
 
--(void)attach_bank
+-(void)attach_bankApt
 {
     NSLog(@"My APARTMENT.M --> ATTACH BANK");
     if (isBankAttached)
@@ -434,8 +435,8 @@
 -(void)openAptWebsite
 {
     UIApplication * mySafari = [UIApplication sharedApplication];
-    NSURL * myURL = [[NSURL alloc]initWithString: aptWebsiteUrl];
-    [mySafari openURL:myURL];
+    NSURL * aptURL = [[NSURL alloc]initWithString: aptWebsiteUrl];
+    [mySafari openURL:aptURL];
 }
 
 -(void)stayPressed:(UIButton *) sender

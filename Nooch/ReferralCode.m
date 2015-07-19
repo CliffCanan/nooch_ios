@@ -123,7 +123,7 @@
     if ([self.code_field.text length] == 0)
     {
         UIAlertView * alert = [[UIAlertView alloc]initWithTitle:NSLocalizedString(@"ReferCode_EntrCodeAlrtTtl", @"'Please Enter An Invite Code' Alert Title")
-                                                        message:nil
+                                                        message:@"If you do not have a referral code to enter, just tap 'I Don't Have a Code' at the bottom of the screen."
                                                        delegate:nil
                                               cancelButtonTitle:@"OK"
                                               otherButtonTitles:nil, nil];

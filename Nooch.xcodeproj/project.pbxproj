@@ -79,6 +79,7 @@
 		5C10EB7D19F6D4DC0025EB7F /* PixateFreestyle.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5C10EB7C19F6D4DC0025EB7F /* PixateFreestyle.framework */; };
 		5C11BE6B19F4A8D200A83B87 /* search_blue.png in Resources */ = {isa = PBXBuildFile; fileRef = 5C11BE6819F4A8D200A83B87 /* search_blue.png */; };
 		5C11BE6D19F4A8D200A83B87 /* search_white.png in Resources */ = {isa = PBXBuildFile; fileRef = 5C11BE6A19F4A8D200A83B87 /* search_white.png */; };
+		5C17925C1B581F9900BB774F /* IdVerifyImageUpload.m in Sources */ = {isa = PBXBuildFile; fileRef = 5C17925B1B581F9900BB774F /* IdVerifyImageUpload.m */; };
 		5C1F9DA01A6DEA90004081F6 /* selectRecipIntro_4.png in Resources */ = {isa = PBXBuildFile; fileRef = 5C1F9D9E1A6DEA90004081F6 /* selectRecipIntro_4.png */; };
 		5C38468D19C56694002AEB15 /* check@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 5C38468C19C56694002AEB15 /* check@2x.png */; };
 		5C38468F19C566DE002AEB15 /* cross@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 5C38468E19C566DE002AEB15 /* cross@2x.png */; };
@@ -439,6 +440,8 @@
 		5C10EB7C19F6D4DC0025EB7F /* PixateFreestyle.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = PixateFreestyle.framework; sourceTree = "<group>"; };
 		5C11BE6819F4A8D200A83B87 /* search_blue.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = search_blue.png; sourceTree = "<group>"; };
 		5C11BE6A19F4A8D200A83B87 /* search_white.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = search_white.png; sourceTree = "<group>"; };
+		5C17925B1B581F9900BB774F /* IdVerifyImageUpload.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = IdVerifyImageUpload.m; sourceTree = "<group>"; };
+		5C17925D1B581FBE00BB774F /* IdVerifyImageUpload.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = IdVerifyImageUpload.h; sourceTree = "<group>"; };
 		5C1F9D9E1A6DEA90004081F6 /* selectRecipIntro_4.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = selectRecipIntro_4.png; sourceTree = "<group>"; };
 		5C38468C19C56694002AEB15 /* check@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "check@2x.png"; sourceTree = "<group>"; };
 		5C38468E19C566DE002AEB15 /* cross@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "cross@2x.png"; sourceTree = "<group>"; };
@@ -855,6 +858,8 @@
 				01085FD118030E5900A31F63 /* SettingsOptions.m */,
 				848C983F1A1473A200C1BAE4 /* fbConnect.h */,
 				848C98401A1473A200C1BAE4 /* fbConnect.m */,
+				5C17925D1B581FBE00BB774F /* IdVerifyImageUpload.h */,
+				5C17925B1B581F9900BB774F /* IdVerifyImageUpload.m */,
 			);
 			name = "Settings Controllers";
 			sourceTree = "<group>";
@@ -2002,6 +2007,7 @@
 				846A5E3519DAB0FC0093FF9C /* SDWebImageDecoder.m in Sources */,
 				6B89276216DEA49C00F9100F /* FPTouchView.m in Sources */,
 				5C69D06019C941DB00EB406F /* RTSpinKitCircleFlipAnimation.m in Sources */,
+				5C17925C1B581F9900BB774F /* IdVerifyImageUpload.m in Sources */,
 				5C69CFE219C92F6000EB406F /* TSBlurView.m in Sources */,
 				5C69D05B19C941DB00EB406F /* RTSpinKitArcAltAnimation.m in Sources */,
 				6B89276516DEB10200F9100F /* popSelect.m in Sources */,
