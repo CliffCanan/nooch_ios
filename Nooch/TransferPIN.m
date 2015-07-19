@@ -727,25 +727,24 @@
             [alert show];
         }
 
-        else if ((isKnoxOn && ![user boolForKey:@"IsKnoxBankAvailable"]) ||
-                 (isSynapseOn && ![user boolForKey:@"IsSynapseBankAvailable"]))
+        else if (![user boolForKey:@"IsSynapseBankAvailable"])
         {
             UIAlertView *av = [[UIAlertView alloc] initWithTitle:@"Connect A Funding Source \xF0\x9F\x92\xB0"
                                                          message:@"To make a payment, you must attach a bank account first - it's lightning quick!\n\n• No routing or account number needed\n• Bank-grade encryption keeps your info safe\n\nWould you like to take care of this now?"
                                                         delegate:self
                                                cancelButtonTitle:@"Later"
-                                               otherButtonTitles:@"Attach Now", nil];
+                                               otherButtonTitles:@"Go Now", nil];
             [av setTag:11];
             [av show];
         }
 
-        else if (!isKnoxOn && isSynapseOn && [user boolForKey:@"IsSynapseBankAvailable"] && ![user boolForKey:@"IsSynapseBankVerified"])
+        else if (![user boolForKey:@"IsSynapseBankVerified"])
         {
             UIAlertView *av = [[UIAlertView alloc] initWithTitle:@"Bank Account Un-Verified"
                                                          message:@"Looks like your bank account remains un-verified.  This usually happens when the contact info listed on the bank account does not match your Nooch profile information. Please contact Nooch support for more information."
                                                         delegate:self
                                                cancelButtonTitle:@"OK"
-                                               otherButtonTitles:@"Contact Support", nil];
+                                               otherButtonTitles:@"Learn More", nil];
             [av setTag:54];
             [av show];
         }
@@ -1299,6 +1298,7 @@
             NSLog(@"buttonIndex was 0");
             [nav_ctrl popToRootViewControllerAnimated:YES];
         }
+
         else if (buttonIndex == 1)
         {
             NSMutableDictionary *input = [self.trans mutableCopy];
@@ -1370,8 +1370,10 @@
             [nav_ctrl pushViewController:td animated:YES];
         }
     }
+
+    // Contact Support alerts
     else if ((alertView.tag == 50 || alertView.tag == 51 ||
-              alertView.tag == 52 || alertView.tag == 53 || alertView.tag == 54) &&
+              alertView.tag == 52 || alertView.tag == 53) &&
              buttonIndex == 1)
     {
         if (buttonIndex == 1)
@@ -1411,22 +1413,18 @@
             [self.navigationController popToRootViewControllerAnimated:YES];
         }
     }
-    
-    else if (alertView.tag == 11 && buttonIndex == 1) // Bank Not Verified - Go To Bank Webview
+
+    else if (alertView.tag == 54 && buttonIndex == 1) // No Bank attached, go to Settings
     {
-        NSMutableArray * arrNav = [nav_ctrl.viewControllers mutableCopy];
+        shouldDisplayBankNotVerifiedLtBox = YES;
+        SettingsOptions * mainSettingsScrn = [SettingsOptions new];
+        [nav_ctrl pushViewController:mainSettingsScrn animated:YES];
+    }
 
-        for (short i = [arrNav count]; i > 1; i--)
-        {
-            [arrNav removeLastObject];
-        }
-
-        SettingsOptions * mainSettingsScreen = [SettingsOptions new];
-        [arrNav addObject: mainSettingsScreen];
-        [nav_ctrl setViewControllers:arrNav animated:NO];
-
-        knoxWeb * addBankWebView = [knoxWeb new];
-        [nav_ctrl pushViewController:addBankWebView animated:YES];
+    else if (alertView.tag == 11 && buttonIndex == 1) // Bank Not Verified - go to Settings
+    {
+        SettingsOptions * mainSettingsScrn = [SettingsOptions new];
+        [nav_ctrl pushViewController:mainSettingsScrn animated:YES];
     }
 
     else if (alertView.tag == 31) // Attempt to send more than transaction limit (on server), go back to How Much screen
@@ -1820,7 +1818,7 @@
                                                      message:@"Looks like your bank account remains un-verified.  This usually happens when the contact info listed on the bank account does not match your Nooch profile information. Please contact Nooch support for more information."
                                                     delegate:self
                                            cancelButtonTitle:@"OK"
-                                           otherButtonTitles:@"Contact Support", nil];
+                                           otherButtonTitles:@"Learn More", nil];
         [av setTag:54];
         [av show];
         return;
