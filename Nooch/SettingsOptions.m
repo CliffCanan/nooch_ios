@@ -11,7 +11,7 @@
 #import "PINSettings.h"
 #import "NotificationSettings.h"
 #import "ECSlidingViewController.h"
-#import "knoxWeb.h"
+#import "addBank.h"
 #import "UIImageView+WebCache.h"
 #import "fbConnect.h"
 #import "IdVerifyImageUpload.h"
@@ -51,8 +51,6 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-
-    NSLog(@"boolForKey @'IsSynapseBankAvailable' is: %d",[user boolForKey:@"IsSynapseBankAvailable"]);
 
     if ([user boolForKey:@"IsSynapseBankAvailable"])
     {
@@ -377,7 +375,7 @@
     else
     {
         [ARTrackingManager trackEvent:@"Settings_TappedAddBankGoToKnoxWbvw"];
-        knoxWeb * addBankWebview = [knoxWeb new];
+        addBank * addBankWebview = [addBank new];
         [self.navigationController pushViewController:addBankWebview animated:YES];
     }
 }
@@ -802,7 +800,7 @@
     if (alertView.tag == 11 && buttonIndex == 0)
     {
         [ARTrackingManager trackEvent:@"Settings_TappedAddBankGoToKnoxWbvw_ReplaceBnk"];
-        knoxWeb * addBankWebView = [knoxWeb new];
+        addBank * addBankWebView = [addBank new];
         [self.navigationController pushViewController:addBankWebView animated:YES];
         return;
     }

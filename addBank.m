@@ -1,18 +1,18 @@
 //
-//  knoxWeb.m
+//  addBank.m
 //  Nooch
 //
 //  Created by crks on 3/13/14.
 //  Copyright (c) 2015 Nooch. All rights reserved.
 //
 
-#import "knoxWeb.h"
+#import "addBank.h"
 #import "Home.h"
 #import "Welcome.h"
 #import "webView.h"
 #import "SelectRecipient.h"
 
-@interface knoxWeb ()<serveD,UIWebViewDelegate>
+@interface addBank ()<serveD,UIWebViewDelegate>
 {
     NSString *jsonString;
 }
@@ -22,7 +22,7 @@
 @property (nonatomic,strong) UIButton *helpGlyph;
 @end
 
-@implementation knoxWeb
+@implementation addBank
 
 -(id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
 {
@@ -36,8 +36,8 @@
 -(void)viewWillAppear:(BOOL)animated
 {
     [super viewWillAppear:animated];
-    self.screenName = @"KnoxWeb Screen";
-    self.artisanNameTag = @"Knox Webview Screen";
+    self.screenName = @"AddBank Screen";
+    self.artisanNameTag = @"AddBank Webview Screen";
 }
 
 -(void)viewDidDisappear:(BOOL)animated
@@ -101,53 +101,25 @@
     self.hud.labelText = @"Preparing Secure Connection";
     [self.hud show:YES];
 
-    NSString * baseUrl = @"";
+    NSString * baseUrl = [ARPowerHookManager getValueForHookById:@"synps_baseUrl"];
+    NSString * memberId = [user objectForKey:@"MemberId"];
 
-    //NSLog(@"isKnoxOn is: %d",isKnoxOn);
-    NSLog(@"isSynapseOn is: %d",isSynapseOn);
-  /*if (isKnoxOn) {
-        baseUrl = [ARPowerHookManager getValueForHookById:@"knox_baseUrl"];
-        NSString * k_Key = [ARPowerHookManager getValueForHookById:@"knox_Key"];
-        NSString * k_pw = [ARPowerHookManager getValueForHookById:@"knox_Pw"];
+    NSString *body = [NSString stringWithFormat: @"MemberId=%@&redUrl=nooch://banksuccess",memberId];
 
-        NSString *body = [NSString stringWithFormat: @"amount=%@&api_key=%@&api_password=%@&invoice_detail=%@&recurring=%@&information_request=%@&redirect_url=%@&partner=%@&label=%@", @"0.00",k_Key,k_pw,@"Onboard",@"ot",@"show_all",@"nooch://",@"nooch",@"wl"];
-        NSURL *url = [NSURL URLWithString: [NSString stringWithFormat:@"%@?%@",baseUrl,body]];
+    NSURL *url = [NSURL URLWithString: [NSString stringWithFormat:@"%@?%@",baseUrl,body]];
 
-        self.request = [[NSMutableURLRequest alloc]initWithURL: url];
-        [self.request setHTTPMethod: @"GET"];
-        [self.request setValue:@"application/json" forHTTPHeaderField:@"Content-Type"];
-        [self.request setValue:@"charset" forHTTPHeaderField:@"UTF-8"];
-        [self.request setHTTPBody: [jsonString dataUsingEncoding: NSUTF8StringEncoding]];
-        [self.web loadRequest: self.request];
+    //NSLog(@"SYNPASE URL IS: %@",url);
+    self.request = [[NSMutableURLRequest alloc]initWithURL: url];
+    [self.request setHTTPMethod: @"GET"];
+    [self.request setValue:@"application/json" forHTTPHeaderField:@"Content-Type"];
+    [self.request setValue:@"charset" forHTTPHeaderField:@"UTF-8"];
+    [self.request setHTTPBody: [jsonString dataUsingEncoding: NSUTF8StringEncoding]];
+    [self.web loadRequest: self.request];
 
-        [[NSNotificationCenter defaultCenter] addObserver:self
-                                                 selector:@selector(resignAddBankWebview)
-                                                     name:@"KnoxResponse"
-                                                   object:nil];
-    }*/
-
-    if (isSynapseOn)
-    {
-        baseUrl = [ARPowerHookManager getValueForHookById:@"synps_baseUrl"];
-        NSString * memberId = [user objectForKey:@"MemberId"];
-
-        NSString *body = [NSString stringWithFormat: @"MemberId=%@&redUrl=nooch://banksuccess",memberId];
-
-        NSURL *url = [NSURL URLWithString: [NSString stringWithFormat:@"%@?%@",baseUrl,body]];
-
-        NSLog(@"SYNPASE URL IS: %@",url);
-        self.request = [[NSMutableURLRequest alloc]initWithURL: url];
-        [self.request setHTTPMethod: @"GET"];
-        [self.request setValue:@"application/json" forHTTPHeaderField:@"Content-Type"];
-        [self.request setValue:@"charset" forHTTPHeaderField:@"UTF-8"];
-        [self.request setHTTPBody: [jsonString dataUsingEncoding: NSUTF8StringEncoding]];
-        [self.web loadRequest: self.request];
-
-        [[NSNotificationCenter defaultCenter] addObserver:self
-                                                 selector:@selector(resignAddBankWebview)
-                                                     name:@"SynapseResponse"
-                                                   object:nil];
-    }
+    [[NSNotificationCenter defaultCenter] addObserver:self
+                                             selector:@selector(resignAddBankWebview)
+                                                 name:@"SynapseResponse"
+                                               object:nil];
 }
 
 -(void)moreinfo_lightBox
@@ -407,10 +379,8 @@
 
 -(void)resignAddBankWebview
 {
-    NSLog(@"KnoxWeb.m -> resignAddBankWebview fired");
-    
-    [user setBool:YES forKey:@"IsSynapseBankAvailable"];
-    
+    NSLog(@"addBank.m -> resignAddBankWebview fired");
+
     UIAlertView * alert = [[UIAlertView alloc]initWithTitle:@"Great Success"
                                                     message:@"\xF0\x9F\x98\x80\nYour bank was linked successfully."
                                                    delegate:Nil

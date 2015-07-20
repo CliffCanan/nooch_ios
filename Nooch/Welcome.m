@@ -8,7 +8,6 @@
 #import "Welcome.h"
 #import "Home.h"
 #import "ProfileInfo.h"
-#import "knoxWeb.h"
 #import "ECSlidingViewController.h"
 
 @interface Welcome ()

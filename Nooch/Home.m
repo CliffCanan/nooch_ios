@@ -20,7 +20,7 @@
 #import "UIImageView+WebCache.h"
 #import "HowMuch.h"
 #import <QuartzCore/QuartzCore.h>
-#import "knoxWeb.h"
+#import "addBank.h"
 #import "SettingsOptions.h"
 #import <AddressBook/AddressBook.h>
 #import <AddressBook/ABAddressBook.h>
@@ -1977,8 +1977,8 @@ void addressBookChanged(ABAddressBookRef addressBook, CFDictionaryRef info, void
 {
     if (alertView.tag == 201 && buttonIndex == 1)// GO TO THE ADD BANK WEBVIEW
     {
-        knoxWeb *knox = [knoxWeb new];
-        [nav_ctrl pushViewController:knox animated:YES];
+        addBank * addBankWebview = [addBank new];
+        [nav_ctrl pushViewController:addBankWebview animated:YES];
         [self.slidingViewController resetTopView];
     }
     else if ((alertView.tag == 50) && buttonIndex == 1)
@@ -2174,7 +2174,7 @@ void addressBookChanged(ABAddressBookRef addressBook, CFDictionaryRef info, void
         [alertView addButtonWithTitle:@"Later" type:SIAlertViewButtonTypeCancel handler:nil];
         [alertView addButtonWithTitle:@"Go Now" type:SIAlertViewButtonTypeDefault
                               handler:^(SIAlertView *alert) {
-                                  knoxWeb * addBankWebView = [knoxWeb new];
+                                  addBank * addBankWebView = [addBank new];
                                   [nav_ctrl pushViewController:addBankWebView animated:YES];
                                   [self.slidingViewController resetTopView];
                               }];

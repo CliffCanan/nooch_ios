@@ -751,9 +751,7 @@ NSString *amnt;
         [user synchronize];
     }
     else if ([tagName isEqualToString:@"sets"])
-    {
-        //NSUserDefaults * defaults = [NSUserDefaults standardUserDefaults];
-        
+    {        
         NSError * error;
         Dictresponse = [NSJSONSerialization
                         JSONObjectWithData:[responseString dataUsingEncoding:NSUTF8StringEncoding]

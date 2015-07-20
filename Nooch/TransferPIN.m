@@ -12,7 +12,7 @@
 #import "SelectRecipient.h"
 #import <AudioToolbox/AudioToolbox.h>
 #import <LocalAuthentication/LocalAuthentication.h>
-#import "knoxWeb.h"
+#import "addBank.h"
 #import "SettingsOptions.h"
 
 @interface TransferPIN ()<GetLocationDelegate>
