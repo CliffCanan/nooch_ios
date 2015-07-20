@@ -534,18 +534,16 @@ NSString *amnt;
     [responseData appendData:data];
 }
 - (void)connection:(NSURLConnection *)connection didFailWithError:(NSError *)error {
-    NSLog(@"serve connect error: %@",self.tagName);
-    if ([tagName isEqualToString:@"EncryptReqImm"]) {
-        
-    }
-    NSLog(@"Error aya %@",error);
+    NSLog(@"Serve.m Connect ERROR. Service Tag: %@.  Error: %@", self.tagName, error);
+    //if ([tagName isEqualToString:@"EncryptReqImm"]) {}
+
     [self.Delegate Error:error];
 }
 
 - (void)connectionDidFinishLoading:(NSURLConnection *)connection
 {
     responseString = [[NSString alloc] initWithData:responseData encoding:NSASCIIStringEncoding];
-    
+
     //NSLog(@"Serve -> responseString is: %@",responseString);
 
     if ([responseString rangeOfString:@"Invalid OAuth 2 Access"].location != NSNotFound)

@@ -22,7 +22,7 @@ UIImageView *picture;
 @interface ProfileInfo ()<FBLoginViewDelegate>{
     NSString * fbID;
 }
-@property(nonatomic) UIImagePickerController *picker;
+//@property(nonatomic) UIImagePickerController *picker;
 @property(nonatomic,strong) UITextField *email;
 @property(nonatomic,strong) UITextField *phone;
 @property(nonatomic,strong) UITextField *address_one;
@@ -51,6 +51,7 @@ UIImageView *picture;
 @property(nonatomic,strong) UIView * ssn_NotAdded_YellowBg;
 @property(nonatomic,strong) UILabel * emailGlyphIndicator;
 @property(nonatomic,strong) UILabel * phoneGlyphIndicator;
+@property(nonatomic,strong) UILabel * ssnGlyphIndicator;
 @end
 
 @implementation ProfileInfo
@@ -244,13 +245,13 @@ UIImageView *picture;
     }
     [self.member_since_back addSubview:goToSettings];
 
-    start = [[user valueForKey:@"DateCreated"] rangeOfString:@"("];
-    end = [[user valueForKey:@"DateCreated"] rangeOfString:@")"];
+    NSRange start = [[user valueForKey:@"DateCreated"] rangeOfString:@"("];
+    NSRange end = [[user valueForKey:@"DateCreated"] rangeOfString:@")"];
 
     NSString * betweenBraces = @"";
     if (start.location != NSNotFound && end.location != NSNotFound && end.location > start.location)
     {
-        betweenBraces = [[user valueForKey:@"DateCreated"] substringWithRange:NSMakeRange(start.location+1, end.location-(start.location + 1))];
+        betweenBraces = [[user valueForKey:@"DateCreated"] substringWithRange:NSMakeRange(start.location + 1, end.location - (start.location + 1))];
         NSString * newString = [betweenBraces substringToIndex:[betweenBraces length] - 8];
 
         NSTimeInterval _interval = [newString doubleValue];
@@ -323,7 +324,7 @@ UIImageView *picture;
     UIBarButtonItem * nav_save = [[UIBarButtonItem alloc] initWithCustomView:self.save];
     [self.navigationItem setRightBarButtonItem:nav_save animated:YES];
 
-    GMTTimezonesDictionary = [[NSDictionary alloc] initWithObjectsAndKeys:@"Samoa Standard Time",@"GMT-11:00",
+  /*GMTTimezonesDictionary = [[NSDictionary alloc] initWithObjectsAndKeys:@"Samoa Standard Time",@"GMT-11:00",
                               @"Hawaiian Standard Time",@"GMT-10:00",
                               @"Alaskan Standard Time",@"GMT-09:00",
                               @"Pacific Standard Time",@"GMT-08:00",
@@ -331,7 +332,7 @@ UIImageView *picture;
                               @"Central Standard Time",@"GMT-06:00",
                               @"Eastern Standard Time",@"GMT-05:00",
                               @"Atlantic Standard Time",@"GMT-04:00",
-                              nil];
+                              nil];*/
 
     hdrHt = 28;
     if ([[UIScreen mainScreen] bounds].size.height == 480)
@@ -361,7 +362,9 @@ UIImageView *picture;
     if (![[user valueForKey:@"Status"] isEqualToString:@"Registered"] &&
          [[user valueForKey:@"IsVerifiedPhone"]isEqualToString:@"YES"])
     {
+        [self.list setSeparatorColor:Rgb2UIColor(188, 190, 192, .4)];
         [self.list setFrame:CGRectMake(0, self.sectionHeaderBg.frame.origin.y + self.sectionHeaderBg.frame.size.height, 320, rowHeight * 2)];
+
         numberOfRowsToDisplay = 2;
         emailVerifyRowIsShowing = false;
         smsVerifyRowIsShowing = false;
@@ -372,8 +375,11 @@ UIImageView *picture;
                [[user valueForKey:@"IsVerifiedPhone"] isEqualToString:@"YES"]) )
     {
         scrollView.contentSize = CGSizeMake(320, 580);
-        numberOfRowsToDisplay = 3;
+
+        [self.list setSeparatorColor:Rgb2UIColor(188, 190, 192, .15)];
         [self.list setFrame:CGRectMake(0, self.sectionHeaderBg.frame.origin.y + self.sectionHeaderBg.frame.size.height, 320, rowHeight * 3)];
+
+        numberOfRowsToDisplay = 3;
         
         if ([[user valueForKey:@"Status"] isEqualToString:@"Registered"])
         {
@@ -388,8 +394,10 @@ UIImageView *picture;
              ![[user valueForKey:@"IsVerifiedPhone"] isEqualToString:@"YES"])
     {
         scrollView.contentSize = CGSizeMake(320, 630);
-        numberOfRowsToDisplay = 4;
+
+        [self.list setSeparatorColor:Rgb2UIColor(188, 190, 192, .15)];
         [self.list setFrame:CGRectMake(0, self.sectionHeaderBg.frame.origin.y + self.sectionHeaderBg.frame.size.height, 320, rowHeight * 4)];
+        numberOfRowsToDisplay = 4;
 
         emailVerifyRowIsShowing = true;
         smsVerifyRowIsShowing = true;
@@ -412,6 +420,7 @@ UIImageView *picture;
     [self.list2 setDataSource:self];
     [self.list2 setRowHeight:rowHeight];
     [self.list2 setBackgroundColor:[UIColor whiteColor]];
+    [self.list2 setSeparatorColor:Rgb2UIColor(188, 190, 192, .4)];
     [self.list2 setAllowsSelection:YES];
     [self.list2 setScrollEnabled:NO];
 
@@ -437,6 +446,7 @@ UIImageView *picture;
     [self.list3 setDataSource:self];
     [self.list3 setRowHeight:rowHeight];
     [self.list3 setBackgroundColor:[UIColor whiteColor]];
+    [self.list3 setSeparatorColor:Rgb2UIColor(188, 190, 192, .25)];
     [self.list3 setAllowsSelection:YES];
     [self.list3 setScrollEnabled:NO];
 
@@ -513,7 +523,10 @@ UIImageView *picture;
 
 -(void)viewDidDisappear:(BOOL)animated
 {
-    [self.hud hide:YES];
+    if ([self.view.subviews containsObject:self.hud])
+    {
+        [self.hud hide:YES];
+    }
     [super viewDidDisappear:animated];
 }
 
@@ -595,7 +608,7 @@ UIImageView *picture;
         (self.phone.text.length > 3 && ![[dictSavedInfo valueForKey:@"phoneno"]isEqualToString:self.phone.text]) )
     {
         UIAlertView * alert = [[UIAlertView alloc]initWithTitle:@"Save Changes"
-                                                        message:@"Do you want to save the changes in your profile?"
+                                                        message:@"Do you want to save the changes to your profile?"
                                                        delegate:self
                                               cancelButtonTitle:NSLocalizedString(@"Profile_AlrtBtnYes2", @"Profile 'YES' Button Text")
                                               otherButtonTitles:NSLocalizedString(@"Profile_AlrtBtnNo2", @"Profile 'NO' Button Text"), nil];
@@ -711,7 +724,7 @@ UIImageView *picture;
         [av show];
     }
 
-    timezoneStandard = [NSString stringWithFormat:@"%@",[NSTimeZone localTimeZone]];
+    NSString * timezoneStandard = [NSString stringWithFormat:@"%@",[NSTimeZone localTimeZone]];
     //  timezoneStandard = @"";
 
     recoverMail = [[NSString alloc] init];
@@ -783,7 +796,7 @@ UIImageView *picture;
     self.hud.delegate = self;
     self.hud.labelText = NSLocalizedString(@"Profile_HUDsaving", @"Profile HUD 'Saving Your Profile' Text");
     [self.hud show:YES];
-    
+
     transaction = [[NSMutableDictionary alloc] initWithObjectsAndKeys:transactionInput, @"mySettings", nil];
     serve * req = [serve new];
     req.Delegate = self;
@@ -844,7 +857,6 @@ UIImageView *picture;
 
 -(void)imagePickerController:(UIImagePickerController *)picker1 didFinishPickingMediaWithInfo:(NSDictionary *)info
 {
-    option = 1;
     UIImage * image = [info objectForKey:UIImagePickerControllerEditedImage];
     image = [image resizedImageWithContentMode:UIViewContentModeScaleAspectFill bounds:CGSizeMake(120,120) interpolationQuality:kCGInterpolationMedium];
     [picture setImage:image];
@@ -1273,7 +1285,6 @@ UIImageView *picture;
     {
         if (indexPath.row == 0)
         {
-            NSLog(@"[user objectForKey:@\"dob\"] is %@",[user objectForKey:@"dob"]);
             if ([[user objectForKey:@"dob"] isKindOfClass:[NSNull class]] ||
                  [user objectForKey:@"dob"] == NULL)
             {
@@ -1308,6 +1319,14 @@ UIImageView *picture;
             if (!wasSSNadded) // This row shouldn't even be displayed unless the SSN has not been added, but adding this extra check anyway
             {
                 [cell.contentView addSubview:self.ssn_NotAdded_YellowBg];
+
+                self.ssnGlyphIndicator = [UILabel new];
+                [self.ssnGlyphIndicator setFont:[UIFont fontWithName:@"FontAwesome" size:18]];
+                [self.ssnGlyphIndicator setText:[NSString fontAwesomeIconStringForIconIdentifier:@"fa-exclamation-circle"]];
+                [self.ssnGlyphIndicator setStyleClass:@"animate_bubble_slow"];
+                [self.ssnGlyphIndicator setFrame:CGRectMake(48, 0, 20, rowHeight - 2)];
+                [self.ssnGlyphIndicator setTextColor:kNoochRed];
+                [cell.contentView addSubview:self.ssnGlyphIndicator];
             }
 
             UILabel * ssn = [[UILabel alloc] initWithFrame:CGRectMake(14, 2, 140, rowHeight)];
@@ -1317,7 +1336,7 @@ UIImageView *picture;
 
             self.ssn = [[UITextField alloc] initWithFrame:CGRectMake(95, 2, 210, rowHeight)];
             [self.ssn setBackgroundColor:[UIColor clearColor]];
-            [self.ssn setPlaceholder:@"XXX - XXX - 123"];
+            [self.ssn setPlaceholder:@"XXX - XX - 1234"];
             [self.ssn setDelegate:self];
             [self.ssn setKeyboardType:UIKeyboardTypeNumberPad];
             [self.ssn setStyleClass:@"tableViewCell_Profile_rightSide"];
@@ -1419,7 +1438,7 @@ UIImageView *picture;
                                   tapGesture = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(hideKeyBoard)];
                                   [scrollView addGestureRecognizer:tapGesture];
                                   
-                                  [self.ssn setText:@"XXX - XXX - "];
+                                  [self.ssn setText:@"XXX - XX - "];
                               }
      ];
 }
@@ -1427,13 +1446,13 @@ UIImageView *picture;
 #pragma mark - UITextField delegation
 -(void)dateTextField:(id)sender
 {
-    UIDatePicker *picker = (UIDatePicker*)self.dob.inputView;
-    [picker setMaximumDate:[NSDate date]];
-    NSDateFormatter *dateFormat = [[NSDateFormatter alloc] init];
-    NSDate *eventDate = picker.date;
-    [dateFormat setDateFormat:@"MM/dd/yyyy"];
+    UIDatePicker * datePicker = (UIDatePicker*)self.dob.inputView;
+    [datePicker setMaximumDate:[NSDate date]];
+    NSDateFormatter * dateFormat = [[NSDateFormatter alloc] init];
+    NSDate * eventDate = datePicker.date;
+    [dateFormat setDateFormat:@"MM/d/yyyy"];
     
-    NSString *dateString = [dateFormat stringFromDate:eventDate];
+    NSString * dateString = [dateFormat stringFromDate:eventDate];
     self.dob.text = [NSString stringWithFormat:@"%@",dateString];
 
     [self.save setEnabled:YES];
@@ -1603,7 +1622,7 @@ UIImageView *picture;
     }
     else if (textField == self.ssn)
     {
-        if (newLength < 12 || newLength > 16)
+        if (newLength < 11 || newLength > 15)
         {
             return NO;
         }
@@ -1703,7 +1722,7 @@ UIImageView *picture;
      }*/
 }
 
--(void)actionSheet:(UIActionSheet *)actionSheet clickedButtonAtIndex:(NSInteger)buttonIndex
+-(void)actionSheet:(UIActionSheet *)actionSheet didDismissWithButtonIndex:(NSInteger)buttonIndex
 {
     if (buttonIndex == 0)
     {
@@ -1711,31 +1730,59 @@ UIImageView *picture;
     }
     else if (buttonIndex == 1)
     {
-        if (![UIImagePickerController isSourceTypeAvailable:UIImagePickerControllerSourceTypeCamera])
+        if ([UIImagePickerController isSourceTypeAvailable:UIImagePickerControllerSourceTypeCamera])
         {
-            UIAlertView *myAlertView = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"Profile_ErrorTxt", @"Profile 'Error' Text")
-                                                                  message:@"Device has no camera"
+            if (picker == nil)
+            {
+                picker = [[UIImagePickerController alloc] init];
+                picker.delegate = self;
+            }
+            picker.allowsEditing = YES;
+            picker.sourceType = UIImagePickerControllerSourceTypeCamera;
+            [self presentViewController:picker animated:YES completion:Nil];
+        }
+        else
+        {
+            UIAlertView * av = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"Profile_ErrorTxt", @"Profile 'Error' Text")
+                                                                  message:@"Can't find a camera for this device unfortunately.\n;-("
                                                                  delegate:nil
                                                         cancelButtonTitle:@"OK"
                                                         otherButtonTitles: nil];
-            [myAlertView show];
-            return;
+            [av show];
         }
-
-        self.picker = [UIImagePickerController new];
-        self.picker.delegate = self;
-        self.picker.allowsEditing = YES;
-        self.picker.sourceType = UIImagePickerControllerSourceTypeSavedPhotosAlbum;
-        self.picker.sourceType = UIImagePickerControllerSourceTypeCamera;
-        [self presentViewController:self.picker animated:YES completion:Nil];
     }
     else if (buttonIndex == 2)
     {
-        self.picker = [UIImagePickerController new];
-        self.picker.delegate = self;
-        self.picker.allowsEditing = YES;
-        self.picker.sourceType = UIImagePickerControllerSourceTypePhotoLibrary;
-        [self presentViewController:self.picker animated:YES completion:Nil];
+        NSLog(@"Checkpoint #1");
+        
+        if ([UIImagePickerController isSourceTypeAvailable:UIImagePickerControllerSourceTypeSavedPhotosAlbum])
+        {
+            if (picker == nil)
+            {
+                picker = [[UIImagePickerController alloc] init];
+                picker.delegate = self;
+            }
+
+            picker.sourceType = UIImagePickerControllerSourceTypeSavedPhotosAlbum;
+            picker.allowsEditing = YES;
+            if ([[UIScreen mainScreen] bounds].size.height < 500) {
+                [picker.view setStyleClass:@"pickerstyle_4"];
+            }
+            else {
+                [picker.view setStyleClass:@"pickerstyle"];
+            }
+
+            [self presentViewController:picker animated:YES completion:nil];
+        }
+        else
+        {
+            UIAlertView * av = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"Profile_ErrorTxt", @"Profile 'Error' Text")
+                                                                  message:@"We're having a little trouble accessing your device's photo library.\n;-("
+                                                                 delegate:nil
+                                                        cancelButtonTitle:@"OK"
+                                                        otherButtonTitles: nil];
+            [av show];
+        }
     }
 }
 
@@ -1778,15 +1825,30 @@ UIImageView *picture;
     }
 }
 
+-(void)saveSsn
+{
+    NSLog(@"self.ssn.text.length is: %lu", (unsigned long)self.ssn.text.length);
+
+    if (self.ssn.text.length == 15)
+    {
+        NSString * last4 = [self.ssn.text substringFromIndex: self.ssn.text.length - 4];
+
+        serve * saveSsn = [serve new];
+        saveSsn.tagName = @"ssn";
+        [saveSsn setDelegate:self];
+        [saveSsn saveSsn:last4];
+    }
+}
+
 #pragma mark - Server Delegation
-- (void) listen:(NSString *)result tagName:(NSString *)tagName
+-(void) listen:(NSString *)result tagName:(NSString *)tagName
 {
     NSError * error;
 
+    [self.hud hide:YES];
+
     if ([result rangeOfString:@"Invalid OAuth 2 Access"].location!=NSNotFound)
     {
-        [self.hud hide:YES];
-
         [[NSFileManager defaultManager] removeItemAtPath:[self autoLogin] error:nil];
         [user removeObjectForKey:@"UserName"];
         [user removeObjectForKey:@"MemberId"];
@@ -1802,8 +1864,6 @@ UIImageView *picture;
 
     if ([tagName isEqualToString:@"email_verify"])
     {
-        [self.hud hide:YES];
-
         NSString *response = [[NSJSONSerialization
                                JSONObjectWithData:[result dataUsingEncoding:NSUTF8StringEncoding]
                                options:kNilOptions
@@ -1825,7 +1885,7 @@ UIImageView *picture;
 
             [self.emailGlyphIndicator setFont:[UIFont fontWithName:@"FontAwesome" size:16]];
             [self.emailGlyphIndicator setText:[NSString fontAwesomeIconStringForIconIdentifier:@"fa-check-circle"]];
-            [self.emailGlyphIndicator setFrame:CGRectMake(40, 0, 20, rowHeight)];
+            [self.emailGlyphIndicator setFrame:CGRectMake(39, 0, 20, rowHeight)];
             [self.emailGlyphIndicator setTextColor:kNoochGreen];
 
             [self.list beginUpdates];
@@ -1868,8 +1928,6 @@ UIImageView *picture;
 
     else if ([tagName isEqualToString:@"sms_verify"])
     {
-        [self.hud hide:YES];
-
         NSString *response = [[NSJSONSerialization
                                JSONObjectWithData:[result dataUsingEncoding:NSUTF8StringEncoding]
                                options:kNilOptions
@@ -1985,17 +2043,22 @@ UIImageView *picture;
             [self.save setStyleClass:@"disabled_gray"];
 
             // If DOB has been provided, send to server.  (This is currently a separate method from saving the rest of the Profile info... might want to combine it at some point.
-            if ([self.dob.text length] > 3)
+            if (   [self.dob.text length] > 3 &&
+                (([[user objectForKey:@"dob"] isKindOfClass:[NSNull class]] || [user objectForKey:@"dob"] == NULL) ||
+                  ![self.dob.text isEqualToString:[user valueForKey:@"dob"] ] ) )
             {
-                serve *serveOBJ1 = [serve new ];
+                NSLog(@"Profile info saved, now sending DoB");
+
+                serve *serveOBJ1 = [serve new];
                 serveOBJ1.tagName = @"dob";
                 [serveOBJ1 setDelegate:self];
                 [serveOBJ1 saveDob:self.dob.text];
             }
-            else
+            else if (!wasSSNadded && self.ssn.text.length > 12)
             {
-                // Only hide the HUD if the user did NOT enter a DOB, because if they did, then need to send another query to the server for saving DoB and can hide the HUD when that resposne is received.
-                [self.hud hide:YES];
+                NSLog(@"Listen -> MySettingsResult -> Now saving ssn");
+
+                [self saveSsn];
             }
 
             // Get User's Details again
@@ -2034,7 +2097,6 @@ UIImageView *picture;
         }
         else if ([[resultValue valueForKey:@"Result"] isEqualToString:@"Phone Number already registered with Nooch"])
         {
-            [self.hud hide:YES];
             UIAlertView *av = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"Profile_PhnAlrdRegAlrtTitle", @"Profile 'Phone Number Already Registered' Alert Title")
                                                          message:[NSString stringWithFormat:NSLocalizedString(@"Profile_PhnAlrdRegAlrtBody", @"Profile 'Phone Number Already Registered' Alert Body Text"),self.phone.text]
                                                         delegate:self
@@ -2044,13 +2106,6 @@ UIImageView *picture;
         }
         else
         {
-            [self.hud hide:YES];
-            // Failure Message
-            /*if ([[resultValue valueForKey:@"Result"] isEqualToString:@"Profile Validation Failed! Please provide valid contact informations such as address, city, state and contact number details."])
-            {
-                [[me usr] setObject:@"NO" forKey:@"validated"];
-            }*/
-
             UIAlertView *av = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"Profile_SmthngWrngAlrtTitle", @"Profile 'Something Went Wrong' Alert Title")
                                                          message:NSLocalizedString(@"Profile_SmthngWrngAlrtBody", @"Profile Something Went Wrong Alert Body Text")
                                                         delegate:self
@@ -2078,14 +2133,12 @@ UIImageView *picture;
 
     else if ([tagName isEqualToString:@"myset"]) // Getting profile info from Server
     {
-        [self.hud hide:YES];
-
         dictProfileinfo = [NSJSONSerialization
                          JSONObjectWithData:[result dataUsingEncoding:NSUTF8StringEncoding]
                          options:kNilOptions
                          error:&error];
         
-        NSLog(@"Profile Get User Details --> dictProfileinfo is: %@",dictProfileinfo);
+        //NSLog(@"Profile Get User Details --> dictProfileinfo is: %@",dictProfileinfo);
 
         if ( ![[dictProfileinfo valueForKey:@"ContactNumber"] isKindOfClass:[NSNull class]] &&
             ![[[dictProfileinfo valueForKey:@"ContactNumber"] lowercaseString] isEqualToString:@"null"])
@@ -2201,10 +2254,10 @@ UIImageView *picture;
             UIView * email_not_validated = [[UIView alloc] initWithFrame:CGRectMake(0, 0, 320, rowHeight)];
             [email_not_validated setBackgroundColor:Rgb2UIColor(250, 228, 3, .25)];
             
-            [self.emailGlyphIndicator setFont:[UIFont fontWithName:@"FontAwesome" size:19]];
+            [self.emailGlyphIndicator setFont:[UIFont fontWithName:@"FontAwesome" size:18]];
             [self.emailGlyphIndicator setText:[NSString fontAwesomeIconStringForIconIdentifier:@"fa-exclamation-circle"]];
             [self.emailGlyphIndicator setStyleClass:@"animate_bubble_slow"];
-            [self.emailGlyphIndicator setFrame:CGRectMake(34, 0, 20, rowHeight)];
+            [self.emailGlyphIndicator setFrame:CGRectMake(34, 0, 20, rowHeight - 2)];
             [self.emailGlyphIndicator setTextColor:kNoochRed];
         }
         else
@@ -2215,7 +2268,7 @@ UIImageView *picture;
             [self.emailGlyphIndicator setBackgroundColor:[UIColor clearColor]];
             [self.emailGlyphIndicator setFont:[UIFont fontWithName:@"FontAwesome" size:16]];
             [self.emailGlyphIndicator setText:[NSString fontAwesomeIconStringForIconIdentifier:@"fa-check-circle"]];
-            [self.emailGlyphIndicator setFrame:CGRectMake(40, 0, 20, rowHeight)];
+            [self.emailGlyphIndicator setFrame:CGRectMake(39, 0, 20, rowHeight - 1)];
             [self.emailGlyphIndicator setTextColor:kNoochGreen];
             
             if (emailVerifyRowIsShowing)
@@ -2233,10 +2286,10 @@ UIImageView *picture;
             UIView * unverified_phone = [[UIView alloc] initWithFrame:CGRectMake(0, 0, 320, rowHeight)];
             [unverified_phone setBackgroundColor:Rgb2UIColor(250, 228, 3, .25)];
 
-            [self.phoneGlyphIndicator setFont:[UIFont fontWithName:@"FontAwesome" size:19]];
+            [self.phoneGlyphIndicator setFont:[UIFont fontWithName:@"FontAwesome" size:18]];
             [self.phoneGlyphIndicator setText:[NSString fontAwesomeIconStringForIconIdentifier:@"fa-exclamation-circle"]];
             [self.phoneGlyphIndicator setStyleClass:@"animate_bubble_slow"];
-            [self.phoneGlyphIndicator setFrame:CGRectMake(31, 0, 20, rowHeight)];
+            [self.phoneGlyphIndicator setFrame:CGRectMake(31, 0, 20, rowHeight - 2)];
             [self.phoneGlyphIndicator setTextColor:kNoochRed];
         }
         else
@@ -2247,7 +2300,7 @@ UIImageView *picture;
             [self.phoneGlyphIndicator setBackgroundColor:[UIColor clearColor]];
             [self.phoneGlyphIndicator setFont:[UIFont fontWithName:@"FontAwesome" size:16]];
             [self.phoneGlyphIndicator setText:[NSString fontAwesomeIconStringForIconIdentifier:@"fa-check-circle"]];
-            [self.phoneGlyphIndicator setFrame:CGRectMake(33, 0, 20, rowHeight)];
+            [self.phoneGlyphIndicator setFrame:CGRectMake(33, 0, 20, rowHeight - 1)];
             [self.phoneGlyphIndicator setTextColor:kNoochGreen];
             
             if (smsVerifyRowIsShowing)
@@ -2290,28 +2343,8 @@ UIImageView *picture;
         }
     }
     
-    else if ([tagName isEqualToString:@"ssn"])
-    {
-        NSString *response = [[NSJSONSerialization
-                               JSONObjectWithData:[result dataUsingEncoding:NSUTF8StringEncoding]
-                               options:kNilOptions
-                               error:&error] objectForKey:@"Result"];
-        NSLog(@"SSN Response is: %@",response);
-
-        if ([response isEqualToString:@"Already Verified."]) {
-            UIAlertView *av = [[UIAlertView alloc] initWithTitle:[NSString stringWithFormat:@"%@  \xF0\x9F\x91\x8D", NSLocalizedString(@"Profile_SmsAlrdyVerAlrtTitle", @"Profile phone already verified Alert Title")]
-                                                         message:NSLocalizedString(@"Profile_SmsAlrdyVerAlrtBody", @"Profile phone already verified Alert Body Text")
-                                                        delegate:nil
-                                               cancelButtonTitle:@"OK"
-                                               otherButtonTitles:nil];
-            [av show];
-        }
-    }
-    
     else if ([tagName isEqualToString:@"dob"])
     {
-        [self.hud hide:YES];
-
         NSString *response = [[NSJSONSerialization
                                JSONObjectWithData:[result dataUsingEncoding:NSUTF8StringEncoding]
                                options:kNilOptions
@@ -2322,9 +2355,32 @@ UIImageView *picture;
              [response rangeOfString:@"successfully"].length != 0)
         {
             [self.dob_NotAdded_YellowBg removeFromSuperview];
-            [self.save setEnabled:NO];
-            [self.save setUserInteractionEnabled:NO];
-            [self.save setStyleClass:@"disabled_gray"];
+        }
+
+        if (!wasSSNadded && self.ssn.text.length > 12)
+        {
+            NSLog(@"Listen -> dob -> Now saving ssn");
+
+            [self saveSsn];
+        }
+    }
+
+    else if ([tagName isEqualToString:@"ssn"])
+    {
+        NSString *response = [[NSJSONSerialization
+                               JSONObjectWithData:[result dataUsingEncoding:NSUTF8StringEncoding]
+                               options:kNilOptions
+                               error:&error] objectForKey:@"Result"];
+        NSLog(@"SSN Response is: %@",response);
+
+        if (![response isKindOfClass:[NSNull class]] && response != NULL &&
+             [response rangeOfString:@"successfully"].length != 0)
+        {
+            [self.ssnGlyphIndicator setFont:[UIFont fontWithName:@"FontAwesome" size:16]];
+            [self.ssnGlyphIndicator setText:[NSString fontAwesomeIconStringForIconIdentifier:@"fa-check-circle"]];
+            [self.ssnGlyphIndicator setTextColor:kNoochGreen];
+
+            [self.ssn_NotAdded_YellowBg removeFromSuperview];
         }
     }
 }

@@ -1008,12 +1008,13 @@
                                                         JSONObjectWithData:[result dataUsingEncoding:NSUTF8StringEncoding]
                                                         options:kNilOptions
                                                         error:&error];
-        NSLog(@"Synapse info is: %@",responseForSynapseBank);
 
         if (responseForSynapseBank != NULL &&
             (![[responseForSynapseBank valueForKey:@"BankName"] isKindOfClass:[NSNull class]] &&
              ![[responseForSynapseBank valueForKey:@"BankImageURL"] isKindOfClass:[NSNull class]]))
         {
+            //NSLog(@"Synapse info is: %@",responseForSynapseBank);
+
             [user setBool:YES forKey:@"IsSynapseBankAvailable"];
             [user synchronize];
 
