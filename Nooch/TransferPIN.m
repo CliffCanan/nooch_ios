@@ -932,50 +932,22 @@
                 {
                     if ([self.receiver objectForKey:@"email"])
                     {
-                        if (isKnoxOn)
-                        {
-                            urlStrTranfer = [urlStrTranfer stringByAppendingFormat:@"/%@", @"RequestMoneyFromNonNoochUserUsingKnox"];
-                        }
-                        else if (isSynapseOn)
-                        {
-                            urlStrTranfer = [urlStrTranfer stringByAppendingFormat:@"/%@", @"RequestMoneyToNonNoochUserUsingSynapse"];
-                        }
+                        urlStrTranfer = [urlStrTranfer stringByAppendingFormat:@"/%@", @"RequestMoneyToNonNoochUserUsingSynapse"];
                     }
                     else if ([self.receiver objectForKey:@"phone"])
                     {
-                        if (isKnoxOn)
-                        {
-                            urlStrTranfer = [urlStrTranfer stringByAppendingFormat:@"/%@", @"RequestMoneyToNonNoochUserThroughPhoneUsingKnox"];
-                        }
-                        else if (isSynapseOn)
-                        {
-                            urlStrTranfer = [urlStrTranfer stringByAppendingFormat:@"/%@", @"RequestMoneyToNonNoochUserThroughPhoneUsingSynapse"];
-                        }
+                        urlStrTranfer = [urlStrTranfer stringByAppendingFormat:@"/%@", @"RequestMoneyToNonNoochUserThroughPhoneUsingSynapse"];
                     }
                 }
                 else if ([self.type isEqualToString:@"send"])
                 {
                     if ([self.receiver objectForKey:@"email"])
                     {
-                        if (isKnoxOn)
-                        {
-                            urlStrTranfer = [urlStrTranfer stringByAppendingFormat:@"/%@", @"TransferMoneyToNonNoochUserUsingKnox"];
-                        }
-                        else if (isSynapseOn)
-                        {
-                            urlStrTranfer = [urlStrTranfer stringByAppendingFormat:@"/%@", @"TransferMoneyToNonNoochUserUsingSynapse"];
-                        }
+                        urlStrTranfer = [urlStrTranfer stringByAppendingFormat:@"/%@", @"TransferMoneyToNonNoochUserUsingSynapse"];
                     }
                     else if ([self.receiver objectForKey:@"phone"])
                     {
-                        if (isKnoxOn)
-                        {
-                            urlStrTranfer = [urlStrTranfer stringByAppendingFormat:@"/%@", @"TransferMoneyToNonNoochUserThroughPhoneUsingKnox"];
-                        }
-                        else if (isSynapseOn)
-                        {
-                            urlStrTranfer = [urlStrTranfer stringByAppendingFormat:@"/%@", @"TransferMoneyToNonNoochUserThroughPhoneUsingsynapse"];
-                        }
+                        urlStrTranfer = [urlStrTranfer stringByAppendingFormat:@"/%@", @"TransferMoneyToNonNoochUserThroughPhoneUsingsynapse"];
                     }
                 }
 
@@ -1175,14 +1147,7 @@
         }
         else
         {
-            if (isKnoxOn)
-            {
-                urlStrTranfer = [urlStrTranfer stringByAppendingFormat:@"/%@", @"TransferMoneyUsingKnox"];
-            }
-            else if (isSynapseOn)
-            {
-                urlStrTranfer = [urlStrTranfer stringByAppendingFormat:@"/%@", @"TransferMoneyUsingSynapse"];
-            }
+            urlStrTranfer = [urlStrTranfer stringByAppendingFormat:@"/%@", @"TransferMoneyUsingSynapse"];
         }
         urlTransfer = [NSURL URLWithString:urlStrTranfer];
 
@@ -1495,15 +1460,9 @@
 
     if ([self.receiver valueForKey:@"nonuser"])
     {
-        // Specific 'Result' Strings - KNOX
-        NSString * sendNonNoochUser_Email_KnoxResult = [[dictResultTransfer valueForKey:@"TransferMoneyToNonNoochUserUsingKnoxResult"] valueForKey:@"Result"];
-        NSString * sendNonNoochUser_Phone_KnoxResult = [[dictResultTransfer valueForKey:@"TransferMoneyToNonNoochUserThroughPhoneUsingKnoxResult"] valueForKey:@"Result"];
-        NSString * requestNonNoochUser_Email_KnoxResult = [[dictResultTransfer valueForKey:@"RequestMoneyFromNonNoochUserUsingKnoxResult"] valueForKey:@"Result"];
-        NSString * requestNonNoochUser_Phone_KnoxResult = [[dictResultTransfer valueForKey:@"RequestMoneyToNonNoochUserThroughPhoneUsingKnoxResult"] valueForKey:@"Result"];
-
         // Specific 'Result' Strings - SYNAPSE
         NSString * sendNonNoochUser_Email_SynapseResult = [[dictResultTransfer valueForKey:@"TransferMoneyToNonNoochUserUsingSynapseResult"] valueForKey:@"Result"];
-        NSString * sendNonNoochUser_Phone_SynapseResult = [[dictResultTransfer valueForKey:@"TransferMoneyToNonNoochUserThroughPhoneUsingSynapseResult"] valueForKey:@"Result"];
+        NSString * sendNonNoochUser_Phone_SynapseResult = [[dictResultTransfer valueForKey:@"TransferMoneyToNonNoochUserThroughPhoneUsingsynapseResult"] valueForKey:@"Result"];
         NSString * requestNonNoochUser_Email_SynapseResult = [[dictResultTransfer valueForKey:@"RequestMoneyToNonNoochUserUsingSynapseResult"] valueForKey:@"Result"];
         NSString * requestNonNoochUser_Phone_SynapseResult = [[dictResultTransfer valueForKey:@"RequestMoneyToNonNoochUserThroughPhoneUsingSynapseResult"] valueForKey:@"Result"];
 
@@ -1512,13 +1471,9 @@
         NSLog(@"requestNonNoochUser_Email_SynapseResult is: %@",requestNonNoochUser_Email_SynapseResult);
         NSLog(@"requestNonNoochUser_Phone_SynapseResult is: %@",requestNonNoochUser_Phone_SynapseResult);
 
-        if ([sendNonNoochUser_Email_KnoxResult rangeOfString:@"successfully"].length != 0 ||
-            [sendNonNoochUser_Phone_KnoxResult rangeOfString:@"successfully"].length != 0 ||
-            [sendNonNoochUser_Email_SynapseResult rangeOfString:@"successfully"].length != 0 ||
+        if ([sendNonNoochUser_Email_SynapseResult rangeOfString:@"successfully"].length != 0 ||
             [sendNonNoochUser_Phone_SynapseResult rangeOfString:@"successfully"].length != 0 ||
-            [requestNonNoochUser_Email_KnoxResult rangeOfString:@"successfully"].length != 0 ||
             [requestNonNoochUser_Email_SynapseResult rangeOfString:@"successfully"].length != 0 ||
-            [requestNonNoochUser_Phone_KnoxResult rangeOfString:@"successfully"].length != 0 ||
             [requestNonNoochUser_Phone_SynapseResult rangeOfString:@"successfully"].length != 0 )
         {
             [[assist shared] setTranferImage:nil];
@@ -1543,13 +1498,9 @@
             return;
         }
 
-        else if ([sendNonNoochUser_Email_KnoxResult rangeOfString:@"not have any active bank account"].length != 0 ||
-                 [sendNonNoochUser_Phone_KnoxResult rangeOfString:@"not have any bank added"].length != 0 ||
-                 [sendNonNoochUser_Email_SynapseResult rangeOfString:@"not have any bank added"].length != 0 ||
+        else if ([sendNonNoochUser_Email_SynapseResult rangeOfString:@"not have any bank added"].length != 0 ||
                  [sendNonNoochUser_Phone_SynapseResult rangeOfString:@"not have any bank added"].length != 0 ||
-                 [requestNonNoochUser_Email_KnoxResult rangeOfString:@"not have any active bank account"].length != 0 ||
                  [requestNonNoochUser_Email_SynapseResult rangeOfString:@"not have any bank added"].length != 0 ||
-                 [requestNonNoochUser_Phone_KnoxResult rangeOfString:@"not have any bank added"].length != 0 ||
                  [requestNonNoochUser_Phone_SynapseResult rangeOfString:@"not have any bank added"].length != 0)
         {
             UIAlertView *av = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"EnterPIN_TrnsfrFaildAlrtTitle", @"Enter PIN Screen transfer failed Alert Title")
@@ -1562,13 +1513,9 @@
             return;
         }
 
-        else if ([sendNonNoochUser_Email_KnoxResult rangeOfString:@"maximum amount you can"].length != 0 ||
-                 [sendNonNoochUser_Email_SynapseResult rangeOfString:@"maximum amount you can"].length != 0 ||
-                 [sendNonNoochUser_Phone_KnoxResult rangeOfString:@"maximum amount you can"].length != 0 ||
+        else if ([sendNonNoochUser_Email_SynapseResult rangeOfString:@"maximum amount you can"].length != 0 ||
                  [sendNonNoochUser_Phone_SynapseResult rangeOfString:@"maximum amount you can"].length != 0 ||
-                 [requestNonNoochUser_Email_KnoxResult rangeOfString:@"maximum amount you can"].length != 0 ||
                  [requestNonNoochUser_Email_SynapseResult rangeOfString:@"maximum amount you can"].length != 0 ||
-                 [requestNonNoochUser_Phone_KnoxResult rangeOfString:@"maximum amount you can"].length != 0 ||
                  [requestNonNoochUser_Phone_SynapseResult rangeOfString:@"maximum amount you can"].length != 0)
         {
             NSString * transLimitFromArtisan = [ARPowerHookManager getValueForHookById:@"transLimit"];
@@ -1583,9 +1530,7 @@
             return;
         }
 
-        else if ([sendNonNoochUser_Email_KnoxResult rangeOfString:@"send money to the same user"].length != 0 ||
-                 [sendNonNoochUser_Email_SynapseResult rangeOfString:@"send money to the same user"].length != 0 ||
-                 [sendNonNoochUser_Phone_KnoxResult rangeOfString:@"send money to the same user"].length != 0 ||
+        else if ([sendNonNoochUser_Email_SynapseResult rangeOfString:@"send money to the same user"].length != 0 ||
                  [sendNonNoochUser_Phone_SynapseResult rangeOfString:@"send money to the same user"].length != 0)
         {
             UIAlertView *av = [[UIAlertView alloc] initWithTitle:@"Very Sneaky"
@@ -1605,9 +1550,7 @@
             return;
         }
 
-        else if (requestNonNoochUser_Email_KnoxResult != NULL ||
-                 requestNonNoochUser_Phone_KnoxResult != NULL ||
-                 requestNonNoochUser_Phone_SynapseResult != NULL)
+        else if (requestNonNoochUser_Phone_SynapseResult != NULL)
         {
             [self errorAlerts:@"421"];
             return;
@@ -1616,13 +1559,11 @@
     }
 
     // Specific 'Result' Strings
-    NSString * sendMoneyToExistingUserKnoxResult = [[dictResultTransfer valueForKey:@"TransferMoneyUsingKnoxResult"] valueForKey:@"Result"];
     NSString * sendMoneyToExistingUserSynapseResult = [[dictResultTransfer valueForKey:@"TransferMoneyUsingSynapseResult"] valueForKey:@"Result"];
     NSString * makeRequestToExistingUserResult = [[dictResultTransfer objectForKey:@"RequestMoneyResult"] valueForKey:@"Result"];
     NSString * payRequestResult = [[dictResultTransfer objectForKey:@"HandleRequestMoneyResult"] valueForKey:@"Result"];
 
-    if ([sendMoneyToExistingUserKnoxResult rangeOfString:@"cash was sent successfully"].length != 0 ||
-        [sendMoneyToExistingUserSynapseResult rangeOfString:@"cash was sent successfully"].length != 0)
+    if ([sendMoneyToExistingUserSynapseResult rangeOfString:@"cash was sent successfully"].length != 0)
     {
         [[assist shared] setTranferImage:nil];
         UIImage * imgempty = [UIImage imageNamed:@""];
@@ -1758,15 +1699,13 @@
         return;
     }
 
-    else if ([sendMoneyToExistingUserKnoxResult rangeOfString:@"Recepient not found"].length != 0 ||
-             [sendMoneyToExistingUserSynapseResult rangeOfString:@"user details not found"].length != 0)
+    else if ([sendMoneyToExistingUserSynapseResult rangeOfString:@"user details not found"].length != 0)
     {
         [self errorAlerts:@"510"];
         return;
     }
     
-    else if ([sendMoneyToExistingUserKnoxResult rangeOfString:@"maximum amount you can send"].length != 0 ||
-             [sendMoneyToExistingUserSynapseResult rangeOfString:@"maximum amount you can send"].length != 0 ||
+    else if ([sendMoneyToExistingUserSynapseResult rangeOfString:@"maximum amount you can send"].length != 0 ||
              [makeRequestToExistingUserResult rangeOfString:@"maximum amount you can"].length != 0)
     {
         NSString * transLimitFromArtisan = [ARPowerHookManager getValueForHookById:@"transLimit"];
@@ -1781,8 +1720,7 @@
         return;
     }
 
-    else if ([sendMoneyToExistingUserKnoxResult rangeOfString:@"send money to the same user"].length != 0 ||
-             [sendMoneyToExistingUserSynapseResult rangeOfString:@"send money to the same user"].length != 0)
+    else if ([sendMoneyToExistingUserSynapseResult rangeOfString:@"send money to the same user"].length != 0)
     {
         UIAlertView *av = [[UIAlertView alloc] initWithTitle:@"Very Sneaky"
                                                      message:@"\xF0\x9F\x98\xB1\nYou are attempting a transfer paradox, the results of which could cause a chain reaction that would unravel the very fabric of the space-time continuum and destroy the entire universe!\n\nPlease try sending money to someone ELSE!"
@@ -1794,9 +1732,7 @@
         return;
     }
 
-    else if ([sendMoneyToExistingUserKnoxResult rangeOfString:@"not have any active bank account"].length != 0 ||
-             [sendMoneyToExistingUserKnoxResult rangeOfString:@"not linked to any bank account"].length != 0 ||
-             [sendMoneyToExistingUserSynapseResult rangeOfString:@"not have any active bank account"].length != 0 ||
+    else if ([sendMoneyToExistingUserSynapseResult rangeOfString:@"not have any active bank account"].length != 0 ||
              [sendMoneyToExistingUserSynapseResult rangeOfString:@"not linked to any bank account"].length != 0 ||
              [sendMoneyToExistingUserSynapseResult rangeOfString:@"Recepient does not have any verified bank account"].length != 0 ||
              [payRequestResult rangeOfString:@"not have any active bank account"].length != 0 ||
@@ -1905,8 +1841,7 @@
     }
 
     // PIN-related errors common to all methods
-    else if ([sendMoneyToExistingUserKnoxResult isEqualToString:@"PIN number you have entered is incorrect."] ||
-             [sendMoneyToExistingUserSynapseResult isEqualToString:@"PIN number you have entered is incorrect."] ||
+    else if ([sendMoneyToExistingUserSynapseResult isEqualToString:@"PIN number you have entered is incorrect."] ||
              [makeRequestToExistingUserResult isEqualToString:@"PIN number you have entered is incorrect."] ||
              [payRequestResult isEqualToString:@"PIN number you have entered is incorrect."] ||
              [[dictResultTransfer valueForKey:@"Result"] isEqualToString:@"PIN number you have entered is incorrect."])
@@ -1930,8 +1865,7 @@
         return;
     }
 
-    else if ([sendMoneyToExistingUserKnoxResult rangeOfString:@"PIN number you entered again is incorrect"].length != 0 ||
-             [sendMoneyToExistingUserSynapseResult rangeOfString:@"PIN number you entered again is incorrect"].length != 0 ||
+    else if ([sendMoneyToExistingUserSynapseResult rangeOfString:@"PIN number you entered again is incorrect"].length != 0 ||
              [makeRequestToExistingUserResult rangeOfString:@"PIN number you entered again is incorrect"].length != 0 ||
              [payRequestResult rangeOfString:@"PIN number you entered again is incorrect"].length != 0)
     {
@@ -1960,8 +1894,7 @@
         return;
     }
 
-    else if ([sendMoneyToExistingUserKnoxResult rangeOfString:@"Your account has been suspended for 24 hours from now"].length != 0 ||
-             [sendMoneyToExistingUserSynapseResult rangeOfString:@"Your account has been suspended for 24 hours from now"].length != 0 ||
+    else if ([sendMoneyToExistingUserSynapseResult rangeOfString:@"Your account has been suspended for 24 hours from now"].length != 0 ||
              [makeRequestToExistingUserResult rangeOfString:@"Your account has been suspended for 24 hours from now"].length != 0 ||
              [payRequestResult rangeOfString:@"Your account has been suspended for 24 hours from now"].length != 0)
     {
@@ -1991,8 +1924,7 @@
         return;
     }
 
-    else if ([sendMoneyToExistingUserKnoxResult isEqualToString:@"Receiver does not exist."] ||
-             [sendMoneyToExistingUserSynapseResult isEqualToString:@"Receiver does not exist."] ||
+    else if ([sendMoneyToExistingUserSynapseResult isEqualToString:@"Receiver does not exist."] ||
              [makeRequestToExistingUserResult rangeOfString:@"user does not exist"].length != 0)
     {
         UIAlertView *av = [[UIAlertView alloc] initWithTitle:@"Transfer Error #423"
@@ -2008,11 +1940,6 @@
              [payRequestResult rangeOfString:@"failed"].length != 0)
     {
         [self errorAlerts:@"710"];
-    }
-
-    else if ([sendMoneyToExistingUserKnoxResult rangeOfString:@"Sorry There Was A Problem with Knox"].length != 0)
-    {
-        [self errorAlerts:@"810"];
     }
 
     else

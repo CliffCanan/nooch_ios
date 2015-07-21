@@ -164,6 +164,16 @@ NSMutableURLRequest *request;
     NSTimeZone * timeZone = [NSTimeZone timeZoneWithName:@"America/New_York"];
     [NSTimeZone setDefaultTimeZone:timeZone];
 
+    NSString * isXtraIdVerOn_fromArtisan = [ARPowerHookManager getValueForHookById:@"requireSSN_DOB"];
+    if ([isXtraIdVerOn_fromArtisan isEqualToString:@"yes"])
+    {
+        isXtraIdVerOn = YES;
+    }
+    else
+    {
+        isXtraIdVerOn = NO;
+    }
+
     [ARProfileManager setSharedUserId:[user valueForKey:@"MemberId"]];
     [ARProfileManager registerLocation:@"lastKnownLocation"];
 }
@@ -997,8 +1007,7 @@ void addressBookChanged(ABAddressBookRef addressBook, CFDictionaryRef info, void
 
     //Update Pending Status
     if ([[user objectForKey:@"Pending_count"] intValue] > 0 &&
-        ((isKnoxOn && [user boolForKey:@"IsKnoxBankAvailable"]) ||
-         (isSynapseOn && [user boolForKey:@"IsSynapseBankAvailable"])) )
+         [user boolForKey:@"IsSynapseBankAvailable"] )
     {
         [self addPendingBanner];
     }
@@ -1958,6 +1967,7 @@ void addressBookChanged(ABAddressBookRef addressBook, CFDictionaryRef info, void
     }    
 }
 
+
 #pragma mark - Alertview & Actionsheet Handlers
 - (void)actionSheet:(UIActionSheet *)actionSheet clickedButtonAtIndex:(NSInteger)buttonIndex
 {
@@ -2077,24 +2087,6 @@ void addressBookChanged(ABAddressBookRef addressBook, CFDictionaryRef info, void
         return NO;
     }
 
-    /* if (![[defaults valueForKey:@"ProfileComplete"]isEqualToString:@"YES"])
-     {
-     SIAlertView * alertView = [[SIAlertView alloc] initWithTitle:@"Help Us Keep Nooch Safe" andMessage:@"Please take 1 minute to verify your identity by completing your Nooch profile (just 4 fields)."];
-     [alertView addButtonWithTitle:@"Later" type:SIAlertViewButtonTypeCancel handler:nil];
-     [alertView addButtonWithTitle:@"Validate Now" type:SIAlertViewButtonTypeDefault
-     handler:^(SIAlertView *alert) {
-     ProfileInfo *prof = [ProfileInfo new];
-     [nav_ctrl pushViewController:prof animated:YES];
-     [self.slidingViewController resetTopView];
-     }];
-     [[SIAlertView appearance] setButtonColor:kNoochBlue];
-     
-     alertView.transitionStyle = SIAlertViewTransitionStyleDropDown;
-     alertView.buttonsListStyle = SIAlertViewButtonsListStyleNormal;
-     [alertView show];
-     return NO;
-     }*/
-
     else if (![[user valueForKey:@"IsVerifiedPhone"]isEqualToString:@"YES"] )
     {
         SIAlertView * alertView = [[SIAlertView alloc] initWithTitle:@"Blame The Lawyers" andMessage:@"To keep Nooch safe, we ask all users to verify a phone number before sending money.\n\nIf you've already added your phone number, just respond 'Go' to the text message we sent."];
@@ -2138,7 +2130,7 @@ void addressBookChanged(ABAddressBookRef addressBook, CFDictionaryRef info, void
     }
 
     // 5. HAS USER SUBMITTED DOB AND SSN LAST 4?
-    if (![[assist shared] isUsersIdInfoSubmitted])
+    if (isXtraIdVerOn && ![[assist shared] isUsersIdInfoSubmitted])
     {
         // Body text if both DoB and SSN are not submitted yet
         NSString * alertBody = @"Please take 30 seconds to verify your identity by entering your:\n\n• Date of birth, and\n• Just the LAST 4 digits of your SSN\n\nFederal regulations require us to verify each user's identity. We will only ask for this info once and all data is stored with encryption on secure servers.\n\xF0\x9F\x94\x92";
@@ -2187,8 +2179,7 @@ void addressBookChanged(ABAddressBookRef addressBook, CFDictionaryRef info, void
     }
 
     // ... and check if that bank account is 'Verified'
-    else if ([user boolForKey:@"IsSynapseBankAvailable"] &&
-            ![user boolForKey:@"IsSynapseBankVerified"])
+    else if (![user boolForKey:@"IsSynapseBankVerified"])
     {
         UIAlertView *av = [[UIAlertView alloc] initWithTitle:@"Bank Account Un-Verified"
                                                      message:@"Looks like your bank account remains un-verified.  This usually happens when the contact info listed on the bank account does not match your Nooch profile information. Please contact Nooch support for more information."
@@ -2337,6 +2328,7 @@ void addressBookChanged(ABAddressBookRef addressBook, CFDictionaryRef info, void
 
         NSDictionary * dict = [NSJSONSerialization JSONObjectWithData:[result dataUsingEncoding:NSUTF8StringEncoding] options:0 error:&error];
 
+        NSLog(@"getPendingTransfersCount dict is: %@",dict);
         int pendingRequestsReceived = [[dict valueForKey:@"pendingRequestsReceived"] intValue];
         NSString * count;
 

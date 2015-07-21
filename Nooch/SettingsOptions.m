@@ -236,6 +236,8 @@
         shouldDisplayBankNotVerifiedLtBox = NO;
         [self bnkStatus_lightBox];
     }
+
+    [ARTrackingManager trackEvent:@"SettingsMain_DidAppear_Finished"];
 }
 
 -(void)viewDidDisappear:(BOOL)animated
@@ -622,7 +624,7 @@
     [bodyText setFrame:CGRectMake(15, 51, 272, 38)];
     [bodyText setTextAlignment:NSTextAlignmentCenter];
     [bodyText setText:@"Your bank account needs additional verification because either:"];
-    [bodyText setTextColor:[Helpers hexColor:@"313233"]];
+    [bodyText setTextColor:[Helpers hexColor:@"141515"]];
     [mainView addSubview:bodyText];
 
     UILabel * bodyText2 = [UILabel new];
@@ -630,14 +632,14 @@
     [bodyText2 setFont:[UIFont fontWithName:@"Roboto-Light" size:15]];
     [bodyText2 setFrame:CGRectMake(27, bodyText.frame.origin.y + bodyText.frame.size.height + 4, 264, 53)];
     [bodyText2 setText:@"we were unable to match the profile information you entered with the info listed on this bank account"];
-    [bodyText2 setTextColor:[Helpers hexColor:@"313233"]];
+    [bodyText2 setTextColor:[Helpers hexColor:@"141515"]];
     [mainView addSubview:bodyText2];
 
     UILabel * bodyTextBullet1 = [UILabel new];
     [bodyTextBullet1 setFont:[UIFont fontWithName:@"Roboto-Light" size:15]];
     [bodyTextBullet1 setFrame:CGRectMake(16, bodyText2.frame.origin.y, 15, 19)];
     [bodyTextBullet1 setText:@"•"];
-    [bodyTextBullet1 setTextColor:[Helpers hexColor:@"313233"]];
+    [bodyTextBullet1 setTextColor:[Helpers hexColor:@"141515"]];
     [mainView addSubview:bodyTextBullet1];
 
     UILabel * bodyText3 = [UILabel new];
@@ -645,21 +647,21 @@
     [bodyText3 setFont:[UIFont fontWithName:@"Roboto-Light" size:15]];
     [bodyText3 setFrame:CGRectMake(27, 149, 264, 36)];
     [bodyText3 setText:@"sometimes we just can't find any contact info from some accounts"];
-    [bodyText3 setTextColor:[Helpers hexColor:@"313233"]];
+    [bodyText3 setTextColor:[Helpers hexColor:@"141515"]];
     [mainView addSubview:bodyText3];
 
     UILabel * bodyTextBullet2 = [UILabel new];
     [bodyTextBullet2 setFont:[UIFont fontWithName:@"Roboto-Light" size:15]];
     [bodyTextBullet2 setFrame:CGRectMake(16, bodyText3.frame.origin.y, 15, 19)];
     [bodyTextBullet2 setText:@"•"];
-    [bodyTextBullet2 setTextColor:[Helpers hexColor:@"313233"]];
+    [bodyTextBullet2 setTextColor:[Helpers hexColor:@"141515"]];
     [mainView addSubview:bodyTextBullet2];
 
     UILabel * bodyText4 = [UILabel new];
     [bodyText4 setFont:[UIFont fontWithName:@"Roboto" size:16]];
     [bodyText4 setFrame:CGRectMake(17, 200, 270, 18)];
     [bodyText4 setText:@"What To Do Now..."];
-    [bodyText4 setTextColor:[Helpers hexColor:@"313233"]];
+    [bodyText4 setTextColor:[Helpers hexColor:@"141515"]];
     [mainView addSubview:bodyText4];
 
     UILabel * bodyText5 = [UILabel new];
@@ -667,7 +669,7 @@
     [bodyText5 setFont:[UIFont fontWithName:@"Roboto-Light" size:15]];
     [bodyText5 setFrame:CGRectMake(17, bodyText4.frame.origin.y + 23, 268, 88)];
     [bodyText5 setText:@"If we found an email address on your bank, we sent a verification link to that address (which may be different than the email you used for Nooch). Just click the the link in that email."];
-    [bodyText5 setTextColor:[Helpers hexColor:@"313233"]];
+    [bodyText5 setTextColor:[Helpers hexColor:@"141515"]];
     [mainView addSubview:bodyText5];
 
     UILabel * bodyText6 = [UILabel new];
@@ -675,7 +677,7 @@
     [bodyText6 setFont:[UIFont fontWithName:@"Roboto-Light" size:15]];
     [bodyText6 setFrame:CGRectMake(17, 318, 270, 72)];
     [bodyText6 setText:@"Or, if you didn't receive a verification email, just send us a picture of any photo ID. Email it to support@nooch.com, or tap \"Submit ID\" below."];
-    [bodyText6 setTextColor:[Helpers hexColor:@"313233"]];
+    [bodyText6 setTextColor:[Helpers hexColor:@"141515"]];
     [mainView addSubview:bodyText6];
 
 

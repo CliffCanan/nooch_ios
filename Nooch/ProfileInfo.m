@@ -490,6 +490,8 @@ UIImageView *picture;
     [self.ssn_NotAdded_YellowBg setBackgroundColor:Rgb2UIColor(250, 228, 3, .25)];
 
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(applicationWillEnterFG_Profile:) name:UIApplicationWillEnterForegroundNotification object:nil];
+
+    hasSeenDobPopup = false;
 }
 
 -(void)viewWillAppear:(BOOL)animated
@@ -514,6 +516,8 @@ UIImageView *picture;
     [super viewDidAppear:animated];
 
     [self checkUsersStatus];
+
+    [ARTrackingManager trackEvent:@"Profile_DidAppear_Finished"];
 }
 
 -(void)viewWillDisappear:(BOOL)animated
@@ -1450,7 +1454,7 @@ UIImageView *picture;
     [datePicker setMaximumDate:[NSDate date]];
     NSDateFormatter * dateFormat = [[NSDateFormatter alloc] init];
     NSDate * eventDate = datePicker.date;
-    [dateFormat setDateFormat:@"MM/d/yyyy"];
+    [dateFormat setDateFormat:@"MM/dd/yyyy"];
     
     NSString * dateString = [dateFormat stringFromDate:eventDate];
     self.dob.text = [NSString stringWithFormat:@"%@",dateString];
@@ -1477,7 +1481,7 @@ UIImageView *picture;
         // Don't need to show the alert again (user probably gets to these field directly after 'address_one' text field)
         [self addressTableSelected];
     }
-    else if (textField == self.dob && [self.dob.text length] < 5)
+    else if (textField == self.dob && [self.dob.text length] < 5 && !hasSeenDobPopup)
     {
         NSString * avBody = @"Please enter your:\n\n• Date of Birth\n• Just the LAST 4 digits of your SSN\n\nThis info is used solely to protect your account and keep Nooch safe - we will never share this info without your permission. Period.";
         if (wasSSNadded)
@@ -1491,6 +1495,7 @@ UIImageView *picture;
                                            otherButtonTitles:nil];
         [av setTag:21];
         [av show];
+        hasSeenDobPopup = true;
     }
     else if (textField == self.ssn)
     {

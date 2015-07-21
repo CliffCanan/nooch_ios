@@ -196,6 +196,7 @@
 {
     imageShow = [info objectForKey:UIImagePickerControllerEditedImage];
     imageShow = [imageShow resizedImageWithContentMode:UIViewContentModeScaleAspectFit bounds:CGSizeMake(150, 150) interpolationQuality:kCGInterpolationHigh];
+    [[assist shared] setIdDocImage:imageShow];
     [self.pic setImage:imageShow];
 
     [self dismissViewControllerAnimated:YES completion:^{
@@ -311,10 +312,10 @@
     self.hud.delegate = self;
     [self.hud show:YES];
 
-    serve * serveOBJ = [serve new];
-    serveOBJ.Delegate = self;
-    serveOBJ.tagName = @"SubmitIdImg";
-    //[serveOBJ RemoveSynapseBankAccount];
+    serve * submitIdDoc = [serve new];
+    submitIdDoc.Delegate = self;
+    submitIdDoc.tagName = @"SubmitIdImg";
+    [submitIdDoc submitIdDocument];
 
     [self performSelector:@selector(test01) withObject:nil afterDelay:1];
 }
@@ -343,14 +344,6 @@
 -(void)Error:(NSError *)Error
 {
     [self.hud hide:YES];
-
-    /*UIAlertView *alert = [[UIAlertView alloc]
-     initWithTitle:@"Connection Error"
-     message:@"Looks like there was some trouble connecting to the right place. Please try again!"
-     delegate:nil
-     cancelButtonTitle:@"OK"
-     otherButtonTitles:nil];
-     [alert show];*/
 }
 
 #pragma mark - file paths

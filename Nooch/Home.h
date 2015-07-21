@@ -36,7 +36,8 @@ core *me;
 
 UINavigationController *nav_ctrl;
 NSUserDefaults *user;
-BOOL isSynapseOn,isKnoxOn,shouldDisplayAptsSection, noRecentContacts, isFromTransferPIN;
+BOOL isSynapseOn,isKnoxOn,noRecentContacts,isFromTransferPIN;
+BOOL shouldDisplayAptsSection,isXtraIdVerOn;
 
 @interface Home : GAITrackedViewController<serveD,CLLocationManagerDelegate,MBProgressHUDDelegate,MFMailComposeViewControllerDelegate,iCarouselDataSource,iCarouselDelegate,UIAlertViewDelegate,UIActionSheetDelegate>
 {
