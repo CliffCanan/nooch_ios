@@ -1,5 +1,5 @@
 //
-//  knoxWeb.h
+//  addBank.h
 //  Nooch
 //
 //  Created by crks on 3/13/14.
@@ -11,8 +11,8 @@
 #import "SpinKit/RTSpinKitView.h"
 #import <MessageUI/MessageUI.h>
 
-@interface knoxWeb : GAITrackedViewController<MBProgressHUDDelegate,UIActionSheetDelegate,MFMailComposeViewControllerDelegate>
+@interface addBank : GAITrackedViewController<MBProgressHUDDelegate,UIActionSheetDelegate,MFMailComposeViewControllerDelegate>
 {
-    UIView*overlay,*mainView;
+    UIView *overlay, *mainView;
 }
 @end

@@ -177,6 +177,8 @@ bool modal;
     [ARPowerHookManager registerHookWithId:@"knox_Pw" friendlyName:@"Knox API Pw" defaultValue:@"7068_da64134cc66a5f0"];
     [ARPowerHookManager registerHookWithId:@"knox_xtraTime" friendlyName:@"Extra No. of days for Knox processing" defaultValue:@"1"];
 
+    [ARPowerHookManager registerHookWithId:@"requireSSN_DOB" friendlyName:@"Should SSN & DoB be required - Y or N" defaultValue:@"no"];
+
     [ARPowerHookManager registerHookWithId:@"RefCmpgn_YorN" friendlyName:@"Referral Campaign Alert - Should Display Y or N" defaultValue:@"no"];
 
     [ARPowerHookManager registerHookWithId:@"wlcm_ArtPop" friendlyName:@"Welcome Scrn - Should Display Artisan Popup (or hard-coded bank popup)" defaultValue:@"no"];
@@ -225,8 +227,7 @@ bool modal;
                                    andBlock:^(NSDictionary *data, id context) {
                                        if (![[assist shared] getSuspended] &&
                                             [[assist shared] isProfileCompleteAndValidated] &&
-                                           ((isKnoxOn && [user boolForKey:@"IsKnoxBankAvailable"]) ||
-                                            (isSynapseOn && [user boolForKey:@"IsSynapseBankAvailable"] && [user boolForKey:@"IsSynapseBankVerified"])))
+                                           ([user boolForKey:@"IsSynapseBankAvailable"] && [user boolForKey:@"IsSynapseBankVerified"]))
                                        {
                                            NSMutableDictionary * recipient = [NSMutableDictionary new];
                                            if (data[@"recipMembId"] != NULL)
@@ -268,7 +269,7 @@ bool modal;
                                        else
                                        {
                                            NSMutableArray * arrNav = [nav_ctrl.viewControllers mutableCopy];
-                                           
+
                                            Home * goHomeScrn = [Home new];
                                            [arrNav replaceObjectAtIndex:0 withObject:goHomeScrn];
                                            [nav_ctrl setViewControllers:arrNav animated:NO];

@@ -345,7 +345,7 @@ NSString *amnt;
     UIImage * img = [UIImage imageNamed:@""];
     [[assist shared]setTranferImage:img];
     [[assist shared]setTranferImage:nil];
-    //  [settingsDictionary setValue:[defaults valueForKey:@"OAuthToken"] forKey:@"accessToken"];
+
     NSError *error;
     postDataSet = [NSJSONSerialization dataWithJSONObject:memDetails
                                                   options:NSJSONWritingPrettyPrinted error:&error];
@@ -534,18 +534,16 @@ NSString *amnt;
     [responseData appendData:data];
 }
 - (void)connection:(NSURLConnection *)connection didFailWithError:(NSError *)error {
-    NSLog(@"serve connect error: %@",self.tagName);
-    if ([tagName isEqualToString:@"EncryptReqImm"]) {
-        
-    }
-    NSLog(@"Error aya %@",error);
+    NSLog(@"Serve.m Connect ERROR. Service Tag: %@.  Error: %@", self.tagName, error);
+    //if ([tagName isEqualToString:@"EncryptReqImm"]) {}
+
     [self.Delegate Error:error];
 }
 
 - (void)connectionDidFinishLoading:(NSURLConnection *)connection
 {
     responseString = [[NSString alloc] initWithData:responseData encoding:NSASCIIStringEncoding];
-    
+
     //NSLog(@"Serve -> responseString is: %@",responseString);
 
     if ([responseString rangeOfString:@"Invalid OAuth 2 Access"].location != NSNotFound)
@@ -753,9 +751,7 @@ NSString *amnt;
         [user synchronize];
     }
     else if ([tagName isEqualToString:@"sets"])
-    {
-        //NSUserDefaults * defaults = [NSUserDefaults standardUserDefaults];
-        
+    {        
         NSError * error;
         Dictresponse = [NSJSONSerialization
                         JSONObjectWithData:[responseString dataUsingEncoding:NSUTF8StringEncoding]
@@ -1829,8 +1825,8 @@ NSString *amnt;
 {
     self.responseData = [NSMutableData data];
 
-    NSMutableDictionary * dict = [[NSMutableDictionary alloc] init];
-
+    NSArray * picture;
+    
     if ([[assist shared] getIdDocImage])
     {
         NSData * data = UIImagePNGRepresentation([[assist shared] getIdDocImage]);
@@ -1846,23 +1842,26 @@ NSString *amnt;
             [result appendFormat:@"%d", bytes[i]];
         }
 
-        NSArray * arr = [result componentsSeparatedByString:@","];
-        [dict setObject:arr forKey:@"Picture"];
+        picture = [result componentsSeparatedByString:@","];
     }
-    NSDictionary * memDetails = [NSDictionary dictionaryWithObjectsAndKeys:dict,@"MemberDetails", nil];
-    //NSLog(@"%@",memDetails);
+    NSDictionary * DocumentDetails = [[NSMutableDictionary alloc] initWithObjectsAndKeys:
+                                      picture, @"Picture",
+                                      [user objectForKey:@"MemberId"], @"MemberId",
+                                      [user valueForKey:@"OAuthToken"],@"AccessToken", nil];
 
-    // UIImage * img = [UIImage imageNamed:@""];
-    // [[assist shared] setIdDocImage:img];
+    NSMutableDictionary * finalPkg = [[NSMutableDictionary alloc] initWithObjectsAndKeys:
+                                                                    DocumentDetails,@"DocumentDetails", nil];
+    NSLog(@"Saving ID Doc -> DocumentDetails... finalPkg is:  %@",finalPkg);
+
     [[assist shared] setIdDocImage:nil];
+    //https://www.noochme.com/NoochService/NoochService.svc/SaveVerificationIdDocument
 
     NSError *error;
-    postDataSet = [NSJSONSerialization dataWithJSONObject:memDetails
+    postDataSet = [NSJSONSerialization dataWithJSONObject:finalPkg
                                                   options:NSJSONWritingPrettyPrinted error:&error];
-
     postLengthSet = [NSString stringWithFormat:@"%lu", (unsigned long)[postDataSet length]];
     urlStrSet = [[NSString alloc] initWithString:ServerUrl];
-    urlStrSet = [urlStrSet stringByAppendingFormat:@"/%@", @""];
+    urlStrSet = [urlStrSet stringByAppendingFormat:@"/%@", @"SaveVerificationIdDocument"];
     NSURL *url = [NSURL URLWithString:urlStrSet];
     requestSet = [[NSMutableURLRequest alloc] initWithURL:url];
     [requestSet setHTTPMethod:@"POST"];

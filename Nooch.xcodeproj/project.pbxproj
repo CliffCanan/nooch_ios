@@ -43,7 +43,7 @@
 		014C433B185BB9EE00956A84 /* default.css in Resources */ = {isa = PBXBuildFile; fileRef = 014C433A185BB9EE00956A84 /* default.css */; };
 		014C433D185BC7EF00956A84 /* VarelaRound-Regular.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 014C433C185BC7EF00956A84 /* VarelaRound-Regular.ttf */; };
 		01542901190FF5CE00A15AA0 /* noochIcon-96.png in Resources */ = {isa = PBXBuildFile; fileRef = 01542900190FF5CE00A15AA0 /* noochIcon-96.png */; };
-		0169E22D18D8D7C200442642 /* knoxWeb.m in Sources */ = {isa = PBXBuildFile; fileRef = 0169E22C18D8D7C200442642 /* knoxWeb.m */; };
+		0169E22D18D8D7C200442642 /* addBank.m in Sources */ = {isa = PBXBuildFile; fileRef = 0169E22C18D8D7C200442642 /* addBank.m */; };
 		0179E9F017F35A740027526C /* SelectRecipient.m in Sources */ = {isa = PBXBuildFile; fileRef = 0179E9EE17F35A740027526C /* SelectRecipient.m */; };
 		0179E9FC17F36C4C0027526C /* Helpers.m in Sources */ = {isa = PBXBuildFile; fileRef = 0179E9FB17F36C4C0027526C /* Helpers.m */; };
 		018DA86318048309007B24FB /* SendInvite.m in Sources */ = {isa = PBXBuildFile; fileRef = 018DA86218048309007B24FB /* SendInvite.m */; };
@@ -385,7 +385,7 @@
 		014C433A185BB9EE00956A84 /* default.css */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.css; path = default.css; sourceTree = "<group>"; };
 		014C433C185BC7EF00956A84 /* VarelaRound-Regular.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "VarelaRound-Regular.ttf"; sourceTree = "<group>"; };
 		01542900190FF5CE00A15AA0 /* noochIcon-96.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "noochIcon-96.png"; sourceTree = "<group>"; };
-		0169E22C18D8D7C200442642 /* knoxWeb.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; lineEnding = 0; name = knoxWeb.m; path = ../knoxWeb.m; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objc; };
+		0169E22C18D8D7C200442642 /* addBank.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; lineEnding = 0; name = addBank.m; path = ../addBank.m; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objc; };
 		0179E9ED17F35A740027526C /* SelectRecipient.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SelectRecipient.h; sourceTree = "<group>"; };
 		0179E9EE17F35A740027526C /* SelectRecipient.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SelectRecipient.m; sourceTree = "<group>"; };
 		0179E9F717F35AA30027526C /* Home.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Home.h; sourceTree = "<group>"; };
@@ -421,7 +421,7 @@
 		01C26DD51843C56C005179B7 /* nooch_Logo.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = nooch_Logo.png; sourceTree = "<group>"; };
 		01C26DF91843E676005179B7 /* Reachability.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Reachability.h; sourceTree = "<group>"; };
 		01C26DFA1843E676005179B7 /* Reachability.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Reachability.m; sourceTree = "<group>"; };
-		01C49AE218D8C83500BACE23 /* knoxWeb.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = knoxWeb.h; sourceTree = "<group>"; };
+		01C49AE218D8C83500BACE23 /* addBank.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = addBank.h; sourceTree = "<group>"; };
 		01C49AE418D8C83500BACE23 /* MBProgressHUD.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MBProgressHUD.h; sourceTree = "<group>"; };
 		01C49AE518D8C83500BACE23 /* MBProgressHUD.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MBProgressHUD.m; sourceTree = "<group>"; };
 		01C83E7817F4D726009CABBF /* HowMuch.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HowMuch.h; sourceTree = "<group>"; };
@@ -952,8 +952,8 @@
 		01085FF2180345B900A31F63 /* Funds Controllers */ = {
 			isa = PBXGroup;
 			children = (
-				01C49AE218D8C83500BACE23 /* knoxWeb.h */,
-				0169E22C18D8D7C200442642 /* knoxWeb.m */,
+				01C49AE218D8C83500BACE23 /* addBank.h */,
+				0169E22C18D8D7C200442642 /* addBank.m */,
 			);
 			name = "Funds Controllers";
 			sourceTree = "<group>";
@@ -1942,7 +1942,7 @@
 				84B79FFF19BEDEB50081A2AF /* iCarousel.m in Sources */,
 				01085FF5180345D200A31F63 /* ResetPassword.m in Sources */,
 				846EF0CB198B5F55009D5491 /* DisputeDetail.m in Sources */,
-				0169E22D18D8D7C200442642 /* knoxWeb.m in Sources */,
+				0169E22D18D8D7C200442642 /* addBank.m in Sources */,
 				5C69D02E19C9380500EB406F /* IQTextView.m in Sources */,
 				5C69D06719C941DB00EB406F /* RTSpinKitWaveAnimation.m in Sources */,
 				5C69CFE319C92F6000EB406F /* TSMessage.m in Sources */,

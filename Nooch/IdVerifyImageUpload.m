@@ -159,28 +159,34 @@
     [actionSheetObject showInView:self.view];
 }
 
+#pragma mark - ImagePicker
 -(UIImage* )imageWithImage:(UIImage*)image scaledToSize:(CGSize)size
 {
     float actualHeight = image.size.height;
     float actualWidth = image.size.width;
     float imgRatio = actualWidth/actualHeight;
     float maxRatio = 75.0/115.0;
-    
-    if(imgRatio!=maxRatio){
-        if (imgRatio < maxRatio){
+
+    if (imgRatio != maxRatio)
+    {
+        if (imgRatio < maxRatio)
+        {
             imgRatio = 115.0 / actualHeight;
             actualWidth = imgRatio * actualWidth;
             actualHeight = 115.0;
         }
-        else {
+        else
+        {
             imgRatio = 75.0 / actualWidth;
             actualHeight = imgRatio * actualHeight;
             actualWidth = 75.0;
         }
     }
+
     CGRect rect = CGRectMake(0.0, 0.0, actualWidth, actualHeight);
     UIGraphicsBeginImageContext(rect.size);
     [image drawInRect:rect];
+
     UIImage *img = UIGraphicsGetImageFromCurrentImageContext();
     UIGraphicsEndImageContext();
     return img;
@@ -190,6 +196,7 @@
 {
     imageShow = [info objectForKey:UIImagePickerControllerEditedImage];
     imageShow = [imageShow resizedImageWithContentMode:UIViewContentModeScaleAspectFit bounds:CGSizeMake(150, 150) interpolationQuality:kCGInterpolationHigh];
+    [[assist shared] setIdDocImage:imageShow];
     [self.pic setImage:imageShow];
 
     [self dismissViewControllerAnimated:YES completion:^{
@@ -227,38 +234,55 @@
 -(void)actionSheet:(UIActionSheet *)actionSheet clickedButtonAtIndex:(NSInteger)buttonIndex
 {
     [self.view removeGestureRecognizer:self.slidingViewController.panGesture];
-    
+
     if (buttonIndex == 0)
     {
         if (![UIImagePickerController isSourceTypeAvailable:UIImagePickerControllerSourceTypeCamera])
         {
-            UIAlertView *myAlertView = [[UIAlertView alloc] initWithTitle:@"Error"
-                                                                  message:@"Device has no camera"
+            self.picker.sourceType = UIImagePickerControllerSourceTypeCamera;
+            self.picker.allowsEditing = YES;
+            [self presentViewController:self.picker animated:YES completion:Nil];
+        }
+        else
+        {
+            UIAlertView * av = [[UIAlertView alloc] initWithTitle:@"Error"
+                                                                  message:@"Can't find a camera for this device unfortunately.\n;-("
                                                                  delegate:nil
                                                         cancelButtonTitle:@"OK"
                                                         otherButtonTitles: nil];
-            [myAlertView show];
-            return;
+            [av show];
         }
-        
-        self.picker.sourceType = UIImagePickerControllerSourceTypeCamera;
-        self.picker.allowsEditing = YES;
-        [self presentViewController:self.picker animated:YES completion:Nil];
     }
     else if (buttonIndex == 1)
     {
-        self.picker.allowsEditing = YES;
-        if ([[UIScreen mainScreen] bounds].size.height < 500) {
-            [self.picker.view setStyleClass:@"pickerstyle_4"];
-        }
-        else {
-            [self.picker.view setStyleClass:@"pickerstyle"];
-        }
-        self.picker.sourceType = UIImagePickerControllerSourceTypeSavedPhotosAlbum;
+        if ([UIImagePickerController isSourceTypeAvailable:UIImagePickerControllerSourceTypeSavedPhotosAlbum])
+        {
+            if (self.picker == nil)
+            {
+                self.picker = [[UIImagePickerController alloc] init];
+                self.picker.delegate = self;
+            }
 
-        
+            self.picker.sourceType = UIImagePickerControllerSourceTypeSavedPhotosAlbum;
+            self.picker.allowsEditing = YES;
+            if ([[UIScreen mainScreen] bounds].size.height < 500) {
+                [self.picker.view setStyleClass:@"pickerstyle_4"];
+            }
+            else {
+                [self.picker.view setStyleClass:@"pickerstyle"];
+            }
 
-        [self presentViewController:self.picker animated:YES completion:Nil];
+            [self presentViewController:self.picker animated:true completion:Nil];
+        }
+        else
+        {
+            UIAlertView * av = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"Profile_ErrorTxt", @"Profile 'Error' Text")
+                                                                  message:@"We're having a little trouble accessing your device's photo library.\n;-("
+                                                                 delegate:nil
+                                                        cancelButtonTitle:@"OK"
+                                                        otherButtonTitles: nil];
+            [av show];
+        }
     }
 }
 
@@ -288,10 +312,10 @@
     self.hud.delegate = self;
     [self.hud show:YES];
 
-    serve * serveOBJ = [serve new];
-    serveOBJ.Delegate = self;
-    serveOBJ.tagName = @"SubmitIdImg";
-    //[serveOBJ RemoveSynapseBankAccount];
+    serve * submitIdDoc = [serve new];
+    submitIdDoc.Delegate = self;
+    submitIdDoc.tagName = @"SubmitIdImg";
+    [submitIdDoc submitIdDocument];
 
     [self performSelector:@selector(test01) withObject:nil afterDelay:1];
 }
@@ -320,14 +344,6 @@
 -(void)Error:(NSError *)Error
 {
     [self.hud hide:YES];
-
-    /*UIAlertView *alert = [[UIAlertView alloc]
-     initWithTitle:@"Connection Error"
-     message:@"Looks like there was some trouble connecting to the right place. Please try again!"
-     delegate:nil
-     cancelButtonTitle:@"OK"
-     otherButtonTitles:nil];
-     [alert show];*/
 }
 
 #pragma mark - file paths

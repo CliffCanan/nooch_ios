@@ -14,7 +14,7 @@
 #import "Register.h"
 #import "TransferPIN.h"
 #import "ProfileInfo.h"
-#import "knoxWeb.h"
+#import "addBank.h"
 #import "SettingsOptions.h"
 
 @interface HistoryFlat ()<GMSMapViewDelegate>

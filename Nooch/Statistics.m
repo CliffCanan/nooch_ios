@@ -12,7 +12,7 @@
 #import "HowMuch.h"
 #import "SendInvite.h"
 #import "ProfileInfo.h"
-#import "knoxWeb.h"
+#import "addBank.h"
 
 @interface Statistics ()
 @property(nonatomic,retain) UIView *back_profile;
@@ -1685,8 +1685,8 @@
     }
     else if (actionSheet.tag == 21 && buttonIndex == 1)
     {
-        knoxWeb *knox = [knoxWeb new];
-        [nav_ctrl pushViewController:knox animated:YES];
+        addBank * addBankWebview = [addBank new];
+        [nav_ctrl pushViewController:addBankWebview animated:YES];
         [self.slidingViewController resetTopView];
     }
 }

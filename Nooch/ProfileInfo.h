@@ -18,24 +18,20 @@ BOOL shouldFocusOnAddress, shouldFocusOnDob, shouldFocusOnSsn;
 
 @interface ProfileInfo : GAITrackedViewController<UINavigationControllerDelegate,UITextFieldDelegate,UITableViewDataSource,UITableViewDelegate,serveD,DecryptionDelegate,UIActionSheetDelegate,UIImagePickerControllerDelegate,MBProgressHUDDelegate,UIAlertViewDelegate>
 {
-    short down,option,numberOfRowsToDisplay,heightOfTopSection;
-    short hdrHt,rowHeight;
-    NSString *recoverMail;
-    NSString *timezoneStandard;
-    NSString*getEncryptedPasswordValue;
-    NSMutableDictionary*transaction;
-    NSMutableDictionary*transactionInput;
-    NSMutableDictionary*dictProfileinfo;
-    NSDictionary*GMTTimezonesDictionary;
-    UIScrollView *scrollView;
     BOOL isPhotoUpdate, wasSSNadded;
-    BOOL emailVerifyRowIsShowing,smsVerifyRowIsShowing;
-    NSRange start,end;
-    NSString*strPhoneNumber;
-    UIView*navBar;
-    NSMutableDictionary*dictSavedInfo;
-    UIView * shadowUnder;
+    BOOL emailVerifyRowIsShowing, smsVerifyRowIsShowing;
+    BOOL hasSeenDobPopup;
+    short down,numberOfRowsToDisplay,heightOfTopSection;
+    short hdrHt,rowHeight;
+    NSMutableDictionary *transaction;
+    NSMutableDictionary *transactionInput;
+    NSMutableDictionary *dictProfileinfo;
+    NSMutableDictionary *dictSavedInfo;
+    NSString *recoverMail;
+    NSString *strPhoneNumber;
+    UIScrollView *scrollView;
     UITapGestureRecognizer * tapGesture;
+    UIImagePickerController * picker;
+    UIView * shadowUnder;
 }
-
 @end

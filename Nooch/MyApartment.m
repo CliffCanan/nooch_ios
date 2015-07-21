@@ -14,7 +14,7 @@
 #import "SelectApt.h"
 #import "HistoryFlat.h"
 #import "SetAptDetails.h"
-#import "knoxWeb.h"
+#import "addBank.h"
 #import "HowMuch.h"
 
 @interface MyApartment (){
@@ -293,8 +293,8 @@
     }
     else
     {
-        knoxWeb *knox = [knoxWeb new];
-        [self.navigationController pushViewController:knox animated:YES];
+        addBank * addBankWebview = [addBank new];
+        [self.navigationController pushViewController:addBankWebview animated:YES];
     }
 }
 
@@ -540,8 +540,8 @@
     {
         if (buttonIndex == 0)
         {
-            knoxWeb *knox = [knoxWeb new];
-            [self.navigationController pushViewController:knox animated:YES];
+            addBank * addBankWebview = [addBank new];
+            [self.navigationController pushViewController:addBankWebview animated:YES];
         }
         return;
     }

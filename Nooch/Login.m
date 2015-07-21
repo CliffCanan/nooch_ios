@@ -947,7 +947,7 @@
             }
             else
                 [user setObject:[self.email.text lowercaseString] forKey:@"UserName"];
-            
+
             if (![self.stay_logged_in isOn])
             {
                 [[NSFileManager defaultManager] removeItemAtPath:[self autoLogin] error:nil];
@@ -985,7 +985,7 @@
 
             [FBSession.activeSession close];
             [FBSession setActiveSession:nil];
-            
+
             UIAlertView * alert = [[UIAlertView alloc]initWithTitle:@"Unable to Login"
                                                             message:@"We could not find a Nooch account associated with that Facebook account.  Please try logging in with your email address and password."
                                                            delegate:self
