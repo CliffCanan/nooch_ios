@@ -512,7 +512,6 @@
                                   return;
                               }
 
-                              
                               else
                               {
                                   dispatch_async(dispatch_get_main_queue(), ^{
@@ -532,7 +531,7 @@
     {
         dispatch_async(dispatch_get_main_queue(), ^{
             UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Error"
-                                                            message:@"TouchID does not seem to be available on this device \n(...which makes one wonder how you would even see this message)."
+                                                            message:@"TouchID does not seem to be available on this device \n\n(...which makes one wonder how you would even see this message)."
                                                            delegate:self
                                                   cancelButtonTitle:@"Ok"
                                                   otherButtonTitles:nil];
@@ -575,9 +574,9 @@
         [scrollView setContentSize:CGSizeMake(320, 630)];
         [touchIdMenu setFrame:CGRectMake(-1, touchIdMenu.frame.origin.y, 322, 50)];
         [UIView commitAnimations];
-        
+
         [user setObject:@"NO" forKey:@"requiredTouchId"];
-        
+
         alertBody = @"TouchID is now turned OFF for your Nooch account.";
     }
     else
@@ -588,18 +587,18 @@
         [scrollView setContentSize:CGSizeMake(320, 675)];
         [touchIdMenu setFrame:CGRectMake(-1, touchIdMenu.frame.origin.y, 322, 100)];
         [UIView commitAnimations];
-        
+
         [user setObject:@"YES" forKey:@"requiredTouchId"];
-        
+
         NSMutableArray * rows = [[NSMutableArray alloc] init];
-        
+
         NSIndexPath * row1 = [NSIndexPath indexPathForRow:1 inSection:0];
         NSIndexPath * row2 = [NSIndexPath indexPathForRow:2 inSection:0];
         [rows addObject:row1];
         [rows addObject:row2];
-        
+
         alertBody = @"TouchID is now turned ON for your Nooch account.";
-        
+
         //[touchIdMenu reloadRowsAtIndexPaths:rows withRowAnimation:UITableViewRowAnimationFade];
         //[touchIdMenu reloadData];
     }
@@ -627,13 +626,6 @@
 
 -(void)Error:(NSError *)Error
 {
-    /*UIAlertView * alert = [[UIAlertView alloc]
-                          initWithTitle:@"Message"
-                          message:@"Error connecting to server"
-                          delegate:nil
-                          cancelButtonTitle:@"OK"
-                          otherButtonTitles:nil];
-    [alert show];*/
 }
 
 #pragma mark - server delegation

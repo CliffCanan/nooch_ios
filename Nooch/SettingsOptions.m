@@ -1009,9 +1009,8 @@
                                                         options:kNilOptions
                                                         error:&error];
 
-        if (responseForSynapseBank != NULL &&
-            (![[responseForSynapseBank valueForKey:@"BankName"] isKindOfClass:[NSNull class]] &&
-             ![[responseForSynapseBank valueForKey:@"BankImageURL"] isKindOfClass:[NSNull class]]))
+        if (   responseForSynapseBank != NULL &&
+            ![[responseForSynapseBank valueForKey:@"BankName"] isKindOfClass:[NSNull class]])
         {
             //NSLog(@"Synapse info is: %@",responseForSynapseBank);
 
@@ -1089,13 +1088,35 @@
 
             UILabel * bnkStatusStatus = [UILabel new];
             [bnkStatusStatus setStyleClass:@"bnkStatus_status"];
-            if ([user boolForKey:@"IsSynapseBankVerified"])
+
+            if ([[responseForSynapseBank valueForKey:@"AccountStatus"] isEqualToString:@"Verified"] ||
+                [user boolForKey:@"IsSynapseBankVerified"])
             {
                 [bnkStatusStatus setStyleId:@"bnkstatus_verified"];
                 [bnkStatusStatus setText:@"Verified"];
                 if (![helpText isHidden]) {
                     [helpText setHidden:YES];
                 }
+            }
+            else if ([[responseForSynapseBank valueForKey:@"AccountStatus"] isEqualToString:@"Pending Review"] ||
+                     [user boolForKey:@"isIdVerDocSubmitted"])
+            {
+                [bnkStatusStatus setText:@"Pending ID Verification"];
+
+                //[linked_background addGestureRecognizer:[[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(bnkStatus_lightBox)]];
+
+                if (![self.view.subviews containsObject:helpText])
+                {
+                    helpText = [UILabel new];
+                    helpText.numberOfLines = 0;
+                    [helpText setStyleClass:@"helpText"];
+                    [self.view addSubview:helpText];
+                }
+                [helpText setFrame:CGRectMake(10, 117, 300, 82)];
+                [helpText setText:@"We are currently reviewing the information you submitted. This usually takes less than 48 hours in most circumstances."];
+                [helpText setUserInteractionEnabled:YES];
+                //[helpText addGestureRecognizer:[[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(bnkStatus_lightBox)]];
+                [helpText setHidden:NO];
             }
             else
             {

@@ -3069,9 +3069,9 @@ table-view#emptyTable {
     color		: #313233;
 }
 .bnkStatus_status {
-    left		: 127px;
+    left		: 128px;
     top			: 53px;
-    width		: 90px;
+    width		: 167px;
     height		: 16px;
     font-family	: "Roboto";
     font-weight	: regular;
@@ -3081,7 +3081,7 @@ table-view#emptyTable {
 }
 #bnkstatus_verified {
     color: #72bf44;
-    font-weight: regular;
+    font-weight: medium;
 }
 #addAnotherBnk {
     color		: #3fabe1;

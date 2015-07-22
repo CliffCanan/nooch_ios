@@ -16,6 +16,9 @@
 #import "SendInvite.h"
 #import "HowMuch.h"
 #import "Welcome.h"
+#import "HistoryFlat.h"
+#import "SettingsOptions.h"
+#import "IdVerifyImageUpload.h"
 
 @implementation AppDelegate
 
@@ -278,6 +281,34 @@ bool modal;
                                        }
                                    }];
 
+    [ARPowerHookManager registerBlockWithId:@"goTo_IdVerScrn"
+                               friendlyName:@"Send user to ID Verification screen to submit image of photo ID."
+                                       data:@{ @"empty" : @"empty"
+                                               }
+                                   andBlock:^(NSDictionary *data, id context) {
+                                       if ([user boolForKey:@"IsSynapseBankAvailable"])
+                                       {
+                                           NSMutableArray * arrNav = [nav_ctrl.viewControllers mutableCopy];
+
+                                           for (short i = [arrNav count]; i > 1; i--)
+                                           {
+                                               [arrNav removeLastObject];
+                                           }
+
+                                           SettingsOptions * settingScrn = [SettingsOptions new];
+                                           [arrNav addObject: settingScrn];
+                                           [nav_ctrl setViewControllers:arrNav animated:NO];
+
+                                           //Go to ID Verify screen
+                                           IdVerifyImageUpload * idVer = [IdVerifyImageUpload new];
+                                           [nav_ctrl pushViewController:idVer animated:YES];
+                                       }
+                                   }];
+
+
+    IdVerifyImageUpload * idVer = [IdVerifyImageUpload new];
+    [nav_ctrl pushViewController:idVer animated:YES];
+
     [ARManager startWithAppId:@"5487d09c2b22204361000011"];
 
     [[NSUserDefaults standardUserDefaults] setBool:false forKey:@"VersionUpdateNoticeDisplayed"];
@@ -395,6 +426,14 @@ void exceptionHandler(NSException *exception){
     [FBAppCall handleDidBecomeActive];
 }
 
+-(void)applicationWillTerminate:(UIApplication *)application
+{
+    // Called when the application is about to terminate. Save data if appropriate. See also applicationDidEnterBackground:.
+    // Close the FB Session if active (does not clear the cache of the FB Token)
+    [FBSession.activeSession close];
+}
+
+#pragma mark - Facebook Methods
 // This method will handle ALL the FB session state changes in the app
 - (void)sessionStateChanged:(FBSession *)session state:(FBSessionState) state error:(NSError *)error
 {
@@ -481,7 +520,7 @@ void exceptionHandler(NSException *exception){
     }];
 }
 // Show an alert message (For Facebook methods)
-- (void)showMessage:(NSString *)text withTitle:(NSString *)title
+-(void)showMessage:(NSString *)text withTitle:(NSString *)title
 {
     [[[UIAlertView alloc] initWithTitle:title
                                 message:text
@@ -490,14 +529,8 @@ void exceptionHandler(NSException *exception){
                       otherButtonTitles:nil] show];
 }
 
-- (void)applicationWillTerminate:(UIApplication *)application
-{
-    // Called when the application is about to terminate. Save data if appropriate. See also applicationDidEnterBackground:.
-    // Close the FB Session if active (does not clear the cache of the FB Token)
-    [FBSession.activeSession close];
-}
-
-- (void)application:(UIApplication *)application didRegisterForRemoteNotificationsWithDeviceToken:(NSData *)deviceToken
+#pragma mark - Notification Handling Methods
+-(void)application:(UIApplication *)application didRegisterForRemoteNotificationsWithDeviceToken:(NSData *)deviceToken
 {
     NSString *deviceTokens = [[deviceToken description] stringByTrimmingCharactersInSet:[NSCharacterSet characterSetWithCharactersInString:@"<>"]];
     deviceTokens = [deviceTokens stringByReplacingOccurrencesOfString:@" " withString:@""];
@@ -506,7 +539,7 @@ void exceptionHandler(NSException *exception){
     NSLog(@"DeviceToken%@",deviceToken);
 }
 
-- (void)application:(UIApplication *)application didFailToRegisterForRemoteNotificationsWithError:(NSError *)error
+-(void)application:(UIApplication *)application didFailToRegisterForRemoteNotificationsWithError:(NSError *)error
 {
     NSLog(@"App Delegate -> Error in Remove Notification Registration: %@", error);
     [[NSUserDefaults standardUserDefaults] setValue:@"123456" forKey:@"DeviceToken"];
@@ -526,7 +559,7 @@ void exceptionHandler(NSException *exception){
     }
 }
 
-- (void)application:(UIApplication *)application didReceiveRemoteNotification:(NSDictionary *)userInfo
+-(void)application:(UIApplication *)application didReceiveRemoteNotification:(NSDictionary *)userInfo
 {
     NSLog(@"Remote Notification Recieved: %@", userInfo);
     UIApplicationState state = [application applicationState];
@@ -544,7 +577,7 @@ void exceptionHandler(NSException *exception){
     }
 }
 
-- (void)application:(UIApplication *)application didReceiveRemoteNotification:(NSDictionary *)userInfo fetchCompletionHandler:(void (^)(UIBackgroundFetchResult))completionHandler
+-(void)application:(UIApplication *)application didReceiveRemoteNotification:(NSDictionary *)userInfo fetchCompletionHandler:(void (^)(UIBackgroundFetchResult))completionHandler
 {
     NSLog(@"Remote Notification Recieved is: %@", userInfo);
 
@@ -557,6 +590,7 @@ void exceptionHandler(NSException *exception){
     completionHandler(UIBackgroundFetchResultNoData);
 }
 
+#pragma mark Link Handling
 -(BOOL) application:(UIApplication *)application
             openURL:(NSURL *)url
   sourceApplication:(NSString *)sourceApplication
@@ -573,11 +607,6 @@ void exceptionHandler(NSException *exception){
                         }];
     }
 
-    if ([sourceApplication isEqualToString:@"com.apple.mobilesafari"] ||
-        [sourceApplication isEqualToString:@"com.apple.mobilemail"]) {
-        return YES;
-    }
-
     // If coming from Synapse add bank process
     if ([[url absoluteString] rangeOfString:@"banksuccess"].location != NSNotFound)
     {
@@ -585,36 +614,62 @@ void exceptionHandler(NSException *exception){
         //Send Notification to WebView so it can resign itself and to the parent view if desired to handle response and give success notification etc.
         [[NSNotificationCenter defaultCenter]
          postNotificationName:@"SynapseResponse" object:self];
+        return YES;
     }
-    // If coming from old Knox add bank process
-  /*else if ([[url absoluteString] rangeOfString:@"pay_id"].location != NSNotFound)
+
+    // DEEP LINK ROUTING
+    NSString * path = [[NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES) objectAtIndex:0] stringByAppendingPathComponent:[NSString stringWithFormat:@"autoLogin.plist"]];
+
+    if ([[NSFileManager defaultManager] fileExistsAtPath:path] &&
+         [user valueForKey:@"MemberId"] != NULL)
     {
-        //Get the Response from Knox and parse it
-        NSString *response = [[url absoluteString]stringByReplacingPercentEscapesUsingEncoding:NSUTF8StringEncoding];
-        NSArray *URLParse = [response componentsSeparatedByString:@"?"];
-        NSString *responseBody = URLParse[1];
-        NSLog(@"%@",URLParse);
-        NSLog(@"%@",responseBody);
+        NSLog(@"AppDelegate -> Open URL checkpoint #2");
+        // The user is logged in and we have a MemberId.  Now direct to the right screen...
 
-        NSArray *responseParse = [responseBody componentsSeparatedByString:@"&"];
+        // Go to Profile
+        if ([[url absoluteString] rangeOfString:@"goprofile"].location != NSNotFound)
+        {
+            NSLog(@"AppDelegate -> Open URL checkpoint #3");
+            sentFromHomeScrn = NO;
+            isFromSettingsOptions = NO;
+            isProfileOpenFromSideBar = NO;
+            isFromTransDetails = NO;
 
-        //Parse the components of the response
-        NSLog(@"%@",responseParse);
-        NSArray * isPaid = [responseParse[0] componentsSeparatedByString:@"pst="][1];
-        NSLog(@"%@",isPaid);
-        NSString * paymentID = [responseParse[2] componentsSeparatedByString:@"pay_id="][1];
+            ProfileInfo * goToProfile = [ProfileInfo new];
+            [nav_ctrl pushViewController:goToProfile animated:YES];
+        }
+        // Go to History
+        else if ([[url absoluteString] rangeOfString:@"gohistory"].location != NSNotFound)
+        {
+            HistoryFlat * goToHistory = [HistoryFlat new];
+            [nav_ctrl pushViewController:goToHistory animated:NO];
+        }
+        // Go to Refer A Friend
+        else if ([[url absoluteString] rangeOfString:@"gorefer"].location != NSNotFound)
+        {
+            SendInvite * goToReferAFriend = [SendInvite new];
+            [nav_ctrl pushViewController:goToReferAFriend animated:YES];
+        }
+        // Go to Settings Main
+        else if ([[url absoluteString] rangeOfString:@"gosettings"].location != NSNotFound)
+        {
+            SettingsOptions * mainSettingsScrn = [SettingsOptions new];
+            [nav_ctrl pushViewController:mainSettingsScrn animated:YES];
+        }
+        // Go to ID Verification Screen
+        else if ([[url absoluteString] rangeOfString:@"idver"].location != NSNotFound)
+        {
+            IdVerifyImageUpload * idVer = [IdVerifyImageUpload new];
+            [nav_ctrl pushViewController:idVer animated:YES];
+        }
+    }
 
-        //Components of response are Logged here
-        NSLog(@"fired in Delegate - URL Encoded --> IsPaid: %@   paymentID: %@", isPaid, paymentID);
-        [user setObject:isPaid forKey:@"isPaid"];
-        [user setObject:paymentID forKey:@"paymentID"];
-
-        [user synchronize];
-
-        //Send Notification to WebView so it can resign itself and to the parent view if desired to handle response and give success notification etc.
-        [[NSNotificationCenter defaultCenter]
-        postNotificationName:@"KnoxResponse" object:self];
-    }*/
+    if ([sourceApplication isEqualToString:@"com.apple.mobilesafari"] ||
+        [sourceApplication isEqualToString:@"com.apple.mobilemail"])
+    {
+        NSLog(@"AppDelegate -> Open URL: Coming from Mobile Safari or Mobile Mail");
+        return YES;
+    }
 
     [MobileAppTracker applicationDidOpenURL:[url absoluteString] sourceApplication:sourceApplication];
 

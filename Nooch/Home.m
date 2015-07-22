@@ -89,18 +89,6 @@ NSMutableURLRequest *request;
     {
         [[assist shared] setisloggedout:NO];
 
-        if ([[[NSUserDefaults standardUserDefaults] objectForKey:@"NotificationPush"]intValue] == 1)
-        {
-            ProfileInfo *prof = [ProfileInfo new];
-            [nav_ctrl pushViewController:prof animated:YES];
-            [self.slidingViewController resetTopView];
-
-            isFromSettingsOptions = NO;
-            isProfileOpenFromSideBar = NO;
-            isFromTransDetails = NO;
-            sentFromHomeScrn = YES;
-        }
-
         me = [core new];
         [user removeObjectForKey:@"Balance"];
         loadInfo = [[NSMutableDictionary alloc] initWithContentsOfFile:[self autoLogin]];
@@ -2178,6 +2166,17 @@ void addressBookChanged(ABAddressBookRef addressBook, CFDictionaryRef info, void
         return NO;
     }
 
+    else if ([user boolForKey:@"isIdVerDocSubmitted"])
+    {
+        UIAlertView *av = [[UIAlertView alloc] initWithTitle:@"ID Verification In Progress"
+                                                     message:@"Thank you for submitting your ID and completing your profile.  Our team is currently reviewing your information so you can start sending money soon.\n\nThis process is usually quick, but may take up to 48 hours."
+                                                    delegate:self
+                                           cancelButtonTitle:@"OK"
+                                           otherButtonTitles:nil, nil];
+        [av show];
+        return NO;
+    }
+
     // ... and check if that bank account is 'Verified'
     else if (![user boolForKey:@"IsSynapseBankVerified"])
     {
@@ -2328,11 +2327,9 @@ void addressBookChanged(ABAddressBookRef addressBook, CFDictionaryRef info, void
 
         NSDictionary * dict = [NSJSONSerialization JSONObjectWithData:[result dataUsingEncoding:NSUTF8StringEncoding] options:0 error:&error];
 
-        NSLog(@"getPendingTransfersCount dict is: %@",dict);
+        //NSLog(@"getPendingTransfersCount dict is: %@",dict);
         int pendingRequestsReceived = [[dict valueForKey:@"pendingRequestsReceived"] intValue];
         NSString * count;
-
-        //[self.navigationItem setLeftBarButtonItem:nil];
 
         if (pendingRequestsReceived > 0 &&
             ((isSynapseOn && [user boolForKey:@"IsSynapseBankAvailable"]) ||

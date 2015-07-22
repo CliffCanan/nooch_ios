@@ -20,7 +20,7 @@ BOOL shouldFocusOnAddress, shouldFocusOnDob, shouldFocusOnSsn;
 {
     BOOL isPhotoUpdate, wasSSNadded;
     BOOL emailVerifyRowIsShowing, smsVerifyRowIsShowing;
-    BOOL hasSeenDobPopup;
+    BOOL hasSeenDobPopup, hasSeenAddressPopup;
     short down,numberOfRowsToDisplay,heightOfTopSection;
     short hdrHt,rowHeight;
     NSMutableDictionary *transaction;

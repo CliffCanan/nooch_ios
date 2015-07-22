@@ -1093,6 +1093,12 @@
         return NO;
     }
 
+    NSUInteger newLength = [textField.text length] + [string length] - range.length;
+    if (newLength > 50)
+    {
+        return NO;
+    }
+
     if ([self.name_field.text length] > 1 &&
         [self.email_field.text length] > 2 &&
         [self.email_field.text rangeOfString:@"@"].location != NSNotFound &&
@@ -1260,6 +1266,34 @@
     else
     {
         [self.pwValidator setHidden:YES];
+    }
+
+    if (textField == self.email_field)
+    {
+        if (newLength < 22)
+        {
+            [self.email_field setFrame:CGRectMake(94, 293, 214, 40)];
+            [self.email_field setFont:[UIFont fontWithName:@"Roboto-regular" size:17]];
+        }
+        else if (newLength > 35)
+        {
+            [self.email_field setFrame:CGRectMake(94, 296, 214, 40)];
+            [self.email_field setFont:[UIFont fontWithName:@"Roboto-regular" size:12]];
+        }
+        else if (newLength > 30)
+        {
+            [self.email_field setFrame:CGRectMake(94, 295, 214, 40)];
+            [self.email_field setFont:[UIFont fontWithName:@"Roboto-regular" size:14]];
+        }
+        else if (newLength > 26)
+        {
+            [self.email_field setFrame:CGRectMake(94, 294, 214, 40)];
+            [self.email_field setFont:[UIFont fontWithName:@"Roboto-regular" size:15]];
+        }
+        else
+        {
+            [self.email_field setFont:[UIFont fontWithName:@"Roboto-regular" size:16]];
+        }
     }
     return YES;
 }

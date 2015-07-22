@@ -353,6 +353,7 @@
     }
 }
 
+#pragma mark - Navigation Handlers
 -(void)showMenu
 {
     [self.search resignFirstResponder];
@@ -364,6 +365,23 @@
     [self.navigationController popViewControllerAnimated:YES];
 }
 
+-(void)sideright:(id)sender
+{
+    if (!self.completed_selected) {
+        return;
+    }
+    [UIView beginAnimations:nil context:nil];
+    [UIView setAnimationDelegate:self];
+    [UIView setAnimationDuration:0.5];
+    self.list.frame=CGRectMake(0, 84, 320, self.view.frame.size.height);
+    [self.view bringSubviewToFront:self.list];
+    mapArea.frame=CGRectMake(0, 84,320,self.view.frame.size.height);
+    isMapOpen = NO;
+    [UIView commitAnimations];
+    [self.view bringSubviewToFront:exportHistory];
+}
+
+#pragma mark - Map Area Related Methods
 -(void)displayEmptyMapArea
 {
     //NSLog(@"displayEmptyMapArea FIRED");
@@ -848,7 +866,7 @@
     [CATransaction commit];
 }
 
-# pragma mark - CLLocationManager Delegate Methods
+# pragma mark - LocationManager Delegate Methods
 - (void)locationManager:(CLLocationManager *)manager
      didUpdateLocations:(NSArray *)locations
 {
@@ -915,22 +933,6 @@
     [UIView setAnimationDelegate:self];
     [[sender view] setCenter:CGPointMake(finalX, finalY)];
     [UIView commitAnimations];
-}
-
--(void)sideright:(id)sender
-{
-    if (!self.completed_selected) {
-        return;
-    }
-    [UIView beginAnimations:nil context:nil];
-    [UIView setAnimationDelegate:self];
-    [UIView setAnimationDuration:0.5];
-    self.list.frame=CGRectMake(0, 84, 320, self.view.frame.size.height);
-    [self.view bringSubviewToFront:self.list];
-    mapArea.frame=CGRectMake(0, 84,320,self.view.frame.size.height);
-    isMapOpen = NO;
-    [UIView commitAnimations];
-    [self.view bringSubviewToFront:exportHistory];
 }
 
 -(void)FilterHistory:(id)sender
@@ -2242,7 +2244,7 @@
     return YES;
 }
 
-#pragma mark- Date From String
+#pragma mark - Date From String
 - (NSDate*) dateFromString:(NSString*)aStr
 {
     NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
@@ -2255,7 +2257,7 @@
     return aDate;
 }
 
-#pragma mark - searching
+#pragma mark - Search Related Methods
 -(void)searchBarCancelButtonClicked:(UISearchBar *)searchBar
 {
     [searchBar setShowsCancelButton:NO];
@@ -2959,10 +2961,9 @@
             [av show];
         }
     }
-
 }
 
-- (IBAction)ExportHistory:(id)sender
+-(IBAction)ExportHistory:(id)sender
 {
     UIAlertView * alert = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"History_ExportAlrtTitle", @"History screen export transfer data Alert Title")
                                                      message:NSLocalizedString(@"History_ExportAlrtBody", @"History screen export transfer data Alert Body Text")
@@ -2979,8 +2980,8 @@
     [alert show];
 }
 
-#pragma mark - alert view delegation
-- (void)alertView:(UIAlertView *)actionSheet clickedButtonAtIndex:(NSInteger)buttonIndex
+#pragma mark - Alert View Handling
+-(void)alertView:(UIAlertView *)actionSheet clickedButtonAtIndex:(NSInteger)buttonIndex
 {
     if (actionSheet.tag == 11 && buttonIndex == 1) // export history
     {
@@ -3133,7 +3134,8 @@
     }
 }
 
-- (void) mailComposeController:(MFMailComposeViewController *)controller didFinishWithResult:(MFMailComposeResult)result error:(NSError *)error
+#pragma mark - Mail Controller
+-(void) mailComposeController:(MFMailComposeViewController *)controller didFinishWithResult:(MFMailComposeResult)result error:(NSError *)error
 {
     UIAlertView *alert = [[UIAlertView alloc] init];
     [alert addButtonWithTitle:@"OK"];
@@ -3168,7 +3170,7 @@
     [self dismissViewControllerAnimated:YES completion:NULL];
 }
 
-- (void)didReceiveMemoryWarning
+-(void)didReceiveMemoryWarning
 {
     [super didReceiveMemoryWarning];
     SDImageCache *imageCache = [SDImageCache sharedImageCache];

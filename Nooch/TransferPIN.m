@@ -475,48 +475,146 @@
     [[assist shared] setneedsReload:YES];
 }
 
+#pragma mark - Helper Methods
 -(void)backToHowMuch
 {
     [self.navigationItem setLeftBarButtonItem:nil];
     [self.navigationController popViewControllerAnimated:YES];
 }
 
-- (void) mailComposeController:(MFMailComposeViewController *)controller
-           didFinishWithResult:(MFMailComposeResult)result
-                         error:(NSError *)error
+NSString * calculateArrivalDate()
 {
-    UIAlertView *alert = [[UIAlertView alloc] init];
-    [alert addButtonWithTitle:@"OK"];
-    [alert setDelegate:nil];
-    switch (result)
+    NSDate *date = [NSDate date];
+
+    NSDateFormatter *dateFormat = [[NSDateFormatter alloc] init];
+    dateFormat.timeZone = [NSTimeZone timeZoneWithName:@"America/New_York"];
+    [dateFormat setDateFormat:@"E"];
+    NSString * dateString = [dateFormat stringFromDate:date];
+
+    NSDateFormatter * timeFormat = [[NSDateFormatter alloc] init];
+    timeFormat.timeZone = [NSTimeZone timeZoneWithName:@"America/New_York"];
+    [timeFormat setDateFormat:@"k"];
+    short timeOfDay = [[timeFormat stringFromDate:date] intValue];
+
+    //NSLog(@"Today's Day of Week: %@", dateString);
+    NSLog(@"Time of Day (Hour) is: %d", timeOfDay);
+
+    NSDateComponents *offsetComponents = [[NSDateComponents alloc] init];
+    short knoxXtraDays = [[ARPowerHookManager getValueForHookById:@"knox_xtraTime"] intValue];
+
+    if ([dateString isEqualToString:@"Mon"] ||
+        [dateString isEqualToString:@"Tue"] ||
+        [dateString isEqualToString:@"Wed"])
     {
-        case MFMailComposeResultCancelled:
-            NSLog(@"Email cancelled");
-            break;
-        case MFMailComposeResultSaved:
-            NSLog(@"Mail saved");
-            [alert setTitle:@"Email saved"];
-            [alert show];
-            break;
-        case MFMailComposeResultSent:
-            NSLog(@"Mail sent");
-            [alert setTitle:@"Email sent"];
-            [alert show];
-            break;
-        case MFMailComposeResultFailed:
-            [alert setTitle:[error localizedDescription]];
-            [alert show];
-            NSLog(@"Mail sent failure: %@", [error localizedDescription]);
-            break;
-        default:
-            break;
+        if (timeOfDay < 15) // its BEFORE 3:00pm EST
+        {
+            [offsetComponents setDay: (1 + knoxXtraDays)];
+        }
+        else // its AFTER 3:00pm EST
+        {
+            if ([dateString isEqualToString:@"Mon"] ||
+                [dateString isEqualToString:@"Tue"])
+            {
+                [offsetComponents setDay:(2 + knoxXtraDays)];
+            }
+            else if ([dateString isEqualToString:@"Wed"])
+            {
+                if (knoxXtraDays == 0)
+                {
+                    [offsetComponents setDay:2]; // arrive by Friday
+                }
+                else if (knoxXtraDays == 1)
+                {
+                    [offsetComponents setDay:5]; // arrive by Monday
+                }
+                else
+                {
+                    [offsetComponents setDay:(5 + knoxXtraDays)];
+                }
+            }
+        }
     }
-        // Close the Mail Interface
-    [self dismissViewControllerAnimated:YES completion:NULL];
-    [self.navigationController popToRootViewControllerAnimated:YES];
+    else if ([dateString isEqualToString:@"Thu"])
+    {
+        if (timeOfDay < 15) // its BEFORE 3:00pm EST
+        {
+            if (knoxXtraDays == 0)
+            {
+                [offsetComponents setDay:1]; // arrive by Friday
+            }
+            else if (knoxXtraDays == 1)
+            {
+                [offsetComponents setDay:4]; // arrive by Monday
+            }
+            else
+            {
+                [offsetComponents setDay:(4 + knoxXtraDays)];
+            }
+        }
+        else // its AFTER 3:00pm EST
+        {
+            [offsetComponents setDay:(4 + knoxXtraDays)];
+        }
+    }
+    else if ([dateString isEqualToString:@"Fri"])
+    {
+        if (timeOfDay < 15) // its BEFORE 3:00pm EST
+        {
+            [offsetComponents setDay:(3 + knoxXtraDays)];
+        }
+        else // its AFTER 3:00pm EST
+        {
+            [offsetComponents setDay:(4 + knoxXtraDays)];
+        }
+    }
+    else if ([dateString isEqualToString:@"Sat"])
+    {
+        [offsetComponents setDay:(3 + knoxXtraDays)];
+    }
+    else if ([dateString isEqualToString:@"Sun"])
+    {
+        [offsetComponents setDay:(2 + knoxXtraDays)];
+    }
+
+    NSDate * arrivalDate = [[[NSCalendar alloc]
+                             initWithCalendarIdentifier:NSGregorianCalendar] dateByAddingComponents:offsetComponents
+                            toDate:date options:0];
+
+    NSString *formatString = [NSDateFormatter dateFormatFromTemplate:@"EEEEdMMMM" // e.g.: "Monday, March 15"
+                                                             options:0
+                                                              locale:[NSLocale currentLocale]];
+    NSDateFormatter * finalDateFormatter = [[NSDateFormatter alloc] init];
+    finalDateFormatter.timeZone = [NSTimeZone timeZoneWithName:@"America/New_York"];
+    [finalDateFormatter setDateFormat:formatString];
+
+    NSString * arrivalDateFormatted = [finalDateFormatter stringFromDate:arrivalDate];
+
+
+
+    NSTimeZone * systimeZone = [NSTimeZone systemTimeZone];
+    NSString * timeZoneString = [systimeZone localizedName:NSTimeZoneNameStyleGeneric locale:[NSLocale currentLocale]];
+
+    [ARProfileManager registerString:@"Time_Zone" withValue:timeZoneString];
+
+    return arrivalDateFormatted;
 }
 
-#pragma mark-Location Tracker Delegates
+-(void)errorAlerts:(NSString *)referenceNumber
+{
+    NSDictionary * dictionary = @{@"MemberId": [user valueForKey:@"MemberId"],
+                                  @"errorAlertNumber": referenceNumber};
+    [ARTrackingManager trackEvent:@"TrnsfrPIN_ErrorAlert_Displayed" parameters:dictionary];
+
+    UIAlertView *av = [[UIAlertView alloc] initWithTitle:[NSString stringWithFormat:NSLocalizedString(@"EnterPIN_ErrorAlrtTitle", @"Enter PIN Screen error Alert Title"),referenceNumber]
+                                                 message:[NSString stringWithFormat:@"\xF0\x9F\x98\xB3\n%@", NSLocalizedString(@"EnterPIN_ErrorAlrtBody", @"Enter PIN Screen error alert Body Text")]
+                                                delegate:self
+                                       cancelButtonTitle:@"OK"
+                                       otherButtonTitles:NSLocalizedString(@"EnterPIN_ContactSupportBtn", @"Enter PIN Screen account suspended Alert Button Contact Support"),nil];
+    [av setTag:52];
+    [av show];
+}
+
+#pragma mark - Location Tracker Delegates
 - (void)transferPinLocationUpdateManager:(CLLocationManager *)manager
                       didUpdateLocations:(NSArray *)locationsArray
 {
@@ -782,19 +880,13 @@
     return YES;
 }
 
--(void)Error:(NSError *)Error
+-(BOOL)textFieldShouldReturn:(UITextField *)textField
 {
-    [self.hud hide:YES];
-     UIAlertView *alert = [[UIAlertView alloc]
-                          initWithTitle:NSLocalizedString(@"TrnsfrPIN_CnctnErrAlrtTitle", @"Transfer PIN screen 'Connection Error' Alert Text")
-                          message:NSLocalizedString(@"TrnsfrPIN_CnctnErrAlrtBody", @"Transfer PIN screen Connection Error Alert Body Text")
-                          delegate:nil
-                          cancelButtonTitle:@"OK"
-                          otherButtonTitles:nil];
-    [alert show];
+    [textField resignFirstResponder];
+    return YES;
 }
 
-#pragma mark - server delegation
+#pragma mark - Server Response Handling
 - (void) listen:(NSString *)result tagName:(NSString *)tagName
 {
     NSError* error;
@@ -1112,7 +1204,6 @@
             [dateFormat setDateFormat:@"yyyy-MM-dd HH:mm:ss.SS"];
             NSString * TransactionDate = [dateFormat stringFromDate:date];
 
-            NSLog(@"SEND/REQUEST --> transactionInputTransfer A) is: %@", transactionInputTransfer);
             [transactionInputTransfer setValue:TransactionDate forKey:@"TransactionDate"];
             [transactionInputTransfer setValue:@"false" forKey:@"IsPrePaidTransaction"];
             [transactionInputTransfer setValue:[NSString stringWithFormat:@"%f",lat] forKey:@"Latitude"];
@@ -1124,14 +1215,16 @@
             [transactionInputTransfer setValue:country forKey:@"Country"];
             [transactionInputTransfer setValue:@"" forKey:@"Zipcode"];
             [transactionInputTransfer setValue:self.memo forKey:@"Memo"];
-            if ([self.type isEqualToString:@"request"]) {
+            if ([self.type isEqualToString:@"request"])
+            {
                 transactionTransfer = [[NSMutableDictionary alloc] initWithObjectsAndKeys:transactionInputTransfer, @"requestInput",[user valueForKey:@"OAuthToken"],@"accessToken", nil];
             }
-            else {
+            else
+            {
                 transactionTransfer = [[NSMutableDictionary alloc] initWithObjectsAndKeys:transactionInputTransfer, @"transactionInput",[user valueForKey:@"OAuthToken"],@"accessToken", nil];
             }
-            NSLog(@"SEND/REQUEST --> transactionInputTransfer B) is: %@", transactionInputTransfer);
 
+            //NSLog(@"SEND/REQUEST --> transactionInputTransfer is: %@", transactionInputTransfer);
         }
 
         NSLog(@"TransactionTransfer Object is: %@",transactionTransfer);
@@ -1154,7 +1247,7 @@
         NSLog(@"SEND/REQUEST --> urlStrTranfer is: %@", urlStrTranfer);
 
         requestTransfer = [[NSMutableURLRequest alloc] initWithURL:urlTransfer];
-        NSLog(@"SEND/REQUEST --> requestTransfer is: %@", requestTransfer);
+        //NSLog(@"SEND/REQUEST --> requestTransfer is: %@", requestTransfer);
 
         requestTransfer.timeoutInterval=12000;
         [requestTransfer setHTTPMethod:@"POST"];
@@ -1163,11 +1256,10 @@
         [requestTransfer setHTTPBody:postTransfer];
 
         NSURLConnection *connection = [[NSURLConnection alloc] initWithRequest:requestTransfer delegate:self];
-        NSLog(@"NSURLConnection is: %@", connection);
+        //NSLog(@"NSURLConnection is: %@", connection);
         if (connection) {
             self.respData = [NSMutableData data];
         }
-
     }
 
     else if ([self.type isEqualToString:@"requestRespond"])
@@ -1183,7 +1275,7 @@
             NSDateFormatter *dateFormat = [[NSDateFormatter alloc] init];
             [dateFormat setDateFormat:@"yyyy-MM-dd HH:mm:ss.SS"];
             NSString *TransactionDate = [dateFormat stringFromDate:date];
-            
+
             if ([[self.receiver objectForKey:@"response"] isEqualToString:@"accept"])
             {
                 [transactionInputTransfer setValue:@"Success" forKey:@"Status"];
@@ -1223,7 +1315,6 @@
         urlStrTranfer = [urlStrTranfer stringByAppendingFormat:@"/%@", @"HandleRequestMoney"];
         urlTransfer = [NSURL URLWithString:urlStrTranfer];
 
-        
         requestTransfer = [[NSMutableURLRequest alloc] initWithURL:urlTransfer];
         [requestTransfer setHTTPMethod:@"POST"];
         [requestTransfer setValue:postLengthTransfer forHTTPHeaderField:@"Content-Length"];
@@ -1239,11 +1330,11 @@
         return;
     }
 
-    if (self.receiver[@"Photo"] !=NULL && ![self.receiver[@"Photo"] isKindOfClass:[NSNull class]])
+    if (self.receiver[@"Photo"] != NULL && ![self.receiver[@"Photo"] isKindOfClass:[NSNull class]])
     {
         [transactionInputTransfer setObject:self.receiver[@"Photo"]forKey:@"Photo"];
     }
-    else if (self.receiver[@"PhotoUrl"] !=NULL && ![self.receiver[@"PhotoUrl"] isKindOfClass:[NSNull class]])
+    else if (self.receiver[@"PhotoUrl"] != NULL && ![self.receiver[@"PhotoUrl"] isKindOfClass:[NSNull class]])
         [transactionInputTransfer setObject:self.receiver[@"PhotoUrl"]forKey:@"Photo"];
     
     if ([self.type isEqualToString:@"donation"] && self.receiver[@"PhotoIcon"] != NULL && ![self.receiver[@"PhotoIcon"] isKindOfClass:[NSNull class]])
@@ -1253,170 +1344,19 @@
     self.trans = [transactionInputTransfer copy];
 }
 
--(void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex
+-(void)Error:(NSError *)Error
 {
-    //NSLog(@"AlertView.tag is: %ld  and buttonIndex is: %ld",(long)alertView.tag,(long)buttonIndex);
-    if (alertView.tag == 1)
-    {
-        if (buttonIndex == 0)
-        {
-            NSLog(@"buttonIndex was 0");
-            [nav_ctrl popToRootViewControllerAnimated:YES];
-        }
-
-        else if (buttonIndex == 1)
-        {
-            NSMutableDictionary *input = [self.trans mutableCopy];
-            
-            if ([[self.trans valueForKey:@"TransactionType"]isEqualToString:@"Request"] &&
-                [[user valueForKey:@"MemberId"] isEqualToString:[self.trans valueForKey:@"MemberId"]])
-            {
-                NSString *MemberId = [input valueForKey:@"MemberId"];
-                NSString *ResID = [input valueForKey:@"SenderId"];
-                [input setObject:MemberId forKey:@"RecepientId"];
-                [input setObject:ResID forKey:@"MemberId"];
-                [input setObject:dictResultTransfer[@"requestId"] forKey:@"TransactionId"];
-            }
-            else  if ([self.type isEqualToString:@"send"])
-            {
-                 [input setObject:dictResultTransfer[@"trnsactionId"] forKey:@"TransactionId"];
-            }
-
-            if ([self.receiver objectForKey:@"nonuser"])
-            {
-                if ([self.receiver objectForKey:@"firstName"] && [self.receiver objectForKey:@"lastName"])
-                {
-                    NSString * fullName = [NSString stringWithFormat:@"%@ %@", [self.receiver objectForKey:@"firstName"], [self.receiver objectForKey:@"lastName"]];
-                    [input setObject:fullName forKey:@"InvitationSentTo"];
-                }
-                else if ([self.receiver objectForKey:@"firstName"])
-                {
-                    [input setObject:[self.receiver objectForKey:@"email"] forKey:@"InvitationSentTo"];
-                }
-                else if ([self.receiver objectForKey:@"email"])
-                {
-                    [input setObject:[self.receiver objectForKey:@"email"] forKey:@"InvitationSentTo"];
-                }
-                else if ([self.receiver objectForKey:@"phone"])
-                {
-                    [input setObject:[self.receiver objectForKey:@"phone"] forKey:@"InvitationSentTo"];
-                }
-
-                if ([self.type isEqualToString:@"request"])
-                {
-                    [input setObject:@"InviteRequest" forKey:@"TransactionType"];
-                    [input setObject:dictResultTransfer[@"requestId"] forKey:@"TransactionId"];
-                }
-                else
-                {
-                    [input setObject:@"Invite" forKey:@"TransactionType"];
-                    [input setObject:dictResultTransfer[@"trnsactionId"] forKey:@"TransactionId"];
-                    [input setObject:@"Pending" forKey:@"TransactionStatus"];
-                }
-            }
-            NSLog(@"Input: %@",input);
-
-            NSMutableArray * arrNav = [nav_ctrl.viewControllers mutableCopy];
-
-            for (short i = [arrNav count]; i > 1; i--)
-            {
-                [arrNav removeLastObject];
-            }
-
-            isFromTransferPIN = YES;
-
-            HistoryFlat * mainHistoryScreen = [HistoryFlat new];
-            [arrNav addObject: mainHistoryScreen];
-            [nav_ctrl setViewControllers:arrNav animated:NO];
-
-            //NSLog(@"TransferPIN -> nav_ctrl.viewControllers is: %@", nav_ctrl.viewControllers);
-
-            TransactionDetails *td = [[TransactionDetails alloc] initWithData:input];
-            [nav_ctrl pushViewController:td animated:YES];
-        }
-    }
-
-    // Contact Support alerts
-    else if ((alertView.tag == 50 || alertView.tag == 51 ||
-              alertView.tag == 52 || alertView.tag == 53) &&
-             buttonIndex == 1)
-    {
-        if (buttonIndex == 1)
-        {
-            if (![MFMailComposeViewController canSendMail])
-            {
-                UIAlertView * av = [[UIAlertView alloc] initWithTitle:@"No Email Detected"
-                                                              message:@"You don't have an email account configured for this device."
-                                                             delegate:nil
-                                                    cancelButtonTitle:@"OK"
-                                                    otherButtonTitles: nil];
-                [av show];
-                return;
-            }
-
-            NSString * memberId = [user valueForKey:@"MemberId"];
-            NSString * fullName = [NSString stringWithFormat:@"%@ %@",[user valueForKey:@"firstName"],[user valueForKey:@"lastName"]];
-            NSString * userStatus = [user objectForKey:@"Status"];
-            NSString * userEmail = [user objectForKey:@"UserName"];
-            NSString * IsVerifiedPhone = [[user objectForKey:@"IsVerifiedPhone"] lowercaseString];
-            NSString * iOSversion = [[UIDevice currentDevice] systemVersion];
-            NSString * msgBody = [NSString stringWithFormat:@"<!doctype html> <html><body><br><br><br><br><br><br><small>• MemberID: %@<br>• Name: %@<br>• Status: %@<br>• Email: %@<br>• Is Phone Verified: %@<br>• iOS Version: %@<br></small></body></html>",memberId, fullName, userStatus, userEmail, IsVerifiedPhone, iOSversion];
-
-            MFMailComposeViewController *mailComposer = [[MFMailComposeViewController alloc] init];
-            mailComposer.mailComposeDelegate = self;
-            mailComposer.navigationBar.tintColor=[UIColor whiteColor];
-            [mailComposer setSubject:[NSString stringWithFormat:@"Support Request: Version %@",[[[NSBundle mainBundle] infoDictionary] objectForKey:@"CFBundleVersion"]]];
-            [mailComposer setMessageBody:msgBody isHTML:YES];
-            [mailComposer setToRecipients:[NSArray arrayWithObjects:@"support@nooch.com", nil]];
-            [mailComposer setCcRecipients:[NSArray arrayWithObject:@""]];
-            [mailComposer setBccRecipients:[NSArray arrayWithObject:@""]];
-            [mailComposer setModalTransitionStyle:UIModalTransitionStyleCoverVertical];
-            [self presentViewController:mailComposer animated:YES completion:nil];
-        }
-        else if (buttonIndex == 0)
-        {
-            [self.navigationController popToRootViewControllerAnimated:YES];
-        }
-    }
-
-    else if (alertView.tag == 54 && buttonIndex == 1) // No Bank attached, go to Settings
-    {
-        shouldDisplayBankNotVerifiedLtBox = YES;
-        SettingsOptions * mainSettingsScrn = [SettingsOptions new];
-        [nav_ctrl pushViewController:mainSettingsScrn animated:YES];
-    }
-
-    else if (alertView.tag == 11 && buttonIndex == 1) // Bank Not Verified - go to Settings
-    {
-        SettingsOptions * mainSettingsScrn = [SettingsOptions new];
-        [nav_ctrl pushViewController:mainSettingsScrn animated:YES];
-    }
-
-    else if (alertView.tag == 31) // Attempt to send more than transaction limit (on server), go back to How Much screen
-    {
-        [self backToHowMuch];
-    }
-
-    else if (alertView.tag == 61)
-    {
-        [self.navigationController popToRootViewControllerAnimated:YES];
-    }
-
-    else if (alertView.tag == 71) // Attempt to send to self, go back to Select Recipient screen
-    {
-        [self.navigationItem setLeftBarButtonItem:nil];
-        NSMutableArray * arrNav = [nav_ctrl.viewControllers mutableCopy];
-
-        SelectRecipient * selectRecipScrn = [SelectRecipient new];
-        [arrNav replaceObjectAtIndex:[arrNav count]-2 withObject:selectRecipScrn];
-
-        [nav_ctrl setViewControllers:arrNav animated:NO];
-
-        [self.navigationController popViewControllerAnimated:YES];
-    }
+    [self.hud hide:YES];
+    UIAlertView *alert = [[UIAlertView alloc]
+                          initWithTitle:NSLocalizedString(@"TrnsfrPIN_CnctnErrAlrtTitle", @"Transfer PIN screen 'Connection Error' Alert Text")
+                          message:NSLocalizedString(@"TrnsfrPIN_CnctnErrAlrtBody", @"Transfer PIN screen Connection Error Alert Body Text")
+                          delegate:nil
+                          cancelButtonTitle:@"OK"
+                          otherButtonTitles:nil];
+    [alert show];
 }
 
-#pragma mark - connection handling
+#pragma mark - Connection Handling
 - (void)connection:(NSURLConnection *)connection didReceiveResponse:(NSURLResponse *)response {
 	[self.respData setLength:0];
 }
@@ -1427,21 +1367,6 @@
 
 - (void)connection:(NSURLConnection *)connection didFailWithError:(NSError *)error {
 	NSLog(@"Connection failed: %@", [error description]);
-}
-
--(void)errorAlerts:(NSString *)referenceNumber
-{
-    NSDictionary * dictionary = @{@"MemberId": [user valueForKey:@"MemberId"],
-                                  @"errorAlertNumber": referenceNumber};
-    [ARTrackingManager trackEvent:@"TrnsfrPIN_ErrorAlert_Displayed" parameters:dictionary];
-
-    UIAlertView *av = [[UIAlertView alloc] initWithTitle:[NSString stringWithFormat:NSLocalizedString(@"EnterPIN_ErrorAlrtTitle", @"Enter PIN Screen error Alert Title"),referenceNumber]
-                                                 message:[NSString stringWithFormat:@"\xF0\x9F\x98\xB3\n%@", NSLocalizedString(@"EnterPIN_ErrorAlrtBody", @"Enter PIN Screen error alert Body Text")]
-                                                delegate:self
-                                       cancelButtonTitle:@"OK"
-                                       otherButtonTitles:NSLocalizedString(@"EnterPIN_ContactSupportBtn", @"Enter PIN Screen account suspended Alert Button Contact Support"),nil];
-    [av setTag:52];
-    [av show];
 }
 
 - (void)connectionDidFinishLoading:(NSURLConnection *)connection
@@ -1457,7 +1382,6 @@
     NSLog(@"TransferPIN --> This is the response:  %@",responseString);
 
 
-
     if ([self.receiver valueForKey:@"nonuser"])
     {
         // Specific 'Result' Strings - SYNAPSE
@@ -1466,10 +1390,10 @@
         NSString * requestNonNoochUser_Email_SynapseResult = [[dictResultTransfer valueForKey:@"RequestMoneyToNonNoochUserUsingSynapseResult"] valueForKey:@"Result"];
         NSString * requestNonNoochUser_Phone_SynapseResult = [[dictResultTransfer valueForKey:@"RequestMoneyToNonNoochUserThroughPhoneUsingSynapseResult"] valueForKey:@"Result"];
 
-        NSLog(@"sendNonNoochUser_Email_SynapseResult is: %@",sendNonNoochUser_Email_SynapseResult);
-        NSLog(@"sendNonNoochUser_Phone_SynapseResult is: %@",sendNonNoochUser_Phone_SynapseResult);
-        NSLog(@"requestNonNoochUser_Email_SynapseResult is: %@",requestNonNoochUser_Email_SynapseResult);
-        NSLog(@"requestNonNoochUser_Phone_SynapseResult is: %@",requestNonNoochUser_Phone_SynapseResult);
+        //NSLog(@"sendNonNoochUser_Email_SynapseResult is: %@",sendNonNoochUser_Email_SynapseResult);
+        //NSLog(@"sendNonNoochUser_Phone_SynapseResult is: %@",sendNonNoochUser_Phone_SynapseResult);
+        //NSLog(@"requestNonNoochUser_Email_SynapseResult is: %@",requestNonNoochUser_Email_SynapseResult);
+        //NSLog(@"requestNonNoochUser_Phone_SynapseResult is: %@",requestNonNoochUser_Phone_SynapseResult);
 
         if ([sendNonNoochUser_Email_SynapseResult rangeOfString:@"successfully"].length != 0 ||
             [sendNonNoochUser_Phone_SynapseResult rangeOfString:@"successfully"].length != 0 ||
@@ -1513,6 +1437,7 @@
             return;
         }
 
+        // Per Transaction Limit Exceeded
         else if ([sendNonNoochUser_Email_SynapseResult rangeOfString:@"maximum amount you can"].length != 0 ||
                  [sendNonNoochUser_Phone_SynapseResult rangeOfString:@"maximum amount you can"].length != 0 ||
                  [requestNonNoochUser_Email_SynapseResult rangeOfString:@"maximum amount you can"].length != 0 ||
@@ -1526,6 +1451,20 @@
                                                cancelButtonTitle:@"OK"
                                                otherButtonTitles:nil];
             [av setTag:31];
+            [av show];
+            return;
+        }
+
+        // Weekly Transaction Limit Exceeded (only matters for Sends/Invites not Requests
+        else if ([sendNonNoochUser_Email_SynapseResult rangeOfString:@"Weekly transfer limit exceeded"].length != 0 ||
+                 [sendNonNoochUser_Phone_SynapseResult rangeOfString:@"Weekly transfer limit exceeded"].length != 0)
+        {
+            UIAlertView *av = [[UIAlertView alloc] initWithTitle:@"Weekly Transfer Limit Exceeded"
+                                                         message:@"\xF0\x9F\x98\xA5\nUnfortunately this transfer would put you over the weekly transfer limit. Please try sending a smaller amount, or wait until Monday to try again.\n\nVery sorry for the inconvenience - our limits are in place to protect all users and keep Nooch safe."
+                                                        delegate:self
+                                               cancelButtonTitle:nil
+                                               otherButtonTitles:@"OK",nil];
+            [av setTag:32];
             [av show];
             return;
         }
@@ -1699,39 +1638,6 @@
         return;
     }
 
-    else if ([sendMoneyToExistingUserSynapseResult rangeOfString:@"user details not found"].length != 0)
-    {
-        [self errorAlerts:@"510"];
-        return;
-    }
-    
-    else if ([sendMoneyToExistingUserSynapseResult rangeOfString:@"maximum amount you can send"].length != 0 ||
-             [makeRequestToExistingUserResult rangeOfString:@"maximum amount you can"].length != 0)
-    {
-        NSString * transLimitFromArtisan = [ARPowerHookManager getValueForHookById:@"transLimit"];
-
-        UIAlertView *av = [[UIAlertView alloc] initWithTitle:@"Whoa Now"
-                                                     message:[NSString stringWithFormat:@"\xF0\x9F\x98\xB3\nTo keep Nooch safe, please don’t send or request more than $%@. We hope to raise this limit very soon!",transLimitFromArtisan]
-                                                    delegate:self
-                                           cancelButtonTitle:@"OK"
-                                           otherButtonTitles:nil];
-        [av setTag:31];
-        [av show];
-        return;
-    }
-
-    else if ([sendMoneyToExistingUserSynapseResult rangeOfString:@"send money to the same user"].length != 0)
-    {
-        UIAlertView *av = [[UIAlertView alloc] initWithTitle:@"Very Sneaky"
-                                                     message:@"\xF0\x9F\x98\xB1\nYou are attempting a transfer paradox, the results of which could cause a chain reaction that would unravel the very fabric of the space-time continuum and destroy the entire universe!\n\nPlease try sending money to someone ELSE!"
-                                                    delegate:self
-                                           cancelButtonTitle:@"OK"
-                                           otherButtonTitles:nil];
-        [av setTag:71];
-        [av show];
-        return;
-    }
-
     else if ([sendMoneyToExistingUserSynapseResult rangeOfString:@"not have any active bank account"].length != 0 ||
              [sendMoneyToExistingUserSynapseResult rangeOfString:@"not linked to any bank account"].length != 0 ||
              [sendMoneyToExistingUserSynapseResult rangeOfString:@"Recepient does not have any verified bank account"].length != 0 ||
@@ -1748,6 +1654,52 @@
         return;
     }
 
+    // Per Transaction Limit Exceeded
+    else if ([sendMoneyToExistingUserSynapseResult rangeOfString:@"maximum amount you can send"].length != 0 ||
+             [makeRequestToExistingUserResult rangeOfString:@"maximum amount you can"].length != 0)
+    {
+        NSString * transLimitFromArtisan = [ARPowerHookManager getValueForHookById:@"transLimit"];
+
+        UIAlertView *av = [[UIAlertView alloc] initWithTitle:@"Whoa Now"
+                                                     message:[NSString stringWithFormat:@"\xF0\x9F\x98\xB3\nTo keep Nooch safe, please don’t send or request more than $%@. We hope to raise this limit very soon!",transLimitFromArtisan]
+                                                    delegate:self
+                                           cancelButtonTitle:@"OK"
+                                           otherButtonTitles:nil];
+        [av setTag:31];
+        [av show];
+        return;
+    }
+
+    // Weekly Transaction Limit Exceeded
+    else if ([payRequestResult rangeOfString:@"Weekly transfer limit exceeded"].length != 0)
+    {
+        UIAlertView *av = [[UIAlertView alloc] initWithTitle:@"Weekly Transfer Limit Exceeded"
+                                                     message:@"\xF0\x9F\x98\xA5\nUnfortunately this transfer would put you over the weekly transfer limit. Please try sending a smaller amount, or wait until Monday to try again.\n\nVery sorry for the inconvenience - our limits are in place to protect all users and keep Nooch safe."
+                                                    delegate:self
+                                           cancelButtonTitle:nil
+                                           otherButtonTitles:@"OK",nil];
+        [av setTag:32];
+        [av show];
+        return;
+    }
+
+    // Per Transaction Limit Exceeded
+    else if ([sendMoneyToExistingUserSynapseResult rangeOfString:@"send money to the same user"].length != 0)
+    {
+        UIAlertView *av = [[UIAlertView alloc] initWithTitle:@"Very Sneaky"
+                                                     message:@"\xF0\x9F\x98\xB1\nYou are attempting a transfer paradox, the results of which could cause a chain reaction that would unravel the very fabric of the space-time continuum and destroy the entire universe!\n\nPlease try sending money to someone ELSE!"
+                                                    delegate:self
+                                           cancelButtonTitle:@"OK"
+                                           otherButtonTitles:nil];
+        [av setTag:71];
+        [av show];
+        return;
+    }
+    else if ([sendMoneyToExistingUserSynapseResult rangeOfString:@"user details not found"].length != 0)
+    {
+        [self errorAlerts:@"510"];
+        return;
+    }
     else if ([sendMoneyToExistingUserSynapseResult rangeOfString:@"Sender does not have any verified bank account"].length != 0)
     {
         UIAlertView *av = [[UIAlertView alloc] initWithTitle:@"Bank Account Un-Verified"
@@ -1975,7 +1927,7 @@
             transactionId = [dictResultTransfer valueForKey:@"requestId"];
         }
     }
-    NSLog(@"Transaction ID: %@",transactionId);
+    //NSLog(@"Transaction ID: %@",transactionId);
     
     if ([self.receiver valueForKey:@"FirstName"] != NULL || [self.receiver valueForKey:@"LastName"] != NULL)
     {
@@ -1984,123 +1936,6 @@
     }
     
     self.trans = [transactionInputTransfer copy];
-}
-
-NSString * calculateArrivalDate()
-{
-    NSDate *date = [NSDate date];
-    
-    NSDateFormatter *dateFormat = [[NSDateFormatter alloc] init];
-    dateFormat.timeZone = [NSTimeZone timeZoneWithName:@"America/New_York"];
-    [dateFormat setDateFormat:@"E"];
-    NSString * dateString = [dateFormat stringFromDate:date];
-    
-    NSDateFormatter * timeFormat = [[NSDateFormatter alloc] init];
-    timeFormat.timeZone = [NSTimeZone timeZoneWithName:@"America/New_York"];
-    [timeFormat setDateFormat:@"k"];
-    short timeOfDay = [[timeFormat stringFromDate:date] intValue];
-    
-    //NSLog(@"Today's Day of Week: %@", dateString);
-    NSLog(@"Time of Day (Hour) is: %d", timeOfDay);
-    
-    NSDateComponents *offsetComponents = [[NSDateComponents alloc] init];
-    short knoxXtraDays = [[ARPowerHookManager getValueForHookById:@"knox_xtraTime"] intValue];
-
-    if ([dateString isEqualToString:@"Mon"] ||
-        [dateString isEqualToString:@"Tue"] ||
-        [dateString isEqualToString:@"Wed"])
-    {
-        if (timeOfDay < 15) // its BEFORE 3:00pm EST
-        {
-            [offsetComponents setDay: (1 + knoxXtraDays)];
-        }
-        else // its AFTER 3:00pm EST
-        {
-            if ([dateString isEqualToString:@"Mon"] ||
-                [dateString isEqualToString:@"Tue"])
-            {
-                [offsetComponents setDay:(2 + knoxXtraDays)];
-            }
-            else if ([dateString isEqualToString:@"Wed"])
-            {
-                if (knoxXtraDays == 0)
-                {
-                    [offsetComponents setDay:2]; // arrive by Friday
-                }
-                else if (knoxXtraDays == 1)
-                {
-                    [offsetComponents setDay:5]; // arrive by Monday
-                }
-                else
-                {
-                    [offsetComponents setDay:(5 + knoxXtraDays)];
-                }
-            }
-        }
-    }
-    else if ([dateString isEqualToString:@"Thu"])
-    {
-        if (timeOfDay < 15) // its BEFORE 3:00pm EST
-        {
-            if (knoxXtraDays == 0)
-            {
-                [offsetComponents setDay:1]; // arrive by Friday
-            }
-            else if (knoxXtraDays == 1)
-            {
-                [offsetComponents setDay:4]; // arrive by Monday
-            }
-            else
-            {
-                [offsetComponents setDay:(4 + knoxXtraDays)];
-            }
-        }
-        else // its AFTER 3:00pm EST
-        {
-            [offsetComponents setDay:(4 + knoxXtraDays)];
-        }
-    }
-    else if ([dateString isEqualToString:@"Fri"])
-    {
-        if (timeOfDay < 15) // its BEFORE 3:00pm EST
-        {
-            [offsetComponents setDay:(3 + knoxXtraDays)];
-        }
-        else // its AFTER 3:00pm EST
-        {
-            [offsetComponents setDay:(4 + knoxXtraDays)];
-        }
-    }
-    else if ([dateString isEqualToString:@"Sat"])
-    {
-        [offsetComponents setDay:(3 + knoxXtraDays)];
-    }
-    else if ([dateString isEqualToString:@"Sun"])
-    {
-        [offsetComponents setDay:(2 + knoxXtraDays)];
-    }
-
-    NSDate * arrivalDate = [[[NSCalendar alloc]
-                             initWithCalendarIdentifier:NSGregorianCalendar] dateByAddingComponents:offsetComponents
-                            toDate:date options:0];
-
-    NSString *formatString = [NSDateFormatter dateFormatFromTemplate:@"EEEEdMMMM" // e.g.: "Monday, March 15"
-                                                             options:0
-                                                              locale:[NSLocale currentLocale]];
-    NSDateFormatter * finalDateFormatter = [[NSDateFormatter alloc] init];
-    finalDateFormatter.timeZone = [NSTimeZone timeZoneWithName:@"America/New_York"];
-    [finalDateFormatter setDateFormat:formatString];
-
-    NSString * arrivalDateFormatted = [finalDateFormatter stringFromDate:arrivalDate];
-    
-
-
-    NSTimeZone * systimeZone = [NSTimeZone systemTimeZone];
-    NSString * timeZoneString = [systimeZone localizedName:NSTimeZoneNameStyleGeneric locale:[NSLocale currentLocale]];
-
-    [ARProfileManager registerString:@"Time_Zone" withValue:timeZoneString];
-
-    return arrivalDateFormatted;
 }
 
 -(BOOL)connection:(NSURLConnection *)connection canAuthenticateAgainstProtectionSpace:(NSURLProtectionSpace *)protectionSpace {
@@ -2114,10 +1949,204 @@ NSString * calculateArrivalDate()
     [challenge.sender continueWithoutCredentialForAuthenticationChallenge:challenge];
 }
 
--(BOOL)textFieldShouldReturn:(UITextField *)textField
+#pragma mark - Alert View Handling
+
+-(void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex
 {
-    [textField resignFirstResponder];
-    return YES;
+    if (alertView.tag == 1)
+    {
+        if (buttonIndex == 0)
+        {
+            NSLog(@"buttonIndex was 0");
+            [nav_ctrl popToRootViewControllerAnimated:YES];
+        }
+
+        else if (buttonIndex == 1)
+        {
+            NSMutableDictionary *input = [self.trans mutableCopy];
+
+            if ([[self.trans valueForKey:@"TransactionType"]isEqualToString:@"Request"] &&
+                [[user valueForKey:@"MemberId"] isEqualToString:[self.trans valueForKey:@"MemberId"]])
+            {
+                NSString *MemberId = [input valueForKey:@"MemberId"];
+                NSString *ResID = [input valueForKey:@"SenderId"];
+                [input setObject:MemberId forKey:@"RecepientId"];
+                [input setObject:ResID forKey:@"MemberId"];
+                [input setObject:dictResultTransfer[@"requestId"] forKey:@"TransactionId"];
+            }
+            else  if ([self.type isEqualToString:@"send"])
+            {
+                [input setObject:dictResultTransfer[@"trnsactionId"] forKey:@"TransactionId"];
+            }
+
+            if ([self.receiver objectForKey:@"nonuser"])
+            {
+                if ([self.receiver objectForKey:@"firstName"] && [self.receiver objectForKey:@"lastName"])
+                {
+                    NSString * fullName = [NSString stringWithFormat:@"%@ %@", [self.receiver objectForKey:@"firstName"], [self.receiver objectForKey:@"lastName"]];
+                    [input setObject:fullName forKey:@"InvitationSentTo"];
+                }
+                else if ([self.receiver objectForKey:@"firstName"])
+                {
+                    [input setObject:[self.receiver objectForKey:@"email"] forKey:@"InvitationSentTo"];
+                }
+                else if ([self.receiver objectForKey:@"email"])
+                {
+                    [input setObject:[self.receiver objectForKey:@"email"] forKey:@"InvitationSentTo"];
+                }
+                else if ([self.receiver objectForKey:@"phone"])
+                {
+                    [input setObject:[self.receiver objectForKey:@"phone"] forKey:@"InvitationSentTo"];
+                }
+
+                if ([self.type isEqualToString:@"request"])
+                {
+                    [input setObject:@"InviteRequest" forKey:@"TransactionType"];
+                    [input setObject:dictResultTransfer[@"requestId"] forKey:@"TransactionId"];
+                }
+                else
+                {
+                    [input setObject:@"Invite" forKey:@"TransactionType"];
+                    [input setObject:dictResultTransfer[@"trnsactionId"] forKey:@"TransactionId"];
+                    [input setObject:@"Pending" forKey:@"TransactionStatus"];
+                }
+            }
+            NSLog(@"Input: %@",input);
+
+            NSMutableArray * arrNav = [nav_ctrl.viewControllers mutableCopy];
+
+            for (short i = [arrNav count]; i > 1; i--)
+            {
+                [arrNav removeLastObject];
+            }
+
+            isFromTransferPIN = YES;
+
+            HistoryFlat * mainHistoryScreen = [HistoryFlat new];
+            [arrNav addObject: mainHistoryScreen];
+            [nav_ctrl setViewControllers:arrNav animated:NO];
+
+            //NSLog(@"TransferPIN -> nav_ctrl.viewControllers is: %@", nav_ctrl.viewControllers);
+
+            TransactionDetails *td = [[TransactionDetails alloc] initWithData:input];
+            [nav_ctrl pushViewController:td animated:YES];
+        }
+    }
+
+    // Contact Support alerts
+    else if ((alertView.tag == 50 || alertView.tag == 51 ||
+              alertView.tag == 52 || alertView.tag == 53) &&
+             buttonIndex == 1)
+    {
+        if (buttonIndex == 1)
+        {
+            if (![MFMailComposeViewController canSendMail])
+            {
+                UIAlertView * av = [[UIAlertView alloc] initWithTitle:@"No Email Detected"
+                                                              message:@"You don't have an email account configured for this device."
+                                                             delegate:nil
+                                                    cancelButtonTitle:@"OK"
+                                                    otherButtonTitles: nil];
+                [av show];
+                return;
+            }
+
+            NSString * memberId = [user valueForKey:@"MemberId"];
+            NSString * fullName = [NSString stringWithFormat:@"%@ %@",[user valueForKey:@"firstName"],[user valueForKey:@"lastName"]];
+            NSString * userStatus = [user objectForKey:@"Status"];
+            NSString * userEmail = [user objectForKey:@"UserName"];
+            NSString * IsVerifiedPhone = [[user objectForKey:@"IsVerifiedPhone"] lowercaseString];
+            NSString * iOSversion = [[UIDevice currentDevice] systemVersion];
+            NSString * msgBody = [NSString stringWithFormat:@"<!doctype html> <html><body><br><br><br><br><br><br><small>• MemberID: %@<br>• Name: %@<br>• Status: %@<br>• Email: %@<br>• Is Phone Verified: %@<br>• iOS Version: %@<br></small></body></html>",memberId, fullName, userStatus, userEmail, IsVerifiedPhone, iOSversion];
+
+            MFMailComposeViewController *mailComposer = [[MFMailComposeViewController alloc] init];
+            mailComposer.mailComposeDelegate = self;
+            mailComposer.navigationBar.tintColor=[UIColor whiteColor];
+            [mailComposer setSubject:[NSString stringWithFormat:@"Support Request: Version %@",[[[NSBundle mainBundle] infoDictionary] objectForKey:@"CFBundleVersion"]]];
+            [mailComposer setMessageBody:msgBody isHTML:YES];
+            [mailComposer setToRecipients:[NSArray arrayWithObjects:@"support@nooch.com", nil]];
+            [mailComposer setCcRecipients:[NSArray arrayWithObject:@""]];
+            [mailComposer setBccRecipients:[NSArray arrayWithObject:@""]];
+            [mailComposer setModalTransitionStyle:UIModalTransitionStyleCoverVertical];
+            [self presentViewController:mailComposer animated:YES completion:nil];
+        }
+        else if (buttonIndex == 0)
+        {
+            [self.navigationController popToRootViewControllerAnimated:YES];
+        }
+    }
+
+    else if (alertView.tag == 54 && buttonIndex == 1) // No Bank attached, go to Settings
+    {
+        shouldDisplayBankNotVerifiedLtBox = YES;
+        SettingsOptions * mainSettingsScrn = [SettingsOptions new];
+        [nav_ctrl pushViewController:mainSettingsScrn animated:YES];
+    }
+
+    else if (alertView.tag == 11 && buttonIndex == 1) // Bank Not Verified - go to Settings
+    {
+        SettingsOptions * mainSettingsScrn = [SettingsOptions new];
+        [nav_ctrl pushViewController:mainSettingsScrn animated:YES];
+    }
+
+    else if (alertView.tag == 31 || alertView.tag == 32) // Attempt to send more than transaction limit (on server), go back to How Much screen
+    {
+        [self backToHowMuch];
+    }
+
+    else if (alertView.tag == 61)
+    {
+        [self.navigationController popToRootViewControllerAnimated:YES];
+    }
+
+    else if (alertView.tag == 71) // Attempt to send to self, go back to Select Recipient screen
+    {
+        [self.navigationItem setLeftBarButtonItem:nil];
+        NSMutableArray * arrNav = [nav_ctrl.viewControllers mutableCopy];
+
+        SelectRecipient * selectRecipScrn = [SelectRecipient new];
+        [arrNav replaceObjectAtIndex:[arrNav count]-2 withObject:selectRecipScrn];
+        
+        [nav_ctrl setViewControllers:arrNav animated:NO];
+        
+        [self.navigationController popViewControllerAnimated:YES];
+    }
+}
+
+#pragma mark - Mail Controller
+-(void) mailComposeController:(MFMailComposeViewController *)controller
+          didFinishWithResult:(MFMailComposeResult)result
+                        error:(NSError *)error
+{
+    UIAlertView *alert = [[UIAlertView alloc] init];
+    [alert addButtonWithTitle:@"OK"];
+    [alert setDelegate:nil];
+    switch (result)
+    {
+        case MFMailComposeResultCancelled:
+            NSLog(@"Email cancelled");
+            break;
+        case MFMailComposeResultSaved:
+            NSLog(@"Mail saved");
+            [alert setTitle:@"Email saved"];
+            [alert show];
+            break;
+        case MFMailComposeResultSent:
+            NSLog(@"Mail sent");
+            [alert setTitle:@"Email sent"];
+            [alert show];
+            break;
+        case MFMailComposeResultFailed:
+            [alert setTitle:[error localizedDescription]];
+            [alert show];
+            NSLog(@"Mail sent failure: %@", [error localizedDescription]);
+            break;
+        default:
+            break;
+    }
+    // Close the Mail Interface
+    [self dismissViewControllerAnimated:YES completion:NULL];
+    [self.navigationController popToRootViewControllerAnimated:YES];
 }
 
 -(void)didReceiveMemoryWarning
