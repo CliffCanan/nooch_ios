@@ -40,12 +40,6 @@
     self.artisanNameTag = @"AddBank Webview Screen";
 }
 
--(void)viewDidDisappear:(BOOL)animated
-{
-    [self.hud hide:YES];
-    [super viewDidDisappear:animated];
-}
-
 -(void)viewDidLoad
 {
     [super viewDidLoad];
@@ -122,6 +116,13 @@
                                                object:nil];
 }
 
+-(void)viewDidDisappear:(BOOL)animated
+{
+    [self.hud hide:YES];
+    [super viewDidDisappear:animated];
+}
+
+#pragma mark - More Info Lightbox
 -(void)moreinfo_lightBox
 {
     overlay = [[UIView alloc]init];
@@ -373,6 +374,7 @@
 
 -(void)backToSettings
 {
+    [[NSNotificationCenter defaultCenter] removeObserver:self];
     [self.navigationItem setLeftBarButtonItem:nil];
     [self.navigationController popViewControllerAnimated:YES];
 }
@@ -380,6 +382,11 @@
 -(void)resignAddBankWebview
 {
     NSLog(@"addBank.m -> resignAddBankWebview fired");
+
+    [[assist shared] setneedsReload:YES];
+    [[assist shared] getAcctInfo];
+
+    [[NSNotificationCenter defaultCenter] removeObserver:self];
 
     UIAlertView * alert = [[UIAlertView alloc]initWithTitle:@"Great Success"
                                                     message:@"\xF0\x9F\x98\x80\nYour bank was linked successfully."
@@ -398,20 +405,6 @@
     {
         [nav_ctrl popToRootViewControllerAnimated:YES];
     }
-
-    /* OLD KNOX CODE ...
-    self.hud.labelText = @"Finishing Up...";
-    [self.hud show:YES];
-
-    serve * obj = [serve new];
-    obj.tagName = @"saveMemberTransId";
-    [obj setDelegate:self];
-
-    NSLog(@"KnoxWeb.m -> resignAddBankWebview fired. TransId is: %@     MemberId is: %@",[user objectForKey:@"paymentID"],[user objectForKey:@"MemberId"]);
-    NSDictionary * dict = @{@"TransId":[user objectForKey:@"paymentID"],
-                            @"MemberId":[user objectForKey:@"MemberId"]};
-
-    [obj saveMemberTransId:[dict mutableCopy]]; */
 }
 
 -(void)Error:(NSError *)Error

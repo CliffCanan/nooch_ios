@@ -72,7 +72,7 @@
     [introTxt setNumberOfLines:0];
     [introTxt setFont:[UIFont fontWithName:@"Roboto" size:15]];
     [introTxt setFrame:CGRectMake(16, 43, 288, 72)];
-    [introTxt setText:@"To complete the verification process, please upload any photo ID that includes your name and a clear picture. (Driver's License, university ID, etc.)"];
+    [introTxt setText:@"To complete the verification process, please upload any photo ID that includes your name and a clear picture. (Driver's license, passport, university ID, etc.)"];
     [introTxt setTextColor:[Helpers hexColor:@"313233"]];
     [scrollView addSubview:introTxt];
 
@@ -246,7 +246,7 @@
         else
         {
             UIAlertView * av = [[UIAlertView alloc] initWithTitle:@"Error"
-                                                                  message:@"Can't find a camera for this device unfortunately.\n;-("
+                                                                  message:@"\xF0\x9F\x98\xAB\nCan't find a camera for this device unfortunately.\n;-("
                                                                  delegate:nil
                                                         cancelButtonTitle:@"OK"
                                                         otherButtonTitles: nil];
@@ -290,8 +290,6 @@
 {
     if (alertView.tag == 1)
     {
-        [user setBool:YES forKey:@"isIdVerDocSubmitted"];
-
         // Go back to main Settings screen
         [self.navigationController popViewControllerAnimated:YES];
     }
@@ -338,6 +336,8 @@
         {
             if ([[[resp objectForKey:@"SaveVerificationIdDocumentResult"] valueForKey:@"Result"] rangeOfString:@"saved successfully"].length != 0)
             {
+                [user setBool:YES forKey:@"isIdVerDocSubmitted"];
+
                 UIAlertView * av = [[UIAlertView alloc] initWithTitle:@"Picture Submitted"
                                                               message:@"\xF0\x9F\x91\x8D \xF0\x9F\x91\x8D\nWe have received your document.  We will process it as quickly as possible so you can begin sending and receiving money. Usually it takes less than  48 hours\n\nPlease contact support@nooch.com if you have any questions."
                                                              delegate:self
@@ -350,7 +350,7 @@
         }
 
         UIAlertView * av = [[UIAlertView alloc] initWithTitle:@"Picture Not Submitted"
-                                                      message:@"Unfortunately we were unable to process that image. Please try again, or if you already have, please email the image to support@nooch.com and we will process it as quickly as possible so you can begin sending and receiving money. Usually it takes less than  24 hours once we have to document."
+                                                      message:@"Unfortunately we were unable to process that image. Please try again, or if you already have, please email the image to support@nooch.com and we will process it as quickly as possible so you can begin sending and receiving money.\n\nUsually it takes less than  24 hours once we have to document."
                                                      delegate:self
                                             cancelButtonTitle:@"OK"
                                             otherButtonTitles:nil,nil];

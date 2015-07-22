@@ -14,13 +14,13 @@
 #import "SpinKit/RTSpinKitView.h"
 
 BOOL isProfileOpenFromSideBar, sentFromHomeScrn, isFromSettingsOptions, isFromTransDetails;
-BOOL shouldFocusOnAddress, shouldFocusOnDob, shouldFocusOnSsn;
+BOOL shouldFocusOnAddress, shouldFocusOnDob, shouldFocusOnSsn, hasSeenDobPopup;
 
 @interface ProfileInfo : GAITrackedViewController<UINavigationControllerDelegate,UITextFieldDelegate,UITableViewDataSource,UITableViewDelegate,serveD,DecryptionDelegate,UIActionSheetDelegate,UIImagePickerControllerDelegate,MBProgressHUDDelegate,UIAlertViewDelegate>
 {
     BOOL isPhotoUpdate, wasSSNadded;
     BOOL emailVerifyRowIsShowing, smsVerifyRowIsShowing;
-    BOOL hasSeenDobPopup, hasSeenAddressPopup;
+    BOOL hasSeenAddressPopup;
     short down,numberOfRowsToDisplay,heightOfTopSection;
     short hdrHt,rowHeight;
     NSMutableDictionary *transaction;

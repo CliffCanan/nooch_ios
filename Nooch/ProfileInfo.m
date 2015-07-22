@@ -305,8 +305,9 @@ UIImageView *picture;
     [self.dob setKeyboardType:UIKeyboardTypeDefault];
     [self.dob setStyleClass:@"tableViewCell_Profile_rightSide"];
     [self.dob setUserInteractionEnabled:YES];
-    if (![[user objectForKey:@"dob"] isKindOfClass:[NSNull class]] &&
-          [user objectForKey:@"dob"] != NULL)
+    if ([user objectForKey:@"dob"] &&
+        [user objectForKey:@"dob"] != NULL &&
+        [[user objectForKey:@"dob"] length] > 0)
     {
         [self.dob setText:[user objectForKey:@"dob"]];
     }
@@ -491,8 +492,12 @@ UIImageView *picture;
 
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(applicationWillEnterFG_Profile:) name:UIApplicationWillEnterForegroundNotification object:nil];
 
-    hasSeenAddressPopup = false;
-    hasSeenDobPopup = false;
+    if (hasSeenDobPopup != true) {
+        hasSeenDobPopup = false;
+    }
+    if (hasSeenAddressPopup != true) {
+        hasSeenAddressPopup = false;
+    }
 }
 
 -(void)viewWillAppear:(BOOL)animated
@@ -532,6 +537,25 @@ UIImageView *picture;
     {
         [self.hud hide:YES];
     }
+
+    hasSeenDobPopup = false;
+    hasSeenAddressPopup = false;
+
+    if (self.phone.text.length > 8 &&
+        [[user objectForKey:@"IsVerifiedPhone"] isEqualToString:@"YES"] &&
+        self.address_one.text.length > 2 &&
+        self.city.text.length > 1 &&
+        self.zip.text.length > 3 &&
+        self.dob.text.length > 5 &&
+        wasSSNadded)
+    {
+        allProfileFieldsComplete = true;
+    }
+    else
+    {
+        allProfileFieldsComplete = false;
+    }
+
     [super viewDidDisappear:animated];
 }
 
@@ -2353,11 +2377,14 @@ UIImageView *picture;
         if (shouldFocusOnAddress)
         {
             shouldFocusOnAddress = NO;
+            shouldFocusOnDob = NO;
+            shouldFocusOnSsn = NO;
             [self.address_one becomeFirstResponder];
         }
         else if (shouldFocusOnDob)
         {
             shouldFocusOnDob = NO;
+            shouldFocusOnSsn = NO;
             [self.dob becomeFirstResponder];
         }
         else if (shouldFocusOnSsn && !wasSSNadded)
@@ -2400,6 +2427,9 @@ UIImageView *picture;
         if (![response isKindOfClass:[NSNull class]] && response != NULL &&
              [response rangeOfString:@"successfully"].length != 0)
         {
+            [user setBool:YES forKey:@"wasSsnAdded"];
+            wasSSNadded = true;
+
             [self.ssnGlyphIndicator setFont:[UIFont fontWithName:@"FontAwesome" size:16]];
             [self.ssnGlyphIndicator setText:[NSString fontAwesomeIconStringForIconIdentifier:@"fa-check-circle"]];
             [self.ssnGlyphIndicator setTextColor:kNoochGreen];

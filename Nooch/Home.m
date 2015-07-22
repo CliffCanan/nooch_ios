@@ -1993,6 +1993,7 @@ void addressBookChanged(ABAddressBookRef addressBook, CFDictionaryRef info, void
 
     else if (alertView.tag == 42 && buttonIndex == 1)
     {
+        hasSeenDobPopup = YES;
         [self go_profileFromHome];
     }
 
@@ -2127,14 +2128,18 @@ void addressBookChanged(ABAddressBookRef addressBook, CFDictionaryRef info, void
         {
             // Body text if SSN was submitted, but not DoB
             alertBody = @"Please take 30 seconds to finish verifying your identity by entering your:\n\n• Date of birth\n\nFederal regulations require us to verify each user's identity. We will only ask for this info once and all data is stored with encryption on secure servers.\n\xF0\x9F\x94\x92";
-            shouldFocusOnDob = YES;
         }
-        else if (![[user objectForKey:@"dob"] isKindOfClass:[NSNull class]] &&
-                 [user objectForKey:@"dob"] != NULL)
+        else if ( [user objectForKey:@"dob"] &&
+                 [user objectForKey:@"dob"] != NULL &&
+                 [[user objectForKey:@"dob"] length] > 0)
         {
             // Body text if DoB was submitted, but not SSN
             alertBody = @"Please take 30 seconds to finish verifying your identity by entering your:\n\n• Just the LAST 4 digits of your SSN\n\nFederal regulations require us to verify each user's identity. We will only ask for this info once and all data is stored with encryption on secure servers.\n\xF0\x9F\x94\x92";
             shouldFocusOnSsn = YES;
+        }
+        else
+        {
+            shouldFocusOnDob = YES;
         }
 
         UIAlertView * alert = [[UIAlertView alloc]initWithTitle:@"Help Us Keep Nooch Safe"
@@ -2166,7 +2171,8 @@ void addressBookChanged(ABAddressBookRef addressBook, CFDictionaryRef info, void
         return NO;
     }
 
-    else if ([user boolForKey:@"isIdVerDocSubmitted"])
+    else if (![user boolForKey:@"IsSynapseBankVerified"] &&
+              [user boolForKey:@"isIdVerDocSubmitted"])
     {
         UIAlertView *av = [[UIAlertView alloc] initWithTitle:@"ID Verification In Progress"
                                                      message:@"Thank you for submitting your ID and completing your profile.  Our team is currently reviewing your information so you can start sending money soon.\n\nThis process is usually quick, but may take up to 48 hours."
@@ -2181,7 +2187,7 @@ void addressBookChanged(ABAddressBookRef addressBook, CFDictionaryRef info, void
     else if (![user boolForKey:@"IsSynapseBankVerified"])
     {
         UIAlertView *av = [[UIAlertView alloc] initWithTitle:@"Bank Account Un-Verified"
-                                                     message:@"Looks like your bank account remains un-verified.  This usually happens when the contact info listed on the bank account does not match your Nooch profile information. Please contact Nooch support for more information."
+                                                     message:@"\xE2\x9A\xA0\nLooks like your bank account remains un-verified.  This usually happens when the contact info listed on the bank account does not match your Nooch profile information. Please contact Nooch support for more information."
                                                     delegate:self
                                            cancelButtonTitle:@"OK"
                                            otherButtonTitles:@"Learn More", nil];

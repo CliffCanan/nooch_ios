@@ -27,7 +27,8 @@
     UIButton * unlink_account;
     UIButton * link_bank;
     UIButton * addAnotherBnk;
-    UILabel *glyph_noBank;
+    UILabel * glyph_noBank;
+    UIButton * helpGlyph;
     UIScrollView * scroll;
 }
 @property(atomic,weak)UIButton *logout;
@@ -237,6 +238,13 @@
         [self bnkStatus_lightBox];
     }
 
+    if (isProfileNotValidatedGlyphShowingInTable &&
+        allProfileFieldsComplete)
+    {
+        [self.glyphProfileNotValidated removeFromSuperview];
+        isProfileNotValidatedGlyphShowingInTable = false;
+    }
+
     [ARTrackingManager trackEvent:@"SettingsMain_DidAppear_Finished"];
 }
 
@@ -333,7 +341,7 @@
     }
 
     // 5. HAS USER SUBMITTED DOB AND SSN LAST 4?
-    if (![[assist shared] isUsersIdInfoSubmitted])
+    if (isXtraIdVerOn && ![[assist shared] isUsersIdInfoSubmitted])
     {
         // Body text if both DoB and SSN are not submitted yet
         NSString * alertBody = @"Please take 30 seconds to verify your identity by entering your:\n\n• Date of birth, and\n• Just the LAST 4 digits of your SSN\n\nFederal regulations require us to verify each user's identity. We will only ask for this info once and all data is stored with encryption on secure servers.\n\xF0\x9F\x94\x92";
@@ -342,14 +350,18 @@
         {
             // Body text if SSN was submitted, but not DoB
             alertBody = @"Please take 30 seconds to finish verifying your identity by entering your:\n\n• Date of birth\n\nFederal regulations require us to verify each user's identity. We will only ask for this info once and all data is stored with encryption on secure servers.\n\xF0\x9F\x94\x92";
-            shouldFocusOnDob = YES;
         }
-        else if (![[user objectForKey:@"dob"] isKindOfClass:[NSNull class]] &&
-                   [user objectForKey:@"dob"] != NULL)
+        else if ( [user objectForKey:@"dob"] &&
+                 [user objectForKey:@"dob"] != NULL &&
+                 [[user objectForKey:@"dob"] length] > 0)
         {
             // Body text if DoB was submitted, but not SSN
             alertBody = @"Please take 30 seconds to finish verifying your identity by entering your:\n\n• Just the LAST 4 digits of your SSN\n\nFederal regulations require us to verify each user's identity. We will only ask for this info once and all data is stored with encryption on secure servers.\n\xF0\x9F\x94\x92";
             shouldFocusOnSsn = YES;
+        }
+        else
+        {
+            shouldFocusOnDob = YES;
         }
 
         UIAlertView * alert = [[UIAlertView alloc]initWithTitle:@"Help Us Keep Nooch Safe"
@@ -444,8 +456,14 @@
             [self.glyphProfileNotValidated setStyleClass:@"animate_bubble"];
             [self.glyphProfileNotValidated setStyleId:@"glyph_noBank_sidebar"];
             [self.glyphProfileNotValidated setStyleId:@"glyph_noBank_settingsTbl"];
+            [self.glyphProfileNotValidated setHidden:NO];
 
             [cell.contentView addSubview:self.glyphProfileNotValidated];
+            isProfileNotValidatedGlyphShowingInTable = true;
+        }
+        else
+        {
+            isProfileNotValidatedGlyphShowingInTable = false;
         }
     }
     else if (indexPath.row == 1) {
@@ -668,7 +686,7 @@
     [bodyText5 setNumberOfLines:0];
     [bodyText5 setFont:[UIFont fontWithName:@"Roboto-Light" size:15]];
     [bodyText5 setFrame:CGRectMake(17, bodyText4.frame.origin.y + 23, 268, 88)];
-    [bodyText5 setText:@"If we found an email address on your bank, we sent a verification link to that address (which may be different than the email you used for Nooch). Just click the the link in that email."];
+    [bodyText5 setText:@"If we found an email address on your bank, we sent a verification link to that address (which may be different than the email you used for Nooch). Just click the link in that email."];
     [bodyText5 setTextColor:[Helpers hexColor:@"141515"]];
     [mainView addSubview:bodyText5];
 
@@ -679,7 +697,6 @@
     [bodyText6 setText:@"Or, if you didn't receive a verification email, just send us a picture of any photo ID. Email it to support@nooch.com, or tap \"Submit ID\" below."];
     [bodyText6 setTextColor:[Helpers hexColor:@"141515"]];
     [mainView addSubview:bodyText6];
-
 
     UIButton * takePic = [UIButton buttonWithType:UIButtonTypeCustom];
     [takePic setStyleClass:@"button_LtBoxSm_left"];
@@ -815,6 +832,7 @@
 
     else if (alertView.tag == 42 && buttonIndex == 1)
     {
+        hasSeenDobPopup = YES;
         [self goToProfile];
     }
 
@@ -951,7 +969,6 @@
 
             [user setBool:NO forKey:@"IsKnoxBankAvailable"];
             [user setBool:NO forKey:@"IsSynapseBankAvailable"];
-
             [user synchronize];
 
             if (![self.view.subviews containsObject:introText])
@@ -969,6 +986,7 @@
             [introText setHidden:NO];
 
             [glyph_noBank setHidden:NO];
+            [helpText setHidden:YES];
 
             isBankAttached = NO;
 
@@ -1117,12 +1135,17 @@
                 [helpText setUserInteractionEnabled:YES];
                 //[helpText addGestureRecognizer:[[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(bnkStatus_lightBox)]];
                 [helpText setHidden:NO];
+                [helpGlyph setHidden:YES];
+                [addAnotherBnk setHidden:YES];
+
+                //[self.view removeGestureRecognizer:helpText.tapgest];
             }
             else
             {
                 [bnkStatusStatus setText:@"Not Verified"];
 
-                [linked_background addGestureRecognizer:[[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(bnkStatus_lightBox)]];
+                UITapGestureRecognizer * showLightBox = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(bnkStatus_lightBox)];
+                [linked_background addGestureRecognizer:showLightBox];
 
                 if (![self.view.subviews containsObject:helpText])
                 {
@@ -1136,7 +1159,7 @@
                 [helpText addGestureRecognizer:[[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(bnkStatus_lightBox)]];
                 [helpText setHidden:NO];
 
-                UIButton * helpGlyph = [UIButton buttonWithType:UIButtonTypeRoundedRect];
+                helpGlyph = [UIButton buttonWithType:UIButtonTypeRoundedRect];
                 [helpGlyph setFrame:CGRectMake(238, 20, 25, 25)];
                 [helpGlyph setStyleId:@"settings_helpGlyph"];
                 [helpGlyph addTarget:self action:@selector(bnkStatus_lightBox) forControlEvents:UIControlEventTouchUpInside];
