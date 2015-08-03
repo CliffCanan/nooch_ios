@@ -704,7 +704,7 @@ NSString *amnt;
 
         // facebook_id
         if ( [Dictresponse valueForKey:@"FacebookAccountLogin"] &&
-            [[Dictresponse valueForKey:@"FacebookAccountLogin"]length] > 1)
+            [[Dictresponse valueForKey:@"FacebookAccountLogin"]length] > 2)
         {
             [user setObject:[Dictresponse valueForKey:@"FacebookAccountLogin"] forKey:@"facebook_id"];
         }

@@ -1301,7 +1301,6 @@
 
     for (NSString * key in [[assist shared] assos].allKeys)
     {
-        //NSLog(@"Key is: %@",key);
         NSMutableDictionary * dict = [[assist shared] assos][key];
 
         NSComparisonResult result;
@@ -1449,13 +1448,13 @@
 {
     [self.hud hide:YES];
 
-    UIAlertView *alert = [[UIAlertView alloc]
-                          initWithTitle:NSLocalizedString(@"SelectRecip_ConnectionErrorAlertTitle", @"Select Recipient Connection Error Alert Title")//@"Connection Error"
+  /*UIAlertView * alert = [[UIAlertView alloc]
+                          initWithTitle:NSLocalizedString(@"SelectRecip_ConnectionErrorAlertTitle", @"Select Recipient Connection Error Alert Title")
                           message:NSLocalizedString(@"SelectRecip_ConnectionErrorAlertBody", @"Select Recipient Connection Error Alert Body Text")
                           delegate:nil
                           cancelButtonTitle:@"OK"
                           otherButtonTitles:nil];
-    [alert show];
+    [alert show];*/
 }
 
 #pragma mark - server Delegation
@@ -1514,26 +1513,6 @@
         }
         [[assist shared] addAssos:additions];
     }
-
-    /* else if ([tagName isEqualToString:@"fb"])
-    {
-        NSError *error;
-        NSMutableDictionary *temp = [NSJSONSerialization
-                                     JSONObjectWithData:[result dataUsingEncoding:NSUTF8StringEncoding]
-                                     options:kNilOptions
-                                     error:&error];
-        NSLog(@"fb storing %@",temp);
-        if ([[temp valueForKey:@"Result"]isEqualToString:@"Success"])
-        {
-            UIAlertView *av = [[UIAlertView alloc] initWithTitle:@"whoo!" message:@"You account has been connected to facebook successfully." delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil];
-            [av show];
-        }
-        else
-        {
-            UIAlertView *av = [[UIAlertView alloc] initWithTitle:@"whoo!" message:[temp valueForKey:@"Result"] delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil];
-            [av show];
-        }
-    } */
 
     else if ([tagName isEqualToString:@"recents"])
     {

@@ -60,8 +60,7 @@
     [super viewDidLoad];
     isBankAttached = NO;
     
-    if ((isKnoxOn && [user boolForKey:@"IsKnoxBankAvailable"]) ||
-        (isSynapseOn && [user boolForKey:@"IsSynapseBankAvailable"]))
+    if (isSynapseOn && [user boolForKey:@"IsSynapseBankAvailable"])
     {
         isBankAttached = YES;
     }

@@ -35,9 +35,9 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-	// Do any additional setup after loading the view.
+
     self.navigationController.navigationBar.topItem.title = @"";
-    //@"Security Settings"
+
     [self.navigationItem setTitle:NSLocalizedString(@"SecSettings_ScrnTitle", @"Security Settings Scrn Title")];
     [self.navigationItem setHidesBackButton:YES];
 

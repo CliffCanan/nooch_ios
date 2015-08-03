@@ -236,22 +236,7 @@ NSMutableURLRequest *request;
 
         [[assist shared] setisloggedout:NO];
 
-        NSString * KnoxOnOff = [[ARPowerHookManager getValueForHookById:@"knox_OnOff"] lowercaseString];
-        NSString * SynapseOnOff = [[ARPowerHookManager getValueForHookById:@"synps_OnOff"] lowercaseString];
-
-        if ([KnoxOnOff isEqualToString:@"on"]) {
-            isKnoxOn = YES;
-        }
-        else {
-            isKnoxOn = NO;
-        }
-        if ([SynapseOnOff isEqualToString:@"on"]) {
-            isSynapseOn = YES;
-        }
-        else {
-            isSynapseOn = NO;
-        }
-        //NSLog(@"isSynapseOn is: %d",isSynapseOn);
+        isSynapseOn = NO;
     }
     else
     {
@@ -337,14 +322,6 @@ NSMutableURLRequest *request;
         else if (isSynapseOn)
         {
             [ARProfileManager setStringValue:@"NO" forVariable:@"IsSynapseBankAttached"];
-        }
-        else if (isKnoxOn && [user boolForKey:@"IsKnoxBankAvailable"])
-        {
-            [ARProfileManager setStringValue:@"YES" forVariable:@"IsKnoxBankAttached"];
-        }
-        else if (isKnoxOn)
-        {
-            [ARProfileManager setStringValue:@"NO" forVariable:@"IsKnoxBankAttached"];
         }
     });
 
@@ -2338,8 +2315,7 @@ void addressBookChanged(ABAddressBookRef addressBook, CFDictionaryRef info, void
         NSString * count;
 
         if (pendingRequestsReceived > 0 &&
-            ((isSynapseOn && [user boolForKey:@"IsSynapseBankAvailable"]) ||
-             (isKnoxOn && [user boolForKey:@"IsKnoxBankAvailable"])))
+            (isSynapseOn && [user boolForKey:@"IsSynapseBankAvailable"]))
         {
             if ([self.view.subviews containsObject:self.glyphNoBank])
             {
@@ -2385,8 +2361,7 @@ void addressBookChanged(ABAddressBookRef addressBook, CFDictionaryRef info, void
             [hamburger setTitleShadowColor:Rgb2UIColor(19, 32, 38, 0.22) forState:UIControlStateNormal];
             hamburger.titleLabel.shadowOffset = CGSizeMake(0.0, -1.0);
 
-            if ((isKnoxOn && ![user boolForKey:@"IsKnoxBankAvailable"]) ||
-                (isSynapseOn && ![user boolForKey:@"IsSynapseBankAvailable"]))
+            if (isSynapseOn && ![user boolForKey:@"IsSynapseBankAvailable"])
             {
                 if (![self.view.subviews containsObject:self.glyphNoBank])
                 {

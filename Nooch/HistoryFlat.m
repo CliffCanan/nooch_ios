@@ -91,9 +91,8 @@
         [self.navigationItem setLeftBarButtonItem:menu];
     }
 
-    //@"History"
     [self.navigationItem setTitle:NSLocalizedString(@"History_ScrnTitle", @"History screen title")];
-     [nav_ctrl performSelector:@selector(disable)];
+    [nav_ctrl performSelector:@selector(disable)];
 
     if (!histArray) {
         histArray=[[NSMutableArray alloc]init];
@@ -111,7 +110,6 @@
         histTempPending=[[NSMutableArray alloc]init];
     }
 
-    //@" Completed",@" Pending"
     NSArray * seg_items = @[NSLocalizedString(@"History_SegControl_Completed", @"History screen segmented control toggle - Completed"),
                             NSLocalizedString(@"History_SegControl_Pending", @"History screen segmented control toggle - Pending")];
     completed_pending = [[UISegmentedControl alloc] initWithItems:seg_items];
@@ -173,73 +171,61 @@
 
     self.glyph_checkmark = [[UILabel alloc] initWithFrame:CGRectMake(22, 13, 22, 18)];
     [self.glyph_checkmark setFont:[UIFont fontWithName:@"FontAwesome" size:16]];
+    [self.glyph_checkmark setText:[NSString fontAwesomeIconStringForIconIdentifier:@"fa-check-circle"]];
 
     self.glyph_pending = [[UILabel alloc] initWithFrame:CGRectMake(174, 13, 20, 18)];
     [self.glyph_pending setFont:[UIFont fontWithName:@"FontAwesome" size:16]];
+    [self.glyph_pending setText:[NSString fontAwesomeIconStringForIconIdentifier:@"fa-exclamation-circle"]];
+
+    SDImageCache * imageCache = [SDImageCache sharedImageCache];
+    [imageCache clearMemory];
+    [imageCache clearDisk];
+    [imageCache cleanDisk];
+
+    // Row count for scrolling
+    countRows = 0;
 
     if ([user boolForKey:@"hasPendingItems"] == true)
     {
+        subTypestr = @"Pending";
+        self.completed_selected = NO;
         [completed_pending setSelectedSegmentIndex:1];
 
         [self.navigationItem setRightBarButtonItem:nil animated:YES];
 
-        [self.glyph_checkmark setText:[NSString fontAwesomeIconStringForIconIdentifier:@"fa-check-circle"]];
         [self.glyph_checkmark setTextColor: kNoochBlue];
-        [self.view addSubview:self.glyph_checkmark];
-
-        [self.glyph_pending setText:[NSString fontAwesomeIconStringForIconIdentifier:@"fa-exclamation-circle"]];
         [self.glyph_pending setTextColor: [UIColor whiteColor]];
-        [self.view addSubview:self.glyph_pending];
 
-        SDImageCache *imageCache = [SDImageCache sharedImageCache];
-        [imageCache clearMemory];
-        [imageCache clearDisk];
-        [imageCache cleanDisk];
-
-        subTypestr = @"Pending";
-        self.completed_selected = NO;
         [histShowArrayCompleted removeAllObjects];
         [histShowArrayPending removeAllObjects];
-        countRows = 0;
+
         [self loadHist:@"ALL" index:1 len:20 subType:subTypestr];
     }
     else
     {
         subTypestr = @"";
         self.completed_selected = YES;
+        [completed_pending setSelectedSegmentIndex:0];
 
-        UIButton *glyph_map = [UIButton buttonWithType:UIButtonTypeRoundedRect];
+        UIButton * glyph_map = [UIButton buttonWithType:UIButtonTypeRoundedRect];
         [glyph_map setStyleId:@"glyph_map"];
         [glyph_map setTitleShadowColor:Rgb2UIColor(19, 32, 38, 0.22) forState:UIControlStateNormal];
         glyph_map.titleLabel.shadowOffset = CGSizeMake(0.0, -1.0);
         [glyph_map setTitle:[NSString fontAwesomeIconStringForIconIdentifier:@"fa-map-marker"] forState:UIControlStateNormal];
         [glyph_map addTarget:self action:@selector(toggleMapByNavBtn) forControlEvents:UIControlEventTouchUpInside];
 
-        UIBarButtonItem *map = [[UIBarButtonItem alloc] initWithCustomView:glyph_map];
+        UIBarButtonItem * map = [[UIBarButtonItem alloc] initWithCustomView:glyph_map];
 
-        NSArray *topRightBtns = @[map,filt];
+        NSArray * topRightBtns = @[map,filt];
         [self.navigationItem setRightBarButtonItems:topRightBtns animated:YES];
 
-        [completed_pending setSelectedSegmentIndex:0];
-
-        [self.glyph_checkmark setText:[NSString fontAwesomeIconStringForIconIdentifier:@"fa-check-circle"]];
         [self.glyph_checkmark setTextColor:[UIColor whiteColor]];
-        [self.view addSubview:self.glyph_checkmark];
-
-        [self.glyph_pending setText:[NSString fontAwesomeIconStringForIconIdentifier:@"fa-exclamation-circle"]];
         [self.glyph_pending setTextColor: kNoochBlue];
-        [self.view addSubview:self.glyph_pending];
-
-        SDImageCache * imageCache = [SDImageCache sharedImageCache];
-        [imageCache clearMemory];
-        [imageCache clearDisk];
-        [imageCache cleanDisk];
 
         [self loadHist:@"ALL" index:index len:20 subType:subTypestr];
-
-        // Row count for scrolling
-        countRows = 0;
     }
+    [self.view addSubview:self.glyph_checkmark];
+    [self.view addSubview:self.glyph_pending];
 
     //Export History
     exportHistory = [UIButton buttonWithType:UIButtonTypeCustom];
@@ -2046,9 +2032,8 @@
                 NSDictionary * dictRecord = [histTempPending objectAtIndex:indexPath.row];
                 TransactionDetails * details = [[TransactionDetails alloc] initWithData:dictRecord];
                 [self.navigationController pushViewController:details animated:YES];
-                return;
             }
-            if ([histShowArrayPending count] > indexPath.row)
+            else if ([histShowArrayPending count] > indexPath.row)
             {
                 NSDictionary * dictRecord = [histShowArrayPending objectAtIndex:indexPath.row];
                 TransactionDetails * details = [[TransactionDetails alloc] initWithData:dictRecord];

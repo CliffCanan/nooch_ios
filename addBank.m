@@ -102,7 +102,7 @@
 
     NSURL *url = [NSURL URLWithString: [NSString stringWithFormat:@"%@?%@",baseUrl,body]];
 
-    //NSLog(@"SYNPASE URL IS: %@",url);
+    NSLog(@"SYNPASE URL IS: %@",url);
     self.request = [[NSMutableURLRequest alloc]initWithURL: url];
     [self.request setHTTPMethod: @"GET"];
     [self.request setValue:@"application/json" forHTTPHeaderField:@"Content-Type"];
