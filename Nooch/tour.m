@@ -149,6 +149,7 @@
 
     intro.showSkipButtonOnlyOnLastPage = false;
     [intro.skipButton setTitle:NSLocalizedString(@"Tour_SkipBtn", @"Tour 'Skip' Button Text") forState:UIControlStateNormal];
+    //[intro setSkipButtonY:340.0f];
 
     if ([[UIScreen mainScreen] bounds].size.height < 500)
     {
@@ -158,7 +159,7 @@
     [intro showInView:self.view animateDuration:0.3];
 }
 
-- (void)intro:(EAIntroView *)introView pageAppeared:(EAIntroPage *)page withIndex:(NSInteger)pageIndex
+- (void)intro:(EAIntroView *)introView pageAppeared:(EAIntroPage *)page withIndex:(NSUInteger)pageIndex
 {
     if (pageIndex == 5)
     {
@@ -170,10 +171,10 @@
     }
 }
 
-- (void)intro:(EAIntroView *)introView pageStartScrolling:(EAIntroPage *)page withIndex:(NSInteger)pageIndex{
+- (void)intro:(EAIntroView *)introView pageStartScrolling:(EAIntroPage *)page withIndex:(NSUInteger)pageIndex{
 }
 
-- (void)intro:(EAIntroView *)introView pageEndScrolling:(EAIntroPage *)page withIndex:(NSInteger)pageIndex{
+- (void)intro:(EAIntroView *)introView pageEndScrolling:(EAIntroPage *)page withIndex:(NSUInteger)pageIndex{
 }
 
 - (void)introDidFinish:(EAIntroView *)introView

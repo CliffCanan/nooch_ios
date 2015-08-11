@@ -10,6 +10,7 @@
 #import "Home.h"
 #import "Helpers.h"
 #import "MBProgressHUD.h"
+
 @interface SelectPicture : GAITrackedViewController<UIImagePickerControllerDelegate,UIActionSheetDelegate,UINavigationControllerDelegate,MBProgressHUDDelegate>
 {
     UIImage * imageShow;

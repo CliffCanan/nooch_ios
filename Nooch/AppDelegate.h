@@ -7,10 +7,7 @@
 //
 
 #import <UIKit/UIKit.h>
-#import <GoogleMaps/GoogleMaps.h>
-#import "GAI.h"
 #import "Reachability.h"
-#import <FacebookSDK/FacebookSDK.h>
 #import <GameThrive/GameThrive.h>
 #import <MobileAppTracker/MobileAppTracker.h>
 
@@ -24,11 +21,9 @@ bool inBack;
     Reachability * internetReach;
 }
 @property (strong, nonatomic) UIWindow *window;
-@property (nonatomic,retain) id<GAITracker> tracker;
 @property (nonatomic,retain) NSDate *inactiveDate;
 @property (strong, nonatomic) GameThrive *gameThrive;
 
-- (void)sessionStateChanged:(FBSession *)session state:(FBSessionState) state error:(NSError *)error;
 - (void)userLoggedIn;
 - (void)userLoggedOut;
 

@@ -15,7 +15,7 @@
 #import "ProfileInfo.h"
 #import "DisputeDetail.h"
 #import "SettingsOptions.h"
-#import <FacebookSDK/FacebookSDK.h>
+//#import <FacebookSDK/FacebookSDK.h>
 
 @interface TransactionDetails ()
 @property (nonatomic,strong) NSDictionary *trans;
@@ -1085,7 +1085,7 @@
     NSString * postImgUrl = @"https://www.nooch.com/wp-content/themes/newnooch/library/images/nooch-logo.svg";
 
     // Check if the Facebook app is installed and we can present the share dialog
-    FBLinkShareParams *params = [[FBLinkShareParams alloc] init];
+  /*FBLinkShareParams *params = [[FBLinkShareParams alloc] init];
     params.link = [NSURL URLWithString: postLink];
     params.name = postTitle;
     params.picture = [NSURL URLWithString:postImgUrl];
@@ -1149,7 +1149,7 @@
                                                           }
                                                       }
                                                   }];
-    }
+    }*/
 }
 
 // A function for parsing URL parameters returned by the FB Feed Dialog.

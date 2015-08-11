@@ -68,7 +68,7 @@ NSString *responseString;
 @synthesize Delegate,tagName,responseData;
 
 NSString * const ServerUrl = @"https://www.noochme.com/NoochService/NoochService.svc";
-//NSString * const ServerUrl = @"http://54.201.43.89/NoochService/NoochService.svc";// dev server
+//NSString * const ServerUrl = @"https://54.201.43.89/NoochService/NoochService.svc";// dev server
 
 bool locationUpdate;
 NSString *tranType;
