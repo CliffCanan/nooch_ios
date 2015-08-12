@@ -89,7 +89,6 @@
 -(void)newUser:(NSString *)email first:(NSString *)fName last:(NSString *)lName password:(NSString *)password pin:(NSString*)pin invCode:(NSString*)inv fbId:(NSString *)fbId ;
 -(void)pinCheck:(NSString*)memId pin:(NSString*)pin;
 -(void)ReferalCodeRequest:(NSString*)email;
--(void)RemoveKnoxBankAccount;
 -(void)RemoveSynapseBankAccount;
 -(void)RaiseDispute:(NSDictionary*)Input;
 -(void)resendEmail;
@@ -98,7 +97,7 @@
 -(void)resendSMS;
 -(void)saveDob:(NSString*)dob;
 -(void)saveSsn:(NSString*)ssn;
--(void)saveUserIpAddress:(NSString*)IpAddress;
+-(void)saveUserIpAddressAndDeviceId:(NSString*)IpAddress deviceId:(NSString*)deviceId;
 -(void)SaveImmediateRequire:(BOOL)IsRequiredImmediatley;
 -(void)saveShareToFB_Twitter:(NSString*)PostTo;
 -(void)saveMemberTransId:(NSDictionary*)trans;

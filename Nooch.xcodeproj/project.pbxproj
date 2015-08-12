@@ -238,7 +238,6 @@
 		848C98411A1473A200C1BAE4 /* fbConnect.m in Sources */ = {isa = PBXBuildFile; fileRef = 848C98401A1473A200C1BAE4 /* fbConnect.m */; };
 		849AF6BD19A3183000693385 /* close_button.png in Resources */ = {isa = PBXBuildFile; fileRef = 849AF6BC19A3183000693385 /* close_button.png */; };
 		84B65A73188542E9009A5205 /* NSString+ASBase64.m in Sources */ = {isa = PBXBuildFile; fileRef = 84B65A72188542E9009A5205 /* NSString+ASBase64.m */; };
-		84B79FFF19BEDEB50081A2AF /* iCarousel.m in Sources */ = {isa = PBXBuildFile; fileRef = 84B79FFE19BEDEB50081A2AF /* iCarousel.m */; };
 		84BACAF719FF7A50001F796D /* FBUserSettingsViewResources.bundle in Resources */ = {isa = PBXBuildFile; fileRef = 84BACAF619FF7A50001F796D /* FBUserSettingsViewResources.bundle */; };
 		84C3EF1B187D101E004687F6 /* ReEnterPin.m in Sources */ = {isa = PBXBuildFile; fileRef = 84C3EF1A187D101E004687F6 /* ReEnterPin.m */; };
 		9753E831FFEAEA3DBB728DD4 /* libPods-Nooch.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 209A025C29F3B07F1961886C /* libPods-Nooch.a */; };
@@ -601,8 +600,6 @@
 		849AF6BC19A3183000693385 /* close_button.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = close_button.png; sourceTree = "<group>"; };
 		84B65A71188542E9009A5205 /* NSString+ASBase64.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSString+ASBase64.h"; sourceTree = "<group>"; };
 		84B65A72188542E9009A5205 /* NSString+ASBase64.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSString+ASBase64.m"; sourceTree = "<group>"; };
-		84B79FFD19BEDEB50081A2AF /* iCarousel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = iCarousel.h; sourceTree = "<group>"; };
-		84B79FFE19BEDEB50081A2AF /* iCarousel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = iCarousel.m; sourceTree = "<group>"; };
 		84BACAF619FF7A50001F796D /* FBUserSettingsViewResources.bundle */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.plug-in"; path = FBUserSettingsViewResources.bundle; sourceTree = "<group>"; };
 		84C3EF19187D101E004687F6 /* ReEnterPin.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ReEnterPin.h; sourceTree = "<group>"; };
 		84C3EF1A187D101E004687F6 /* ReEnterPin.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ReEnterPin.m; sourceTree = "<group>"; };
@@ -1117,8 +1114,6 @@
 				5CE2052E1B79B7DA007ACFF4 /* GoogleService-Info.plist */,
 				5CC183D41A19C6B600DADDC8 /* MagicPieLayer */,
 				5C69D03519C941DB00EB406F /* SpinKit */,
-				84B79FFD19BEDEB50081A2AF /* iCarousel.h */,
-				84B79FFE19BEDEB50081A2AF /* iCarousel.m */,
 				0103AEA918FC8B8D003225DA /* FAImageView.h */,
 				0103AEAA18FC8B8D003225DA /* FAImageView.m */,
 				0103AEAB18FC8B8D003225DA /* NSString+FontAwesome.h */,
@@ -1540,7 +1535,6 @@
 				846A5E3119DAB0FC0093FF9C /* MKAnnotationView+WebCache.m in Sources */,
 				0103AEAF18FC8B8D003225DA /* FAImageView.m in Sources */,
 				01085FB717FB6ABE00A31F63 /* ReferralCode.m in Sources */,
-				84B79FFF19BEDEB50081A2AF /* iCarousel.m in Sources */,
 				01085FF5180345D200A31F63 /* ResetPassword.m in Sources */,
 				846EF0CB198B5F55009D5491 /* DisputeDetail.m in Sources */,
 				0169E22D18D8D7C200442642 /* addBank.m in Sources */,

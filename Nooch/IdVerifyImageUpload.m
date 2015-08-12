@@ -12,6 +12,8 @@
 #import "ECSlidingViewController.h"
 #import "UIImage+Resize.h"
 #import "UIImageView+WebCache.h"
+#import <MMProgressHUD/MMProgressHUD.h>
+#import <MMProgressHUD/MMLinearProgressView.h>
 
 @interface IdVerifyImageUpload (){
     UIScrollView * scrollView;
@@ -22,7 +24,6 @@
 @property(nonatomic,strong) UIButton *choose_pic;
 @property(nonatomic,strong) UILabel *btnGlyph;
 @property(nonatomic) UIImagePickerController *picker;
-@property(nonatomic,strong) MBProgressHUD *hud;
 @end
 
 @implementation IdVerifyImageUpload
@@ -303,15 +304,67 @@
 
 -(void)submit_pic
 {
-    RTSpinKitView *spinner1 = [[RTSpinKitView alloc] initWithStyle:RTSpinKitViewStyleThreeBounce];
-    spinner1.color = [UIColor whiteColor];
-    self.hud = [[MBProgressHUD alloc] initWithView:self.navigationController.view];
-    [self.navigationController.view addSubview:self.hud];
-    self.hud.labelText = @"Submitting image...";
-    self.hud.mode = MBProgressHUDModeCustomView;
-    self.hud.customView = spinner1;
-    self.hud.delegate = self;
-    [self.hud show:YES];
+    isCancelled = false;
+
+    [MMProgressHUD setPresentationStyle:MMProgressHUDPresentationStyleShrink];
+    [MMProgressHUD showWithTitle:@"Processing..."
+                          status:@"Submitting your picture"
+             confirmationMessage:@"Cancel Submission?"
+                     cancelBlock:^{
+                         isCancelled = true;
+
+                         // Go back to main Settings screen after 1s delay
+                         double _delayInSeconds = 1;
+                         dispatch_time_t _popTime = dispatch_time(DISPATCH_TIME_NOW, _delayInSeconds * NSEC_PER_SEC);
+                         dispatch_after(_popTime, dispatch_get_main_queue(), ^(void){
+                             [self.navigationController popViewControllerAnimated:YES];
+                         });
+                     }];
+    [[MMProgressHUD sharedHUD] setProgressCompletion:^{
+        [MMProgressHUD dismissWithSuccess:@"Success!"];
+    }];
+
+    double _delayInSeconds = .9;
+    dispatch_time_t _popTime = dispatch_time(DISPATCH_TIME_NOW, _delayInSeconds * NSEC_PER_SEC);
+    dispatch_after(_popTime, dispatch_get_main_queue(), ^(void){
+        [MMProgressHUD updateProgress:0.3f];
+
+        double delayInSeconds = 1;
+        dispatch_time_t popTime = dispatch_time(DISPATCH_TIME_NOW, delayInSeconds * NSEC_PER_SEC);
+        dispatch_after(popTime, dispatch_get_main_queue(), ^(void){
+            if (!isCancelled)
+            {
+                [MMProgressHUD updateProgress:0.52f];
+
+                double delayInSeconds = 0.7;
+                dispatch_time_t popTime = dispatch_time(DISPATCH_TIME_NOW, delayInSeconds * NSEC_PER_SEC);
+                dispatch_after(popTime, dispatch_get_main_queue(), ^(void){
+                    if (!isCancelled)
+                    {
+                        [MMProgressHUD updateProgress:0.6f];
+
+                        double delayInSeconds = 1.3;
+                        dispatch_time_t popTime = dispatch_time(DISPATCH_TIME_NOW, delayInSeconds * NSEC_PER_SEC);
+                        dispatch_after(popTime, dispatch_get_main_queue(), ^(void){
+                            if (!isCancelled)
+                            {
+                                [MMProgressHUD updateProgress:0.72f];
+
+                                double delayInSeconds = 0.9;
+                                dispatch_time_t popTime = dispatch_time(DISPATCH_TIME_NOW, delayInSeconds * NSEC_PER_SEC);
+                                dispatch_after(popTime, dispatch_get_main_queue(), ^(void){
+                                    if (!isCancelled)
+                                    {
+                                        [MMProgressHUD updateProgress:0.86f];
+                                    }
+                                });
+                            }
+                        });
+                    }
+                });
+            }
+        });
+    });
 
     serve * submitIdDoc = [serve new];
     submitIdDoc.Delegate = self;
@@ -322,9 +375,10 @@
 #pragma mark - server Delegation
 -(void)listen:(NSString *)result tagName:(NSString *)tagName
 {
-    [self.hud hide:YES];
+    [MMProgressHUD updateProgress:1.f];
+
     NSError *error;
-    
+
     if ([tagName isEqualToString:@"SubmitIdImg"])
     {
         NSMutableDictionary * resp = [NSJSONSerialization
@@ -362,7 +416,8 @@
 
 -(void)Error:(NSError *)Error
 {
-    [self.hud hide:YES];
+    isCancelled = true;
+    [MMProgressHUD dismissWithError:@"Error :-(" title:@"Oh No!"];
 }
 
 #pragma mark - file paths

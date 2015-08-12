@@ -9,13 +9,12 @@
 #import "Welcome.h"
 #import "Register.h"
 #import "ECSlidingViewController.h"
-#import "SpinKit/RTSpinKitView.h"
+#import <MMProgressHUD/MMProgressHUD.h>
 
 @interface ReferralCode ()
 
 @property(nonatomic,strong) NSMutableDictionary *user;
 @property(nonatomic,strong) UITextField *code_field;
-@property(nonatomic,strong) MBProgressHUD *hud;
 @end
 
 @implementation ReferralCode
@@ -88,7 +87,7 @@
     UIButton *request = [UIButton buttonWithType:UIButtonTypeRoundedRect];
     [request setFrame:CGRectMake(10, 424, 300, 60)];
     [request setTitle:NSLocalizedString(@"ReferCode_DntHvCodeTxt", @"'I Don't Have a Code' Button Text") forState:UIControlStateNormal];
-    [request addTarget:self action:@selector(request_code) forControlEvents:UIControlEventTouchUpInside];
+    [request addTarget:self action:@selector(dontHaveACode) forControlEvents:UIControlEventTouchUpInside];
     [request setStyleClass:@"label_small"];
     [self.view addSubview:request];
 
@@ -132,15 +131,9 @@
         return;
     }
 
-    RTSpinKitView *spinner1 = [[RTSpinKitView alloc] initWithStyle:RTSpinKitViewStyleWanderingCubes];
-    spinner1.color = [UIColor whiteColor];
-    self.hud = [[MBProgressHUD alloc] initWithView:self.navigationController.view];
-    [self.navigationController.view addSubview:self.hud];
-
-    self.hud.mode = MBProgressHUDModeCustomView;
-    self.hud.customView = spinner1;
-    self.hud.labelText = NSLocalizedString(@"ReferCode_HUDlbl1", @"'Validating your code' HUD Label");
-    [self.hud show:YES];
+    [MMProgressHUD setPresentationStyle:MMProgressHUDPresentationStyleShrink];
+    [MMProgressHUD showWithTitle:NSLocalizedString(@"ReferCode_HUDlbl1", @"'Validating your code' HUD Label")
+                          status:nil];
 
     [enter setEnabled:NO];
     serve *inv_code = [serve new];
@@ -149,9 +142,11 @@
     [inv_code validateInviteCode:[self.code_field.text uppercaseString]];
 }
 
-- (void)request_code
+- (void)dontHaveACode
 {
     NSString * requireCodeSettingFromArtisan = [ARPowerHookManager getValueForHookById:@"reqCodeSetting"];
+
+    // If we are requiring a Referral/Invite Code (determined in the cloud via Artisan)
     if ([requireCodeSettingFromArtisan isEqualToString:@"yes"])
     {
         UIAlertView *av = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"ReferCode_RqstCdAlrtTtl", @"'Request An Invite Code' Alert Title")
@@ -163,21 +158,16 @@
         [av setTag:101];
     }
 
+    // If a Referral/Invite Code is NOT required
     else
     {
-        RTSpinKitView *spinner1 = [[RTSpinKitView alloc] initWithStyle:RTSpinKitViewStyleWanderingCubes];
-        spinner1.color = [UIColor whiteColor];
-        self.hud = [[MBProgressHUD alloc] initWithView:self.navigationController.view];
-        [self.navigationController.view addSubview:self.hud];
-
-        self.hud.mode = MBProgressHUDModeCustomView;
-        self.hud.customView = spinner1;
-        self.hud.labelText = @"";
-        [self.hud show:YES];
+        [MMProgressHUD showWithTitle:NSLocalizedString(@"ReferCode_HUDlbl2", @"'Creating your Nooch account...' HUD Label")
+                              status:nil];
 
         [enter setEnabled:NO];
 
         refCodeFromArtisan = [ARPowerHookManager getValueForHookById:@"refCode"];
+
         serve * inv_code = [serve new];
         [inv_code setDelegate:self];
         [inv_code setTagName:@"inv_check"];
@@ -187,7 +177,7 @@
 
 -(void)Error:(NSError *)Error
 {
-    [self.hud hide:YES];
+    [MMProgressHUD dismissWithError:@"Error"];
 
     UIAlertView *alert = [[UIAlertView alloc]
                           initWithTitle:NSLocalizedString(@"ReferCode_CnctnErrAlrtTitle", @"Referral Code screen 'Connection Error' Alert Text")
@@ -213,21 +203,12 @@
 
     else if ([tagName isEqualToString:@"inv_check"])
     {
-        [self.hud hide:YES];
         NSDictionary *response = [NSJSONSerialization JSONObjectWithData:[result dataUsingEncoding:NSUTF8StringEncoding] options:0 error:&error];
         
         if ([[response objectForKey:@"validateInvitationCodeResult"] boolValue])
         {
-            [self.hud hide:YES];
-            RTSpinKitView *spinner1 = [[RTSpinKitView alloc] initWithStyle:RTSpinKitViewStyleWanderingCubes];
-            spinner1.color = [UIColor whiteColor];
-            self.hud = [[MBProgressHUD alloc] initWithView:self.navigationController.view];
-            [self.navigationController.view addSubview:self.hud];
-
-            self.hud.mode = MBProgressHUDModeCustomView;
-            self.hud.customView = spinner1;
-            self.hud.labelText = NSLocalizedString(@"ReferCode_HUDlbl2", @"'Creating your Nooch account...' HUD Label");
-            [self.hud show:YES];
+            [MMProgressHUD showWithTitle:NSLocalizedString(@"ReferCode_HUDlbl2", @"'Creating your Nooch account...' HUD Label")
+                                  status:nil];
 
             serve * serveOBJ = [serve new];
             [serveOBJ setDelegate:self];
@@ -244,6 +225,8 @@
         }
         else
         {
+            [MMProgressHUD dismissWithError:@"Error" title:@"Invalid Code"];
+
             UIAlertView *avInvalidCode = [[UIAlertView alloc]initWithTitle:@"Not Quite Right"
                                                                    message:@"We don't recognize that referral code. Please check to make sure you entered it correctly.  If you do not have a code, you can request one."
                                                                   delegate:self
@@ -262,15 +245,17 @@
 
         if ([[[response valueForKey:@"getTotalReferralCodeResult"] valueForKey:@"Result"] isEqualToString:@"True"])
         {
-            serve *create = [serve new];
-            [create setDelegate:self];
-            [create setTagName:@"encrypt"];
             [[assist shared]setPassValue:[self.user objectForKey:@"password"]];
-            [create getEncrypt:[self.user objectForKey:@"password"]];
+
+            serve * encrypt = [serve new];
+            [encrypt setDelegate:self];
+            [encrypt setTagName:@"encrypt"];
+            [encrypt getEncrypt:[self.user objectForKey:@"password"]];
         }
         else
         {
-            [self.hud hide:YES];
+            [MMProgressHUD dismissWithError:@"" title:@"Code Expired"];
+
             UIAlertView * alert = [[UIAlertView alloc]initWithTitle:NSLocalizedString(@"ReferCode_ExprdAlrtTtl", @"'Expired Code' Alert Title")
                                                             message:NSLocalizedString(@"ReferCode_ExprdAlrtBody", @"'Expired Code' Alert Body")
                                                            delegate:nil
@@ -283,8 +268,9 @@
 
     else if ([tagName isEqualToString:@"encrypt"])
     {
-        NSError *error;
-        NSDictionary *loginResult = [NSJSONSerialization JSONObjectWithData:[result dataUsingEncoding:NSUTF8StringEncoding] options:0 error:&error];
+        NSError * error;
+        NSDictionary * loginResult = [NSJSONSerialization JSONObjectWithData:[result dataUsingEncoding:NSUTF8StringEncoding] options:0 error:&error];
+
         [user setObject:[self.user objectForKey:@"email"] forKey:@"UserName"];
         [user setObject:[self.user objectForKey:@"first_name"] forKey:@"FirstName"];
         [user setObject:[self.user objectForKey:@"last_name"] forKey:@"last_name"];
@@ -324,6 +310,9 @@
         
         if ([[[response objectForKey:@"MemberRegistrationResult"]objectForKey:@"Result"] isEqualToString:@"Thanks for registering! Check your email to complete activation."])
         {
+            [MMProgressHUD showWithTitle:@"Logging in..."
+                                  status:nil];
+
             NSString * udid = [user valueForKey:@"DeviceToken"];
             serve * login = [serve new];
             login.Delegate = self;
@@ -332,7 +321,8 @@
         }
         else if ([[[response objectForKey:@"MemberRegistrationResult"] objectForKey:@"Result"] isEqualToString:@"You are already a nooch member."])
         {
-            [self.hud hide:YES];
+            [MMProgressHUD dismissWithError:@"" title:@"Error"];
+
             UIAlertView *decline = [[UIAlertView alloc] initWithTitle:@"Well..."
                                                               message:@"This address already exists in our system, we are not yet able to clone you, our apologies."
                                                              delegate:self
@@ -347,7 +337,7 @@
     }
     else if ([tagName isEqualToString:@"login"])
     {
-        serve *req = [[serve alloc] init];
+        serve * req = [[serve alloc] init];
         req.Delegate = self;
         req.tagName = @"getMemId";
         [req getMemIdFromuUsername:[user objectForKey:@"UserName"]];
@@ -355,7 +345,7 @@
 
     if ([tagName isEqualToString:@"getMemId"])
     {
-        [self.hud hide:YES];
+        [MMProgressHUD dismissWithSuccess:@"" title:@"Success!"];
 
         NSDictionary *response = [NSJSONSerialization JSONObjectWithData:[result dataUsingEncoding:NSUTF8StringEncoding] options:0 error:&error];
         NSLog(@"%@",response);

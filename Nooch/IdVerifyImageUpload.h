@@ -9,13 +9,12 @@
 #import <UIKit/UIKit.h>
 #import "Home.h"
 #import "Helpers.h"
-#import "SpinKit/RTSpinKitView.h"
-#import "MBProgressHUD.h"
 #import "serve.h"
 
-@interface IdVerifyImageUpload : GAITrackedViewController<UIImagePickerControllerDelegate,UIActionSheetDelegate,UINavigationControllerDelegate,MBProgressHUDDelegate,serveD>
+@interface IdVerifyImageUpload : GAITrackedViewController<UIImagePickerControllerDelegate,UIActionSheetDelegate,UINavigationControllerDelegate,serveD>
 {
     UIImage * imageShow;
+    BOOL isCancelled;
 }
 
 @end
