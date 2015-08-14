@@ -242,6 +242,7 @@ NSString *amnt;
     if (!connectionLogin)
         NSLog(@"connect error");
 }
+
 -(void)loginwithFB:(NSString*)email FBId:(NSString*)FBId remember:(BOOL)isRem lat:(float)lat lon:(float)lng
 {
     [[assist shared] setSusPended:NO];
@@ -261,7 +262,9 @@ NSString *amnt;
     if (!connectionLogin)
         NSLog(@"connect error");
 }
--(void)setEmailSets:(NSDictionary*)notificationDictionary{
+
+-(void)setEmailSets:(NSDictionary*)notificationDictionary
+{
     NSError *error;
     NSData *postData = [NSJSONSerialization dataWithJSONObject:notificationDictionary
                                                        options:NSJSONWritingPrettyPrinted error:&error];
@@ -279,7 +282,9 @@ NSString *amnt;
     if (!connection)
         NSLog(@"connect error");
 }
--(void)setPushSets:(NSDictionary*)notificationDictionary{
+
+-(void)setPushSets:(NSDictionary*)notificationDictionary
+{
     NSError *error;
     NSData *postData = [NSJSONSerialization dataWithJSONObject:notificationDictionary
                                                        options:NSJSONWritingPrettyPrinted error:&error];
@@ -337,6 +342,7 @@ NSString *amnt;
         NSArray * arr = [result1 componentsSeparatedByString:@","];
         [dictnew setObject:arr forKey:@"Picture"];
     }
+
     NSDictionary * memDetails = [NSDictionary dictionaryWithObjectsAndKeys:dictnew,@"MemberDetails", nil];
     //NSLog(@"%@",memDetails);
 

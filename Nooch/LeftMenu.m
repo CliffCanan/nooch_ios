@@ -246,16 +246,19 @@
     shadow.shadowOffset = CGSizeMake(0, -1);
     NSDictionary * textAttributes = @{NSShadowAttributeName: shadow };
     
-    if (section == 0) {
-        title.attributedText = [[NSAttributedString alloc] initWithString:NSLocalizedString(@"LSidebar_Hdr_Account", @"Left Sidebar Section Header - 'Account'")//@"ACCOUNT"
+    if (section == 0)
+    {
+        title.attributedText = [[NSAttributedString alloc] initWithString:NSLocalizedString(@"LSidebar_Hdr_Account", @"Left Sidebar Section Header - 'Account'")
             attributes:textAttributes];
     }
-    else if(section == 1) {
-        title.attributedText = [[NSAttributedString alloc] initWithString:NSLocalizedString(@"LSidebar_Hdr_Social", @"Left Sidebar Section Header - 'Social'")//@"SOCIAL"
+    else if (section == 1)
+    {
+        title.attributedText = [[NSAttributedString alloc] initWithString:NSLocalizedString(@"LSidebar_Hdr_Social", @"Left Sidebar Section Header - 'Social'")
             attributes:textAttributes];
     }
-    else if(section == 2) {
-        title.attributedText = [[NSAttributedString alloc] initWithString:NSLocalizedString(@"LSidebar_Hdr_About", @"Left Sidebar Section Header - 'About'")//@"ABOUT"
+    else if (section == 2)
+    {
+        title.attributedText = [[NSAttributedString alloc] initWithString:NSLocalizedString(@"LSidebar_Hdr_About", @"Left Sidebar Section Header - 'About'")
             attributes:textAttributes];
     }
     else {
@@ -272,11 +275,13 @@
 {
     if (section == 0)
     {
-        if (shouldDisplayAptsSection) {
-            return 4;
+        if (shouldDisplayAptsSection)
+        {
+            return 5;
         }
-        else {
-            return 3;
+        else
+        {
+            return 4;
         }
     }
     else if (section == 1)
@@ -338,13 +343,13 @@
     {
         if (indexPath.row == 0)
         {
-            cell.textLabel.attributedText = [[NSAttributedString alloc] initWithString:NSLocalizedString(@"LSidebar_Home", @"Left Sidebar Row Title - 'Home'")//@"Home"
+            cell.textLabel.attributedText = [[NSAttributedString alloc] initWithString:NSLocalizedString(@"LSidebar_Home", @"Left Sidebar Row Title - 'Home'")
                                                                             attributes:textAttributes];
             iv.attributedText = [[NSAttributedString alloc] initWithString:[NSString fontAwesomeIconStringForIconIdentifier:@"fa-home"] attributes:textAttributes];
         }
         else if (indexPath.row == 1)
         {
-            cell.textLabel.attributedText = [[NSAttributedString alloc] initWithString:NSLocalizedString(@"LSidebar_Hist", @"Left Sidebar Row Title - 'Transaction History'")//@"Transaction History"
+            cell.textLabel.attributedText = [[NSAttributedString alloc] initWithString:NSLocalizedString(@"LSidebar_Hist", @"Left Sidebar Row Title - 'Transaction History'")
                                                                             attributes:textAttributes];
             iv.attributedText = [[NSAttributedString alloc] initWithString:[NSString fontAwesomeIconStringForIconIdentifier:@"fa-clock-o"] attributes:textAttributes];
 
@@ -366,39 +371,38 @@
         }
         else if (indexPath.row == 2)
         {
-            cell.textLabel.attributedText = [[NSAttributedString alloc] initWithString:NSLocalizedString(@"LSidebar_Stats", @"Left Sidebar Row Title - 'Statistics'")//@"Statistics"
+            cell.textLabel.attributedText = [[NSAttributedString alloc] initWithString:NSLocalizedString(@"LSidebar_Settings", @"Left Sidebar Row Title - 'Settings'")
+                                                                            attributes:textAttributes];
+            iv.attributedText = [[NSAttributedString alloc] initWithString:[NSString fontAwesomeIconStringForIconIdentifier:@"fa-cog"] attributes:textAttributes];
+        }
+        else if (indexPath.row == 3)
+        {
+            cell.textLabel.attributedText = [[NSAttributedString alloc] initWithString:NSLocalizedString(@"LSidebar_Stats", @"Left Sidebar Row Title - 'Statistics'")
                                                                             attributes:textAttributes];
             iv.attributedText = [[NSAttributedString alloc] initWithString:[NSString fontAwesomeIconStringForIconIdentifier:@"fa-line-chart"] attributes:textAttributes];
             [iv setStyleClass:@"lside_menu_icons_sm"];
         }
-        else if (shouldDisplayAptsSection && indexPath.row == 3)
+        else if (shouldDisplayAptsSection && indexPath.row == 4)
         {
-            cell.textLabel.attributedText = [[NSAttributedString alloc] initWithString:NSLocalizedString(@"LSidebar_Rent", @"Left Sidebar Row Title - 'Pay Rent'")//@"Pay Rent"
+            cell.textLabel.attributedText = [[NSAttributedString alloc] initWithString:NSLocalizedString(@"LSidebar_Rent", @"Left Sidebar Row Title - 'Pay Rent'")
                                                                             attributes:textAttributes];
             iv.attributedText = [[NSAttributedString alloc] initWithString:[NSString fontAwesomeIconStringForIconIdentifier:@"fa-building-o"] attributes:textAttributes];
             [iv setStyleClass:@"lside_menu_icons_sm"];
         }
     }
-    /*else if(indexPath.section == 9)
-    {
-        if (indexPath.row == 0) {
-            cell.textLabel.attributedText = [[NSAttributedString alloc] initWithString:NSLocalizedString(@"LSidebar_Donate", @"Left Sidebar Row Title - 'Donate to a Cause'")//@"Donate to a Cause"
-                                                                            attributes:textAttributes];
-            iv.text = [NSString fontAwesomeIconStringForIconIdentifier:@"fa-globe"];
-        }
-    }*/
+
     else if (indexPath.section == 1)
     {
         if (indexPath.row == 0)
         {
-            cell.textLabel.attributedText = [[NSAttributedString alloc] initWithString:NSLocalizedString(@"LSidebar_Refer", @"Left Sidebar Row Title - 'Refer a Friend'")//@"Refer a Friend"
+            cell.textLabel.attributedText = [[NSAttributedString alloc] initWithString:NSLocalizedString(@"LSidebar_Refer", @"Left Sidebar Row Title - 'Refer a Friend'")
                                                                             attributes:textAttributes];
             iv.attributedText = [[NSAttributedString alloc] initWithString:[NSString fontAwesomeIconStringForIconIdentifier:@"fa-users"] attributes:textAttributes];
             [iv setStyleClass:@"lside_menu_icons_sm"];
         }
         else if (indexPath.row == 1)
         {
-            cell.textLabel.attributedText = [[NSAttributedString alloc] initWithString:NSLocalizedString(@"LSidebar_Rate", @"Left Sidebar Row Title - 'Rate Nooch'")//@"Rate Nooch"
+            cell.textLabel.attributedText = [[NSAttributedString alloc] initWithString:NSLocalizedString(@"LSidebar_Rate", @"Left Sidebar Row Title - 'Rate Nooch'")
                                                                             attributes:textAttributes];
             iv.attributedText = [[NSAttributedString alloc] initWithString:[NSString fontAwesomeIconStringForIconIdentifier:@"fa-thumbs-up"] attributes:textAttributes];
         }
@@ -407,26 +411,26 @@
     {
         if (indexPath.row == 0)
         {
-            cell.textLabel.attributedText = [[NSAttributedString alloc] initWithString:NSLocalizedString(@"LSidebar_HowItWrks", @"Left Sidebar Row Title - 'How Nooch Works'")//@"How Nooch Works"
+            cell.textLabel.attributedText = [[NSAttributedString alloc] initWithString:NSLocalizedString(@"LSidebar_HowItWrks", @"Left Sidebar Row Title - 'How Nooch Works'")
                                                                             attributes:textAttributes];
             iv.attributedText = [[NSAttributedString alloc] initWithString:[NSString fontAwesomeIconStringForIconIdentifier:@"fa-question"] attributes:textAttributes];
         }
         else if (indexPath.row == 1)
         {
-            cell.textLabel.attributedText = [[NSAttributedString alloc] initWithString:NSLocalizedString(@"LSidebar_Support", @"Left Sidebar Row Title - 'Support'")//@"Support"
+            cell.textLabel.attributedText = [[NSAttributedString alloc] initWithString:NSLocalizedString(@"LSidebar_Support", @"Left Sidebar Row Title - 'Support'")
                                                                             attributes:textAttributes];
             iv.attributedText = [[NSAttributedString alloc] initWithString:[NSString fontAwesomeIconStringForIconIdentifier:@"fa-envelope"] attributes:textAttributes];
             [iv setStyleClass:@"lside_menu_icons_sm"];
         }
         else if (indexPath.row == 2)
         {
-            cell.textLabel.attributedText = [[NSAttributedString alloc] initWithString:NSLocalizedString(@"LSidebar_Limits", @"Left Sidebar Row Title - 'Limits & Fees'")//@"Limits & Fees"
+            cell.textLabel.attributedText = [[NSAttributedString alloc] initWithString:NSLocalizedString(@"LSidebar_Limits", @"Left Sidebar Row Title - 'Limits & Fees'")
                                                                             attributes:textAttributes];
             iv.attributedText = [[NSAttributedString alloc] initWithString:[NSString fontAwesomeIconStringForIconIdentifier:@"fa-usd"] attributes:textAttributes];
         }
         else if (indexPath.row == 3)
         {
-            cell.textLabel.attributedText = [[NSAttributedString alloc] initWithString:NSLocalizedString(@"LSidebar_Legal", @"Left Sidebar Row Title - 'Legal Info'")//@"Legal Info"
+            cell.textLabel.attributedText = [[NSAttributedString alloc] initWithString:NSLocalizedString(@"LSidebar_Legal", @"Left Sidebar Row Title - 'Legal Info'")
                                                                             attributes:textAttributes];
             iv.attributedText = [[NSAttributedString alloc] initWithString:[NSString fontAwesomeIconStringForIconIdentifier:@"fa-gavel"] attributes:textAttributes];
         }
@@ -459,11 +463,17 @@
         }
         else if (indexPath.row == 2)
         {
+            SettingsOptions * settings  = [[SettingsOptions alloc] init];
+            [nav_ctrl pushViewController:settings animated:NO];
+            [self.slidingViewController resetTopView];
+        }
+        else if (indexPath.row == 3)
+        {
             Statistics *stats = [[Statistics alloc] init];
             [nav_ctrl pushViewController:stats animated:NO];
             [self.slidingViewController resetTopView];
         }
-        else if (indexPath.row == 3)
+        else if (indexPath.row == 4)
         {
             if (hasAptSet)
             {
