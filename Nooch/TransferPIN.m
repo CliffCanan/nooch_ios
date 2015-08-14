@@ -930,10 +930,10 @@ NSString * calculateArrivalDate()
                     [transactionInputTransfer setValue:arr forKey:@"Picture"];
                 }
 
-                NSDate *date = [NSDate date];
-                NSDateFormatter *dateFormat = [[NSDateFormatter alloc] init];
+                NSDate * date = [NSDate date];
+                NSDateFormatter * dateFormat = [[NSDateFormatter alloc] init];
                 [dateFormat setDateFormat:@"yyyy-MM-dd HH:mm:ss.SS"];
-                NSString *TransactionDate = [dateFormat stringFromDate:date];
+                NSString * TransactionDate = [dateFormat stringFromDate:date];
 
                 [transactionInputTransfer setValue:TransactionDate forKey:@"TransactionDate"];
                 [transactionInputTransfer setValue:[user objectForKey:@"DeviceToken"] forKey:@"DeviceId"];

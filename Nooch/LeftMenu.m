@@ -179,7 +179,7 @@
         [self.view addSubview:self.settings]; 
     }
 
-    if (isSynapseOn && [user boolForKey:@"IsSynapseBankAvailable"])
+    if ([user boolForKey:@"IsSynapseBankAvailable"])
     {
         [self.glyph_noBank removeFromSuperview];
     }

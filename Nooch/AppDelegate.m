@@ -450,14 +450,14 @@ void exceptionHandler(NSException *exception){
     NSString *deviceTokens = [[deviceToken description] stringByTrimmingCharactersInSet:[NSCharacterSet characterSetWithCharactersInString:@"<>"]];
     deviceTokens = [deviceTokens stringByReplacingOccurrencesOfString:@" " withString:@""];
     
-    [[NSUserDefaults standardUserDefaults] setValue:deviceTokens forKey:@"DeviceToken"];
-    NSLog(@"DeviceToken%@",deviceToken);
+    [user setValue:deviceTokens forKey:@"DeviceToken"];
+    NSLog(@"App Delegate -> DeviceToken Is: %@",deviceToken);
 }
 
 -(void)application:(UIApplication *)application didFailToRegisterForRemoteNotificationsWithError:(NSError *)error
 {
     NSLog(@"App Delegate -> Error in Remove Notification Registration: %@", error);
-    [[NSUserDefaults standardUserDefaults] setValue:@"123456" forKey:@"DeviceToken"];
+    [user setValue:@"123456" forKey:@"DeviceToken"];
 }
 
 -(void)application:(UIApplication *)application didReceiveLocalNotification:(UILocalNotification *)notification

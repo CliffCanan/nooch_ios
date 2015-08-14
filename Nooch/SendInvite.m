@@ -420,7 +420,7 @@
     {
         UIAlertView *alertView = [[UIAlertView alloc]
                                   initWithTitle:@"Sorry"
-                                  message:@"Please connt your Facebook account to your iPhone to make a Facebook post."
+                                  message:@"Please connect your Facebook account to your iPhone to make a Facebook post."
                                   delegate:self
                                   cancelButtonTitle:@"OK"
                                   otherButtonTitles:nil];

@@ -111,6 +111,8 @@
                                   }];
                               } completion: nil];
 
+    fbID = nil;
+
     [ARTrackingManager trackEvent:@"Register_viewDidAppear"];
 }
 
@@ -450,8 +452,6 @@
 
                  NSLog(@"LoginWithFacebook -> fetched user: %@", result);
 
-                 NSString * udid = [[UIDevice currentDevice] uniqueDeviceIdentifier];
-
                  fbID = [[FBSDKAccessToken currentAccessToken] userID];
                  email_fb = [result objectForKey:@"email"];
                  firstname_fb = [result objectForKey:@"first_name"];
@@ -460,7 +460,7 @@
                  serve * log = [serve new];
                  [log setDelegate:self];
                  [log setTagName:@"loginwithFB"];
-                 [log loginwithFB:email_fb FBId:fbID remember:YES lat:39.95 lon:-75.16 uid:udid];
+                 [log loginwithFB:email_fb FBId:fbID remember:YES lat:39.95 lon:-75.16];
              }
          }];
     }
@@ -1004,13 +1004,15 @@
 
         NSDictionary *user;
 
-        if (!fbID) {
+        if (fbID == nil)
+        {
             user = @{@"first_name":first_name,
                      @"last_name":last_name,
                      @"email":[self.email_field.text lowercaseString],
                      @"password":self.password_field.text};
         }
-        else {
+        else
+        {
             user = @{@"first_name":first_name,
                      @"last_name":last_name,
                      @"email":self.email_field.text,
