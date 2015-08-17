@@ -296,8 +296,8 @@ bool modal;
                                    }];
 
 
-    IdVerifyImageUpload * idVer = [IdVerifyImageUpload new];
-    [nav_ctrl pushViewController:idVer animated:YES];
+    //IdVerifyImageUpload * idVer = [IdVerifyImageUpload new];
+    //[nav_ctrl pushViewController:idVer animated:YES];
 
     [ARManager startWithAppId:@"5487d09c2b22204361000011"];
 

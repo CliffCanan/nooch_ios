@@ -3305,18 +3305,6 @@ table-view#settings_resetpw {
     background-image : url(email-icon.png);
 }
 
-/**  Text labels immediately below each referral method (SMS, FB, Twitter, Email) button. **/
-.refer_buttons_labels {
-    width				: 60px;
-    height				: 17px;
-    top					: 224px;
-    font-family			: "Roboto";
-    font-weight         : light;
-    font-size			: 13px;
-    text-align      	: center;
-    color 				: #6d6e71;
-}
-
 /**  Sets the Table styling for the list of users a person has referred. **/
 table-view#refer {
     width		: 302px;

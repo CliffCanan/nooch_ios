@@ -228,12 +228,12 @@
     {
         self.picker.allowsEditing = YES;
         if ([[UIScreen mainScreen] bounds].size.height < 500) {
-            [self.picker.view setStyleClass:@"pickerstyle_4"];
+            //[self.picker.view setStyleClass:@"pickerstyle_4"];
         }
         else {
-            [self.picker.view setStyleClass:@"pickerstyle"];
+            //[self.picker.view setStyleClass:@"pickerstyle"];
         }
-        self.picker.sourceType = UIImagePickerControllerSourceTypeSavedPhotosAlbum;
+        self.picker.sourceType = UIImagePickerControllerSourceTypePhotoLibrary;
         [self presentViewController:self.picker animated:YES completion:Nil];
     }
 }

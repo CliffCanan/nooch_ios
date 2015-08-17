@@ -15,7 +15,7 @@
 #import "ProfileInfo.h"
 #import "DisputeDetail.h"
 #import "SettingsOptions.h"
-//#import <FacebookSDK/FacebookSDK.h>
+#import <FBSDKShareKit/FBSDKShareKit.h>
 
 @interface TransactionDetails ()
 @property (nonatomic,strong) NSDictionary *trans;
@@ -25,6 +25,7 @@
 @end
 
 @implementation TransactionDetails
+
 @synthesize accountStore,twitterAllowed,twitterAccount;
 
 - (id)initWithData:(NSDictionary *)trans
@@ -234,7 +235,7 @@
     UIButton * fb = [UIButton buttonWithType:UIButtonTypeRoundedRect];
     [fb setTitle:@"" forState:UIControlStateNormal];
     [fb setStyleCSS:@"background-image : url(fb-icon-90x90.png)"];
-    [fb addTarget:self action:@selector(post) forControlEvents:UIControlEventTouchUpInside];
+    [fb addTarget:self action:@selector(postToFB) forControlEvents:UIControlEventTouchUpInside];
     if ([[self.trans objectForKey:@"TransactionType"] isEqualToString:@"Donation"]) {
         [fb setStyleId:@"details_fb_donate"];
     }
@@ -727,7 +728,7 @@
     UIButton * fb_share = [UIButton buttonWithType:UIButtonTypeRoundedRect];
     [fb_share setFrame:CGRectMake(0, 0, 115, 44)];
     [fb_share setStyleClass:@"lightbox_socialBtns"];
-    [fb_share addTarget:self action:@selector(post) forControlEvents:UIControlEventTouchUpInside];
+    [fb_share addTarget:self action:@selector(postToFB) forControlEvents:UIControlEventTouchUpInside];
     [fb_share setTitle:[NSString fontAwesomeIconStringForIconIdentifier:@"fa-circle-thin"] forState:UIControlStateNormal];
     [fb_share setTitleColor:kNoochBlue forState:UIControlStateNormal];
     [fb_share setTitleShadowColor:Rgb2UIColor(251, 252, 253, 0.2) forState:UIControlStateNormal];
@@ -808,7 +809,7 @@
 
 
 #pragma mark Transfer Responses
-- (void)fulfill_request
+-(void)fulfill_request
 {
     if ([self isUsersStatusOk])
     {
@@ -820,7 +821,7 @@
     }
 }
 
-- (void)decline_request
+-(void)decline_request
 {
     UIAlertView *av = [[UIAlertView alloc] initWithTitle:[NSString stringWithFormat:@"Reject %@'s Request",[self.trans objectForKey:@"FirstName"]]
                                                  message:[NSString stringWithFormat:@"Are you sure you want to reject this request from %@?",[[self.trans objectForKey:@"Name"] capitalizedString]]
@@ -842,7 +843,7 @@
     [av setTag:310];
 }
 
-- (void)cancel_request_to_existing
+-(void)cancel_request_to_existing
 {
     UIAlertView *av = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"TransDeets_CnclRqstAlrtTtl1", @"Cancel This Request Alert Title")
                                                  message:[NSString stringWithFormat:NSLocalizedString(@"TransDeets_CnclRqstAlrtBody1", @"Cancel This Request Alert Body Text"),[[self.trans objectForKey:@"Name"] capitalizedString]]
@@ -853,7 +854,7 @@
     [av setTag:1010];
 }
 
-- (void)cancel_request_to_nonNoochUser
+-(void)cancel_request_to_nonNoochUser
 {
     UIAlertView *av = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"TransDeets_CnclRqstAlrtTtl2", @"Cancel This Request Alert Title (2nd)")
                                                  message:NSLocalizedString(@"TransDeets_CnclRqstAlrtBody2", @"Cancel This Request Alert Body (2nd)")
@@ -945,50 +946,8 @@
     return YES;
 }
 
-#pragma mark Social Posting Methods
-- (void)post_to_fb
-{
-    if ([SLComposeViewController isAvailableForServiceType:SLServiceTypeFacebook])
-    {
-        me.accountStore = [[ACAccountStore alloc] init];
-        ACAccountType *facebookAccountType = [me.accountStore accountTypeWithAccountTypeIdentifier:ACAccountTypeIdentifierFacebook];
-        me.facebookAccount = nil;
-
-        NSDictionary *options = @{
-                ACFacebookAppIdKey: @"198279616971457",
-                ACFacebookPermissionsKey: @[@"publish_stream"],
-                ACFacebookAudienceKey: ACFacebookAudienceFriends
-        };
-
-        [me.accountStore requestAccessToAccountsWithType:facebookAccountType
-                options:options completion:^(BOOL granted, NSError *e)
-        {
-             if (granted)
-             {
-                 NSArray *accounts = [me.accountStore accountsWithAccountType:facebookAccountType];
-                 me.facebookAccount = [accounts lastObject];
-                 [self performSelectorOnMainThread:@selector(post) withObject:nil waitUntilDone:NO];
-             }
-             else
-             {
-                 // Handle Failure
-                 NSLog(@"fbposting not allowed");
-             }
-         }];
-    }
-    else
-    {
-        UIAlertView * alertView = [[UIAlertView alloc]
-                                  initWithTitle:@"Can't Post"
-                                  message:@"Please connect your Facebook account to your iPhone to post to Facebook."
-                                  delegate:self
-                                  cancelButtonTitle:@"OK"
-                                  otherButtonTitles:nil];
-        [alertView show];
-    }
-}
-
-- (void) post_to_twitter
+#pragma mark - Social Posting Methods
+-(void)post_to_twitter
 {
     NSString * post_text = nil;
 
@@ -1052,7 +1011,7 @@
     controller.completionHandler = myBlock;
 }
 
--(void)post
+-(void)postToFB
 {
     NSString * post_text = nil;
 
@@ -1080,96 +1039,39 @@
         }
     }
 
-    NSString * postTitle = @"Nooch makes money simple";
-    NSString * postLink = @"https://157054.measurementapi.com/serve?action=click&publisher_id=157054&site_id=91086";
-    NSString * postImgUrl = @"https://www.nooch.com/wp-content/themes/newnooch/library/images/nooch-logo.svg";
-
-    // Check if the Facebook app is installed and we can present the share dialog
-  /*FBLinkShareParams *params = [[FBLinkShareParams alloc] init];
-    params.link = [NSURL URLWithString: postLink];
-    params.name = postTitle;
-    params.picture = [NSURL URLWithString:postImgUrl];
-    params.caption = post_text;
-    
-    // If the Facebook app is installed and we can present the share dialog
-    if ([FBDialogs canPresentShareDialogWithParams:params])
+    // if picture is attached
+    if (![[tranDetailResult valueForKey:@"Picture"] isKindOfClass:[NSNull class]] &&
+          [tranDetailResult valueForKey:@"Picture"] != NULL)
     {
-        // Present share dialog
-        [FBDialogs presentShareDialogWithLink:params.link
-                                      handler:^(FBAppCall *call, NSDictionary *results, NSError *error) {
-                                          if (error) {
-                                              // An error occurred, we need to handle the error
-                                              // See: https://developers.facebook.com/docs/ios/errors
-                                              NSLog(@"Error publishing story to FB: %@", error.description);
-                                          }
-                                          else {
-                                              // Success
-                                              NSLog(@"Facebook Share result: %@", results);
-                                          }
-                                      }];
+        FBSDKSharePhoto * photo = [[FBSDKSharePhoto alloc] init];
+        photo.image = [UIImage imageWithData:datos];
+        photo.userGenerated = NO;
+
+        FBSDKSharePhotoContent * content = [[FBSDKSharePhotoContent alloc] init];
+        content.photos = @[photo];
+
+        [FBSDKShareDialog showFromViewController:self
+                                     withContent:content
+                                        delegate:nil];
     }
     else
     {
-        // FALLBACK: publish just a link using the Feed dialog
-        
-        // Put together the dialog parameters
-        NSMutableDictionary *params = [NSMutableDictionary dictionaryWithObjectsAndKeys:
-                                       @"Sharing Tutorial", @"name",
-                                       @"Build great social apps and get more installs.", @"caption",
-                                       @"Allow your users to share stories on Facebook from your app using the iOS SDK.", @"description",
-                                       @"https://developers.facebook.com/docs/ios/share/", @"link",
-                                       @"http://i.imgur.com/g3Qc1HN.png", @"picture",
-                                       nil];
-        
-        // Show the feed dialog
-        [FBWebDialogs presentFeedDialogModallyWithSession:nil
-                                               parameters:params
-                                                  handler:^(FBWebDialogResult result, NSURL *resultURL, NSError *error) {
-                                                      if (error) {
-                                                          // An error occurred, we need to handle the error
-                                                          // See: https://developers.facebook.com/docs/ios/errors
-                                                          NSLog(@"Error publishing story: %@", error.description);
-                                                      } else {
-                                                          if (result == FBWebDialogResultDialogNotCompleted) {
-                                                              // User canceled.
-                                                              NSLog(@"User cancelled.");
-                                                          } else {
-                                                              // Handle the publish feed callback
-                                                              NSDictionary *urlParams = [self parseURLParams:[resultURL query]];
-                                                              
-                                                              if (![urlParams valueForKey:@"post_id"]) {
-                                                                  // User canceled.
-                                                                  NSLog(@"User cancelled.");
-                                                                  
-                                                              } else {
-                                                                  // User clicked the Share button
-                                                                  NSString *result = [NSString stringWithFormat: @"Posted story, id: %@", [urlParams valueForKey:@"post_id"]];
-                                                                  NSLog(@"result %@", result);
-                                                              }
-                                                          }
-                                                      }
-                                                  }];
-    }*/
-}
+        FBSDKShareLinkContent * content = [[FBSDKShareLinkContent alloc] init];
+        content.contentURL = [NSURL URLWithString:@"https://www.nooch.com/"];
+        content.contentTitle = @"Nooch makes money simple";
+        content.contentDescription = post_text;
+        content.imageURL = [NSURL URLWithString:@"http://noochme.com/noochweb/Assets/Images/nooch-icon.png"];
 
-// A function for parsing URL parameters returned by the FB Feed Dialog.
-- (NSDictionary*)parseURLParams:(NSString *)query
-{
-    NSArray *pairs = [query componentsSeparatedByString:@"&"];
-    NSMutableDictionary *params = [[NSMutableDictionary alloc] init];
-    for (NSString *pair in pairs) {
-        NSArray *kv = [pair componentsSeparatedByString:@"="];
-        NSString *val =
-        [kv[1] stringByReplacingPercentEscapesUsingEncoding:NSUTF8StringEncoding];
-        params[kv[0]] = val;
+        [FBSDKShareDialog showFromViewController:self
+                                     withContent:content
+                                        delegate:nil];
     }
-    return params;
 }
 
-- (void) dispute
+-(void)dispute
 {
     UIAlertView *av = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"TransDeets_CnfrmDsptAlrtTtl", @"'Confirm Dispute' Alert Title")
-                                                 message:NSLocalizedString(@"TransDeets_CnfrmDsptAlrtBody", @"'Confirm Dispute' Alert Body Text")//@"To protect your account, if you dispute a transfer your Nooch account will be temporarily suspended while we investigate."
+                                                 message:NSLocalizedString(@"TransDeets_CnfrmDsptAlrtBody", @"'Confirm Dispute' Alert Body Text")
                                                 delegate:self
                                        cancelButtonTitle:NSLocalizedString(@"TransDeets_CnfrmDsptAlrtNoBtn", @"Confirm Dispute Alert 'No' Btn Text")
                                        otherButtonTitles:NSLocalizedString(@"TransDeets_CnfrmDsptAlrtYesBtn", @"Confirm Dispute Alert 'Yes - Dispute' Btn Text"), nil];
@@ -1177,7 +1079,7 @@
     [av setTag:1];
 }
 
-- (void) alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex
+-(void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex
 {
     if (alertView.tag == 2012 && buttonIndex == 1)  // REMIND Request to Existing User
     {
@@ -1352,7 +1254,8 @@
     }
 }
 
--(void)Error:(NSError *)Error {
+-(void)Error:(NSError *)Error
+{
     [self.hud hide:YES];
    
     UIAlertView * alert = [[UIAlertView alloc]
@@ -1370,7 +1273,7 @@
     [self.navigationController pushViewController:dd animated:YES];
 }
 
-- (void)mailComposeController:(MFMailComposeViewController *)controller didFinishWithResult:(MFMailComposeResult)result error:(NSError *)error
+-(void)mailComposeController:(MFMailComposeViewController *)controller didFinishWithResult:(MFMailComposeResult)result error:(NSError *)error
 {
     UIAlertView *alert = [[UIAlertView alloc] init];
     [alert addButtonWithTitle:@"OK"];
@@ -1404,8 +1307,8 @@
     [self dismissViewControllerAnimated:YES completion:NULL];
 }
 
-#pragma mark - server delegation
-- (void) listen:(NSString *)result tagName:(NSString *)tagName
+#pragma mark - Server Delegation
+-(void) listen:(NSString *)result tagName:(NSString *)tagName
 {
     [self.hud hide:YES];
 

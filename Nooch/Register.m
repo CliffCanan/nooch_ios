@@ -1063,7 +1063,8 @@
     {
         [self.cont setAlpha:1];
 
-        if ([self.password_field.text length] > 4)
+        if ([self.password_field.text length] > 4 ||
+            (textField == self.password_field && string.length > 4))
         {
             [self.cont setEnabled:YES];
             [self.cont setAlpha:1];
@@ -1208,7 +1209,8 @@
             {
                 [self.pwValidator setText:NSLocalizedString(@"Rgstr_VrWeakTxt", @"Register screen 'Very Weak' PW Validator Text (2nd)")];
             }
-            else {
+            else
+            {
                 [self.pwValidator setText:@""];
             }
             [self.pwValidator4 setBackgroundColor:Rgb2UIColor(188, 190, 192, .5)];
