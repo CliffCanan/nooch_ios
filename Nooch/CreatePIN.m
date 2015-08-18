@@ -166,8 +166,8 @@
 
     [self.view addSubview:btnback];
 
-    UIImageView * logo = [UIImageView new];
-    [logo setStyleId:@"prelogin_logo"];
+    UIImageView * logo = [[UIImageView alloc] initWithFrame:CGRectMake(75, 18, 170, 58)];
+    [logo setStyleId:@"noochLogoSvg"];
     [self.view addSubview:logo];
 
     UILabel * slogan = [[UILabel alloc] initWithFrame:CGRectMake(75, 82, 170, 16)];

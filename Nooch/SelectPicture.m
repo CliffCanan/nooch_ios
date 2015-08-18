@@ -67,8 +67,8 @@
 
     [self.view addSubview:btnback];
 
-    UIImageView * logo = [UIImageView new];
-    [logo setStyleId:@"prelogin_logo"];
+    UIImageView * logo = [[UIImageView alloc] initWithFrame:CGRectMake(75, 18, 170, 58)];
+    [logo setStyleId:@"noochLogoSvg"];
     [self.view addSubview:logo];
 
     NSString * sloganFromArtisan = [ARPowerHookManager getValueForHookById:@"slogan"];

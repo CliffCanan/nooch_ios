@@ -53,8 +53,9 @@
     [self.navigationController setNavigationBarHidden:YES];
     [self.view setBackgroundColor:[UIColor whiteColor]];
 
-    UIImageView * logo = [UIImageView new];
-    [logo setStyleId:@"prelogin_logo_loginScreen"];
+    UIImageView * logo = [[UIImageView alloc] initWithFrame:CGRectMake(90, 15, 140, 55)];
+    [logo setImage:[UIImage imageNamed:@"nooch-logoSVCtest.svg"]];
+    [logo setStyleId:@"noochLogoSvg"];
     [self.view addSubview:logo];
 
     if ([[UIScreen mainScreen] bounds].size.height > 500)
@@ -170,15 +171,10 @@
     [forgot addTarget:self action:@selector(forgot_pass_Login) forControlEvents:UIControlEventTouchUpInside];
     [forgot setStyleId:@"label_forgotpw"];
 
-    UILabel *encryption; [encryption setStyleId:@"label_encryption"];
-
-    UIImageView *encrypt_icon;
-    [encrypt_icon setStyleId:@"icon_encryption"];
-
     // Height adjustments for 3.5" screens
     if ([[UIScreen mainScreen] bounds].size.height < 500)
     {
-        [logo setStyleId:@"prelogin_logo_loginScreen_4"];
+        [logo setFrame:CGRectMake(99, 8, 122, 44)];
 
         [self.facebookLogin setStyleClass:@"button_blue_login_4"];
         [glyphFB setFrame:CGRectMake(19, 6, 30, 28)];
@@ -206,8 +202,6 @@
     [self.view addSubview:self.stay_logged_in];
     [self.view addSubview:remember_me];
     [self.view addSubview:forgot];
-    [self.view addSubview:encryption];
-    [self.view addSubview:encrypt_icon];
 
     user = [NSUserDefaults standardUserDefaults];
 }

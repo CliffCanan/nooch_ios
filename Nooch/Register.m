@@ -142,8 +142,8 @@
     [boxOutline setStyleClass:@"welcomeBoxShadow"];
     [self.view addSubview:boxOutline];
 
-    UIImageView * logo = [UIImageView new];
-    [logo setStyleId:@"prelogin_logo"];
+    UIImageView * logo = [[UIImageView alloc] initWithFrame:CGRectMake(75, 18, 170, 58)];
+    [logo setStyleId:@"noochLogoSvg"];
     [logo setStyleClass:@"animate_bubble_logo"];
     [self.view addSubview:logo];
 
@@ -1227,7 +1227,8 @@
         [self.pwValidator setHidden:YES];
     }
 
-    if (textField == self.email_field)
+    if (  textField == self.email_field &&
+        [[UIScreen mainScreen] bounds].size.height > 500)
     {
         if (newLength < 22)
         {

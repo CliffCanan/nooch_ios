@@ -30,8 +30,8 @@
 
     [self.view setBackgroundColor:[UIColor whiteColor]];
 
-    UIImageView * logo = [UIImageView new];
-    [logo setStyleId:@"prelogin_logo"];
+    UIImageView * logo = [[UIImageView alloc] initWithFrame:CGRectMake(75, 18, 170, 58)];
+    [logo setStyleId:@"noochLogoSvg"];
     [self.view addSubview:logo];
 
     UILabel * title = [[UILabel alloc] initWithFrame:CGRectMake(10, 110, 300, 40)];

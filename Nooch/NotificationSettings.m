@@ -388,9 +388,9 @@
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
     static NSString *CellIdentifier = @"Cell";
-    
+
     UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier];
-    
+
     if (cell == nil)
     {
         cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleSubtitle
@@ -399,7 +399,6 @@
         [cell.textLabel setTextColor:kNoochBlue];
         cell.indentationLevel = 1;
         cell.indentationWidth = 10;
-        [cell.textLabel setFont:kNoochFontMed];
     }
 
     [cell.textLabel setStyleClass:@"table_view_cell_textlabel_2"];
@@ -416,7 +415,7 @@
             cell.textLabel.text = NSLocalizedString(@"NotifSettings_Row3", @"Notification Settings row lbl - 'Transfer Unclaimed'");
         }
     }
-    
+
     /*if (tableView == self.request_table)
     {
         if (indexPath.row == 0) {
@@ -432,7 +431,7 @@
             cell.textLabel.text = @"Request Cancelled";
         }
     }*/
-    
+
     return cell;
 }
 
@@ -450,14 +449,6 @@
 -(void)Error:(NSError *)Error
 {
     [self.hud hide:YES];
-    
-    /*UIAlertView *alert = [[UIAlertView alloc]
-                          initWithTitle:@"Message"
-                          message:@"Error connecting to server"
-                          delegate:nil
-                          cancelButtonTitle:@"OK"
-                          otherButtonTitles:nil];
-    [alert show];*/
 }
 
 #pragma mark - server delegation
@@ -470,7 +461,7 @@
                    JSONObjectWithData:[result dataUsingEncoding:NSUTF8StringEncoding]
                    options:kNilOptions
                    error:&error];
-        NSLog(@"%@",dictInput);
+        //NSLog(@"%@",dictInput);
         
         [self.hud hide:YES];
         

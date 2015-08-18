@@ -8,6 +8,7 @@
 
 #import <UIKit/UIKit.h>
 #import "serve.h"
+#import <MMProgressHUD/MMProgressHUD.h>
 
 @interface ReferralCode : GAITrackedViewController<serveD,UITextFieldDelegate>
 {

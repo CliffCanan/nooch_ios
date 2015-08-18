@@ -28,7 +28,6 @@ core *me;
 #define kNoochGrayDark  [Helpers hexColor:@"414042"]
 #define kNoochLight     [Helpers hexColor:@"EBEBEB"]
 #define Rgb2UIColor(r, g, b, a)  [UIColor colorWithRed:((r) / 255.0) green:((g) / 255.0) blue:((b) / 255.0) alpha:(a)]
-#define kNoochFontMed [UIFont fontWithName:@"BrandonGrotesque-Medium" size:16]
 
 UINavigationController *nav_ctrl;
 NSUserDefaults *user;

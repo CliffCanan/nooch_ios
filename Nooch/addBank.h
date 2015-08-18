@@ -7,11 +7,10 @@
 //
 
 #import <UIKit/UIKit.h>
-#import "MBProgressHUD.h"
-#import "SpinKit/RTSpinKitView.h"
 #import <MessageUI/MessageUI.h>
+#import <MMProgressHUD/MMProgressHUD.h>
 
-@interface addBank : GAITrackedViewController<MBProgressHUDDelegate,UIActionSheetDelegate,MFMailComposeViewControllerDelegate>
+@interface addBank : GAITrackedViewController<UIActionSheetDelegate,MFMailComposeViewControllerDelegate>
 {
     UIView *overlay, *mainView;
 }

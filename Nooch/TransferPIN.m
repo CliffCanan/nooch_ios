@@ -74,20 +74,7 @@
     return self;
 }
 
--(void)viewWillAppear:(BOOL)animated
-{
-    [super viewWillAppear:animated];
-    self.screenName = @"TransferPin Screen";
-    self.artisanNameTag = @"TransferPIN Screen";
-}
-
--(void)viewDidDisappear:(BOOL)animated
-{
-    [self.hud hide:YES];
-    [super viewDidDisappear:animated];
-}
-
-- (void)viewDidLoad
+-(void)viewDidLoad
 {
     [super viewDidLoad];
 
@@ -475,6 +462,19 @@
     [[assist shared] setneedsReload:YES];
 }
 
+-(void)viewWillAppear:(BOOL)animated
+{
+    [super viewWillAppear:animated];
+    self.screenName = @"TransferPin Screen";
+    self.artisanNameTag = @"TransferPIN Screen";
+}
+
+-(void)viewDidDisappear:(BOOL)animated
+{
+    [self.hud hide:YES];
+    [super viewDidDisappear:animated];
+}
+
 #pragma mark - Helper Methods
 -(void)backToHowMuch
 {
@@ -500,7 +500,7 @@ NSString * calculateArrivalDate()
     NSLog(@"Time of Day (Hour) is: %d", timeOfDay);
 
     NSDateComponents *offsetComponents = [[NSDateComponents alloc] init];
-    short knoxXtraDays = [[ARPowerHookManager getValueForHookById:@"knox_xtraTime"] intValue];
+    short achXtraDays = [[ARPowerHookManager getValueForHookById:@"knox_xtraTime"] intValue];
 
     if ([dateString isEqualToString:@"Mon"] ||
         [dateString isEqualToString:@"Tue"] ||
@@ -508,28 +508,28 @@ NSString * calculateArrivalDate()
     {
         if (timeOfDay < 15) // its BEFORE 3:00pm EST
         {
-            [offsetComponents setDay: (1 + knoxXtraDays)];
+            [offsetComponents setDay: (1 + achXtraDays)];
         }
         else // its AFTER 3:00pm EST
         {
             if ([dateString isEqualToString:@"Mon"] ||
                 [dateString isEqualToString:@"Tue"])
             {
-                [offsetComponents setDay:(2 + knoxXtraDays)];
+                [offsetComponents setDay:(2 + achXtraDays)];
             }
             else if ([dateString isEqualToString:@"Wed"])
             {
-                if (knoxXtraDays == 0)
+                if (achXtraDays == 0)
                 {
                     [offsetComponents setDay:2]; // arrive by Friday
                 }
-                else if (knoxXtraDays == 1)
+                else if (achXtraDays == 1)
                 {
                     [offsetComponents setDay:5]; // arrive by Monday
                 }
                 else
                 {
-                    [offsetComponents setDay:(5 + knoxXtraDays)];
+                    [offsetComponents setDay:(5 + achXtraDays)];
                 }
             }
         }
@@ -538,42 +538,42 @@ NSString * calculateArrivalDate()
     {
         if (timeOfDay < 15) // its BEFORE 3:00pm EST
         {
-            if (knoxXtraDays == 0)
+            if (achXtraDays == 0)
             {
                 [offsetComponents setDay:1]; // arrive by Friday
             }
-            else if (knoxXtraDays == 1)
+            else if (achXtraDays == 1)
             {
                 [offsetComponents setDay:4]; // arrive by Monday
             }
             else
             {
-                [offsetComponents setDay:(4 + knoxXtraDays)];
+                [offsetComponents setDay:(4 + achXtraDays)];
             }
         }
         else // its AFTER 3:00pm EST
         {
-            [offsetComponents setDay:(4 + knoxXtraDays)];
+            [offsetComponents setDay:(4 + achXtraDays)];
         }
     }
     else if ([dateString isEqualToString:@"Fri"])
     {
         if (timeOfDay < 15) // its BEFORE 3:00pm EST
         {
-            [offsetComponents setDay:(3 + knoxXtraDays)];
+            [offsetComponents setDay:(3 + achXtraDays)];
         }
         else // its AFTER 3:00pm EST
         {
-            [offsetComponents setDay:(4 + knoxXtraDays)];
+            [offsetComponents setDay:(4 + achXtraDays)];
         }
     }
     else if ([dateString isEqualToString:@"Sat"])
     {
-        [offsetComponents setDay:(3 + knoxXtraDays)];
+        [offsetComponents setDay:(3 + achXtraDays)];
     }
     else if ([dateString isEqualToString:@"Sun"])
     {
-        [offsetComponents setDay:(2 + knoxXtraDays)];
+        [offsetComponents setDay:(2 + achXtraDays)];
     }
 
     NSDate * arrivalDate = [[[NSCalendar alloc]
@@ -614,9 +614,9 @@ NSString * calculateArrivalDate()
     [av show];
 }
 
-#pragma mark - Location Tracker Delegates
-- (void)transferPinLocationUpdateManager:(CLLocationManager *)manager
-                      didUpdateLocations:(NSArray *)locationsArray
+#pragma mark - Location Delegates
+-(void)transferPinLocationUpdateManager:(CLLocationManager *)manager
+                     didUpdateLocations:(NSArray *)locationsArray
 {
     if (lat == 0 || lon == 0)
     {
@@ -632,7 +632,8 @@ NSString * calculateArrivalDate()
     }
 }
 
--(void)updateLocation:(NSString*)latitudeField longitudeField:(NSString*)longitudeField
+-(void)updateLocation:(NSString*)latitudeField
+       longitudeField:(NSString*)longitudeField
 {
     // The parameter 'result_type = locality' below makes Google return only a City level address. Since that's all we need, we shouldn't ask for everything, which can be a lot more unnecessary data from Google parsing the variations of the address
     NSString * googleGeocodeUrl = [NSString stringWithFormat:@"https://maps.googleapis.com/maps/api/geocode/json?latlng=%@,%@&result_type=locality&key=AIzaSyDrUnX1gGpPL9fWmsWfhOxIDIy3t7YjcEY", latitudeField, longitudeField];
@@ -650,7 +651,7 @@ NSString * calculateArrivalDate()
     }];
 }
 
-- (void)locationError:(NSError *)error
+-(void)locationError:(NSError *)error
 {
     NSLog(@"LocationManager didFailWithError %@", error);
 }
@@ -744,7 +745,7 @@ NSString * calculateArrivalDate()
 }
 
 #pragma mark - UITextField delegation
-- (BOOL)textField:(UITextField *)textField shouldChangeCharactersInRange:(NSRange)range replacementString:(NSString *)string
+-(BOOL)textField:(UITextField *)textField shouldChangeCharactersInRange:(NSRange)range replacementString:(NSString *)string
 {
     if ([self.type isEqualToString:@"send"])
     {
@@ -887,13 +888,13 @@ NSString * calculateArrivalDate()
 }
 
 #pragma mark - Server Response Handling
-- (void) listen:(NSString *)result tagName:(NSString *)tagName
+-(void)listen:(NSString *)result tagName:(NSString *)tagName
 {
     NSError* error;
-    dictResult = [NSJSONSerialization
-                 JSONObjectWithData:[result dataUsingEncoding:NSUTF8StringEncoding]
-                 options:kNilOptions
-                 error:&error];
+    NSDictionary * dictResult = [NSJSONSerialization
+                                 JSONObjectWithData:[result dataUsingEncoding:NSUTF8StringEncoding]
+                                 options:kNilOptions
+                                 error:&error];
 
     if ([self.receiver valueForKey:@"nonuser"])
     {
@@ -1357,19 +1358,19 @@ NSString * calculateArrivalDate()
 }
 
 #pragma mark - Connection Handling
-- (void)connection:(NSURLConnection *)connection didReceiveResponse:(NSURLResponse *)response {
+-(void)connection:(NSURLConnection *)connection didReceiveResponse:(NSURLResponse *)response {
 	[self.respData setLength:0];
 }
 
-- (void)connection:(NSURLConnection *)connection didReceiveData:(NSData *)data {
+-(void)connection:(NSURLConnection *)connection didReceiveData:(NSData *)data {
     [self.respData appendData:data];
 }
 
-- (void)connection:(NSURLConnection *)connection didFailWithError:(NSError *)error {
+-(void)connection:(NSURLConnection *)connection didFailWithError:(NSError *)error {
 	NSLog(@"Connection failed: %@", [error description]);
 }
 
-- (void)connectionDidFinishLoading:(NSURLConnection *)connection
+-(void)connectionDidFinishLoading:(NSURLConnection *)connection
 {
     [self.hud hide:YES];
     responseString = [[NSString alloc] initWithData:self.respData encoding:NSASCIIStringEncoding];
@@ -1823,6 +1824,7 @@ NSString * calculateArrivalDate()
     {
         AudioServicesPlaySystemSound(kSystemSoundID_Vibrate);
         self.prompt.text = NSLocalizedString(@"EnterPIN_IncorrectPin2x", @"Enter PIN Screen PIN entered incorrectly twice text");
+        self.prompt.textColor = kNoochRed;
         self.fourth_num.layer.borderColor = kNoochRed.CGColor;
         self.third_num.layer.borderColor = kNoochRed.CGColor;
         self.second_num.layer.borderColor = kNoochRed.CGColor;

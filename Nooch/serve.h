@@ -105,7 +105,6 @@
 -(void)setEmailSets:(NSDictionary*)notificationDictionary;
 -(void)setPushSets:(NSDictionary*)notificationDictionary;
 -(void)setSets:(NSDictionary*)settingsDictionary;
--(void)setSharing:(NSString*)sharingValue;
 -(void)submitIdDocument;
 -(void)TransferMoneyToNonNoochUser:(NSDictionary*)transactionInput email:(NSString*)email;
 -(void)UpDateLatLongOfUser:(NSString*)lat lng:(NSString*)lng;
