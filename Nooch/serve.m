@@ -1707,7 +1707,7 @@ NSString *amnt;
     self.responseData = [[NSMutableData alloc] init];
     [[NSURLCache sharedURLCache] removeAllCachedResponses];
 
-    NSString * urlString = [NSString stringWithFormat:@"%@/UpdateMemberIPAddressAndDeviceId",ServerUrl];
+    NSString * urlString = [NSString stringWithFormat:@"%@/UdateMemberIPAddress",ServerUrl];
     NSURL * url = [NSURL URLWithString:urlString];
 
     NSString * UUID = [NSString stringWithFormat:@"%@-AAPL",[UIDevice currentDevice].identifierForVendor.UUIDString];

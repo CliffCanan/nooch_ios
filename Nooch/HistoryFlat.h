@@ -14,6 +14,7 @@
 #import "Home.h"
 #import <MessageUI/MessageUI.h>
 #import "SpinKit/RTSpinKitView.h"
+#import <MMProgressHUD/MMProgressHUD.h>
 
 BOOL isHistFilter;
 BOOL isFromApts;

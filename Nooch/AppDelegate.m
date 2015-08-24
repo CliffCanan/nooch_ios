@@ -310,7 +310,7 @@ bool modal;
     }
     else
     {
-        NSLog(@"App didFinishLaunching -> FB Token NOT Found");
+        //NSLog(@"App didFinishLaunching -> FB Token NOT Found");
         [self userLoggedOut];
     }
 
@@ -409,7 +409,6 @@ void exceptionHandler(NSException *exception){
 
 - (void)applicationDidBecomeActive:(UIApplication *)application
 {
-    NSLog(@"applicationDidBecomeActive fired");
     // Restart any tasks that were paused (or not yet started) while the application was inactive. If the application was previously in the background, optionally refresh the user interface.
 
     NSString * path = [[NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES) objectAtIndex:0] stringByAppendingPathComponent:[NSString stringWithFormat:@"autoLogin.plist"]];

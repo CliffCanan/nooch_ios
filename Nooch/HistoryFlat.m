@@ -2584,12 +2584,18 @@ didTriggerRightUtilityButtonWithIndex:(NSInteger)ind
         
         if ([[[dictResponse valueForKey:@"sendTransactionInCSVResult"]valueForKey:@"Result"]isEqualToString:@"1"])
         {
+            [MMProgressHUD dismissWithSuccess:@"Success"];
+
             UIAlertView * alert = [[UIAlertView alloc]initWithTitle:NSLocalizedString(@"History_ExprtSuccessAlrtTitle", @"History screen export successful Alert Title")
                                                             message:[NSString stringWithFormat:@"\xF0\x9F\x93\xA5\n%@", NSLocalizedString(@"History_ExprtSuccessAlrtBody", @"History screen export successful Alert Body Text")]
                                                            delegate:Nil
                                                   cancelButtonTitle:@"OK"
                                                   otherButtonTitles:Nil, nil];
             [alert show];
+        }
+        else
+        {
+            [MMProgressHUD dismissWithError:@"Error!"];
         }
     }
 
@@ -2980,6 +2986,20 @@ didTriggerRightUtilityButtonWithIndex:(NSInteger)ind
 {
     if (actionSheet.tag == 11 && buttonIndex == 1) // export history
     {
+        [MMProgressHUD setPresentationStyle:MMProgressHUDPresentationStyleShrink];
+        [MMProgressHUD showWithTitle:@"Preparing Secure Connection"
+                              status:nil
+                 confirmationMessage:@"Cancel Adding A Bank?"
+                         cancelBlock:^{
+                             UIAlertView * alert = [[UIAlertView alloc] initWithTitle:@"Export Cancelled"
+                                                                              message:@""
+                                                                             delegate:nil
+                                                                    cancelButtonTitle:@"OK"
+                                                                    otherButtonTitles: nil];
+                             alert.tag = 11;
+                         }
+         ];
+
         NSString * email = [[actionSheet textFieldAtIndex:0] text];
         serve * s = [[serve alloc] init];
         [s setTagName:@"csv"];

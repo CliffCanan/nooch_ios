@@ -2111,7 +2111,7 @@ void addressBookChanged(ABAddressBookRef addressBook, CFDictionaryRef info, void
                  [[user objectForKey:@"dob"] length] > 0)
         {
             // Body text if DoB was submitted, but not SSN
-            alertBody = @"Please take 30 seconds to finish verifying your identity by entering your:\n\n• Just the LAST 4 digits of your SSN\n\nFederal regulations require us to verify each user's identity. We will only ask for this info once and all data is stored with encryption on secure servers.\n\xF0\x9F\x94\x92";
+            alertBody = @"Please take 30 seconds to finish verifying your identity by entering:\n\n• Just the LAST 4 digits of your SSN\n\nFederal regulations require us to verify each user's identity. We will only ask for this info once and all data is stored with encryption on secure servers.\n\xF0\x9F\x94\x92";
             shouldFocusOnSsn = YES;
         }
         else
@@ -2534,7 +2534,7 @@ void addressBookChanged(ABAddressBookRef addressBook, CFDictionaryRef info, void
                                      JSONObjectWithData:[result dataUsingEncoding:NSUTF8StringEncoding]
                                      options:kNilOptions
                                      error:&error];
-        //NSLog(@"Home -> SERVER RESPONSE for saveIpAddressAndDeviceId: %@", dict);
+        NSLog(@"Home -> SERVER RESPONSE for saveIpAddressAndDeviceId: %@", dict);
         if ([error isKindOfClass:[NSNull class]])
         {
             NSLog(@"Home -> Server response error for saveIpAddressAndDeviceId: %@  & Error: %@", dict, error);

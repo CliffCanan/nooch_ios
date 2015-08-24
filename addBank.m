@@ -12,7 +12,7 @@
 #import "webView.h"
 #import "SelectRecipient.h"
 
-@interface addBank ()<serveD,UIWebViewDelegate>
+@interface addBank ()<UIWebViewDelegate>
 {
     NSString * jsonString;
 }
@@ -89,7 +89,8 @@
              confirmationMessage:@"Cancel Adding A Bank?"
                      cancelBlock:^{
                          [self backToSettings];
-                     }];
+                     }
+     ];
 
     NSString * baseUrl = [ARPowerHookManager getValueForHookById:@"synps_baseUrl"];
     NSString * memberId = [user objectForKey:@"MemberId"];
@@ -176,7 +177,7 @@
     [btnLink setTitleShadowColor:Rgb2UIColor(26, 38, 19, 0.2) forState:UIControlStateNormal];
     btnLink.titleLabel.shadowOffset = CGSizeMake(0.0, -1.0);
     [btnLink setTitle:@"Got It" forState:UIControlStateNormal];
-    [btnLink addTarget:self action:@selector(close_lightKnoxLtBox) forControlEvents:UIControlEventTouchUpInside];
+    [btnLink addTarget:self action:@selector(close_BankHelpLtBox) forControlEvents:UIControlEventTouchUpInside];
 
     if ([[UIScreen mainScreen] bounds].size.height < 500)
     {
@@ -194,7 +195,7 @@
 
     UIButton * btnClose_shell = [UIButton buttonWithType:UIButtonTypeCustom];
     btnClose_shell.frame = CGRectMake(mainView.frame.size.width - 35, head_container.frame.origin.y - 21, 48, 46);
-    [btnClose_shell addTarget:self action:@selector(close_lightKnoxLtBox) forControlEvents:UIControlEventTouchUpInside];
+    [btnClose_shell addTarget:self action:@selector(close_BankHelpLtBox) forControlEvents:UIControlEventTouchUpInside];
     [btnClose_shell addSubview:btnClose];
 
     [mainView addSubview:btnClose_shell];
@@ -233,7 +234,7 @@
     [ARTrackingManager trackEvent:@"Knox_MoreInfoLtBx_Appear"];
 }
 
--(void)close_lightKnoxLtBox
+-(void)close_BankHelpLtBox
 {
     [UIView animateKeyframesWithDuration:0.6
                                    delay:0
@@ -284,7 +285,7 @@
     {
         if (buttonIndex != 3)
         {
-            [self close_lightKnoxLtBox];
+            [self close_BankHelpLtBox];
         }
 
         if (buttonIndex == 0)
@@ -310,10 +311,10 @@
             mailComposer.navigationBar.tintColor=[UIColor whiteColor];
             [mailComposer setSubject:[NSString stringWithFormat:@"Add My Bank!!"]];
             [mailComposer setMessageBody:@"" isHTML:NO];
-            [mailComposer setToRecipients:[NSArray arrayWithObjects:@"Support@nooch.com", nil]];
+            [mailComposer setToRecipients:[NSArray arrayWithObjects:@"AddMyBank-ForReal@nooch.com", nil]];
             [mailComposer setCcRecipients:[NSArray arrayWithObject:@""]];
             [mailComposer setBccRecipients:[NSArray arrayWithObject:@""]];
-            [mailComposer setModalTransitionStyle:UIModalTransitionStyleCrossDissolve];
+            [mailComposer setModalTransitionStyle:UIModalTransitionStylePartialCurl];
             [self presentViewController:mailComposer animated:YES completion:nil];
         }
         else if (buttonIndex == 1)
