@@ -43,7 +43,7 @@
 {
     self = [super initWithNibName:nil bundle:nil];
     if (self)
-    {
+    { 
         //NSLog(@"PIN: self.receiver is: %@", receiver);
         // Custom initialization
         if ([receiver valueForKey:@"FirstName"])
