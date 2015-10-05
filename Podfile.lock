@@ -1,0 +1,91 @@
+PODS:
+  - Appirater (2.0.5)
+  - ArtisanSDK (2.4.6)
+  - Bolts (1.2.0):
+    - Bolts/AppLinks (= 1.2.0)
+    - Bolts/Tasks (= 1.2.0)
+  - Bolts/AppLinks (1.2.0):
+    - Bolts/Tasks
+  - Bolts/Tasks (1.2.0)
+  - EAIntroView (2.7.4):
+    - EARestrictedScrollView (~> 0.2.0)
+  - EARestrictedScrollView (0.2.0)
+  - ECSlidingViewController (1.3.3)
+  - FBSDKCoreKit (4.5.0):
+    - Bolts (~> 1.1)
+    - FBSDKCoreKit/arc (= 4.5.0)
+    - FBSDKCoreKit/no-arc (= 4.5.0)
+  - FBSDKCoreKit/arc (4.5.0):
+    - Bolts (~> 1.1)
+  - FBSDKCoreKit/no-arc (4.5.0):
+    - Bolts (~> 1.1)
+    - FBSDKCoreKit/arc
+  - FBSDKLoginKit (4.5.0):
+    - FBSDKCoreKit
+  - FBSDKShareKit (4.5.0):
+    - FBSDKCoreKit
+  - Google/Analytics (1.0.7):
+    - Google/Core
+    - GoogleAnalytics (~> 3.12)
+  - Google/Core (1.0.7):
+    - GoogleNetworkingUtilities (~> 1.0)
+    - GoogleSymbolUtilities (~> 1.0)
+    - GoogleUtilities (~> 1.0)
+  - GoogleAnalytics (3.13.0)
+  - GoogleMaps (1.10.1)
+  - GoogleNetworkingUtilities (1.0.0):
+    - GoogleSymbolUtilities (~> 1.0)
+  - GoogleSymbolUtilities (1.0.0)
+  - GoogleUtilities (1.0.1):
+    - GoogleSymbolUtilities (~> 1.0)
+  - HexColors (2.2.1)
+  - iCarousel (1.8.2)
+  - IQKeyboardManager (3.2.4)
+  - MMProgressHUD (0.3.1)
+  - SIAlertView (1.3)
+  - SWTableViewCell (0.3.7)
+  - TSMessages (0.9.12):
+    - HexColors (~> 2.2.0)
+
+DEPENDENCIES:
+  - Appirater
+  - ArtisanSDK (= 2.4.6)
+  - EAIntroView
+  - ECSlidingViewController (~> 1.3)
+  - FBSDKCoreKit
+  - FBSDKLoginKit
+  - FBSDKShareKit
+  - Google/Analytics
+  - GoogleMaps
+  - iCarousel
+  - IQKeyboardManager
+  - MMProgressHUD
+  - SIAlertView
+  - SWTableViewCell
+  - TSMessages
+
+SPEC CHECKSUMS:
+  Appirater: e7c0a47fb67ee5041ce8479e6ba960927fb40264
+  ArtisanSDK: fb8739552e5b6a9a03e346027a49d5fdd4978277
+  Bolts: d176cb1e0012175589e389a9db49b85e27787576
+  EAIntroView: 50b85eedf414260e61330070ffe5947e72493a62
+  EARestrictedScrollView: f86d61e16c61d3e93c84f8e96e83122a2a3b7631
+  ECSlidingViewController: 244de2ad5014424e8a6642acf6fd11166ce79084
+  FBSDKCoreKit: ba4ca18ecae56af01e1b8c4faa889ef21d68bea2
+  FBSDKLoginKit: 8327c9aa7c6afd13cdcd0a6f9aebe585ed39c82a
+  FBSDKShareKit: 06f569e09f2b99c23df17da129ec3aa01d9c2fb4
+  Google: 875f5a8ade86dd02e36586e4a54814843938c7f6
+  GoogleAnalytics: fcf1f1cad57ae1a9a53520018f0f680ceeeb8b49
+  GoogleMaps: ebf08677f181d9c2dcdbd1721d206f02beccc9b1
+  GoogleNetworkingUtilities: 292992ab31b7b4ba32809a0e8b40e324cdfb2c0c
+  GoogleSymbolUtilities: a7b0feed1fe667c8d5e647177938d0ecd62d6948
+  GoogleUtilities: e3475cd4d45134221d2f3f3626095a1c49b62041
+  HexColors: abfd172e329dab59888614ccba6f216cec59289d
+  iCarousel: 67c8a43da5a46795b56aadfc96cd36a16f6149b2
+  IQKeyboardManager: 555b1231fefafb21b19278d7cca72986a27b748b
+  MMProgressHUD: dac2655d62d28e7d6dc28bf72d9531a4d4c62459
+  SIAlertView: 20c794b55eaf44d888773ea51647cf8907723919
+  SWTableViewCell: 2a94aadc9d47b2b611fa064566bf57948b95b579
+  TSMessages: c8cc7b80f2a833af533872cd02010cac061532cc
+
+COCOAPODS: 0.38.2

@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>IDESourceControlProjectFavoriteDictionaryKey</key>
+	<false/>
+	<key>IDESourceControlProjectIdentifier</key>
+	<string>799423B9-FC52-4B9A-BD6D-FFBA8C1444A7</string>
+	<key>IDESourceControlProjectName</key>
+	<string>Nooch</string>
+	<key>IDESourceControlProjectOriginsDictionary</key>
+	<dict>
+		<key>1687EFBEFB1EFBCD10AFA9416054EC27E76779FA</key>
+		<string>https://bitbucket.org/nooch/nooch_ios.git</string>
+	</dict>
+	<key>IDESourceControlProjectPath</key>
+	<string>Nooch.xcworkspace</string>
+	<key>IDESourceControlProjectRelativeInstallPathDictionary</key>
+	<dict>
+		<key>1687EFBEFB1EFBCD10AFA9416054EC27E76779FA</key>
+		<string>..</string>
+	</dict>
+	<key>IDESourceControlProjectURL</key>
+	<string>https://bitbucket.org/nooch/nooch_ios.git</string>
+	<key>IDESourceControlProjectVersion</key>
+	<integer>111</integer>
+	<key>IDESourceControlProjectWCCIdentifier</key>
+	<string>1687EFBEFB1EFBCD10AFA9416054EC27E76779FA</string>
+	<key>IDESourceControlProjectWCConfigurations</key>
+	<array>
+		<dict>
+			<key>IDESourceControlRepositoryExtensionIdentifierKey</key>
+			<string>public.vcs.git</string>
+			<key>IDESourceControlWCCIdentifierKey</key>
+			<string>1687EFBEFB1EFBCD10AFA9416054EC27E76779FA</string>
+			<key>IDESourceControlWCCName</key>
+			<string>baljeet_work</string>
+		</dict>
+	</array>
+</dict>
+</plist>
