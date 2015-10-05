@@ -1316,10 +1316,9 @@ table-view#select_recipientwithoutSeperator {
     width				: 194px;
     height				: 68px;
     font-family			: "Roboto";
-    font-size			: 52px;
+    font-size			: 50px;
     font-weight         : medium;
     text-align       	: right;
-    color 				: #58595B;
 }
 #howmuch_amountfield_4 {
     left                : 108px;
@@ -1330,7 +1329,6 @@ table-view#select_recipientwithoutSeperator {
     font-size			: 42px;
     font-weight         : medium;
     text-align       	: right;
-    color 				: #58595B;
 }
 
 /**  Send and Request buttons. **/ 
@@ -1637,9 +1635,9 @@ table-view#select_recipientwithoutSeperator {
 
 /**  The Amount of the transfer displayed in the middle of the PIN screen.  **/  
 .pin_amountfield {
-    left            : 60px;
+    left            : 20px;
     top             : 114px;
-    width			: 200px;
+    width			: 280px;
     height			: 60px;
     font-family		: "Roboto";
     font-size		: 50px;
@@ -1648,9 +1646,9 @@ table-view#select_recipientwithoutSeperator {
     color 			: #313233;
 }
 .pin_amountfield_4 {
-    left            : 60px;
+    left            : 20px;
     top             : 83px;
-    width			: 200px;
+    width			: 280px;
     height			: 46px;
     font-family		: "Roboto";
     font-size		: 42px;

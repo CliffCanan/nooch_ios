@@ -233,7 +233,7 @@
         else {
             //[self.picker.view setStyleClass:@"pickerstyle"];
         }
-        self.picker.sourceType = UIImagePickerControllerSourceTypePhotoLibrary;
+        self.picker.sourceType = UIImagePickerControllerSourceTypeSavedPhotosAlbum;
         [self presentViewController:self.picker animated:YES completion:Nil];
     }
 }

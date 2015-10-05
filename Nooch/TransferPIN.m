@@ -69,7 +69,7 @@
         self.receiver = receiver;
         self.amnt = amount;
 
-        //NSLog(@"\nself.type is: %@\nself.amnt is: %f", self.type, self.amnt);
+        NSLog(@"\nself.type is: %@\nself.amnt is: %f", self.type, self.amnt);
     }
     return self;
 }

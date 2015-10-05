@@ -653,7 +653,8 @@
         [alert show];
         return;
     }
-    else if ([[[self.amount text] substringFromIndex:1] doubleValue] > transLimitFromArtisanInt && !isFromMyApt)
+    else if ((([self.amnt floatValue] / 100) > transLimitFromArtisanInt) &&
+             !isFromMyApt)
     {
         UIAlertView *alert = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"HowMuch_CnfrmSndOverLimitAlertTitle", @"How Much confirm send when amount is over limit Alert Title")
                                                         message:[NSString stringWithFormat:@"\xF0\x9F\x98\xB3\n%@", [NSString stringWithFormat:NSLocalizedString(@"HowMuch_CnfrmSndOverLimitAlertBody", @"How Much confirm send when amount is over limit Alert Body Text"), transLimitFromArtisanString]]
@@ -663,11 +664,12 @@
         [alert show];
         return;
     }
+    NSLog(@"self.amnt is is: %@",self.amnt);
 
-    NSMutableDictionary *transaction = [self.receiver mutableCopy];
+    NSMutableDictionary * transaction = [self.receiver mutableCopy];
     [transaction setObject:[self.memo text] forKey:@"memo"];
-    float input_amount = [[[self.amount text] substringFromIndex:1] floatValue];
-
+    float input_amount = [self.amnt floatValue] / 100;
+    NSLog(@"HOW MUCH - sending 'input_amount' to PIN: %f", input_amount);
     [self.navigationItem setLeftBarButtonItem:nil];
 
     if ([self.receiver valueForKey:@"nonuser"])
@@ -708,7 +710,8 @@
         [alert show];
         return;
     }
-    else if ([[[self.amount text] substringFromIndex:1] doubleValue] > transLimitFromArtisanInt && !isFromMyApt)
+    else if ((([self.amnt floatValue] / 100) > transLimitFromArtisanInt) &&
+             !isFromMyApt)
     {
         UIAlertView *alert = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"HowMuch_CnfrmRequestOverLimitAlertTitle", @"How Much confirm request when amount is over limit Alert Title")
                                                         message:[NSString stringWithFormat:@"\xF0\x9F\x98\x87\n%@", [NSString stringWithFormat:NSLocalizedString(@"HowMuch_CnfrmRequestOverLimitAlertBody", @"How Much confirm request when amount is over limit Alert Body Text"), transLimitFromArtisanString]]
@@ -733,7 +736,7 @@
     {
         NSMutableDictionary *transaction = [self.receiver mutableCopy];
         [transaction setObject:[self.memo text] forKey:@"memo"];
-        float input_amount = [[[self.amount text] substringFromIndex:1] floatValue];
+        float input_amount = [self.amnt floatValue] / 100;
         TransferPIN *pin;
 
         if ([self.receiver valueForKey:@"nonuser"]) {
@@ -987,7 +990,7 @@
         float maths = [self.amnt floatValue];
         maths /= 100;
 
-        if (maths > 1000)
+        if (maths > 4000)
         {
             self.amnt = [[self.amnt substringToIndex:[self.amnt length] - 1] mutableCopy];
             return NO;
@@ -996,7 +999,17 @@
         if (maths != 0)
         {
             [textField setText:[formatter stringFromNumber:[NSNumber numberWithFloat:maths]]];
-        } 
+            if (maths > 999.9)
+            {
+                [self.amount setTextColor:kNoochRed];
+                [self.amount setFont:[UIFont fontWithName:@"Roboto-medium" size:42]];
+            }
+            else
+            {
+                [self.amount setTextColor:[Helpers hexColor:@"58595B"]];
+                [self.amount setFont:[UIFont fontWithName:@"Roboto-medium" size:50]];
+            }
+        }
         else
         {
             [textField setText:@""];
