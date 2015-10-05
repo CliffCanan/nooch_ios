@@ -286,11 +286,11 @@
     [self.back addSubview:memoShell];
 
     self.memo = [[UITextField alloc] initWithFrame:CGRectMake(2, 0, 255, 38)];
+    [self.memo setFont:[UIFont fontWithName:@"Roboto-light" size:16]];
     [self.memo setPlaceholder:NSLocalizedString(@"HowMuch_MemoPlaceholder", @"How Much memo placeholder text")];
     [self.memo setTextAlignment:NSTextAlignmentCenter];
     [self.memo setTextColor:kNoochGrayDark];
     [self.memo setDelegate:self];
-    [self.memo setStyleId:@"howmuch_memo"];
     [self.memo setTag:2];
     [self.memo setKeyboardType:UIKeyboardTypeDefault];
     self.memo.inputAccessoryView = [[UIView alloc] init]; // To override the IQ Keyboard Mgr
@@ -444,7 +444,10 @@
         self.user_pic.layer.cornerRadius = 36;
 
         [self.amount setStyleId:@"howmuch_amountfield_4"];
-        [self.memo setStyleId:@"howmuch_memo_4"];
+
+        [memoShell setFrame:CGRectMake(83, 98, 212, 31)];
+        [self.memo setFont:[UIFont fontWithName:@"Roboto-light" size:16]];
+        [self.memo setFrame:CGRectMake(1, 0, 211, 31)];
         [self.camera setStyleId:@"howmuch_camera_4"];
     }
 

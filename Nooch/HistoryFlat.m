@@ -1207,16 +1207,12 @@
         NSLog(@"The cell is:  %@",cell);
     }
 
-    NSMutableArray *leftUtilityButtons = [NSMutableArray new];
     NSMutableArray *rightUtilityButtons = [NSMutableArray new];
         
     if (self.completed_selected)
     {
         cell = [[SWTableViewCell alloc] initWithStyle:UITableViewCellStyleSubtitle
-                                          reuseIdentifier:cellIdentifier
-                                      containingTableView:self.list // For row height and selection
-                                       leftUtilityButtons:nil
-                                      rightUtilityButtons:nil];
+                                      reuseIdentifier:cellIdentifier];
     }
     else
     {
@@ -1254,12 +1250,12 @@
                 }
             }
         }
-        
+
         cell = [[SWTableViewCell alloc] initWithStyle:UITableViewCellStyleSubtitle
-            reuseIdentifier:cellIdentifier
-            containingTableView:self.list // For row height and selection
-            leftUtilityButtons:leftUtilityButtons
-            rightUtilityButtons:rightUtilityButtons];
+                                    reuseIdentifier:cellIdentifier];
+        cell.rightUtilityButtons = rightUtilityButtons;
+        cell.delegate = self;
+
     }
     [cell setDelegate:self];
 
@@ -1978,6 +1974,19 @@
     return cell;
 }
 
+- (NSArray *)rightButtons
+{
+    NSMutableArray *rightUtilityButtons = [NSMutableArray new];
+    [rightUtilityButtons sw_addUtilityButtonWithColor:
+     [UIColor colorWithRed:0.78f green:0.78f blue:0.8f alpha:1.0]
+                                                title:@"More"];
+    [rightUtilityButtons sw_addUtilityButtonWithColor:
+     [UIColor colorWithRed:1.0f green:0.231f blue:0.188 alpha:1.0f]
+                                                title:@"Delete"];
+
+    return rightUtilityButtons;
+}
+
 -(void)deleteTableRow:(NSIndexPath*)rowNumber
 {
     short rowToRemove = rowNumber.row;
@@ -2044,7 +2053,8 @@
 }
 
 #pragma mark - SWTableView
-- (void)swipeableTableViewCell:(SWTableViewCell *)cell didTriggerRightUtilityButtonWithIndex:(NSInteger)ind
+- (void)swipeableTableViewCell:(SWTableViewCell *)cell
+didTriggerRightUtilityButtonWithIndex:(NSInteger)ind
 {
     NSMutableArray *temp;
 
@@ -2574,12 +2584,18 @@
         
         if ([[[dictResponse valueForKey:@"sendTransactionInCSVResult"]valueForKey:@"Result"]isEqualToString:@"1"])
         {
+            [MMProgressHUD dismissWithSuccess:@"Success"];
+
             UIAlertView * alert = [[UIAlertView alloc]initWithTitle:NSLocalizedString(@"History_ExprtSuccessAlrtTitle", @"History screen export successful Alert Title")
                                                             message:[NSString stringWithFormat:@"\xF0\x9F\x93\xA5\n%@", NSLocalizedString(@"History_ExprtSuccessAlrtBody", @"History screen export successful Alert Body Text")]
                                                            delegate:Nil
                                                   cancelButtonTitle:@"OK"
                                                   otherButtonTitles:Nil, nil];
             [alert show];
+        }
+        else
+        {
+            [MMProgressHUD dismissWithError:@"Error!"];
         }
     }
 
@@ -2970,6 +2986,20 @@
 {
     if (actionSheet.tag == 11 && buttonIndex == 1) // export history
     {
+        [MMProgressHUD setPresentationStyle:MMProgressHUDPresentationStyleShrink];
+        [MMProgressHUD showWithTitle:@"Preparing Secure Connection"
+                              status:nil
+                 confirmationMessage:@"Cancel Adding A Bank?"
+                         cancelBlock:^{
+                             UIAlertView * alert = [[UIAlertView alloc] initWithTitle:@"Export Cancelled"
+                                                                              message:@""
+                                                                             delegate:nil
+                                                                    cancelButtonTitle:@"OK"
+                                                                    otherButtonTitles: nil];
+                             alert.tag = 11;
+                         }
+         ];
+
         NSString * email = [[actionSheet textFieldAtIndex:0] text];
         serve * s = [[serve alloc] init];
         [s setTagName:@"csv"];

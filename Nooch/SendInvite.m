@@ -14,6 +14,7 @@
 #import "Register.h"
 #import "MBProgressHUD.h"
 #import "SpinKit/RTSpinKitView.h"
+#import <FBSDKShareKit/FBSDKShareKit.h>
 
 @interface SendInvite ()<MFMessageComposeViewControllerDelegate>
 @property(nonatomic,strong) UITableView *contacts;
@@ -23,7 +24,7 @@
 
 @implementation SendInvite
 
-- (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
+-(id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
 {
     self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil];
     if (self) {
@@ -32,24 +33,7 @@
     return self;
 }
 
--(void)showMenu
-{
-    [self.slidingViewController anchorTopViewTo:ECRight];
-}
-
--(void)viewWillAppear:(BOOL)animated{
-    [super viewWillAppear:animated];
-    self.screenName = @"Refer a Friend Screen";
-    self.artisanNameTag = @"Refer a Friend Screen";
-}
-
--(void)viewDidDisappear:(BOOL)animated
-{
-    [self.hud hide:YES];
-    [super viewDidDisappear:animated];
-}
-
-- (void)viewDidLoad
+-(void)viewDidLoad
 {
     [super viewDidLoad];
 
@@ -57,13 +41,13 @@
 
     if (!sentFromStatsScrn)
     {
-        UIButton *hamburger = [UIButton buttonWithType:UIButtonTypeRoundedRect];
+        UIButton * hamburger = [UIButton buttonWithType:UIButtonTypeRoundedRect];
         [hamburger setStyleId:@"navbar_hamburger"];
         [hamburger addTarget:self action:@selector(showMenu) forControlEvents:UIControlEventTouchUpInside];
         [hamburger setTitle:[NSString fontAwesomeIconStringForIconIdentifier:@"fa-bars"] forState:UIControlStateNormal];
         [hamburger setTitleShadowColor:Rgb2UIColor(19, 32, 38, 0.22) forState:UIControlStateNormal];
         hamburger.titleLabel.shadowOffset = CGSizeMake(0.0, -1.0);
-        UIBarButtonItem *menu = [[UIBarButtonItem alloc] initWithCustomView:hamburger];
+        UIBarButtonItem * menu = [[UIBarButtonItem alloc] initWithCustomView:hamburger];
         [self.navigationItem setLeftBarButtonItem:menu];
     }
     else
@@ -91,15 +75,15 @@
     [self.view addGestureRecognizer:self.slidingViewController.panGesture];
     [self.navigationItem setTitle:NSLocalizedString(@"ReferFriend_ScrnTitle", @"Profile 'Refer A Friend' Screen Title")];
 
-    UIView *backgroundWhiteLayer = [[UIView alloc] initWithFrame:CGRectMake(0, 0, [[UIScreen mainScreen] bounds].size.width, [[UIScreen mainScreen] bounds].size.height)];
+    UIView * backgroundWhiteLayer = [[UIView alloc] initWithFrame:CGRectMake(0, 0, [[UIScreen mainScreen] bounds].size.width, [[UIScreen mainScreen] bounds].size.height)];
     backgroundWhiteLayer.backgroundColor = [UIColor whiteColor];
     [self.view addSubview:backgroundWhiteLayer];
 
-    UIImageView *backgroundImage = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"SplashPageBckgrnd-568h@2x.png"]];
+    UIImageView * backgroundImage = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"SplashPageBckgrnd-568h@2x.png"]];
     backgroundImage.alpha = .3;
     [self.view addSubview:backgroundImage];
 
-    UILabel *title = [[UILabel alloc] initWithFrame:CGRectMake(0, 20, 320, 40)];
+    UILabel * title = [[UILabel alloc] initWithFrame:CGRectMake(0, 20, 320, 40)];
     [title setText:NSLocalizedString(@"ReferFriend_YourCdHdr", @"Profile 'Your Referral Code' header label")];
     [title setStyleId:@"refer_introtext"];
     [self.view addSubview:title];
@@ -108,24 +92,21 @@
     [code setStyleId:@"refer_invitecode"];
     [self.view addSubview:code];
 
-    UILabel *with = [[UILabel alloc] initWithFrame:CGRectMake(20, 130, 170, 40)];
+    UILabel * with = [[UILabel alloc] initWithFrame:CGRectMake(20, 130, 170, 40)];
     [with setStyleClass:@"refer_header"];
     [with setText:NSLocalizedString(@"ReferFriend_RfrHdr", @"Profile 'Refer a friend with...' header label")];
     [self.view addSubview:with];
-
-    CGRect frame;
 
     UIButton * sms = [UIButton buttonWithType:UIButtonTypeRoundedRect];
     [sms setStyleClass:@"refer_buttons"];
     [sms setStyleId:@"refer_sms"];
     [sms addTarget:self action:@selector(SMSClicked:) forControlEvents:UIControlEventTouchUpInside];
-
     [self.view addSubview:sms];
-    UILabel * sms_label = [UILabel new];
-    frame = sms.frame;
-    frame.origin.x -= 5;
-    [sms_label setFrame:frame];
-    [sms_label setStyleClass:@"refer_buttons_labels"];
+
+    UILabel * sms_label = [[UILabel alloc] initWithFrame:CGRectMake(19, 225, 60, 17)];
+    [sms_label setFont:[UIFont fontWithName:@"Roboto-light" size:13]];
+    [sms_label setTextAlignment:NSTextAlignmentCenter];
+    [sms_label setTextColor:[Helpers hexColor:@"6d6e71"]];
     [sms_label setText:NSLocalizedString(@"ReferFriend_SmsTxt", @"Profile 'SMS Text' label")];
     [self.view addSubview:sms_label];
 
@@ -133,13 +114,12 @@
     [fb setStyleClass:@"refer_buttons"];
     [fb setStyleId:@"refer_fb"];
     [fb addTarget:self action:@selector(fbClicked:) forControlEvents:UIControlEventTouchUpInside];
-
     [self.view addSubview:fb];
-    UILabel * fb_label = [UILabel new];
-    frame = fb.frame;
-    frame.origin.x -= 5;
-    [fb_label setFrame:frame];
-    [fb_label setStyleClass:@"refer_buttons_labels"];
+
+    UILabel * fb_label = [[UILabel alloc] initWithFrame:CGRectMake(93, 225, 60, 17)];
+    [fb_label setFont:[UIFont fontWithName:@"Roboto-light" size:13]];
+    [fb_label setTextAlignment:NSTextAlignmentCenter];
+    [fb_label setTextColor:[Helpers hexColor:@"6d6e71"]];
     [fb_label setText:@"Facebook"];
     [self.view addSubview:fb_label];
 
@@ -149,11 +129,10 @@
     [twit addTarget:self action:@selector(TwitterClicked:) forControlEvents:UIControlEventTouchUpInside];
     [self.view addSubview:twit];
 
-    UILabel * twit_label = [UILabel new];
-    frame = twit.frame;
-    frame.origin.x -= 5;
-    [twit_label setFrame:frame];
-    [twit_label setStyleClass:@"refer_buttons_labels"];
+    UILabel * twit_label = [[UILabel alloc] initWithFrame:CGRectMake(167, 225, 60, 17)];
+    [twit_label setFont:[UIFont fontWithName:@"Roboto-light" size:13]];
+    [twit_label setTextAlignment:NSTextAlignmentCenter];
+    [twit_label setTextColor:[Helpers hexColor:@"6d6e71"]];
     [twit_label setText:@"Twitter"];
     [self.view addSubview:twit_label];
 
@@ -163,11 +142,10 @@
     [email addTarget:self action:@selector(EmailCLicked:) forControlEvents:UIControlEventTouchUpInside];
     [self.view addSubview:email];
 
-    UILabel *email_label = [UILabel new];
-    frame = email.frame;
-    frame.origin.x -= 5;
-    [email_label setFrame:frame];
-    [email_label setStyleClass:@"refer_buttons_labels"];
+    UILabel * email_label = [[UILabel alloc] initWithFrame:CGRectMake(241, 225, 60, 17)];
+    [email_label setFont:[UIFont fontWithName:@"Roboto-light" size:13]];
+    [email_label setTextAlignment:NSTextAlignmentCenter];
+    [email_label setTextColor:[Helpers hexColor:@"6d6e71"]];
     [email_label setText:@"Email"];
     [self.view addSubview:email_label];
 
@@ -175,7 +153,7 @@
     spinner1.color = [UIColor whiteColor];
     self.hud = [[MBProgressHUD alloc] initWithView:self.navigationController.view];
     [self.navigationController.view addSubview:self.hud];
-    self.hud.labelText = NSLocalizedString(@"ReferFriend_HUDlbl", @"Profile 'Loading important stuff...' HUD Text");//@"Loading important stuff...";
+    self.hud.labelText = NSLocalizedString(@"ReferFriend_HUDlbl", @"Profile 'Loading important stuff...' HUD Text");
     [self.hud show:YES];
     [spinner1 startAnimating];
     self.hud.mode = MBProgressHUDModeCustomView;
@@ -190,119 +168,26 @@
     [ARTrackingManager trackEvent:@"Refer_ViewDidLoad_End"];
 }
 
-#pragma mark - file paths
-- (NSString *)autoLogin
+-(void)viewWillAppear:(BOOL)animated
 {
-    NSArray *paths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
-    NSString *documentsDirectory = [paths objectAtIndex:0];
-    return [documentsDirectory stringByAppendingPathComponent:[NSString stringWithFormat:@"autoLogin.plist"]];
+    [super viewWillAppear:animated];
+    self.screenName = @"Refer a Friend Screen";
+    self.artisanNameTag = @"Refer a Friend Screen";
 }
 
--(void)Error:(NSError *)Error
+-(void)viewDidDisappear:(BOOL)animated
 {
     [self.hud hide:YES];
-
-    /*UIAlertView * alert = [[UIAlertView alloc]
-                          initWithTitle:@"Message"
-                          message:@"Error connecting to server"
-                          delegate:nil
-                          cancelButtonTitle:@"OK"
-                          otherButtonTitles:nil];
-    [alert show];*/
-}
-
-#pragma mark - server Delegation
--(void) listen:(NSString *)result tagName:(NSString *)tagName
-{
-    NSError* error;
-    [self.hud hide:YES];
-
-    if ([result rangeOfString:@"Invalid OAuth 2 Access"].location!=NSNotFound)
-    {
-        [[NSFileManager defaultManager] removeItemAtPath:[self autoLogin] error:nil];
-        [user removeObjectForKey:@"UserName"];
-        [user removeObjectForKey:@"MemberId"];
-
-        [timer invalidate];
-
-        [nav_ctrl performSelector:@selector(disable)];
-        [nav_ctrl performSelector:@selector(reset)];
-        Register *reg = [Register new];
-        [nav_ctrl pushViewController:reg animated:YES];
-        me = [core new];
-        return;
-    }
-
-    if ([tagName isEqualToString:@"ReferralCode"])
-    {
-        dictResponse = [NSJSONSerialization
-                      JSONObjectWithData:[result dataUsingEncoding:NSUTF8StringEncoding]
-                      options:kNilOptions
-                      error:&error];
-
-        code.text = [NSString stringWithFormat:@"%@",[[dictResponse valueForKey:@"getReferralCodeResult"] valueForKey:@"Result"]];
-        [code setStyleClass:@"animate_bubble_slow"];
-
-        [user setValue:[[dictResponse valueForKey:@"getReferralCodeResult"] valueForKey:@"Result"] forKey:@"ReferralCode"];
-        [user synchronize];
-    }
-    else if ([tagName isEqualToString:@"GetReffereduser"])
-    {
-        [self.hud hide:YES];
-
-        dictInviteUserList = [NSJSONSerialization
-                            JSONObjectWithData:[result dataUsingEncoding:NSUTF8StringEncoding]
-                            options:kNilOptions
-                            error:&error];
-
-        if ([[dictInviteUserList valueForKey:@"getInvitedMemberListResult"]count] > 0)
-        {
-            UIView *view_table = [[UIView alloc]initWithFrame:CGRectMake(10, 296, 300, 200)];
-            view_table.backgroundColor = [UIColor whiteColor];
-            [self.view addSubview:view_table];
-
-            self.contacts = [[UITableView alloc]initWithFrame:CGRectMake(0, 0, 300, 190)];
-            [self.contacts setDataSource:self];
-            [self.contacts setDelegate:self];
-            [self.contacts setRowHeight:60];
-
-            view_table.layer.masksToBounds = NO;
-            view_table.layer.cornerRadius = 0;
-            view_table.layer.shadowOffset = CGSizeMake(0, 2);
-            view_table.layer.shadowRadius = 2;
-            view_table.layer.shadowOpacity = 0.4;
-
-            self.contacts.backgroundColor = [UIColor clearColor];
-            [self.contacts setSeparatorStyle:UITableViewCellSeparatorStyleNone];
-            self.contacts.separatorColor = [UIColor clearColor];
-            [view_table addSubview:self.contacts];
-            [self.contacts reloadData];
-
-            UILabel *invited = [[UILabel alloc] initWithFrame:CGRectMake(20, 262, 170, 40)];
-            [invited setStyleClass:@"refer_header"];
-            [invited setText:NSLocalizedString(@"ReferFriend_FrndsRfrdHdr", @"Profile 'Friends You Referred:' header label")];
-            [self.view addSubview:invited];
-            [self.contacts setHidden:NO];
-            [self.contacts reloadData];
-        }
-        else
-            [self.contacts  setHidden:YES];
-
-        serve * serveOBJ = [serve new];
-        serveOBJ.tagName = @"ReferralCode";
-        [serveOBJ setDelegate:self];
-        [serveOBJ GetReferralCode:[user objectForKey:@"MemberId"]];
-    }
+    [super viewDidDisappear:animated];
 }
 
 #pragma mark - UITableViewDataSource
-
-- (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
+-(NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
     return [[dictInviteUserList valueForKey:@"getInvitedMemberListResult"] count];
 }
 
-- (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
+-(UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
     static NSString *CellIdentifier = @"Cell";
     UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier];
@@ -373,67 +258,12 @@
 }
 
 #pragma mark - UITableViewDelegate
-- (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
-
+-(void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
+{
     [tableView deselectRowAtIndexPath:indexPath animated:YES];
 }
 
-- (IBAction)fbClicked:(id)sender
-{
-    if ([SLComposeViewController isAvailableForServiceType:SLServiceTypeFacebook])
-    {
-        SLComposeViewController *fbSheet = [SLComposeViewController composeViewControllerForServiceType:SLServiceTypeFacebook];
-
-        [fbSheet setInitialText:[NSString stringWithFormat:@"Check out @Nooch, the simplest way to pay me back (and get paid by anyone - for free)! Use my invite code to sign up: \"%@\"",[code.text uppercaseString]]];
-        [fbSheet addURL:[NSURL URLWithString:@"https://157054.measurementapi.com/serve?action=click&publisher_id=157054&site_id=91086"]];
-        [self presentViewController:fbSheet animated:YES completion:nil];
-
-        [fbSheet setCompletionHandler:^(SLComposeViewControllerResult result)
-         {
-             NSString *output;
-             switch (result)
-             {
-                 case SLComposeViewControllerResultCancelled:
-                     [ARTrackingManager trackEvent:@"Refer_FBshare_Canc"];
-                     break;
-                 case SLComposeViewControllerResultDone:
-                     output = @"Post Shared Successfully";
-                     [self dismissViewControllerAnimated:YES completion:nil];
-                     [self callService:@"FB"];
-                     break;
-                 default: break;
-             }
-             if ([output isEqualToString:@"Post Shared Successfully"])
-             {
-                 [ARTrackingManager trackEvent:@"Refer_SUCCESS"];
-                 [ARTrackingManager trackEvent:@"Refer_Via_FB_Success"];
-                 UIAlertView * alert = [[UIAlertView alloc] initWithTitle:@"Facebook Message"
-                                                                  message:output
-                                                                 delegate:nil
-                                                        cancelButtonTitle:@"OK"
-                                                        otherButtonTitles:nil];
-                 [alert show];
-             }
-         }];
-    }
-    else
-    {
-        UIAlertView *alertView = [[UIAlertView alloc]
-                                  initWithTitle:@"Sorry"
-                                  message:@"Please connt your Facebook account to your iPhone to make a Facebook post."
-                                  delegate:self
-                                  cancelButtonTitle:@"OK"
-                                  otherButtonTitles:nil];
-        [alertView show];
-    }
-}
-
--(void)backToStats
-{
-    [self.navigationController popViewControllerAnimated:YES];
-}
-
-- (void)setNavBarColor:(UIColor *)navBarColor titleColor:(UIColor *)titleColor
+-(void)setNavBarColor:(UIColor *)navBarColor titleColor:(UIColor *)titleColor
 {
     [[UINavigationBar appearance] setBarTintColor:navBarColor];
     [[UINavigationBar appearance] setTitleTextAttributes:[NSDictionary dictionaryWithObjectsAndKeys:
@@ -444,7 +274,21 @@
                                                           nil]];
 }
 
-- (IBAction)SMSClicked:(id)sender
+#pragma mark - Share Btn Handlers
+-(IBAction)fbClicked:(id)sender
+{
+    FBSDKShareLinkContent * content = [[FBSDKShareLinkContent alloc] init];
+    content.contentURL = [NSURL URLWithString:@"https://www.nooch.com/"];
+    content.contentTitle = @"Check Out Nooch!";
+    content.contentDescription = [NSString stringWithFormat:@"Check out Nooch, the simplest way to pay me back (and get paid by anyone - for free)! Use my invite code to sign up: \"%@\"",[code.text uppercaseString]];
+    content.imageURL = [NSURL URLWithString:@"http://noochme.com/noochweb/Assets/Images/noochlogosquare.png"];
+
+    [FBSDKShareDialog showFromViewController:self
+                                 withContent:content
+                                    delegate:nil];
+}
+
+-(IBAction)SMSClicked:(id)sender
 {
     if (![MFMessageComposeViewController canSendText]) {
         UIAlertView * warningAlert = [[UIAlertView alloc] initWithTitle:@"Error"
@@ -468,7 +312,7 @@
     [self presentViewController:messageController animated:YES completion:nil];
 }
 
-- (IBAction)TwitterClicked:(id)sender
+-(IBAction)TwitterClicked:(id)sender
 {
     if ([SLComposeViewController isAvailableForServiceType:SLServiceTypeTwitter])
     {
@@ -516,15 +360,7 @@
     }
 }
 
--(void)callService:(NSString*)shareTo
-{
-    serve * serveOBJ = [serve new];
-    [serveOBJ setDelegate:self];
-    [serveOBJ setTagName:@"ShareCount"];
-    [serveOBJ saveShareToFB_Twitter:shareTo];
-}
-
-- (IBAction)EmailCLicked:(id)sender
+-(IBAction)EmailCLicked:(id)sender
 {
     NSString * emailTitle = @"Check out Nooch - a free app to pay me back";
 
@@ -539,7 +375,116 @@
     [self presentViewController:mc animated:YES completion:NULL];
 }
 
-- (void) mailComposeController:(MFMailComposeViewController *)controller didFinishWithResult:(MFMailComposeResult)result error:(NSError *)error
+#pragma mark - Navigation Methods
+-(void)backToStats
+{
+    [self.navigationController popViewControllerAnimated:YES];
+}
+
+-(void)showMenu
+{
+    [self.slidingViewController anchorTopViewTo:ECRight];
+}
+
+#pragma mark - Server Delegation
+-(void) listen:(NSString *)result tagName:(NSString *)tagName
+{
+    NSError * error;
+    [self.hud hide:YES];
+
+    if ([result rangeOfString:@"Invalid OAuth 2 Access"].location!=NSNotFound)
+    {
+        [[NSFileManager defaultManager] removeItemAtPath:[self autoLogin] error:nil];
+        [user removeObjectForKey:@"UserName"];
+        [user removeObjectForKey:@"MemberId"];
+
+        [timer invalidate];
+
+        [nav_ctrl performSelector:@selector(disable)];
+        [nav_ctrl performSelector:@selector(reset)];
+        Register *reg = [Register new];
+        [nav_ctrl pushViewController:reg animated:YES];
+        me = [core new];
+        return;
+    }
+
+    if ([tagName isEqualToString:@"ReferralCode"])
+    {
+        dictResponse = [NSJSONSerialization
+                        JSONObjectWithData:[result dataUsingEncoding:NSUTF8StringEncoding]
+                        options:kNilOptions
+                        error:&error];
+
+        code.text = [NSString stringWithFormat:@"%@",[[dictResponse valueForKey:@"getReferralCodeResult"] valueForKey:@"Result"]];
+        [code setStyleClass:@"animate_bubble_slow"];
+
+        [user setValue:[[dictResponse valueForKey:@"getReferralCodeResult"] valueForKey:@"Result"] forKey:@"ReferralCode"];
+        [user synchronize];
+    }
+    else if ([tagName isEqualToString:@"GetReffereduser"])
+    {
+        [self.hud hide:YES];
+
+        dictInviteUserList = [NSJSONSerialization
+                              JSONObjectWithData:[result dataUsingEncoding:NSUTF8StringEncoding]
+                              options:kNilOptions
+                              error:&error];
+
+        if ([[dictInviteUserList valueForKey:@"getInvitedMemberListResult"]count] > 0)
+        {
+            UIView *view_table = [[UIView alloc]initWithFrame:CGRectMake(10, 296, 300, 200)];
+            view_table.backgroundColor = [UIColor whiteColor];
+            [self.view addSubview:view_table];
+
+            self.contacts = [[UITableView alloc]initWithFrame:CGRectMake(0, 0, 300, 190)];
+            [self.contacts setDataSource:self];
+            [self.contacts setDelegate:self];
+            [self.contacts setRowHeight:60];
+
+            view_table.layer.masksToBounds = NO;
+            view_table.layer.cornerRadius = 0;
+            view_table.layer.shadowOffset = CGSizeMake(0, 2);
+            view_table.layer.shadowRadius = 2;
+            view_table.layer.shadowOpacity = 0.4;
+
+            self.contacts.backgroundColor = [UIColor clearColor];
+            [self.contacts setSeparatorStyle:UITableViewCellSeparatorStyleNone];
+            self.contacts.separatorColor = [UIColor clearColor];
+            [view_table addSubview:self.contacts];
+            [self.contacts reloadData];
+
+            UILabel *invited = [[UILabel alloc] initWithFrame:CGRectMake(20, 262, 170, 40)];
+            [invited setStyleClass:@"refer_header"];
+            [invited setText:NSLocalizedString(@"ReferFriend_FrndsRfrdHdr", @"Profile 'Friends You Referred:' header label")];
+            [self.view addSubview:invited];
+            [self.contacts setHidden:NO];
+            [self.contacts reloadData];
+        }
+        else
+            [self.contacts  setHidden:YES];
+
+        serve * serveOBJ = [serve new];
+        serveOBJ.tagName = @"ReferralCode";
+        [serveOBJ setDelegate:self];
+        [serveOBJ GetReferralCode:[user objectForKey:@"MemberId"]];
+    }
+}
+
+-(void)Error:(NSError *)Error
+{
+    [self.hud hide:YES];
+}
+
+-(void)callService:(NSString*)shareTo
+{
+    serve * serveOBJ = [serve new];
+    [serveOBJ setDelegate:self];
+    [serveOBJ setTagName:@"ShareCount"];
+    [serveOBJ saveShareToFB_Twitter:shareTo];
+}
+
+#pragma mark - Mail Controller
+-(void) mailComposeController:(MFMailComposeViewController *)controller didFinishWithResult:(MFMailComposeResult)result error:(NSError *)error
 {
     UIAlertView *alert = [[UIAlertView alloc] init];
     [alert addButtonWithTitle:@"OK"];
@@ -570,7 +515,7 @@
     [self dismissViewControllerAnimated:YES completion:NULL];
 }
 
-- (void)messageComposeViewController:(MFMessageComposeViewController *)controller didFinishWithResult:(MessageComposeResult) result
+-(void)messageComposeViewController:(MFMessageComposeViewController *)controller didFinishWithResult:(MessageComposeResult) result
 {
     switch (result) {
         case MessageComposeResultCancelled:
@@ -596,6 +541,14 @@
             break;
     }
     [self dismissViewControllerAnimated:YES completion:nil];
+}
+
+#pragma mark - File Faths
+- (NSString *)autoLogin
+{
+    NSArray *paths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
+    NSString *documentsDirectory = [paths objectAtIndex:0];
+    return [documentsDirectory stringByAppendingPathComponent:[NSString stringWithFormat:@"autoLogin.plist"]];
 }
 
 - (void)didReceiveMemoryWarning

@@ -7,8 +7,6 @@
 //
 
 #import <UIKit/UIKit.h>
-#import <Accounts/Accounts.h>
-#import <Social/Social.h>
 #import "serve.h"
 #import "MBProgressHUD.h"
 #import "SpinKit/RTSpinKitView.h"
@@ -16,7 +14,6 @@
 
 @interface Register : GAITrackedViewController<UITextFieldDelegate,serveD,MBProgressHUDDelegate,MFMailComposeViewControllerDelegate>
 {
-    UIActivityIndicatorView*spinner;
     BOOL isTermsChecked;
     BOOL isloginWithFB;
     BOOL pwLength;

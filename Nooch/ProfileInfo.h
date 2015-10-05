@@ -23,7 +23,7 @@ BOOL shouldFocusOnAddress, shouldFocusOnDob, shouldFocusOnSsn, hasSeenDobPopup;
     BOOL hasSeenAddressPopup;
     short down,numberOfRowsToDisplay,heightOfTopSection;
     short hdrHt,rowHeight;
-    NSMutableDictionary *transaction;
+
     NSMutableDictionary *transactionInput;
     NSMutableDictionary *dictProfileinfo;
     NSMutableDictionary *dictSavedInfo;

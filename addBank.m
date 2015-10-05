@@ -12,14 +12,13 @@
 #import "webView.h"
 #import "SelectRecipient.h"
 
-@interface addBank ()<serveD,UIWebViewDelegate>
+@interface addBank ()<UIWebViewDelegate>
 {
-    NSString *jsonString;
+    NSString * jsonString;
 }
-@property(nonatomic,strong) MBProgressHUD *hud;
-@property(nonatomic,strong) UIWebView *web;
-@property(nonatomic,strong) NSMutableURLRequest*request;
-@property (nonatomic,strong) UIButton *helpGlyph;
+@property(nonatomic,strong) UIWebView * web;
+@property(nonatomic,strong) NSMutableURLRequest * request;
+@property (nonatomic,strong) UIButton * helpGlyph;
 @end
 
 @implementation addBank
@@ -84,16 +83,14 @@
     [self.view addSubview:self.web];
     [self.web.scrollView setScrollEnabled:YES];
 
-    RTSpinKitView * spinner1 = [[RTSpinKitView alloc] initWithStyle:RTSpinKitViewStyleWanderingCubes];
-    spinner1.color = [UIColor whiteColor];
-    self.hud = [[MBProgressHUD alloc] initWithView:self.navigationController.view];
-    [self.navigationController.view addSubview:self.hud];
-
-    self.hud.mode = MBProgressHUDModeCustomView;
-    self.hud.customView = spinner1;
-    self.hud.delegate = self;
-    self.hud.labelText = @"Preparing Secure Connection";
-    [self.hud show:YES];
+    [MMProgressHUD setPresentationStyle:MMProgressHUDPresentationStyleShrink];
+    [MMProgressHUD showWithTitle:@"Preparing Secure Connection"
+                          status:nil
+             confirmationMessage:@"Cancel Adding A Bank?"
+                     cancelBlock:^{
+                         [self backToSettings];
+                     }
+     ];
 
     NSString * baseUrl = [ARPowerHookManager getValueForHookById:@"synps_baseUrl"];
     NSString * memberId = [user objectForKey:@"MemberId"];
@@ -118,7 +115,6 @@
 
 -(void)viewDidDisappear:(BOOL)animated
 {
-    [self.hud hide:YES];
     [super viewDidDisappear:animated];
 }
 
@@ -181,7 +177,7 @@
     [btnLink setTitleShadowColor:Rgb2UIColor(26, 38, 19, 0.2) forState:UIControlStateNormal];
     btnLink.titleLabel.shadowOffset = CGSizeMake(0.0, -1.0);
     [btnLink setTitle:@"Got It" forState:UIControlStateNormal];
-    [btnLink addTarget:self action:@selector(close_lightKnoxLtBox) forControlEvents:UIControlEventTouchUpInside];
+    [btnLink addTarget:self action:@selector(close_BankHelpLtBox) forControlEvents:UIControlEventTouchUpInside];
 
     if ([[UIScreen mainScreen] bounds].size.height < 500)
     {
@@ -199,7 +195,7 @@
 
     UIButton * btnClose_shell = [UIButton buttonWithType:UIButtonTypeCustom];
     btnClose_shell.frame = CGRectMake(mainView.frame.size.width - 35, head_container.frame.origin.y - 21, 48, 46);
-    [btnClose_shell addTarget:self action:@selector(close_lightKnoxLtBox) forControlEvents:UIControlEventTouchUpInside];
+    [btnClose_shell addTarget:self action:@selector(close_BankHelpLtBox) forControlEvents:UIControlEventTouchUpInside];
     [btnClose_shell addSubview:btnClose];
 
     [mainView addSubview:btnClose_shell];
@@ -238,7 +234,7 @@
     [ARTrackingManager trackEvent:@"Knox_MoreInfoLtBx_Appear"];
 }
 
--(void)close_lightKnoxLtBox
+-(void)close_BankHelpLtBox
 {
     [UIView animateKeyframesWithDuration:0.6
                                    delay:0
@@ -289,7 +285,7 @@
     {
         if (buttonIndex != 3)
         {
-            [self close_lightKnoxLtBox];
+            [self close_BankHelpLtBox];
         }
 
         if (buttonIndex == 0)
@@ -315,10 +311,10 @@
             mailComposer.navigationBar.tintColor=[UIColor whiteColor];
             [mailComposer setSubject:[NSString stringWithFormat:@"Add My Bank!!"]];
             [mailComposer setMessageBody:@"" isHTML:NO];
-            [mailComposer setToRecipients:[NSArray arrayWithObjects:@"Support@nooch.com", nil]];
+            [mailComposer setToRecipients:[NSArray arrayWithObjects:@"AddMyBank-ForReal@nooch.com", nil]];
             [mailComposer setCcRecipients:[NSArray arrayWithObject:@""]];
             [mailComposer setBccRecipients:[NSArray arrayWithObject:@""]];
-            [mailComposer setModalTransitionStyle:UIModalTransitionStyleCrossDissolve];
+            [mailComposer setModalTransitionStyle:UIModalTransitionStylePartialCurl];
             [self presentViewController:mailComposer animated:YES completion:nil];
         }
         else if (buttonIndex == 1)
@@ -355,20 +351,6 @@
             [mailComposer setModalTransitionStyle:UIModalTransitionStyleCrossDissolve];
             [self presentViewController:mailComposer animated:YES completion:nil];
         }
-    }
-}
-
--(void)cantSendMail
-{
-    if (![MFMailComposeViewController canSendMail])
-    {
-        UIAlertView * av = [[UIAlertView alloc] initWithTitle:@"No Email Detected"
-                                                      message:@"You don't have an email account configured for this device."
-                                                     delegate:nil
-                                            cancelButtonTitle:@"OK"
-                                            otherButtonTitles: nil];
-        [av show];
-        return;
     }
 }
 
@@ -409,63 +391,10 @@
 
 -(void)Error:(NSError *)Error
 {
-    [self.hud hide:YES];
-    
-    UIAlertView *alert = [[UIAlertView alloc]
-                          initWithTitle:@"Connection Trouble"
-                          message:@"Looks like we're having trouble finding an internet connection! Please check your connection and try again."
-                          delegate:nil
-                          cancelButtonTitle:@"OK"
-                          otherButtonTitles:nil];
-    [alert show];
+    [MMProgressHUD dismissWithError:@"Error!"];
 }
 
-#pragma mark - server delegation
-- (void) listen:(NSString *)result tagName:(NSString *)tagName
-{
-    NSError *error;
-    
-    if ([tagName isEqualToString:@"saveMemberTransId"])
-    {
-        [self.hud hide:YES];
-        
-        NSDictionary * dictResponse = [NSJSONSerialization JSONObjectWithData:[result dataUsingEncoding:NSUTF8StringEncoding] options:0 error:&error];
-
-        NSLog(@"Knox dictResponse is: %@",[dictResponse valueForKey:@"SaveMemberTransIdResult"]);
-        //NSLog(@"Knox dictResponse -> valueForKey@'Result' is: %@",[[dictResponse valueForKey:@"SaveMemberTransIdResult"]valueForKey:@"Result"]);
-
-        if ([[[dictResponse valueForKey:@"SaveMemberTransIdResult"]valueForKey:@"Result"]isEqualToString:@"Success"])
-        {
-            [user setBool:YES forKey:@"IsKnoxBankAvailable"];
-
-            UIAlertView * alert = [[UIAlertView alloc]initWithTitle:@"Great Success"
-                                                            message:@"\xF0\x9F\x98\x80\nYour bank was linked successfully."
-                                                           delegate:Nil
-                                                  cancelButtonTitle:@"OK"
-                                                  otherButtonTitles:Nil, nil];
-            [alert show];
-
-            Home * home = [Home new];
-            [nav_ctrl pushViewController:home animated:YES];
-        }
-        else
-        {
-            [user setBool:NO forKey:@"IsKnoxBankAvailable"];
-
-            UIAlertView * alert = [[UIAlertView alloc]initWithTitle:@"Please Try Again"
-                                                            message:@"\xF0\x9F\x98\xAE\nBank linking failed, unfortunately your info was not saved. We hate it when this happens too."
-                                                           delegate:Nil
-                                                  cancelButtonTitle:@"OK"
-                                                  otherButtonTitles:Nil, nil];
-            [alert show];
-
-            [self.navigationController popViewControllerAnimated:YES];
-        }
-        [user synchronize];
-    }
-}
-
-- (void) mailComposeController:(MFMailComposeViewController *)controller didFinishWithResult:(MFMailComposeResult)result error:(NSError *)error
+-(void) mailComposeController:(MFMailComposeViewController *)controller didFinishWithResult:(MFMailComposeResult)result error:(NSError *)error
 {
     UIAlertView *alert = [[UIAlertView alloc] init];
     [alert addButtonWithTitle:@"OK"];
@@ -497,6 +426,20 @@
     [self dismissViewControllerAnimated:YES completion:NULL];
 }
 
+-(void)cantSendMail
+{
+    if (![MFMailComposeViewController canSendMail])
+    {
+        UIAlertView * av = [[UIAlertView alloc] initWithTitle:@"No Email Detected"
+                                                      message:@"You don't have an email account configured for this device."
+                                                     delegate:nil
+                                            cancelButtonTitle:@"OK"
+                                            otherButtonTitles: nil];
+        [av show];
+        return;
+    }
+}
+
 #pragma mark - webview delegation
 -(BOOL)webView:(UIWebView *)webView shouldStartLoadWithRequest:(NSURLRequest *)request navigationType:(UIWebViewNavigationType)navigationType
 {
@@ -505,7 +448,7 @@
 
 -(void)webViewDidFinishLoad:(UIWebView *)webView
 {
-    [self.hud hide:YES];
+    [MMProgressHUD dismissWithSuccess:@"" title:@"Success!"];
 }
 
 - (void)didReceiveMemoryWarning

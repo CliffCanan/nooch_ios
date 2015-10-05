@@ -8,15 +8,15 @@
 
 #import <UIKit/UIKit.h>
 #import "serve.h"
-#import "MBProgressHUD.h"
+#import <MMProgressHUD/MMProgressHUD.h>
 
-@interface ReferralCode : GAITrackedViewController<serveD,UITextFieldDelegate,MBProgressHUDDelegate>
+@interface ReferralCode : GAITrackedViewController<serveD,UITextFieldDelegate>
 {
+    float lat,lon;
+
     NSString * getEncryptedPassword;
     NSString * refCodeFromArtisan;
-    float lat,lon;
-    UIActivityIndicatorView*spinner;
-    UIButton *enter;
+    UIButton * enter;
 }
 - (id)initWithData:(NSDictionary *)usr;
 @end

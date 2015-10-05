@@ -164,6 +164,14 @@ NSMutableURLRequest *request;
 
     [ARProfileManager setSharedUserId:[user valueForKey:@"MemberId"]];
     [ARProfileManager registerLocation:@"lastKnownLocation"];
+
+    NSURL * theURL = [[NSURL alloc] initWithString:@"http://ip-api.com/line/?fields=query"];
+    NSString * myIP = [[NSString alloc] initWithData:[NSData dataWithContentsOfURL:theURL] encoding:NSUTF8StringEncoding];
+
+    if ([myIP length] < 16)
+    {
+        [self saveIpAddressAndDeviceId:myIP];
+    }
 }
 
 - (void)viewWillAppear:(BOOL)animated
@@ -324,14 +332,6 @@ NSMutableURLRequest *request;
             [ARProfileManager setStringValue:@"NO" forVariable:@"IsSynapseBankAttached"];
         }
     });
-
-    NSURL * theURL = [[NSURL alloc] initWithString:@"http://ip-api.com/line/?fields=query"];
-    NSString * myIP = [[NSString alloc] initWithData:[NSData dataWithContentsOfURL:theURL] encoding:NSUTF8StringEncoding];
-    
-    if ([myIP length] < 16)
-    {
-        [self saveIpAddress:myIP];
-    }
 }
 
 -(void)viewDidDisappear:(BOOL)animated
@@ -1370,7 +1370,7 @@ void addressBookChanged(ABAddressBookRef addressBook, CFDictionaryRef info, void
     return [documentsDirectory stringByAppendingPathComponent:[NSString stringWithFormat:@"autoLogin.plist"]];
 }
 
--(void)saveIpAddress:(NSString*)Ip
+-(void)saveIpAddressAndDeviceId:(NSString*)Ip
 {
     if ([Ip rangeOfString:@"\n"].location != NSNotFound)
     {
@@ -1379,9 +1379,9 @@ void addressBookChanged(ABAddressBookRef addressBook, CFDictionaryRef info, void
     //NSLog(@"IP: %@", Ip);
 
     serve * saveIP = [serve new];
-    [saveIP setTagName:@"saveIpAddress"];
+    [saveIP setTagName:@"saveIpAddressAndDeviceId"];
     [saveIP setDelegate:self];
-    [saveIP saveUserIpAddress:Ip];
+    [saveIP saveUserIpAddressAndDeviceId:Ip];
 
     [ARProfileManager setStringValue:Ip forVariable:@"IPaddress"];
 }
@@ -2111,7 +2111,7 @@ void addressBookChanged(ABAddressBookRef addressBook, CFDictionaryRef info, void
                  [[user objectForKey:@"dob"] length] > 0)
         {
             // Body text if DoB was submitted, but not SSN
-            alertBody = @"Please take 30 seconds to finish verifying your identity by entering your:\n\n• Just the LAST 4 digits of your SSN\n\nFederal regulations require us to verify each user's identity. We will only ask for this info once and all data is stored with encryption on secure servers.\n\xF0\x9F\x94\x92";
+            alertBody = @"Please take 30 seconds to finish verifying your identity by entering:\n\n• Just the LAST 4 digits of your SSN\n\nFederal regulations require us to verify each user's identity. We will only ask for this info once and all data is stored with encryption on secure servers.\n\xF0\x9F\x94\x92";
             shouldFocusOnSsn = YES;
         }
         else
@@ -2164,7 +2164,7 @@ void addressBookChanged(ABAddressBookRef addressBook, CFDictionaryRef info, void
     else if (![user boolForKey:@"IsSynapseBankVerified"])
     {
         UIAlertView *av = [[UIAlertView alloc] initWithTitle:@"Bank Account Un-Verified"
-                                                     message:@"\xE2\x9A\xA0\nLooks like your bank account remains un-verified.  This usually happens when the contact info listed on the bank account does not match your Nooch profile information. Please contact Nooch support for more information."
+                                                     message:@"\xE2\x9A\xA0\nLooks like we need just a bit more info to verify your bank account. This usually happens when we were unable to match the contact info (name, email, phone) listed on the bank account with your Nooch profile information.\n\nDon't worry - we can solve this quickly. Please tap 'Learn More' for what to do next."
                                                     delegate:self
                                            cancelButtonTitle:@"OK"
                                            otherButtonTitles:@"Learn More", nil];
@@ -2172,7 +2172,6 @@ void addressBookChanged(ABAddressBookRef addressBook, CFDictionaryRef info, void
         [av show];
         return NO;
     }
-
 
     return YES;
 }
@@ -2528,17 +2527,17 @@ void addressBookChanged(ABAddressBookRef addressBook, CFDictionaryRef info, void
         }
     }
 
-    else if ([tagName isEqualToString:@"saveIpAddress"])
+    else if ([tagName isEqualToString:@"saveIpAddressAndDeviceId"])
     {
         NSError *error;
         NSMutableDictionary *dict = [NSJSONSerialization
                                      JSONObjectWithData:[result dataUsingEncoding:NSUTF8StringEncoding]
                                      options:kNilOptions
                                      error:&error];
-        //NSLog(@"Home -> SERVER RESPONSE for saveIpAddress: %@", dict);
+        NSLog(@"Home -> SERVER RESPONSE for saveIpAddressAndDeviceId: %@", dict);
         if ([error isKindOfClass:[NSNull class]])
         {
-            NSLog(@"Home -> Server response error for saveIpAddress: %@  & Error: %@", dict, error);
+            NSLog(@"Home -> Server response error for saveIpAddressAndDeviceId: %@  & Error: %@", dict, error);
         }
         BOOL shouldDisplayRefCampaign= [[ARPowerHookManager getValueForHookById:@"RefCmpgn_YorN"] boolValue];
         

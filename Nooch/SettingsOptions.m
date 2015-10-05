@@ -699,15 +699,15 @@
     [mainView addSubview:bodyText6];
 
     UIButton * takePic = [UIButton buttonWithType:UIButtonTypeCustom];
+    takePic.frame = CGRectMake(10, mainView.frame.size.height - 56, 135, 44);
     [takePic setStyleClass:@"button_LtBoxSm_left"];
     [takePic setTitleShadowColor:Rgb2UIColor(26, 38, 19, 0.2) forState:UIControlStateNormal];
     takePic.titleLabel.shadowOffset = CGSizeMake(0.0, -1.0);
-    takePic.frame = CGRectMake(10, mainView.frame.size.height - 56, 280, 50);
     [takePic setTitle:@"Submit ID" forState:UIControlStateNormal];
     [takePic addTarget:self action:@selector(goToIdVerScrn) forControlEvents:UIControlEventTouchUpInside];
 
     UIButton * btnLink = [UIButton buttonWithType:UIButtonTypeCustom];
-    btnLink.frame = CGRectMake(10, mainView.frame.size.height - 56, 280, 50);
+    btnLink.frame = CGRectMake(157, mainView.frame.size.height - 56, 135, 44);
     [btnLink setStyleClass:@"button_LtBoxSm_right"];
     [btnLink setTitleShadowColor:Rgb2UIColor(26, 38, 19, 0.2) forState:UIControlStateNormal];
     btnLink.titleLabel.shadowOffset = CGSizeMake(0.0, -1.0);
@@ -720,7 +720,8 @@
         space_container.frame = CGRectMake(0, 28, 302, 10);
         glyph_lock.frame = CGRectMake(28, 5, 22, 29);
         title.frame = CGRectMake(0, 5, 302, 28);
-        btnLink.frame = CGRectMake(10,mainView.frame.size.height - 51, 280, 44);
+        takePic.frame = CGRectMake(10, mainView.frame.size.height - 51, 135, 44);
+        btnLink.frame = CGRectMake(157, mainView.frame.size.height - 51, 135, 44);
     }
 
     UIImageView * btnClose = [[UIImageView alloc] initWithFrame:self.view.frame];

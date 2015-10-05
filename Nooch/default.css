@@ -13,11 +13,9 @@ view {
     font-family		: "Roboto";
 }
 
-#prelogin_logo {
+#noochLogoSvg
+{
     background-image : url(nooch-logoSVCtest.svg);
-    height : 58px;
-    width : 170px;
-    position : 75 18;
 }
 .prelogin_slogan {
     font-family: "VarelaRound-Regular";
@@ -25,17 +23,6 @@ view {
     font-size: 15px;
     text-align: center;
     color: #5a538d;
-}
-#prelogin_logo_loginScreen {
-    background-image : url(nooch-logoSVCtest.svg);
-    height : 55px;
-    width : 140px;
-    position : 90 15;
-}
-#prelogin_logo_loginScreen_4 {
-    height : 44px;
-    width : 122px;
-    position : 99 8;
 }
 .prelogin_slogan_loginScreen {
     font-size: 13px;
@@ -493,7 +480,7 @@ navigation-bar title {
     border				: 1px solid #66AE3C;
 }
 .button_LtBoxSm_right {
-    left                : 154px;
+    left                : 157px;
     width				: 135px;
     height				: 44px;
     color 				: white;
@@ -597,34 +584,6 @@ navigation-bar title {
     font-family     : "FontAwesome";
     font-size       : 48px;
 }
-/**** News Feed ****/
-#news_feed {
-    left        : 0px;
-    top         : 5px;
-    width      : 270px;
-    height      : 300px;
-    row-height  : 70px;
-    background-color : white;
-    border-radius   : 5px;
-}
-#news_popup {
-    left        : 30px;
-    top         : 60px;
-    width      : 270px;
-    height      : 300px;
-    background-color : white;
-    border-radius   : 5px;
-    box-shadow			: 1px 2px 2px rgba(109,110,113,0.6);
-}
-#close_news {
-    left        : 262px;
-    top         : 35px;
-    width      : 30px;
-    height      : 40px;
-    background-color : white;
-    border				: 1px solid #b1b3b6;
-    border-radius   : 10px;
-}
 
 /****  Table Detail Text  (right side of row)  ****/
 .recentEmptytable_view_cell_detailtext_1 {
@@ -632,35 +591,6 @@ navigation-bar title {
     font-weight         : light;
     font-size			: 15px;
     color 				: #696969;
-/*			width				: 300px;
-    left                : 10px;
-    height				: 300px;
-    text-align       	: left;
-    top                 : 180px; */
-}
-
- .invitesendbutton {
-    width			: 70px;
-    height			: 40px;
-    left                : 120px;
-    color 				: white;
-    border-radius		: 3px;
-    font-family			: "Roboto";
-    font-weight         : light;
-    font-size			: 22px;
-    background-image			: linear-gradient(#6dbee8, #41abe1);
-}
-.donation_closebutton {
-    width			: 50px;
-    height			: 30px;
-
-    left                : 250px;
-    color 				: white;
-    border-radius		: 3px;
-    font-family			: "Roboto";
-    font-weight         : light;
-    font-size			: 12px;
-    background-image			: linear-gradient(#6dbee8, #41abe1);
 }
 
 .Repin_instructiontext {
@@ -1279,15 +1209,6 @@ table-view#select_recipientwithoutSeperator {
 
 .first_name { font-weight: regular;}
 
-/**  Very small FB icon next to Nooch user pics in the Select Recipient Screen. Designates the user is FB friends with the marked user.  **/  
-.facebook-icons {
-    width			: 14px;
-    height			: 28px;
-    top				: 45px;
-    left			: 17px;
-    background		: url(facebook-icon.png);
-}
-
 /**  Very small address book icon next to Nooch user pics in the Select Recipient Screen. Designates the user has that person's email address in their address book. **/    
 .addressbook-icons {
     width			: 14px;
@@ -1579,20 +1500,11 @@ table-view#select_recipientwithoutSeperator {
 }
 
 /**  Text entry field for inputting a memo. **/
-#howmuch_memo {
-    font-family 	: "Roboto";
-    font-weight 	: light;
-    font-size       : 16px;
-}
 #howmuch_memo_4 {
     left    		: 83px;
     top     		: 98px;
     width 			: 212px;
     height      	: 31px;
-    text-align      : center;
-    font-family 	: "Roboto";
-    font-weight 	: light;
-    font-size       : 15px;
 }
 
 /**  Full container (bottom layer) for the Attach a Picture stuff.  **/
@@ -2265,15 +2177,6 @@ segmented-control#donatededication {
     height				: 15px;
     left				: 70px;
     top              : 470px;
-}
-
-/**  The Lock icon **/
-.icon_encryption {
-    width 				: 18px;
-    height 				: 22px;
-    top 				: 465px;
-    left 				: 39px;
-    background-image 	: url(encryption-lock.png);
 }
 
  /*******************************************
@@ -3303,18 +3206,6 @@ table-view#settings_resetpw {
 #refer_email {
     left        : 246px;
     background-image : url(email-icon.png);
-}
-
-/**  Text labels immediately below each referral method (SMS, FB, Twitter, Email) button. **/
-.refer_buttons_labels {
-    width				: 60px;
-    height				: 17px;
-    top					: 224px;
-    font-family			: "Roboto";
-    font-weight         : light;
-    font-size			: 13px;
-    text-align      	: center;
-    color 				: #6d6e71;
 }
 
 /**  Sets the Table styling for the list of users a person has referred. **/

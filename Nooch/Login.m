@@ -16,11 +16,12 @@
 #import "NSString+MD5Addition.h"
 #import "UIDevice+IdentifierAddition.h"
 #import "SpinKit/RTSpinKitView.h"
-#import <FacebookSDK/FacebookSDK.h>
+#import <FBSDKCoreKit/FBSDKCoreKit.h>
+#import <FBSDKLoginKit/FBSDKLoginKit.h>
 
-@interface Login ()<FBLoginViewDelegate>{
+@interface Login () {
     core *me;
-    NSString *email_fb, *fbID;
+    NSString *firstname_fb, *lastname_fb;
 }
 @property(nonatomic,strong) UIButton *facebookLogin;
 @property(nonatomic,strong) UITextField *email;
@@ -44,110 +45,17 @@
     return self;
 }
 
-- (void)check_credentials
-{
-    if ([self.email.text length] > 1 &&
-        [self.email.text rangeOfString:@"@"].location != NSNotFound &&
-        [self.email.text rangeOfString:@"."].location != NSNotFound &&
-        [self.password.text length] > 5)
-    {
-        RTSpinKitView * spinner1 = [[RTSpinKitView alloc] initWithStyle:RTSpinKitViewStyleWanderingCubes];
-        spinner1.color = [UIColor whiteColor];
-        self.hud = [[MBProgressHUD alloc] initWithView:self.navigationController.view];
-        [self.navigationController.view addSubview:self.hud];
-        
-        self.hud.mode = MBProgressHUDModeCustomView;
-        self.hud.customView = spinner1;
-        self.hud.delegate = self;
-        self.hud.labelText = NSLocalizedString(@"Login_HUDlbl", @"'Checking Login Credentials...' HUD Label");
-        [self.hud show:YES];
-//[[assist shared]setPassValue:self.password.text]; //Cliff (7/4/15: why are we storing the pw value?? Can't imagine why it's needed...s
-
-        serve *log = [serve new];
-        [log setDelegate:self];
-        [log setTagName:@"encrypt"];
-        [[assist shared]setPassValue:self.password.text];
-        [log getEncrypt:self.password.text];
-    }
-    else
-    {
-        NSString * avTitle = NSLocalizedString(@"Login_Alrt1Ttl", @"'Please Enter Email And Password' Alert Title");
-        NSString * avMsg = NSLocalizedString(@"Login_Alrt1Body", @"'We can't log you in if we don't know who you are!' Alert Body");
-
-        UIAlertView * av = [[UIAlertView alloc] initWithTitle:avTitle
-                                                      message:avMsg
-                                                     delegate:nil
-                                            cancelButtonTitle:@"OK"
-                                            otherButtonTitles: nil];
-        [av show];
-    }
-}
-
--(void) BackClicked:(id) sender
-{
-    //NSLog(@"viewControllers are: %@",[self.navigationController viewControllers]);
-    [self.navigationController popViewControllerAnimated:YES];
-}
-
--(void)viewWillAppear:(BOOL)animated
-{
-    [super viewWillAppear:animated];
-     self.screenName = @"Login Screen";
-    self.artisanNameTag = @"Login Screen";
-}
-
--(void)viewDidAppear:(BOOL)animated
-{
-    [super viewDidAppear:animated];
-
-    UIButton *btnback = [UIButton buttonWithType:UIButtonTypeCustom];
-    [btnback setBackgroundColor:[UIColor whiteColor]];
-    [btnback setFrame:CGRectMake(7, -40, 44, 44)];
-    [btnback addTarget:self action:@selector(BackClicked:) forControlEvents:UIControlEventTouchUpInside];
-
-    UILabel *glyph_back = [UILabel new];
-    [glyph_back setBackgroundColor:[UIColor clearColor]];
-    [glyph_back setFont:[UIFont fontWithName:@"FontAwesome" size:26]];
-    [glyph_back setTextAlignment:NSTextAlignmentCenter];
-    [glyph_back setFrame:CGRectMake(0, 14, 44, 44)];
-    [glyph_back setText:[NSString fontAwesomeIconStringForIconIdentifier:@"fa-arrow-circle-o-left"]];
-    [glyph_back setTextColor:kNoochBlue];
-    [btnback addSubview:glyph_back];
-
-    [self.view addSubview:btnback];
-
-    [UIView animateKeyframesWithDuration:.35
-                                   delay:0
-                                 options:2 << 16
-                              animations:^{
-                                  [UIView addKeyframeWithRelativeStartTime:0 relativeDuration:1 animations:^{
-                                      if ([[UIScreen mainScreen] bounds].size.height > 500)
-                                      {
-                                          [btnback setFrame:CGRectMake(7, 18, 44, 44)];
-                                      }
-                                      else
-                                      {
-                                          [btnback setFrame:CGRectMake(7, 2, 44, 44)];
-                                      }
-                                  }];
-                              } completion: nil];
-}
-
-- (void)viewDidLoad
+-(void)viewDidLoad
 {
     [super viewDidLoad];
-
-    // Close the FB session
-    // The session state handler (in the app delegate) will be called automatically
-    [FBSession.activeSession close];
-    [FBSession setActiveSession:nil];
 
     isloginWithFB = NO;
     [self.navigationController setNavigationBarHidden:YES];
     [self.view setBackgroundColor:[UIColor whiteColor]];
 
-    UIImageView * logo = [UIImageView new];
-    [logo setStyleId:@"prelogin_logo_loginScreen"];
+    UIImageView * logo = [[UIImageView alloc] initWithFrame:CGRectMake(90, 15, 140, 55)];
+    [logo setImage:[UIImage imageNamed:@"nooch-logoSVCtest.svg"]];
+    [logo setStyleId:@"noochLogoSvg"];
     [self.view addSubview:logo];
 
     if ([[UIScreen mainScreen] bounds].size.height > 500)
@@ -173,7 +81,7 @@
     [self.facebookLogin setTitle:@"    Log in with Facebook" forState:UIControlStateNormal];
     [self.facebookLogin setFrame:CGRectMake(20, 105, 280, 50)];
     [self.facebookLogin setStyleClass:@"button_blue"];
-    [self.facebookLogin addTarget:self action:@selector(toggleFacebookLogin:) forControlEvents:UIControlEventTouchUpInside];
+    [self.facebookLogin addTarget:self action:@selector(LoginWithFbTapped:) forControlEvents:UIControlEventTouchUpInside];
 
     UILabel * glyphFB = [UILabel new];
     [glyphFB setFont:[UIFont fontWithName:@"FontAwesome" size:19]];
@@ -263,15 +171,10 @@
     [forgot addTarget:self action:@selector(forgot_pass_Login) forControlEvents:UIControlEventTouchUpInside];
     [forgot setStyleId:@"label_forgotpw"];
 
-    UILabel *encryption; [encryption setStyleId:@"label_encryption"];
-
-    UIImageView *encrypt_icon;
-    [encrypt_icon setStyleId:@"icon_encryption"];
-
     // Height adjustments for 3.5" screens
     if ([[UIScreen mainScreen] bounds].size.height < 500)
     {
-        [logo setStyleId:@"prelogin_logo_loginScreen_4"];
+        [logo setFrame:CGRectMake(99, 8, 122, 44)];
 
         [self.facebookLogin setStyleClass:@"button_blue_login_4"];
         [glyphFB setFrame:CGRectMake(19, 6, 30, 28)];
@@ -299,88 +202,133 @@
     [self.view addSubview:self.stay_logged_in];
     [self.view addSubview:remember_me];
     [self.view addSubview:forgot];
-    [self.view addSubview:encryption];
-    [self.view addSubview:encrypt_icon];
 
     user = [NSUserDefaults standardUserDefaults];
 }
 
-
-- (void)toggleFacebookLogin:(id)sender
+-(void)viewWillAppear:(BOOL)animated
 {
-    // Open a session showing the user the login UI
-    // You must ALWAYS ask for public_profile permissions when opening a session
-    [FBSession openActiveSessionWithReadPermissions:@[@"public_profile", @"email", @"user_friends"]
-                                       allowLoginUI:YES
-                                completionHandler:
-     ^(FBSession *session, FBSessionState state, NSError *error) {
-         // Call the sessionStateChanged:state:error method to handle session state changes
-         [self sessionStateChanged:session state:state error:error];
-     }];
+    [super viewWillAppear:animated];
+    self.screenName = @"Login Screen";
+    self.artisanNameTag = @"Login Screen";
 }
 
-- (void)sessionStateChanged:(FBSession *)session state:(FBSessionState) state error:(NSError *)error
+-(void)viewDidAppear:(BOOL)animated
 {
-    // If the session was opened successfully
-    if (!error && state == FBSessionStateOpen)
-    {
-        NSLog(@"FB Session opened");
-        // Show the user the logged-in UI
-        [self attemptFBLogin];
-        return;
-    }
+    [super viewDidAppear:animated];
 
-    if (state == FBSessionStateClosed || state == FBSessionStateClosedLoginFailed)
-    {  // If the session is closed
-        NSLog(@"FB Session closed");
-        // Show the user the logged-out UI
-        [self userLoggedOut];
-    }
+    UIButton *btnback = [UIButton buttonWithType:UIButtonTypeCustom];
+    [btnback setBackgroundColor:[UIColor whiteColor]];
+    [btnback setFrame:CGRectMake(7, -40, 44, 44)];
+    [btnback addTarget:self action:@selector(BackClicked:) forControlEvents:UIControlEventTouchUpInside];
 
-    // Handle errors
-    if (error)
+    UILabel *glyph_back = [UILabel new];
+    [glyph_back setBackgroundColor:[UIColor clearColor]];
+    [glyph_back setFont:[UIFont fontWithName:@"FontAwesome" size:26]];
+    [glyph_back setTextAlignment:NSTextAlignmentCenter];
+    [glyph_back setFrame:CGRectMake(0, 14, 44, 44)];
+    [glyph_back setText:[NSString fontAwesomeIconStringForIconIdentifier:@"fa-arrow-circle-o-left"]];
+    [glyph_back setTextColor:kNoochBlue];
+    [btnback addSubview:glyph_back];
+
+    [self.view addSubview:btnback];
+
+    [UIView animateKeyframesWithDuration:.35
+                                   delay:0
+                                 options:2 << 16
+                              animations:^{
+                                  [UIView addKeyframeWithRelativeStartTime:0 relativeDuration:1 animations:^{
+                                      if ([[UIScreen mainScreen] bounds].size.height > 500)
+                                      {
+                                          [btnback setFrame:CGRectMake(7, 18, 44, 44)];
+                                      }
+                                      else
+                                      {
+                                          [btnback setFrame:CGRectMake(7, 2, 44, 44)];
+                                      }
+                                  }];
+                              } completion: nil];
+}
+
+-(void)LoginWithFbTapped:(id)sender
+{
+    if ([FBSDKAccessToken currentAccessToken]) // Already have a FB Token
     {
-        NSLog(@"FB Error");
-        NSString *alertText;
-        NSString *alertTitle;
-        // If the error requires people using an app to make an action outside of the app in order to recover
-        if ([FBErrorUtility shouldNotifyUserForError:error] == YES)
-        {
-            alertTitle = @"Something went wrong";
-            alertText = [FBErrorUtility userMessageForError:error];
-            [self showMessage:alertText withTitle:alertTitle];
-        }
-        else
-        {
-            // If the user cancelled login, do nothing
-            if ([FBErrorUtility errorCategoryForError:error] == FBErrorCategoryUserCancelled)
+        [self loginWithFacebook];
+    }
+    else // No FB Token
+    {
+        FBSDKLoginManager *login = [[FBSDKLoginManager alloc] init];
+        [login logInWithReadPermissions:@[@"email"] handler:^(FBSDKLoginManagerLoginResult *result, NSError *error) {
+            if (error)
             {
-                NSLog(@"User cancelled login");
+                [self userLoggedOut];
             }
-            // Handle session closures that happen outside of the app
-            else if ([FBErrorUtility errorCategoryForError:error] == FBErrorCategoryAuthenticationReopenSession)
+            else if (result.isCancelled)
             {
-                alertTitle = @"Session Error";
-                alertText = @"Your current session is no longer valid. Please log in again.";
-                [self showMessage:alertText withTitle:alertTitle];
+                [self userLoggedOut];
             }
-            // For simplicity, here we just show a generic message for all other errors
-            // You can learn how to handle other errors using our guide: https://developers.facebook.com/docs/ios/errors
             else
             {
-                //Get more error information from the error
-                NSDictionary *errorInformation = [[[error.userInfo objectForKey:@"com.facebook.sdk:ParsedJSONResponseKey"] objectForKey:@"body"] objectForKey:@"error"];
-                
-                // Show the user an error message
-                alertTitle = @"Something went wrong";
-                alertText = [NSString stringWithFormat:@"Please retry. \n\n If the problem persists contact us and mention this error code: %@", [errorInformation objectForKey:@"message"]];
-                [self showMessage:alertText withTitle:alertTitle];
+                // If you ask for multiple permissions at once, you should check if specific permissions missing
+                if ([result.grantedPermissions containsObject:@"email"])
+                {
+                    NSLog(@"Login w FB successful --> FB ID is %@",[[FBSDKAccessToken currentAccessToken] userID]);
+
+                    // Update UI
+                    [self userLoggedIn];
+
+                    // Success! Now Log User into Nooch using the FB ID
+                    [user setObject:[[FBSDKAccessToken currentAccessToken] userID] forKey:@"facebook_id"];
+
+                    [self loginWithFacebook];
+                }
             }
-        }
-        // Clear this token
-        [FBSession.activeSession closeAndClearTokenInformation];
-        // Show the user the logged-out UI
-        [self userLoggedOut];
+        }];
+    }
+}
+
+-(void)loginWithFacebook
+{
+    RTSpinKitView * spinner1 = [[RTSpinKitView alloc] initWithStyle:RTSpinKitViewStyleArcAlt];
+    spinner1.color = [UIColor whiteColor];
+    self.hud = [[MBProgressHUD alloc] initWithView:self.navigationController.view];
+    [self.navigationController.view addSubview:self.hud];
+    self.hud.mode = MBProgressHUDModeCustomView;
+    self.hud.customView = spinner1;
+    self.hud.delegate = self;
+    self.hud.labelText = @"Checking Login Credentials...";
+    [self.hud show:YES];
+
+    if ([FBSDKAccessToken currentAccessToken])
+    {
+        [[[FBSDKGraphRequest alloc] initWithGraphPath:@"me" parameters:@{@"fields" : @"email,first_name,last_name"}]
+
+         startWithCompletionHandler:^(FBSDKGraphRequestConnection *connection, id result, NSError *error)
+         {
+             if (!error)
+             {
+                 // Success! Now Log User into Nooch using the FB ID
+
+                 isloginWithFB = YES;
+
+                 NSLog(@"Login With Facebook -> fetched user: %@", result);
+
+                 [self checkIfLocationAllowed];
+
+                 [user setObject:[result objectForKey:@"id"] forKey:@"facebook_id"];
+
+                 email_fb = [result objectForKey:@"email"];
+                 fbID = [[FBSDKAccessToken currentAccessToken] userID];
+                 firstname_fb = [result objectForKey:@"first_name"];
+                 lastname_fb = [result objectForKey:@"last_name"];
+
+                 serve * log = [serve new];
+                 [log setDelegate:self];
+                 [log setTagName:@"loginwithFB"];
+                 [log loginwithFB:email_fb FBId:fbID remember:YES lat:lat lon:lon];
+             }
+         }];
     }
 }
 
@@ -442,47 +390,6 @@
     [self.facebookLogin addSubview:glyph_check];
 }
 
-- (void)attemptFBLogin
-{
-    [FBRequestConnection startForMeWithCompletionHandler:^(FBRequestConnection *connection, id result, NSError *error) {
-        if (!error)
-        {
-            // Success! Now Log User into Nooch using the FB ID
-
-            [self checkIfLocationAllowed];
-
-            [user setObject:[result objectForKey:@"id"] forKey:@"facebook_id"];
-            NSLog(@"Login w FB successful --> fb id is %@",[result objectForKey:@"id"]);
-
-            isloginWithFB = YES;
-
-            RTSpinKitView * spinner1 = [[RTSpinKitView alloc] initWithStyle:RTSpinKitViewStyleThreeBounce];
-            spinner1.color = [UIColor whiteColor];
-            self.hud = [[MBProgressHUD alloc] initWithView:self.navigationController.view];
-            [self.navigationController.view addSubview:self.hud];
-            self.hud.mode = MBProgressHUDModeCustomView;
-            self.hud.customView = spinner1;
-            self.hud.delegate = self;
-            self.hud.labelText = @"Checking Login Credentials...";
-            [self.hud show:YES];
-
-            NSString * udid = [[UIDevice currentDevice] uniqueDeviceIdentifier];
-            email_fb = [result objectForKey:@"email"];
-            fbID = [result objectForKey:@"id"];
-
-            serve * log = [serve new];
-            [log setDelegate:self];
-            [log setTagName:@"loginwithFB"];
-            [log loginwithFB:email_fb FBId:fbID remember:YES lat:lat lon:lon uid:udid];
-        }
-        else
-        {
-            // An error occurred, we need to handle the error
-            // See: https://developers.facebook.com/docs/ios/errors
-        }
-    }];
-}
-
 # pragma mark - CLLocationManager Delegate Methods
 - (void)locationManager:(CLLocationManager *)manager
      didUpdateLocations:(NSArray *)locations
@@ -495,14 +402,17 @@
     
     //NSLog(@"LAT is: %@   & LONG is: %f", [[NSString alloc] initWithFormat:@"%f",loc.latitude],lon);
     
-    [[assist shared]setlocationAllowed:YES];
+    [[assist shared] setlocationAllowed:YES];
 }
 
 - (void)locationManager:(CLLocationManager *)manager
        didFailWithError:(NSError *)error
 {
-    if ([error code] == kCLErrorDenied){
-        NSLog(@"Error : %@",error);
+    [[assist shared] setlocationAllowed:NO];
+
+    if ([error code] == kCLErrorDenied)
+    {
+        NSLog(@"Error : %@", error);
     }
 }
 
@@ -514,129 +424,86 @@
         {
             NSLog(@"Login -> Location Services Allowed");
 
-            locationManager = [[CLLocationManager alloc] init];
+            [[assist shared] setlocationAllowed:YES];
 
+            locationManager = [[CLLocationManager alloc] init];
             locationManager.delegate = self;
             locationManager.distanceFilter = kCLDistanceFilterNone; // whenever we move
             locationManager.desiredAccuracy = kCLLocationAccuracyHundredMeters; // 100 m
 
             [locationManager startUpdatingLocation];
         }
-        else {
+        else
+        {
             NSLog(@"Login -> Location Services NOT Allowed");
+
+            [[assist shared] setlocationAllowed:NO];
         }
     }
 }
 
-// Show an alert message (For Facebook methods)
-- (void)showMessage:(NSString *)text withTitle:(NSString *)title
-{
-    [[[UIAlertView alloc] initWithTitle:title
-                                message:text
-                               delegate:self
-                      cancelButtonTitle:@"OK"
-                      otherButtonTitles:nil] show];
-}
-
-
 - (void)forgot_pass_Login
 {
-    NSLog(@"FORGOT_PASS_LOGIN fired");
     NSString * avTitle = NSLocalizedString(@"Login_ForgPwAlrtTtl", @"'Forgot Password' Alert Title");
     NSString * avMsg = NSLocalizedString(@"Login_ForgPwAlrtBody", @"'Please enter your email and we will send you a reset link.' Alert Body Text");
     NSString * avCancel = NSLocalizedString(@"Login_ForgPwAlrtCncl", @"'Cancel' Alert Button Text");
 
-    /*if ([UIAlertController class]) // for iOS 8
+    [self.view endEditing:YES];
+    UIAlertView * alert = [[UIAlertView alloc]initWithTitle:avTitle
+                                                    message:avMsg
+                                                   delegate:self
+                                          cancelButtonTitle:avCancel
+                                          otherButtonTitles:@"OK", nil];
+    alert.alertViewStyle = UIAlertViewStylePlainTextInput;
+    [[alert textFieldAtIndex:0] setText:self.email.text];
+    [[alert textFieldAtIndex:0] setKeyboardType:UIKeyboardTypeEmailAddress];
+    [[alert textFieldAtIndex:0] setStyleClass:@"customTextField_2"];
+    [alert textFieldAtIndex:0].inputAccessoryView = [[UIView alloc] init];
+    [alert setTag:22];
+    [alert show];
+}
+
+-(void)check_credentials
+{
+    if ([self.email.text length] > 1 &&
+        [self.email.text rangeOfString:@"@"].location != NSNotFound &&
+        [self.email.text rangeOfString:@"."].location != NSNotFound &&
+        [self.password.text length] > 5)
     {
-        UIAlertController * alert = [UIAlertController
-                                     alertControllerWithTitle:avTitle
-                                     message:avMsg
-                                     preferredStyle:UIAlertControllerStyleAlert];
+        RTSpinKitView * spinner1 = [[RTSpinKitView alloc] initWithStyle:RTSpinKitViewStyleWanderingCubes];
+        spinner1.color = [UIColor whiteColor];
+        self.hud = [[MBProgressHUD alloc] initWithView:self.navigationController.view];
+        [self.navigationController.view addSubview:self.hud];
 
-        [alert addTextFieldWithConfigurationHandler:^(UITextField *textField)
-        {
-            //textField.placeholder = NSLocalizedString(@"Email Address", @"'Email' Field Placeholder");
-            //[textField setText:self.email.text];
-            //[textField setKeyboardType:UIKeyboardTypeEmailAddress];
-            //[textField setStyleClass:@"customTextField_2"];
-            textField.inputAccessoryView = [[UIView alloc] init];
-        }];
+        self.hud.mode = MBProgressHUDModeCustomView;
+        self.hud.customView = spinner1;
+        self.hud.delegate = self;
+        self.hud.labelText = NSLocalizedString(@"Login_HUDlbl", @"'Checking Login Credentials...' HUD Label");
+        [self.hud show:YES];
+        [[assist shared] setPassValue:self.password.text]; //Cliff (7/4/15: why are we storing the pw value?? Can't imagine why it's needed... (Reset PW screen?)
 
-        UIAlertAction * cancel = [UIAlertAction
-                                  actionWithTitle:avCancel
-                                  style:UIAlertActionStyleCancel
-                                  handler:^(UIAlertAction *action)
-                                  {
-                                      NSLog(@"Cancel action");
-                                      [alert dismissViewControllerAnimated:NO completion:nil];
-                                  }];
-
-        UIAlertAction * ok = [UIAlertAction
-                              actionWithTitle:@"OK"
-                              style:UIAlertActionStyleDefault
-                              handler:^(UIAlertAction * action)
-                              {
-                                  [alert dismissViewControllerAnimated:YES completion:nil];
-
-                                  UITextField * emailField = alert.textFields.firstObject;
-                                  
-                                  if ([emailField.text length] > 0 &&
-                                      [emailField.text rangeOfString:@"@"].location != NSNotFound &&
-                                      [emailField.text rangeOfString:@"."].location != NSNotFound &&
-                                      1 < [emailField.text rangeOfString:@"."].location < [emailField.text length] - 2)
-                                  {
-                                      RTSpinKitView * spinner1 = [[RTSpinKitView alloc] initWithStyle:RTSpinKitViewStyleBounce];
-                                      spinner1.color = [UIColor whiteColor];
-                                      self.hud = [[MBProgressHUD alloc] initWithView:self.navigationController.view];
-                                      [self.navigationController.view addSubview:self.hud];
-
-                                      self.hud.mode = MBProgressHUDModeCustomView;
-                                      self.hud.customView = spinner1;
-                                      self.hud.delegate = self;
-                                      self.hud.labelText = @"Working hard...";
-                                      [self.hud show:YES];
-
-                                      serve * forgetful = [serve new];
-                                      forgetful.Delegate = self;
-                                      forgetful.tagName = @"ForgotPass";
-                                      [forgetful forgotPass:emailField.text];
-                                  }
-                                  else
-                                  {
-                                      UIAlertView * alert = [[UIAlertView alloc]initWithTitle:avTitle
-                                                                                      message:@"Please make sure you've entered a valid email address."
-                                                                                     delegate:self
-                                                                            cancelButtonTitle:avCancel
-                                                                            otherButtonTitles:@"OK", nil];
-                                      alert.alertViewStyle = UIAlertViewStylePlainTextInput;
-                                      [alert setTag:22];
-                                      [[alert textFieldAtIndex:0] setText:emailField.text];
-                                      [[alert textFieldAtIndex:0] setKeyboardType:UIKeyboardTypeEmailAddress];
-                                      [[alert textFieldAtIndex:0] setTextAlignment:NSTextAlignmentCenter];
-                                      [alert show];
-                                  }
-                              }];
-        [alert addAction:cancel];
-        [alert addAction:ok];
-        
-        [self presentViewController:alert animated:YES completion:nil];
+        serve * log = [serve new];
+        [log setDelegate:self];
+        [log setTagName:@"encrypt"];
+        [log getEncrypt:self.password.text];
     }
-    else // iOS 7 and prior
-    {*/
-        [self.view endEditing:YES];
-        UIAlertView * alert = [[UIAlertView alloc]initWithTitle:avTitle
-                                                        message:avMsg
-                                                       delegate:self
-                                              cancelButtonTitle:avCancel
-                                              otherButtonTitles:@"OK", nil];
-        alert.alertViewStyle = UIAlertViewStylePlainTextInput;
-        [[alert textFieldAtIndex:0] setText:self.email.text];
-        [[alert textFieldAtIndex:0] setKeyboardType:UIKeyboardTypeEmailAddress];
-        [[alert textFieldAtIndex:0] setStyleClass:@"customTextField_2"];
-        [alert textFieldAtIndex:0].inputAccessoryView = [[UIView alloc] init];
-        [alert setTag:22];
-        [alert show];
-    //}
+    else
+    {
+        NSString * avTitle = NSLocalizedString(@"Login_Alrt1Ttl", @"'Please Enter Email And Password' Alert Title");
+        NSString * avMsg = NSLocalizedString(@"Login_Alrt1Body", @"'We can't log you in if we don't know who you are!' Alert Body");
+
+        UIAlertView * av = [[UIAlertView alloc] initWithTitle:avTitle
+                                                      message:avMsg
+                                                     delegate:nil
+                                            cancelButtonTitle:@"OK"
+                                            otherButtonTitles: nil];
+        [av show];
+    }
+}
+
+-(void)BackClicked:(id) sender
+{
+    [self.navigationController popViewControllerAnimated:YES];
 }
 
 - (void)alertView:(UIAlertView *)actionSheet clickedButtonAtIndex:(NSInteger)buttonIndex
@@ -650,7 +517,7 @@
             [emailField.text rangeOfString:@"."].location != NSNotFound &&
             1 < [emailField.text rangeOfString:@"."].location < [emailField.text length] - 2)
         {
-            RTSpinKitView * spinner1 = [[RTSpinKitView alloc] initWithStyle:RTSpinKitViewStyleBounce];
+            RTSpinKitView * spinner1 = [[RTSpinKitView alloc] initWithStyle:RTSpinKitViewStyleArcAlt];
             spinner1.color = [UIColor whiteColor];
             self.hud = [[MBProgressHUD alloc] initWithView:self.navigationController.view];
             [self.navigationController.view addSubview:self.hud];
@@ -700,38 +567,6 @@
     else if (actionSheet.tag == 510 && buttonIndex == 1) {
         [self forgot_pass_Login];
     }
-}
-
-- (void) mailComposeController:(MFMailComposeViewController *)controller didFinishWithResult:(MFMailComposeResult)result error:(NSError *)error
-{
-    UIAlertView *alert = [[UIAlertView alloc] init];
-    [alert addButtonWithTitle:@"OK"];
-    [alert setDelegate:nil];
-    switch (result)
-    {
-        case MFMailComposeResultCancelled:
-            NSLog(@"Mail cancelled");
-            break;
-        case MFMailComposeResultSaved:
-            [alert setTitle:@"Email Draft Saved"];
-            [alert show];
-            break;
-        case MFMailComposeResultSent:
-            NSLog(@"Mail sent");
-            [alert setTitle:@"Email Sent Successfully"];
-            [alert show];
-            break;
-        case MFMailComposeResultFailed:
-            [alert setTitle:[error localizedDescription]];
-            [alert show];
-            NSLog(@"Mail sent failure: %@", [error localizedDescription]);
-            break;
-        default:
-            break;
-    }
-
-    // Close the Mail Interface
-    [self dismissViewControllerAnimated:YES completion:NULL];
 }
 
 -(void)Error:(NSError *)Error
@@ -788,27 +623,26 @@
 
     else if ([tagName isEqualToString:@"encrypt"])
     {
-        NSError *error;
-        NSDictionary *loginResult = [NSJSONSerialization JSONObjectWithData:[result dataUsingEncoding:NSUTF8StringEncoding] options:0 error:&error];
+        NSError * error;
+        NSDictionary * loginResult = [NSJSONSerialization JSONObjectWithData:[result dataUsingEncoding:NSUTF8StringEncoding] options:0 error:&error];
 
         [self checkIfLocationAllowed];
 
         self.encrypted_pass = [[NSString alloc] initWithString:[loginResult objectForKey:@"Status"]];
 
+        [user setObject:self.email.text forKey:@"UserName"];
+
         serve * log = [serve new];
         [log setDelegate:self];
         [log setTagName:@"login"];
-        [[UIApplication sharedApplication]setStatusBarHidden:NO];
 
-        NSString * udid = [[UIDevice currentDevice] uniqueDeviceIdentifier];
-        [[assist shared]setlocationAllowed:YES];
-        [user setObject:self.email.text forKey:@"UserName"];
-
-        if ([self.stay_logged_in isOn]) {
-            [log login:[self.email.text lowercaseString] password:self.encrypted_pass remember:YES lat:lat lon:lon uid:udid];
+        if ([self.stay_logged_in isOn])
+        {
+            [log login:[self.email.text lowercaseString] password:self.encrypted_pass remember:YES lat:lat lon:lon];
         }
-        else {
-            [log login:[self.email.text lowercaseString] password:self.encrypted_pass remember:NO lat:lat lon:lon uid:udid];
+        else
+        {
+            [log login:[self.email.text lowercaseString] password:self.encrypted_pass remember:NO lat:lat lon:lon];
         }
     }
 
@@ -822,12 +656,9 @@
         if ([[loginResult objectForKey:@"Result"] isEqualToString:@"FBID or EmailId not registered with Nooch"])
         {
             [self.hud hide:YES];
-            //[FBSession.activeSession closeAndClearTokenInformation];
-            [FBSession.activeSession close];
-            [FBSession setActiveSession:nil];
 
             UIAlertView * alert = [[UIAlertView alloc]initWithTitle:NSLocalizedString(@"Login_FbFailedAlrtTitle", @"'Facebook Login Failed' Alert Title")
-                                                            message:NSLocalizedString(@"Login_FbFailedAlrtBody", @"'Facebook Login Failed' Alert Body Text")//@"Your Facebook account is not associated with a Nooch account.\nWould you like to create a Nooch account now?"
+                                                            message:NSLocalizedString(@"Login_FbFailedAlrtBody", @"'Facebook Login Failed' Alert Body Text")
                                                            delegate:self
                                                   cancelButtonTitle:NSLocalizedString(@"Login_FbFailedAlrtBtn2", @"Facebook Login Failed 'Cancel' Alert Button text")
                                                   otherButtonTitles:NSLocalizedString(@"Login_FbFailedAlrtBtn1", @"Facebook Login Failed 'Register Now' Alert Button text"), nil];
@@ -845,7 +676,7 @@
              [[loginResult objectForKey:@"Result"] rangeOfString:@"Your account has been temporarily blocked."].location == NSNotFound)
         {
             // Now that it was successful (user logged into Nooch with fb id), update the button
-            [self userLoggedIn];
+            //[self userLoggedIn];
 
             serve * getDetails = [serve new];
             getDetails.Delegate = self;
@@ -884,7 +715,9 @@
             [getDetails getMemIdFromuUsername:[self.email.text lowercaseString]];
         }
         
-        else if ([loginResult objectForKey:@"Result"] && [[loginResult objectForKey:@"Result"] isEqualToString:@"Invalid user id or password."] && loginResult != nil)
+        else if ( loginResult != nil &&
+                 [loginResult objectForKey:@"Result"] &&
+                 [[loginResult objectForKey:@"Result"] isEqualToString:@"Invalid user id or password."])
         {
             [self.hud hide:YES];
 
@@ -899,7 +732,9 @@
             [alert show];
         }
 
-        else if ([loginResult objectForKey:@"Result"] && [[loginResult objectForKey:@"Result"] isEqualToString:@"The password you have entered is incorrect."] && loginResult != nil)
+        else if ( loginResult != nil &&
+                 [loginResult objectForKey:@"Result"] &&
+                 [[loginResult objectForKey:@"Result"] isEqualToString:@"The password you have entered is incorrect."])
         {
             [self.hud hide:YES];
 
@@ -915,7 +750,7 @@
             [alert show];
         }
 
-        else if ( ([loginResult objectForKey:@"Result"] && loginResult != nil) &&
+        else if (  ([loginResult objectForKey:@"Result"] && loginResult != nil) &&
                  ([[[loginResult objectForKey:@"Result"] lowercaseString] rangeOfString:@"suspended"].location != NSNotFound ||
                    [[loginResult objectForKey:@"Result"] rangeOfString:@"temporarily blocked"].location != NSNotFound ||
                    [[loginResult objectForKey:@"Result"] isEqualToString:@"Temporarily_Blocked"]) )
@@ -942,11 +777,14 @@
         {
             [user setObject:[loginResult objectForKey:@"Result"] forKey:@"MemberId"];
 
-            if (isloginWithFB) {
+            if (isloginWithFB)
+            {
                 [user setObject:email_fb forKey:@"UserName"];
             }
             else
+            {
                 [user setObject:[self.email.text lowercaseString] forKey:@"UserName"];
+            }
 
             if (![self.stay_logged_in isOn])
             {
@@ -961,30 +799,26 @@
             }
             me = [core new];
             [me birth];
-            
             [[me usr] setObject:[loginResult objectForKey:@"Result"] forKey:@"MemberId"];
-            if (isloginWithFB) {
-                 [[me usr] setObject:email_fb forKey:@"UserName"];
-            }
-            else
-                [[me usr] setObject:[self.email.text lowercaseString] forKey:@"UserName"];
-            
+
             serve * enc_user = [serve new];
             [enc_user setDelegate:self];
             [enc_user setTagName:@"username"];
-            if (isloginWithFB) {
+
+            if (isloginWithFB)
+            {
+                [[me usr] setObject:email_fb forKey:@"UserName"];
                 [enc_user getEncrypt:email_fb];
             }
-            else {
+            else
+            {
+                [[me usr] setObject:[self.email.text lowercaseString] forKey:@"UserName"];
                 [enc_user getEncrypt:[self.email.text lowercaseString]];
             }
         }
         else
         {
             [self.hud hide:YES];
-
-            [FBSession.activeSession close];
-            [FBSession setActiveSession:nil];
 
             UIAlertView * alert = [[UIAlertView alloc]initWithTitle:@"Unable to Login"
                                                             message:@"We could not find a Nooch account associated with that Facebook account.  Please try logging in with your email address and password."
@@ -1010,23 +844,22 @@
     {
         [self.hud hide:YES];
 
-        [[assist shared]setIsloginFromOther:NO];
-        [self.navigationItem setHidesBackButton:YES];
+        [[assist shared] setIsloginFromOther:NO];
+
         [nav_ctrl setNavigationBarHidden:NO];
         [nav_ctrl.navigationItem setLeftBarButtonItem:nil];
-        [user removeObjectForKey:@"Balance"];
         [self.navigationItem setBackBarButtonItem:Nil];
+        [self.navigationItem setHidesBackButton:YES];
 
         [UIView beginAnimations:nil context:NULL];
         [UIView setAnimationCurve:UIViewAnimationCurveEaseInOut];
         [UIView setAnimationDuration:0.7];
         [UIView setAnimationTransition:UIViewAnimationTransitionFlipFromRight forView:nav_ctrl.view cache:NO];
         [UIView commitAnimations];
+
         [UIView beginAnimations:nil context:NULL];
         [nav_ctrl popToRootViewControllerAnimated:NO];
-
         [UIView commitAnimations];
-        return;
     }
 }
 
@@ -1074,6 +907,7 @@
   //}
 }
 
+#pragma mark - Email Support
 -(void)emailNoochSupport
 {
     if (![MFMailComposeViewController canSendMail])
@@ -1105,12 +939,36 @@
     [self presentViewController:mailComposer animated:YES completion:nil];
 }
 
-#pragma mark - file paths
-- (NSString *)autoLogin
+-(void)mailComposeController:(MFMailComposeViewController *)controller didFinishWithResult:(MFMailComposeResult)result error:(NSError *)error
 {
-    NSArray *paths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
-    NSString *documentsDirectory = [paths objectAtIndex:0];
-    return [documentsDirectory stringByAppendingPathComponent:[NSString stringWithFormat:@"autoLogin.plist"]];
+    UIAlertView *alert = [[UIAlertView alloc] init];
+    [alert addButtonWithTitle:@"OK"];
+    [alert setDelegate:nil];
+    switch (result)
+    {
+        case MFMailComposeResultCancelled:
+            NSLog(@"Mail cancelled");
+            break;
+        case MFMailComposeResultSaved:
+            [alert setTitle:@"Email Draft Saved"];
+            [alert show];
+            break;
+        case MFMailComposeResultSent:
+            NSLog(@"Mail sent");
+            [alert setTitle:@"Email Sent Successfully"];
+            [alert show];
+            break;
+        case MFMailComposeResultFailed:
+            [alert setTitle:[error localizedDescription]];
+            [alert show];
+            NSLog(@"Mail sent failure: %@", [error localizedDescription]);
+            break;
+        default:
+            break;
+    }
+
+    // Close the Mail Interface
+    [self dismissViewControllerAnimated:YES completion:NULL];
 }
 
 #pragma mark - UITextField delegation
@@ -1145,11 +1003,12 @@
     return YES;
 }
 
-- (void)loginView:(FBLoginView *)loginView handleError:(NSError *)error
+#pragma mark - File Paths
+- (NSString *)autoLogin
 {
-    // see https://developers.facebook.com/docs/reference/api/errors/ for general guidance on error handling for Facebook API
-    // our policy here is to let the login view handle errors, but to log the results
-    NSLog(@"FBLoginView encountered an error : %@", error);
+    NSArray *paths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
+    NSString *documentsDirectory = [paths objectAtIndex:0];
+    return [documentsDirectory stringByAppendingPathComponent:[NSString stringWithFormat:@"autoLogin.plist"]];
 }
 
 - (void)didReceiveMemoryWarning

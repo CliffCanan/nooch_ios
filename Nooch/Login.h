@@ -11,6 +11,9 @@
 #import "MBProgressHUD.h"
 #import <MessageUI/MessageUI.h>
 
+NSString * fullNameFromFb, *email_fb, *fbID;
+BOOL fromLoginWithFbFail;
+
 @interface Login : GAITrackedViewController<UIAlertViewDelegate,UITextFieldDelegate,serveD,CLLocationManagerDelegate,MFMailComposeViewControllerDelegate,MBProgressHUDDelegate>
 {
     float lat;

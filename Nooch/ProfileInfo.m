@@ -17,12 +17,14 @@
 #import "Register.h"
 #import "ECSlidingViewController.h"
 #import "UIImage+Resize.h"
-#import <FacebookSDK/FacebookSDK.h>
+#import <FBSDKCoreKit/FBSDKCoreKit.h>
+#import <FBSDKLoginKit/FBSDKLoginKit.h>
+
 UIImageView *picture;
-@interface ProfileInfo ()<FBLoginViewDelegate>{
+@interface ProfileInfo () {
     NSString * fbID;
 }
-//@property(nonatomic) UIImagePickerController *picker;
+
 @property(nonatomic,strong) UITextField *email;
 @property(nonatomic,strong) UITextField *phone;
 @property(nonatomic,strong) UITextField *address_one;
@@ -119,7 +121,7 @@ UIImageView *picture;
 
     isPhotoUpdate = NO;
 
-    RTSpinKitView *spinner1 = [[RTSpinKitView alloc] initWithStyle:RTSpinKitViewStyleThreeBounce];
+    RTSpinKitView *spinner1 = [[RTSpinKitView alloc] initWithStyle:RTSpinKitViewStyleArcAlt];
     spinner1.color = [UIColor whiteColor];
     self.hud = [[MBProgressHUD alloc] initWithView:self.navigationController.view];
     [self.navigationController.view addSubview:self.hud];
@@ -220,7 +222,7 @@ UIImageView *picture;
     [goToSettings addSubview:bankLinkedTxt];
     [goToSettings addSubview:glyph_bank];
 
-    if (isSynapseOn && [user boolForKey:@"IsSynapseBankAvailable"])
+    if ([user boolForKey:@"IsSynapseBankAvailable"])
     {
         [bankLinkedTxt setFont:[UIFont fontWithName:@"Roboto-regular" size:13]];
         bankLinkedTxt.text = NSLocalizedString(@"Profile_BnkLnkd", @"Profile 'Bank Linked' text");
@@ -324,16 +326,6 @@ UIImageView *picture;
 
     UIBarButtonItem * nav_save = [[UIBarButtonItem alloc] initWithCustomView:self.save];
     [self.navigationItem setRightBarButtonItem:nav_save animated:YES];
-
-  /*GMTTimezonesDictionary = [[NSDictionary alloc] initWithObjectsAndKeys:@"Samoa Standard Time",@"GMT-11:00",
-                              @"Hawaiian Standard Time",@"GMT-10:00",
-                              @"Alaskan Standard Time",@"GMT-09:00",
-                              @"Pacific Standard Time",@"GMT-08:00",
-                              @"Mountain Standard Time",@"GMT-07:00",
-                              @"Central Standard Time",@"GMT-06:00",
-                              @"Eastern Standard Time",@"GMT-05:00",
-                              @"Atlantic Standard Time",@"GMT-04:00",
-                              nil];*/
 
     hdrHt = 28;
     if ([[UIScreen mainScreen] bounds].size.height == 480)
@@ -559,7 +551,7 @@ UIImageView *picture;
     [super viewDidDisappear:animated];
 }
 
-- (void)applicationWillEnterFG_Profile:(NSNotification *)notification
+-(void)applicationWillEnterFG_Profile:(NSNotification *)notification
 {
     //NSLog(@"Checkpoint: applicationWillEnterFG notification");
     [self checkUsersStatus];
@@ -588,7 +580,7 @@ UIImageView *picture;
     }
 }
 
-- (void)goToSettings1
+-(void)goToSettings1
 {
     if (isProfileOpenFromSideBar || sentFromHomeScrn || isFromTransDetails)
     {
@@ -825,7 +817,7 @@ UIImageView *picture;
     self.hud.labelText = NSLocalizedString(@"Profile_HUDsaving", @"Profile HUD 'Saving Your Profile' Text");
     [self.hud show:YES];
 
-    transaction = [[NSMutableDictionary alloc] initWithObjectsAndKeys:transactionInput, @"mySettings", nil];
+    NSMutableDictionary * transaction = [[NSMutableDictionary alloc] initWithObjectsAndKeys:transactionInput, @"mySettings", nil];
     serve * req = [serve new];
     req.Delegate = self;
     req.tagName = @"MySettingsResult";
@@ -909,152 +901,77 @@ UIImageView *picture;
 }
 
 #pragma mark - Facebook Methods
--(void)toggleFacebookLogin
+-(void)toggleFacebookLoginForPic
 {
-    // If the session state is any of the two "open" states when the button is clicked
-    if (FBSession.activeSession.state == FBSessionStateOpen || FBSession.activeSession.state == FBSessionStateOpenTokenExtended)
+    if ([FBSDKAccessToken currentAccessToken])
     {
-        [self userLoggedIn];
-    }
-    else // If the session state is NOT any of the two "open" states when the button is clicked
-    {
-        // Open a session showing the user the login UI
-        // You must ALWAYS ask for public_profile permissions when opening a session
-        [FBSession openActiveSessionWithReadPermissions:@[@"public_profile", @"email", @"user_friends"]
-                                           allowLoginUI:YES
-                                      completionHandler:
-         ^(FBSession *session, FBSessionState state, NSError *error) {
-             // Call the sessionStateChanged:state:error method to handle session state changes
-             [self sessionStateChanged:session state:state error:error];
-         }];
-    }
-}
+        fbID = [[FBSDKAccessToken currentAccessToken] userID];
 
--(void)sessionStateChanged:(FBSession *)session state:(FBSessionState) state error:(NSError *)error
-{
-    // If the session was opened successfully
-    if (!error && state == FBSessionStateOpen)
-    {
-        NSLog(@"FB Session opened");
-        // Show the user the logged-in UI
+        NSLog(@"Select Picture -> toggleFacebookLogin - FB ID: %@", fbID);
+
+        // Update UI
         [self userLoggedIn];
-        return;
     }
-    // If the session is closed
-    if (state == FBSessionStateClosed || state == FBSessionStateClosedLoginFailed)
+    else
     {
-        NSLog(@"FB Session closed");
-        // Show the user the logged-out UI
-        [self userLoggedOut];
-    }
-    // Handle errors
-    if (error)
-    {
-        NSLog(@"FB Error");
-        NSString *alertText;
-        NSString *alertTitle;
-        // If the error requires people using an app to make an action outside of the app in order to recover
-        if ([FBErrorUtility shouldNotifyUserForError:error] == YES)
-        {
-            alertTitle = @"Something went wrong";
-            alertText = [FBErrorUtility userMessageForError:error];
-            [self showMessage:alertText withTitle:alertTitle];
-        }
-        else
-        {
-            // If the user cancelled login, do nothing
-            if ([FBErrorUtility errorCategoryForError:error] == FBErrorCategoryUserCancelled)
+        FBSDKLoginManager *login = [[FBSDKLoginManager alloc] init];
+        [login logInWithReadPermissions:@[@"email"] handler:^(FBSDKLoginManagerLoginResult *result, NSError *error) {
+            if (error)
             {
-                NSLog(@"User cancelled login");
+                // Handle Error
             }
-            // Handle session closures that happen outside of the app
-            else if ([FBErrorUtility errorCategoryForError:error] == FBErrorCategoryAuthenticationReopenSession)
+            else if (result.isCancelled)
             {
-                alertTitle = @"Session Error";
-                alertText = @"Your current session is no longer valid. Please log in again.";
-                [self showMessage:alertText withTitle:alertTitle];
+                // Handle cancellations
             }
-            // For simplicity, here we just show a generic message for all other errors
-            // You can learn how to handle other errors using our guide: https://developers.facebook.com/docs/ios/errors
             else
             {
-                //Get more error information from the error
-                NSDictionary *errorInformation = [[[error.userInfo objectForKey:@"com.facebook.sdk:ParsedJSONResponseKey"] objectForKey:@"body"] objectForKey:@"error"];
-                
-                // Show the user an error message
-                alertTitle = @"Something went wrong";
-                alertText = [NSString stringWithFormat:@"Please retry. \n\nIf the problem persists contact us and mention this error code: %@", [errorInformation objectForKey:@"message"]];
-                [self showMessage:alertText withTitle:alertTitle];
-            }
-        }
-        // Clear this token
-        [FBSession.activeSession closeAndClearTokenInformation];
-        // Show the user the logged-out UI
-        [self userLoggedOut];
-    }
-}
+                NSLog(@"Login w FB successful --> FB ID is %@",[[FBSDKAccessToken currentAccessToken] userID]);
 
-// Facebook: Show the user the logged-out UI
--(void)userLoggedOut
-{
-    [picture setImage:[UIImage imageNamed:@"silhouette.png"]];
+                NSLog(@"LoginWithFacebook -> fetched user: %@", result);
+
+                fbID = [[FBSDKAccessToken currentAccessToken] userID];
+                [user setObject:fbID forKey:@"facebook_id"];
+
+                // Update UI
+                [self userLoggedIn];
+            }
+        }];
+    }
 }
 
 // Facebook: Show the user the logged-in UI
 -(void)userLoggedIn
 {
-    [FBRequestConnection startForMeWithCompletionHandler:^(FBRequestConnection *connection, id result, NSError *error)
-    {
-        if (!error)
-        {
-            // Success! Now set the facebook_id to be the fb_id that was just returned & send to Nooch DB
-            fbID = [result objectForKey:@"id"];
-            [ARProfileManager setUserFacebook:fbID];
+    [ARProfileManager setUserFacebook:fbID];
 
-            [user setObject:fbID forKey:@"facebook_id"];
-            [user synchronize];
+    [user setObject:fbID forKey:@"facebook_id"];
+    [user synchronize];
 
-            NSString * imgURL = [NSString stringWithFormat:@"https://graph.facebook.com/%@/picture?type=normal", fbID];
-            [ARProfileManager setUserAvatarUrl:imgURL];
+    NSString * imgURL = [NSString stringWithFormat:@"https://graph.facebook.com/%@/picture?type=large", fbID];
+    [ARProfileManager setUserAvatarUrl:imgURL];
 
-            [picture sd_setImageWithURL:[NSURL URLWithString:imgURL]
-                       placeholderImage:[UIImage imageNamed:@"RoundLoading"]
-                              completed:^(UIImage *image, NSError *error, SDImageCacheType cacheType, NSURL *imageURL) {
-                                  if (image) {
-                                      [picture setImage:image];
-                                      [[assist shared]setTranferImage:nil];
-                                      [[assist shared]setTranferImage:image];
-                                  }
-            }];
+    [picture sd_setImageWithURL:[NSURL URLWithString:imgURL]
+               placeholderImage:[UIImage imageNamed:@"RoundLoading"]
+                      completed:^(UIImage *image, NSError *error, SDImageCacheType cacheType, NSURL *imageURL) {
+                          if (image) {
+                              //[picture setImage:image]; // Redundant line?
+                              [[assist shared]setTranferImage:nil];
+                              [[assist shared]setTranferImage:image];
+                          }
+                      }];
 
-            isPhotoUpdate = YES;
+    isPhotoUpdate = YES;
 
-            [self.save setEnabled:YES];
-            [self.save setUserInteractionEnabled:YES];
-            [self.save setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
-            [dictSavedInfo setObject:@"YES" forKey:@"ImageChanged"];
+    [self.save setEnabled:YES];
+    [self.save setUserInteractionEnabled:YES];
+    [self.save setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
+    [dictSavedInfo setObject:@"YES" forKey:@"ImageChanged"];
 
-            SDImageCache *imageCache = [SDImageCache sharedImageCache];
-            [imageCache clearMemory];
-            [imageCache clearDisk];
-            [imageCache cleanDisk];
-        }
-        else
-        {
-            // An error occurred, we need to handle the error
-            // See: https://developers.facebook.com/docs/ios/errors
-        }
-    }];
-}
-
-// Show an alert message (For Facebook methods)
-- (void)showMessage:(NSString *)text withTitle:(NSString *)title
-{
-    [[[UIAlertView alloc] initWithTitle:title
-                                message:text
-                               delegate:self
-                      cancelButtonTitle:@"OK"
-                      otherButtonTitles:nil] show];
+    SDImageCache *imageCache = [SDImageCache sharedImageCache];
+    [imageCache clearMemory];
+    [imageCache clearDisk];
+    [imageCache cleanDisk];
 }
 
 #pragma mark - Table Methods
@@ -1131,16 +1048,7 @@ UIImageView *picture;
             [cell.contentView addSubview:mail];
             [cell.contentView addSubview:self.email];
         }
-        /*else if (indexPath.row == 2)
-        {
-            UILabel * recover = [[UILabel alloc] initWithFrame:CGRectMake(14, 5, 140, rowHeight)];
-            [recover setBackgroundColor:[UIColor clearColor]];
-            [recover setText:@"Recovery Email"];
 
-            [recover setStyleClass:@"table_view_cell_textlabel_1"];
-            [cell.contentView addSubview:recover];
-            [cell.contentView addSubview:self.recovery_email];
-        }*/
         if ( indexPath.row == 1 &&
             [[user valueForKey:@"Status"] isEqualToString:@"Registered"])
         {
@@ -1773,7 +1681,7 @@ UIImageView *picture;
 {
     if (buttonIndex == 0)
     {
-        [self toggleFacebookLogin];
+        [self toggleFacebookLoginForPic];
     }
     else if (buttonIndex == 1)
     {

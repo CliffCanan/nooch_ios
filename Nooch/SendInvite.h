@@ -2,7 +2,7 @@
 //  SendInvite.h
 //  Nooch
 //
-//  Created by crks on 10/8/13.
+//  Created by Cliff Canan on 10/8/13.
 //  Copyright (c) 2015 Nooch. All rights reserved.
 //
 
@@ -13,12 +13,13 @@
 BOOL sentFromStatsScrn;
 @interface SendInvite : GAITrackedViewController<UITableViewDataSource,UITableViewDelegate,serveD,MFMailComposeViewControllerDelegate,UITextFieldDelegate,MBProgressHUDDelegate>
 {
-    NSMutableDictionary*dictResponse;
-    NSMutableDictionary*dictInviteUserList;
-    UILabel *code;
+    NSMutableDictionary * dictResponse;
+    NSMutableDictionary * dictInviteUserList;
+    UILabel * code;
     NSRange start;
     NSRange end;
-    NSString *betweenBraces;
-    NSString *newString;
+    NSString * betweenBraces;
+    NSString * newString;
 }
+
 @end
