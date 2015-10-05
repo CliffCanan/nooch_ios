@@ -22,7 +22,7 @@ iOS development
 
 assist
 ------
-- essentially the user object holding a user's information, people assosciated with them (for easily sending money), etc
+- essentially the user object holding a user's information, performing frequent tasks, and storing values for use anywhere in the app
 
 core
 -----
@@ -35,10 +35,7 @@ AppSkel
 NoochHome
 ---------
 - redirects to Tutorial1 if someone was left logged in, if user is logged in and has remember me enabled redirects to PIN screen to validate user
-- also handles selecting other users to send money to
 
-serve
+serve.m
 ------
-- handles all the API calls to the server for easily calling them elsewhere
-
-
+- Handles all the API calls to the server for easily calling them from anywhere else in the app
