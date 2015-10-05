@@ -66,9 +66,9 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-	// Do any additional setup after loading the view.
+
     self.navigationController.navigationBar.topItem.title = @"";
-    //@"Notification Settings"
+
     [self.navigationItem setTitle:NSLocalizedString(@"NotifSettings_ScrnTitle", @"Notification Settings screen title")];
 
     [self.view setBackgroundColor:[UIColor whiteColor]];

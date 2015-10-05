@@ -55,11 +55,10 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-    // Do any additional setup after loading the view from its nib.
 
     [self.navigationController setNavigationBarHidden:NO];
     self.navigationController.navigationBar.topItem.title = @"";
-    //@"How Much?"
+
     [self.navigationItem setTitle:NSLocalizedString(@"HowMuch_ScrnTitle", @"How Much Screen Title")];
     [self.navigationItem setHidesBackButton:YES];
 
@@ -490,7 +489,7 @@
     self.artisanNameTag = @"How Much Screen";
 
     [self.amount becomeFirstResponder];
-    //@"How Much?"
+
     [self.navigationItem setTitle:NSLocalizedString(@"HowMuch_ScrnTitle", @"How Much Screen Title")];
 }
 
@@ -546,7 +545,6 @@
     self.user_pic.layer.borderColor = kNoochGreen.CGColor;
 
     [self.send addTarget:self action:@selector(confirm_send) forControlEvents:UIControlEventTouchUpInside];
-    //@"Confirm Send"
     [self.send setTitle:NSLocalizedString(@"HowMuch_ConfirmSend", @"How Much confirm send payment text") forState:UIControlStateNormal];
     [self.request setStyleId:@"howmuch_request_hide"];
     [self.send setStyleId:@"howmuch_send_expand"];
@@ -570,7 +568,6 @@
     self.user_pic.layer.borderColor = kNoochBlue.CGColor;
 
     [self.request addTarget:self action:@selector(confirm_request) forControlEvents:UIControlEventTouchUpInside];
-    //@"Confirm Request"
     [self.request setTitle:NSLocalizedString(@"HowMuch_ConfirmRequest", @"How Much confirm request button text") forState:UIControlStateNormal];
     [self.send setStyleId:@"howmuch_send_hide"];
     [self.request setStyleId:@"howmuch_request_expand"];
@@ -682,35 +679,13 @@
     }
 }
 
-#pragma mark  - alert view delegation
-- (void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex
-{
-    if (alertView.tag == 11 && buttonIndex == 1)
-    {
-        [[assist shared]setTranferImage:nil];
-        [UIView animateKeyframesWithDuration:0.2
-                                       delay:0
-                                     options:2 << 16
-                                  animations:^{
-                                      [UIView addKeyframeWithRelativeStartTime:0 relativeDuration:1 animations:^{
-                                          [self.trans_image setAlpha:0];
-                                      }];
-                                  } completion: ^(BOOL finished) {
-                                      [self.trans_image removeFromSuperview];
-                                      [self.camera setHidden:NO];
-                                  }
-         ];
-        [self attach_pic];
-    }
-}
-
 - (void) confirm_request
 {
     if ([self.amnt floatValue] == 0)
     {
         NSString * alertMessage = @"";
         if (([self.receiver valueForKey:@"nonuser"] && ![self.receiver objectForKey:@"firstName"]) ||
-           ([[assist shared] isRequestMultiple] && [[[assist shared] getArray] count] > 1))
+            ([[assist shared] isRequestMultiple] && [[[assist shared] getArray] count] > 1))
         {
             alertMessage = [NSString stringWithFormat:@"\xF0\x9F\x98\xAC\n%@", NSLocalizedString(@"HowMuch_CnfrmRequestZeroNoNameAlertTitle", @"How Much confirm request when amount is zero and no first or last name Alert Body")];
         }
@@ -757,7 +732,7 @@
         [transaction setObject:[self.memo text] forKey:@"memo"];
         float input_amount = [[[self.amount text] substringFromIndex:1] floatValue];
         TransferPIN *pin;
-        
+
         if ([self.receiver valueForKey:@"nonuser"]) {
             pin = [[TransferPIN alloc] initWithReceiver:transaction type:@"request" amount:input_amount];
         }
@@ -768,6 +743,28 @@
     }
 }
 
+#pragma mark  - alert view delegation
+- (void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex
+{
+    if (alertView.tag == 11 && buttonIndex == 1)
+    {
+        [[assist shared]setTranferImage:nil];
+        [UIView animateKeyframesWithDuration:0.2
+                                       delay:0
+                                     options:2 << 16
+                                  animations:^{
+                                      [UIView addKeyframeWithRelativeStartTime:0 relativeDuration:1 animations:^{
+                                          [self.trans_image setAlpha:0];
+                                      }];
+                                  } completion: ^(BOOL finished) {
+                                      [self.trans_image removeFromSuperview];
+                                      [self.camera setHidden:NO];
+                                  }
+         ];
+        [self attach_pic];
+    }
+}
+
 #pragma mark - picture attaching
 - (void) attach_pic
 {
@@ -775,58 +772,14 @@
 
     if ([[assist shared] getTranferImage])
     {
-      /*if ([UIAlertController class]) // for iOS 8
-        {
-            UIAlertController * alert = [UIAlertController
-                                         alertControllerWithTitle:NSLocalizedString(@"HowMuch_ReplacePicAlertTitle", @"How Much replace picture alert title")
-                                         message:NSLocalizedString(@"HowMuch_ReplacePicAlertBody", @"How Much replace picture alert body text")
-                                         preferredStyle:UIAlertControllerStyleAlert];
-            
-            UIAlertAction * yes = [UIAlertAction
-                                  actionWithTitle:NSLocalizedString(@"HowMuch_Yes", @"How Much alert button YES text")
-                                  style:UIAlertActionStyleDefault
-                                  handler:^(UIAlertAction * action)
-                                  {
-                                      [[assist shared]setTranferImage:nil];
-                                      [UIView animateKeyframesWithDuration:0.2
-                                                                     delay:0
-                                                                   options:2 << 16
-                                                                animations:^{
-                                                                    [UIView addKeyframeWithRelativeStartTime:0 relativeDuration:1 animations:^{
-                                                                        [self.trans_image setAlpha:0];
-                                                                    }];
-                                                                } completion: ^(BOOL finished) {
-                                                                    [self.trans_image removeFromSuperview];
-                                                                    [self.camera setHidden:NO];
-                                                                }
-                                       ];
-
-                                      [alert dismissViewControllerAnimated:YES completion:nil];
-                                      [self attach_pic];
-                                  }];
-            UIAlertAction * no = [UIAlertAction
-                                  actionWithTitle:NSLocalizedString(@"HowMuch_No", @"How Much alert button NO text")
-                                  style:UIAlertActionStyleCancel handler:^(UIAlertAction * action)
-                                  {
-                                      [alert dismissViewControllerAnimated:YES completion:nil];
-                                  }];
-            [alert addAction:no];
-            [alert addAction:yes];
-            
-            [self presentViewController:alert animated:YES completion:nil];
-            return;
-        }
-        else
-        {
-          */UIAlertView * av = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"HowMuch_ReplacePicAlertTitle", @"How Much replace picture alert title")//@"Replace Picture?"
-                                                          message:NSLocalizedString(@"HowMuch_ReplacePicAlertBody", @"How Much replace picture alert body text")//@"Do you want to remove the current picture?"
-                                                         delegate:self
-                                                cancelButtonTitle:NSLocalizedString(@"HowMuch_No", @"How Much alert button NO text")
-                                                otherButtonTitles:NSLocalizedString(@"HowMuch_Yes", @"How Much alert button YES text"), nil];
-            [av show];
-            [av setTag:11];
-            return;
-      //}
+        UIAlertView * av = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"HowMuch_ReplacePicAlertTitle", @"How Much replace picture alert title")
+                                                      message:NSLocalizedString(@"HowMuch_ReplacePicAlertBody", @"How Much replace picture alert body text")
+                                                     delegate:self
+                                            cancelButtonTitle:NSLocalizedString(@"HowMuch_No", @"How Much alert button NO text")
+                                            otherButtonTitles:NSLocalizedString(@"HowMuch_Yes", @"How Much alert button YES text"), nil];
+        [av show];
+        [av setTag:11];
+        return;
     }
     else
     {
@@ -1063,13 +1016,6 @@
 
 -(void)Error:(NSError *)Error
 {
-    /* UIAlertView *alert = [[UIAlertView alloc]
-                          initWithTitle:@"Message"
-                          message:@"Error connecting to server"
-                          delegate:nil
-                          cancelButtonTitle:@"OK"
-                          otherButtonTitles:nil];
-    [alert show]; */
 }
 
 #pragma mark - server delegation

@@ -461,7 +461,7 @@
 -(void)remind_request_newuser
 {
     UIAlertView *av = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"TransDeets_SndRmndrAlrtTtl2", @"'Send Reminder' Alert Title (2nd)")
-                                                 message:NSLocalizedString(@"TransDeets_SndRmndrAlrtBody", @"'Send Reminder' Alert Body Text")//@"Do you want to send a reminder about this request?"
+                                                 message:NSLocalizedString(@"TransDeets_SndRmndrAlrtBody3", @"'Send Reminder' Alert Body Text")//@"Do you want to send a reminder about this request?"
                                                 delegate:self
                                        cancelButtonTitle:NSLocalizedString(@"TransDeets_SndRmndrAlrtNoBtn2", @"'No' Button Text (2nd)")
                                        otherButtonTitles:NSLocalizedString(@"TransDeets_SndRmndrAlrtYesBtn2", @"'Yes' Button Text (2nd)"), nil];

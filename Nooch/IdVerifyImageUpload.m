@@ -61,7 +61,7 @@
 
     scrollView = [[UIScrollView alloc] initWithFrame:CGRectMake(0, 0,
                                                                 [[UIScreen mainScreen] bounds].size.width, [[UIScreen mainScreen] bounds].size.height)];
-    [scrollView setContentSize:CGSizeMake(320, 580)];
+    [scrollView setContentSize:CGSizeMake(320, 600)];
 
     UILabel * title = [[UILabel alloc] initWithFrame:CGRectMake(15, 16, 250, 25)];
     [title setStyleClass:@"refer_header"];
@@ -72,11 +72,11 @@
     [introTxt setNumberOfLines:0];
     [introTxt setFont:[UIFont fontWithName:@"Roboto" size:15]];
     [introTxt setFrame:CGRectMake(16, 43, 288, 72)];
-    [introTxt setText:@"To complete the verification process, please upload any photo ID that includes your name and a clear picture. (Driver's License, university ID, etc.)"];
+    [introTxt setText:@"To complete the verification process, please upload any photo ID that includes your name and a clear picture. (Driver's license, passport, university ID, etc.)"];
     [introTxt setTextColor:[Helpers hexColor:@"313233"]];
     [scrollView addSubview:introTxt];
 
-    self.pic = [[UIImageView alloc] initWithFrame:CGRectMake(70, introTxt.frame.origin.y + introTxt.frame.size.height + 10, 182, 130)];
+    self.pic = [[UIImageView alloc] initWithFrame:CGRectMake(92, introTxt.frame.origin.y + introTxt.frame.size.height + 15, 136, 136)];
     self.pic.layer.cornerRadius = 8;
     self.pic.clipsToBounds = YES;
     self.pic.contentMode = UIViewContentModeScaleAspectFit;
@@ -85,7 +85,7 @@
     [self.pic addGestureRecognizer:[[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(attach_pic)]];
     
     self.choose_pic = [UIButton buttonWithType:UIButtonTypeRoundedRect];
-    [self.choose_pic setFrame:CGRectMake(20, self.pic.frame.origin.y + self.pic.frame.size.height + 15, 280, 50)];
+    [self.choose_pic setFrame:CGRectMake(20, self.pic.frame.origin.y + self.pic.frame.size.height + 18, 280, 50)];
     [self.choose_pic setTitleShadowColor:Rgb2UIColor(19, 32, 38, 0.19) forState:UIControlStateNormal];
     self.choose_pic.titleLabel.shadowOffset = CGSizeMake(0.0, -1.0);
     [self.choose_pic setTitle:@"  Take Picture Now" forState:UIControlStateNormal];
@@ -93,26 +93,26 @@
     [self.choose_pic addTarget:self action:@selector(attach_pic) forControlEvents:UIControlEventTouchUpInside];
 
     NSShadow * shadow = [[NSShadow alloc] init];
-    shadow.shadowColor = Rgb2UIColor(19, 32, 38, .2);
+    shadow.shadowColor = Rgb2UIColor(32, 33, 34, .22);
     shadow.shadowOffset = CGSizeMake(0, -1);
     NSDictionary * textAttributes = @{NSShadowAttributeName: shadow };
 
     self.btnGlyph = [UILabel new];
-    [self.btnGlyph setFrame:CGRectMake(19, 9, 30, 30)];
-    [self.btnGlyph setFont:[UIFont fontWithName:@"FontAwesome" size:20]];
+    [self.btnGlyph setFrame:CGRectMake(25, 9, 30, 30)];
+    [self.btnGlyph setFont:[UIFont fontWithName:@"FontAwesome" size:21]];
     [self.btnGlyph setTextColor:[UIColor whiteColor]];
     self.btnGlyph.attributedText = [[NSAttributedString alloc] initWithString:[NSString fontAwesomeIconStringForIconIdentifier:@"fa-file-image-o"] attributes:textAttributes];
 
     [self.choose_pic addSubview:self.btnGlyph];
     [scrollView addSubview:self.choose_pic];
 
-    UILabel * header2 = [[UILabel alloc] initWithFrame:CGRectMake(16, self.choose_pic.frame.origin.y + self.choose_pic.frame.size.height + 17, 250, 25)];
+    UILabel * header2 = [[UILabel alloc] initWithFrame:CGRectMake(16, self.choose_pic.frame.origin.y + self.choose_pic.frame.size.height + 20, 250, 20)];
     [header2 setStyleClass:@"refer_header"];
     [header2 setText:@"Why We Ask"];
     [scrollView addSubview:header2];
 
     UILabel * info = [UILabel new];
-    [info setFrame:CGRectMake(16, header2.frame.origin.y + header2.frame.size.height + 2, 288, 142)];
+    [info setFrame:CGRectMake(16, header2.frame.origin.y + header2.frame.size.height + 2, 288, 130)];
     [info setNumberOfLines:0];
     [info setTextAlignment:NSTextAlignmentLeft];
     [info setFont:[UIFont fontWithName:@"Roboto-Light" size:15]];
@@ -195,7 +195,7 @@
 - (void)imagePickerController:(UIImagePickerController *)picker1 didFinishPickingMediaWithInfo:(NSDictionary *)info
 {
     imageShow = [info objectForKey:UIImagePickerControllerEditedImage];
-    imageShow = [imageShow resizedImageWithContentMode:UIViewContentModeScaleAspectFit bounds:CGSizeMake(150, 150) interpolationQuality:kCGInterpolationHigh];
+    imageShow = [imageShow resizedImageWithContentMode:UIViewContentModeScaleAspectFit bounds:CGSizeMake(300, 300) interpolationQuality:kCGInterpolationHigh];
     [[assist shared] setIdDocImage:imageShow];
     [self.pic setImage:imageShow];
 
@@ -230,14 +230,14 @@
     [self dismissViewControllerAnimated:YES completion:Nil];
 }
 
-#pragma Alert & Action Sheet Delegates
+#pragma mark - Alert & Action Sheet Delegates
 -(void)actionSheet:(UIActionSheet *)actionSheet clickedButtonAtIndex:(NSInteger)buttonIndex
 {
     [self.view removeGestureRecognizer:self.slidingViewController.panGesture];
 
     if (buttonIndex == 0)
     {
-        if (![UIImagePickerController isSourceTypeAvailable:UIImagePickerControllerSourceTypeCamera])
+        if ([UIImagePickerController isSourceTypeAvailable:UIImagePickerControllerSourceTypeCamera])
         {
             self.picker.sourceType = UIImagePickerControllerSourceTypeCamera;
             self.picker.allowsEditing = YES;
@@ -246,7 +246,7 @@
         else
         {
             UIAlertView * av = [[UIAlertView alloc] initWithTitle:@"Error"
-                                                                  message:@"Can't find a camera for this device unfortunately.\n;-("
+                                                                  message:@"\xF0\x9F\x98\xAB\nCan't find a camera for this device unfortunately.\n;-("
                                                                  delegate:nil
                                                         cancelButtonTitle:@"OK"
                                                         otherButtonTitles: nil];
@@ -288,9 +288,10 @@
 
 -(void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex
 {
-    if (alertView.tag == 10 && buttonIndex == 1)
+    if (alertView.tag == 1)
     {
-
+        // Go back to main Settings screen
+        [self.navigationController popViewControllerAnimated:YES];
     }
 }
 
@@ -316,12 +317,6 @@
     submitIdDoc.Delegate = self;
     submitIdDoc.tagName = @"SubmitIdImg";
     [submitIdDoc submitIdDocument];
-
-    [self performSelector:@selector(test01) withObject:nil afterDelay:1];
-}
-
--(void)test01 {
-    [self.hud hide:YES];
 }
 
 #pragma mark - server Delegation
@@ -337,7 +332,31 @@
                                      options:kNilOptions
                                      error:&error];
 
-        NSLog(@"Listen results for SubmitIdImg: %@", resp);
+        if (resp != NULL)
+        {
+            if ([[[resp objectForKey:@"SaveVerificationIdDocumentResult"] valueForKey:@"Result"] rangeOfString:@"saved successfully"].length != 0)
+            {
+                [user setBool:YES forKey:@"isIdVerDocSubmitted"];
+
+                UIAlertView * av = [[UIAlertView alloc] initWithTitle:@"Picture Submitted"
+                                                              message:@"\xF0\x9F\x91\x8D \xF0\x9F\x91\x8D\nWe have received your document.  We will process it as quickly as possible so you can begin sending and receiving money. Usually it takes less than  48 hours\n\nPlease contact support@nooch.com if you have any questions."
+                                                             delegate:self
+                                                    cancelButtonTitle:@"OK"
+                                                    otherButtonTitles:nil,nil];
+                av.tag = 1;
+                [av show];
+                return;
+            }
+        }
+
+        UIAlertView * av = [[UIAlertView alloc] initWithTitle:@"Picture Not Submitted"
+                                                      message:@"Unfortunately we were unable to process that image. Please try again, or if you already have, please email the image to support@nooch.com and we will process it as quickly as possible so you can begin sending and receiving money.\n\nUsually it takes less than  24 hours once we have to document."
+                                                     delegate:self
+                                            cancelButtonTitle:@"OK"
+                                            otherButtonTitles:nil,nil];
+        av.tag = 2;
+        [av show];
+        return;
     }
 }
 

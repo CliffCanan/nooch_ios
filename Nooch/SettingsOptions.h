@@ -12,11 +12,12 @@
 
 BOOL isBankAttached;
 BOOL shouldDisplayBankNotVerifiedLtBox;
+BOOL allProfileFieldsComplete;
 @interface SettingsOptions : GAITrackedViewController<UIAlertViewDelegate,UITableViewDataSource,UITableViewDelegate,MFMailComposeViewControllerDelegate,UIImagePickerControllerDelegate,MBProgressHUDDelegate,serveD>
 {
     UIView * blankView, * overlay, * mainView;
     UIButton * arrow;
     UILabel * helpText;
-    BOOL shouldGoToIdVerScrn;
+    BOOL shouldGoToIdVerScrn, isProfileNotValidatedGlyphShowingInTable;
 }
 @end

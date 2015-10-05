@@ -17,30 +17,29 @@
 {
     NSData *postTransfer;
     NSData *postDataTransfer;
-    NSString*addressLine1;
-    NSString*city;
-    NSString*country;
-    NSString*encryptedPINNonUser;
-    NSString*longitude;
-    NSString*latitude;
-    NSString*state;
-    NSString*postLengthTransfer;
-    NSString*receiverFirst;
-    NSString*receiverId;
-    NSString*transactionId;
-    NSString*responseString;
-    NSString*urlStrTranfer;
-    NSMutableURLRequest*requestTransfer;
-    NSURL*urlTransfer;
+    NSString *addressLine1;
+    NSString *city;
+    NSString *country;
+    NSString *encryptedPINNonUser;
+    NSString *longitude;
+    NSString *latitude;
+    NSString *state;
+    NSString *postLengthTransfer;
+    NSString *receiverFirst;
+    NSString *receiverId;
+    NSString *transactionId;
+    NSString *responseString;
+    NSString *urlStrTranfer;
+    NSMutableURLRequest *requestTransfer;
+    NSURL *urlTransfer;
     float lon;
     float lat;
     NSMutableDictionary * transactionInputTransfer;
     NSMutableDictionary * transactionTransfer;
     NSDictionary * dictResult;         // in 'listen' for handling PIN result from server
     NSDictionary * dictResultTransfer; // in 'connectionDidFinishLoading' Response from server
-    NSDictionary*googleLocationResults;
+    NSDictionary *googleLocationResults;
 }
-@property(nonatomic,strong)UIButton*balance;
-- (id)initWithReceiver:(NSMutableDictionary *)receiver type:(NSString *)type amount:(float)amount;
+-(id)initWithReceiver:(NSMutableDictionary *)receiver type:(NSString *)type amount:(float)amount;
 
 @end

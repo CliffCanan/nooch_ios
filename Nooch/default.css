@@ -1860,11 +1860,9 @@ table-view#select_recipientwithoutSeperator {
 ********  	 DONATE FLOW         ********
 *******************************************/
 
-/***********************************/  
-/****  DONATE - Choose a Cause  ****/
-/***********************************/
+/**  DONATE - Choose a Cause  **
 
-/**  This is for the filter button, which is just the blue ribbon icon with no label. Placed on far right of search bar. **/
+/**  Filter button, which is just the blue ribbon icon with no label. Placed on far right of search bar. **
 #nonprofit_ribbon_blue {
     width			: 16px;
     height			: 25px;
@@ -1874,7 +1872,7 @@ table-view#select_recipientwithoutSeperator {
     background-size	: 16px 25px;
 }
 
-/**  The large full-width banner image of the Featured Nonprofit on the 'Choose a Cause' screen. **/
+/**  The large full-width banner image of the Featured Nonprofit on the 'Choose a Cause' screen. **
 .featured_nonprofit_banner {
     width	: 320px;
     height	: 163px;
@@ -1883,7 +1881,7 @@ table-view#select_recipientwithoutSeperator {
 }
 
 /**  Just the semi-transparent black background of the "Featured Nonprofit" label. **
-**  This goes full-width and does NOT include the actual text label.  			  **/
+**  This goes full-width and does NOT include the actual text label.  		**
 #featured_nonprofit_label_background {
     width			: 320;
     height			: 30px;
@@ -1892,7 +1890,7 @@ table-view#select_recipientwithoutSeperator {
     background-color: rgba(0,0,0,.65);
 }
 
-/**  The actual label with the words "Featured Nonprofit".  **/	
+/**  The actual label with the words "Featured Nonprofit".  **
 #featured_nonprofit_label {
     width			: 160px;
     height			: 18px;
@@ -1905,7 +1903,7 @@ table-view#select_recipientwithoutSeperator {
     color			: #ffffff;
 }
 
-/**  Name of each Nonprofit in the 'Choose a Cause' Table  **/	
+/**  Name of each Nonprofit in the 'Choose a Cause' Table  **
 .nonprofitlist_name {
     width			: 320px;
     height			: 22px;
@@ -1918,7 +1916,7 @@ table-view#select_recipientwithoutSeperator {
     color			: #313233;
 }
 
-/**  Profile Pics of each Nonprofit in the Choose a Cause Table  **/
+/**  Profile Pics of each Nonprofit in the Choose a Cause Table  **
 .nonprofitlist_pic {
     width			: 55px;
     height			: 46px;
@@ -1927,11 +1925,9 @@ table-view#select_recipientwithoutSeperator {
     left            :10px;
 }
 
-/**************************************/  
-/****       Nonprofit Details      ****/
-/**************************************/
+/****       Nonprofit Details      ****
 
-/** Featured Nonprofit Banner - top adjusted b/c there is no search bar on the Nonprofit Details screen.  **/
+/** Featured Nonprofit Banner - top adjusted b/c there is no search bar on the Nonprofit Details screen.  **
 .featured_nonprofit_banner_details {
     width	: 320px;
     height	: 163px;
@@ -1939,7 +1935,7 @@ table-view#select_recipientwithoutSeperator {
     left	: 0px;
 }
 
-/**  The paragraph description of the Nonprofit.  **/	
+/**  The paragraph description of the Nonprofit.  **
 .nonprofit_details_desc {
     width				: 300px;
     height				: 165px;
@@ -1952,7 +1948,7 @@ table-view#select_recipientwithoutSeperator {
     color 				: #313233;
 }
 
-/**  The Website, FB, Twitter & YouTube circle buttons.  **/
+/**  The Website, FB, Twitter & YouTube circle buttons.  **
 .nonprofit_details_buttons {
     width				: 50px;
     height				: 50px;
@@ -1989,7 +1985,7 @@ table-view#select_recipientwithoutSeperator {
     top					: 184px;
 }
 
-/**  The labels under each social media button on each nonprofit's details screen. **/
+/**  The labels under each social media button on each nonprofit's details screen. **
 .nonprofit_details_buttons_labels {
     width				: 55px;
     height				: 15px;
@@ -2001,7 +1997,6 @@ table-view#select_recipientwithoutSeperator {
     color 				: #6d6e71;
 }
 
-/**  Setting the correct position for each button label. **/
 #nonprofit_details_buttons_label_website { 	left	: 10px;}
 #nonprofit_details_buttons_label_fb 		 { 	left	: 90px;}
 #nonprofit_details_buttons_label_twitter { 	left	: 170px;}
@@ -2015,11 +2010,9 @@ table-view#select_recipientwithoutSeperator {
     background-image: linear-gradient(#7fd034, #6ab029);
 }
 
-/**************************************/  
-/****   DONATE - How Much? Screen  ****/
-/**************************************/
+/****   DONATE - How Much? Screen  ****
 
-/**  Just the text of the Nonprofit's Name  **/
+/**  Just the text of the Nonprofit's Name  **
 #nonprofit_howmuch_orgname {
     width				: 220px;
     height				: 38px;
@@ -2032,7 +2025,7 @@ table-view#select_recipientwithoutSeperator {
     color				: #ffffff;
 }
 
-/**  The background bar once an amount is entered (turns Purple) **/  
+/**  The background bar once an amount is entered (turns Purple) **
 #barbackground_purp {		
     width			: 302px;
     height			: 38px;
@@ -2041,7 +2034,7 @@ table-view#select_recipientwithoutSeperator {
     background-image: linear-gradient(#595287, #413a70);
 }
 
-/**  Nonprofit's Profile Pic in the Purple Circle  **/  
+/**  Nonprofit's Profile Pic in the Purple Circle  **
 #nonprofit_orgpic {
     width				: 58px;
     height				: 58px;
@@ -2095,7 +2088,7 @@ table-view#select_recipientwithoutSeperator {
 #nonprofit_quicktapbuttons_25:highlighted { transform: scale(1.2) }
 #nonprofit_quicktapbuttons_50:highlighted { scale: 1.2 }
 
-/**  The Dedication icon only  **/  
+/**  The Dedication icon only  **
 #nonprofit_dedication_icon {
     width			: 30px;
     height			: 28;
@@ -2105,7 +2098,7 @@ table-view#select_recipientwithoutSeperator {
     background-size	: 30px 28px;
 }
 
-/**  The "+ Dedication" text label  **/  
+/**  The "+ Dedication" text label  **
 #nonprofit_dedication_label {
     width			: 85px;
     height			: 15px;
@@ -2118,7 +2111,7 @@ table-view#select_recipientwithoutSeperator {
     color 			: #6d6e71;
 }
 
-/**  Main Donate Button - starts Gray, then turns Green when an amount is entered.  **/ 
+/**  Main Donate Button - starts Gray, then turns Green when an amount is entered.  **
 #nonprofit_donatebutton {
     width				: 152x;
     height				: 56px;
@@ -2145,7 +2138,7 @@ table-view#select_recipientwithoutSeperator {
     background-image: linear-gradient(#c0c2c4, #b1b3b6);
      }
 
-/**  Dedication Text Box  **/
+/**  Dedication Text Box  **
 #nonprofit_dedication_entrybox {
     width 			: 286px;
     height			: 84px;
@@ -2161,7 +2154,7 @@ table-view#select_recipientwithoutSeperator {
     color           : #414042px;
 }
 
-/**  'In Honor Of'  or  'In Memory Of'  **/
+/**  'In Honor Of'  or  'In Memory Of'  **
 segmented-control#donatededication { 
     width			: 270px;
     height			: 30px;
@@ -2172,7 +2165,7 @@ segmented-control#donatededication {
     font-weight		: light;
 }
 
-/**  Sets the style for the 'Cancel' and '+ Add Dedication' buttons. **/
+/**  Sets the style for the 'Cancel' and '+ Add Dedication' buttons. **
 .dedication_buttons {
     width			: 135px;
     height			: 50px;
@@ -2208,17 +2201,14 @@ segmented-control#donatededication {
     background-image			: linear-gradient(#c0c2c4, #b1b3b6);
 
 }
-/**  Sets the left location of the 'Cancel' button. **/
+/**  Sets the left location of the 'Cancel' button. **
 #dedication_buttons_cancel 	{ left	: 9px; }
 
-/**  Sets the left location of the 'Add Dedication' (equivalent to 'Done') button. **/	
+/**  Sets the left location of the 'Add Dedication' (equivalent to 'Done') button. **
 #dedication_buttons_done 	{ left	: 160x;}
 
-/***************************/
-/**   Donate PIN Screen   **/
-/***************************/
-
-#nonprofit_pin_orgname_bar {
+/**   Donate PIN Screen   **
+/*#nonprofit_pin_orgname_bar {
     width				: 302px;
     height				: 38px;
     top					: 196px;
@@ -2260,7 +2250,7 @@ segmented-control#donatededication {
     font-weight			: light;
     text-align			: center;
     color				: #5a538d;
-}
+}*/
 
 /* END NONPROFIT FLOW */
 
@@ -2472,27 +2462,6 @@ segmented-control#donatededication {
     font-family			: "Roboto";
     font-weight			: regular;
 }
-#dedicate_segcontrol {
-    width				: 270px;
-    height				: 30px;
-    left				: 15px;
-    top					: 6px;
-    -ios-tint-color		: #494475;
-    background-color	: #494475;
-    border-color		: #494475;
-    font-family			: "Roboto";
-    font-weight			: light;
-}
-#dedicate_textview {
-    width				: 280px;
-    height				: 30px;
-    left				: 10px;
-    top					: 55px;
-    background-color	: white;
-    border-color		: #7e7e7e;
-    font-family			: "Roboto";
-    font-weight			: light;
-}
 #history_search {background-color: #dcddde;}
 #historyMap_CustView_shadow {
     box-shadow: 1px 2px 3px rgba(9, 10, 11, 0.5);
@@ -2535,7 +2504,6 @@ segmented-control#donatededication {
     font-size: 13px;
     text-align: center;
 }
-
 
 /**  Table View for the entire main history table - for row-height & separator-color)  **/
 table-view#history {
@@ -2682,19 +2650,6 @@ table-view#emptyTable {
     text-align       	: right;
 }
 
-.history_sidecolor {
-    top				: 8px;
-    left			: 5px;
-    width			: 6px;
-    height			: 6px;
-    border-radius   : 3px;
-}
-
-/**  Next 4 classes set the color of .history_sidecolor depending on the type of transfer.  **/
-.history_sidecolor_pos {background-color		: #72bf44;}
-.history_sidecolor_neg {background-color		: #d2232a;}
-.history_sidecolor_neutral {background-color	: #3fabe1;}
-
 .titlelbl {
    width				: 300px;
     height				: 38px;
@@ -2739,7 +2694,6 @@ table-view#emptyTable {
 #transDetailsTopSectionBG {
     background-color: rgba(228,229,230,.3);
     border: 1px solid rgba(207,210,212,.9);
-/*	box-shadow: 0px 1px rgba(207,210,212,.9); */
 }
 
 /***** Intro Text - "Payment from"  or  "Request From"  etc.  ****/
@@ -3069,9 +3023,9 @@ table-view#emptyTable {
     color		: #313233;
 }
 .bnkStatus_status {
-    left		: 127px;
+    left		: 128px;
     top			: 53px;
-    width		: 90px;
+    width		: 167px;
     height		: 16px;
     font-family	: "Roboto";
     font-weight	: regular;
@@ -3081,7 +3035,7 @@ table-view#emptyTable {
 }
 #bnkstatus_verified {
     color: #72bf44;
-    font-weight: regular;
+    font-weight: medium;
 }
 #addAnotherBnk {
     color		: #3fabe1;
@@ -3398,20 +3352,6 @@ table-view#refer {
     font-size			: 15px;
     text-align       	: right;
     color 				: #3fabe1;
-}
-
-/**  ARE THE FOLLOWING TWO CLASSES NEEDED? DON'T THINK THEY'RE USED ANYWHERE.  */
-.memsince{
-    background-color: 	: #3FABE1;
-    width				: 200px;
-    left                : 175px;
-    height				: 30px;
-    top                 : 35px;
-}
-.refer_text {
-    width				: 280px;
-    height				: 1px;
-    color 				: #d3d3d3;
 }
 
 /*************************/  
@@ -3741,17 +3681,6 @@ table-view.stats_top_friends_empty {
     }
 }
 
-	
-/**  FLOATING Stats Circle Icon **/
-@keyframes floatingStatsCircle {
-	0% {top: 34px;}
-	20% {top: 42px;}
-	40% {top: 34px;}
-	60% {top: 42px;}
-	80% {top: 34px;}
-    100% {top: 42px;}
-}
-
 /*=============================
 			Move Up
   ============================= */
@@ -3841,39 +3770,4 @@ table-view.stats_top_friends_empty {
 	animation-duration: 0.5s;
 	animation-iteration-count: 1;
     animation-timing-function: ease;
-}
-
-/*=============================
-		stretchLeft
-  ============================= */
-.stretchLeft{
-	animation-name: stretchLeft;
-	animation-duration: 1.5s;	
-	animation-timing-function: ease-out;	
-	transform-origin: 100% 0%; 
-}
-
-@keyframes stretchLeft {
-	0% {transform: scaleX(0.3);}
-	40% {transform: scaleX(1.02);}
-	60% {transform: scaleX(0.98);}
-	80% {transform: scaleX(1.01);}
-	100% {transform: scaleX(1);}							
-}
-
-/*=============================
-		stretchRight
-  ============================= */
-.stretchRight{
-	animation-name: stretchRight;
-	animation-duration: 1.5s;
-	animation-timing-function: ease-out;
-	transform-origin: 0% 0%;
-}
-@keyframes stretchRight {
-	0% {transform: scaleX(0.3);}
-	40% {transform: scaleX(1.02);}
-	60% {transform: scaleX(0.98);}
-	80% {transform: scaleX(1.01);}
-	100% {transform: scaleX(1);}							
 }

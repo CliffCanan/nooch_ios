@@ -704,7 +704,7 @@ NSString *amnt;
 
         // facebook_id
         if ( [Dictresponse valueForKey:@"FacebookAccountLogin"] &&
-            [[Dictresponse valueForKey:@"FacebookAccountLogin"]length] > 1)
+            [[Dictresponse valueForKey:@"FacebookAccountLogin"]length] > 2)
         {
             [user setObject:[Dictresponse valueForKey:@"FacebookAccountLogin"] forKey:@"facebook_id"];
         }
@@ -742,10 +742,10 @@ NSString *amnt;
         }
 
         // Date of Birth
-        if (  [Dictresponse objectForKey:@"DateofBirth"] != NULL &&
-            ![[Dictresponse objectForKey:@"DateofBirth"] isKindOfClass:[NSNull class]])
+        if (  [Dictresponse objectForKey:@"DateOfBirth"] != NULL &&
+            ![[Dictresponse objectForKey:@"DateOfBirth"] isKindOfClass:[NSNull class]])
         {
-            [user setObject:[Dictresponse objectForKey:@"DateofBirth"] forKey:@"dob"];
+            [user setValue:[Dictresponse objectForKey:@"DateOfBirth"] forKey:@"dob"];
         }
 
         [user synchronize];
@@ -1851,7 +1851,7 @@ NSString *amnt;
 
     NSMutableDictionary * finalPkg = [[NSMutableDictionary alloc] initWithObjectsAndKeys:
                                                                     DocumentDetails,@"DocumentDetails", nil];
-    NSLog(@"Saving ID Doc -> DocumentDetails... finalPkg is:  %@",finalPkg);
+    //    NSLog(@"Saving ID Doc -> DocumentDetails... finalPkg is:  %@",finalPkg);
 
     [[assist shared] setIdDocImage:nil];
     //https://www.noochme.com/NoochService/NoochService.svc/SaveVerificationIdDocument

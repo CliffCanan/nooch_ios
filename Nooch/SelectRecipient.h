@@ -20,20 +20,20 @@ int screenLoadedTimes;
 
 @interface SelectRecipient : GAITrackedViewController<UITableViewDelegate,UITableViewDataSource,serveD,UISearchBarDelegate,ABPeoplePickerNavigationControllerDelegate,CLLocationManagerDelegate,UIActionSheetDelegate,MBProgressHUDDelegate>
 {
-    NSMutableDictionary*facebook_info;
-    UIView*loader;
-    NSString*searchString;
     BOOL searching, navIsUp, isRecentList;
     BOOL emailEntry, shouldAnimate, phoneNumEntry;
-    NSMutableArray * arrSearchedRecords;
-    UISearchBar * search;
-    UIActivityIndicatorView * spinner;
-    NSString * emailphoneBook, * phoneBookPhoneNum , * firstNamePhoneBook, * lastNamePhoneBook;
-    UIImageView *arrow;
-    UILabel *em;
+    float locationUpdateDelay;
+
     NSArray *emailAddresses;
     NSMutableArray*arrRequestPersons;
+    NSMutableArray * arrSearchedRecords;
+    NSString * emailphoneBook, * phoneBookPhoneNum , * firstNamePhoneBook, * lastNamePhoneBook;
+    NSString * searchString;
+
+    UISearchBar * search;
+    UIImageView *arrow;
+    UILabel *em;
+
     CLLocationManager*locationManager;
-    float locationUpdateDelay;
 }
 @end

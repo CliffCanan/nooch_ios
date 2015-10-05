@@ -21,5 +21,4 @@ BOOL isUserByLocation;
 }
 
 - (id)initWithReceiver:(NSDictionary *)receiver;
-@property(nonatomic,strong)UIButton*balance;
 @end

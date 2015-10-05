@@ -305,8 +305,9 @@ UIImageView *picture;
     [self.dob setKeyboardType:UIKeyboardTypeDefault];
     [self.dob setStyleClass:@"tableViewCell_Profile_rightSide"];
     [self.dob setUserInteractionEnabled:YES];
-    if (![[user objectForKey:@"dob"] isKindOfClass:[NSNull class]] &&
-          [user objectForKey:@"dob"] != NULL)
+    if ([user objectForKey:@"dob"] &&
+        [user objectForKey:@"dob"] != NULL &&
+        [[user objectForKey:@"dob"] length] > 0)
     {
         [self.dob setText:[user objectForKey:@"dob"]];
     }
@@ -491,7 +492,12 @@ UIImageView *picture;
 
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(applicationWillEnterFG_Profile:) name:UIApplicationWillEnterForegroundNotification object:nil];
 
-    hasSeenDobPopup = false;
+    if (hasSeenDobPopup != true) {
+        hasSeenDobPopup = false;
+    }
+    if (hasSeenAddressPopup != true) {
+        hasSeenAddressPopup = false;
+    }
 }
 
 -(void)viewWillAppear:(BOOL)animated
@@ -531,6 +537,25 @@ UIImageView *picture;
     {
         [self.hud hide:YES];
     }
+
+    hasSeenDobPopup = false;
+    hasSeenAddressPopup = false;
+
+    if (self.phone.text.length > 8 &&
+        [[user objectForKey:@"IsVerifiedPhone"] isEqualToString:@"YES"] &&
+        self.address_one.text.length > 2 &&
+        self.city.text.length > 1 &&
+        self.zip.text.length > 3 &&
+        self.dob.text.length > 5 &&
+        wasSSNadded)
+    {
+        allProfileFieldsComplete = true;
+    }
+    else
+    {
+        allProfileFieldsComplete = false;
+    }
+
     [super viewDidDisappear:animated];
 }
 
@@ -644,8 +669,6 @@ UIImageView *picture;
     [self.view setFrame:CGRectMake(0,64, 320, 600)];
     [UIView commitAnimations];
 
-    NSLog(@"DOB Text field is: %@",self.dob.text);
-
     if (![self validateEmail:[self.email text]])
     {
         [self.email becomeFirstResponder];
@@ -662,11 +685,12 @@ UIImageView *picture;
     {
         UIAlertView * alert = [[UIAlertView alloc]initWithTitle:@"Missing An Address"
                                                         message:@"To keep Nooch safe, we ask all users to provide an address as part of our ID verification process.\n\n(We never share your personal info with anyone.)"
-                                                       delegate:nil
+                                                       delegate:self
                                               cancelButtonTitle:@"OK"
                                               otherButtonTitles:nil, nil];
+        [alert setTag:98];
         [alert show];
-        [self.address_one becomeFirstResponder];
+        hasSeenAddressPopup = true;
         return;
     }
     else if ([self.city.text length] == 0)
@@ -694,7 +718,7 @@ UIImageView *picture;
 
     [self.save setEnabled:NO];
     [self.save setUserInteractionEnabled:NO];
-    [self.save setStyleClass:@"disabled_gray"];
+    [self.save setTitleColor:Rgb2UIColor(210,210,210,.88) forState:UIControlStateNormal];
 
     strPhoneNumber = self.phone.text;
     strPhoneNumber = [strPhoneNumber stringByReplacingOccurrencesOfString:@"(" withString:@""];
@@ -870,7 +894,7 @@ UIImageView *picture;
 
     [self.save setEnabled:YES];
     [self.save setUserInteractionEnabled:YES];
-    [self.save setStyleClass:@"nav_top_right"];
+    [self.save setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
     [dictSavedInfo setObject:@"YES" forKey:@"ImageChanged"];
 
     SDImageCache *imageCache = [SDImageCache sharedImageCache];
@@ -1007,7 +1031,7 @@ UIImageView *picture;
 
             [self.save setEnabled:YES];
             [self.save setUserInteractionEnabled:YES];
-            [self.save setStyleClass:@"nav_top_right"];
+            [self.save setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
             [dictSavedInfo setObject:@"YES" forKey:@"ImageChanged"];
 
             SDImageCache *imageCache = [SDImageCache sharedImageCache];
@@ -1289,8 +1313,11 @@ UIImageView *picture;
     {
         if (indexPath.row == 0)
         {
-            if ([[user objectForKey:@"dob"] isKindOfClass:[NSNull class]] ||
-                 [user objectForKey:@"dob"] == NULL)
+            //NSLog(@"user dob value is: %@",[user objectForKey:@"dob"]);
+
+            if (!([user objectForKey:@"dob"] &&
+                  [user objectForKey:@"dob"] != NULL &&
+                 [[user objectForKey:@"dob"] length] > 0))
             {
                 [cell.contentView addSubview:self.dob_NotAdded_YellowBg];
             }
@@ -1303,11 +1330,18 @@ UIImageView *picture;
             NSDateFormatter * FormatterWithTimeZone = [[NSDateFormatter alloc] init];
             [FormatterWithTimeZone setLocale:[[NSLocale alloc] initWithLocaleIdentifier:@"en_US_POSIX"]];
             [FormatterWithTimeZone setDateFormat:@"MM/dd/yyyy"];
-            
+
+            NSString * initialDate = @"08/05/1988";
+            if ([user objectForKey:@"dob"] &&
+                [user objectForKey:@"dob"] != NULL &&
+                [[user objectForKey:@"dob"] length] > 0)
+            {
+                initialDate = [user objectForKey:@"dob"];
+            }
             NSDate *theDate = nil;
             NSError *error = nil;
-            if (![FormatterWithTimeZone getObjectValue:&theDate forString:@"08-05-1988" range:nil error:&error]) {
-                NSLog(@"Date '%@' could not be parsed: %@", @"08/05/88", error);
+            if (![FormatterWithTimeZone getObjectValue:&theDate forString:initialDate range:nil error:&error]) {
+                NSLog(@"Date '%@' could not be parsed: %@", initialDate, error);
             }
 
             UIDatePicker * datePicker = [[UIDatePicker alloc]init];
@@ -1441,8 +1475,11 @@ UIImageView *picture;
                               completion:^(BOOL finished) {
                                   tapGesture = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(hideKeyBoard)];
                                   [scrollView addGestureRecognizer:tapGesture];
-                                  
-                                  [self.ssn setText:@"XXX - XX - "];
+
+                                  if (self.ssn.text.length < 12)
+                                  {
+                                      [self.ssn setText:@"XXX - XX - "];
+                                  }
                               }
      ];
 }
@@ -1466,7 +1503,7 @@ UIImageView *picture;
 
 -(void)textFieldDidBeginEditing:(UITextField *)textField
 {
-    if (textField == self.address_one)
+    if (textField == self.address_one && !hasSeenAddressPopup)
     {
         UIAlertView *av = [[UIAlertView alloc] initWithTitle:@"Address"
                                                      message:@"Please enter your current street address."
@@ -1475,6 +1512,7 @@ UIImageView *picture;
                                            otherButtonTitles:nil];
         [av setTag:20];
         [av show];
+        hasSeenAddressPopup = true;
     }
     else if (textField == self.address_two || textField == self.city || textField == self.zip)
     {
@@ -1597,7 +1635,7 @@ UIImageView *picture;
     [UIView commitAnimations];*/
 }
 
-- (BOOL)textField:(UITextField *)textField shouldChangeCharactersInRange:(NSRange)range replacementString:(NSString *)string
+-(BOOL)textField:(UITextField *)textField shouldChangeCharactersInRange:(NSRange)range replacementString:(NSString *)string
 {
     // Prevent crashing undo bug.
     if (range.length + range.location > textField.text.length)
@@ -1655,7 +1693,7 @@ UIImageView *picture;
     return YES;
 }
 
-- (BOOL)textFieldShouldReturn:(UITextField *)textField
+-(BOOL)textFieldShouldReturn:(UITextField *)textField
 {
     if (textField == _email)
     {
@@ -1712,7 +1750,11 @@ UIImageView *picture;
     {
         [self.navigationController popViewControllerAnimated:YES];
     }
-
+    else if (alertView.tag == 98)
+    {
+        NSLog(@"BUTTON TAPPED");
+        [self.address_one becomeFirstResponder];
+    }
     else if (alertView.tag == 20) // if (textField == self.address_one || textField == self.address_two || textField == self.city || textField == self.zip)
     {
         [self addressTableSelected];
@@ -1758,8 +1800,6 @@ UIImageView *picture;
     }
     else if (buttonIndex == 2)
     {
-        NSLog(@"Checkpoint #1");
-        
         if ([UIImagePickerController isSourceTypeAvailable:UIImagePickerControllerSourceTypeSavedPhotosAlbum])
         {
             if (picker == nil)
@@ -1832,8 +1872,6 @@ UIImageView *picture;
 
 -(void)saveSsn
 {
-    NSLog(@"self.ssn.text.length is: %lu", (unsigned long)self.ssn.text.length);
-
     if (self.ssn.text.length == 15)
     {
         NSString * last4 = [self.ssn.text substringFromIndex: self.ssn.text.length - 4];
@@ -1873,7 +1911,7 @@ UIImageView *picture;
                                JSONObjectWithData:[result dataUsingEncoding:NSUTF8StringEncoding]
                                options:kNilOptions
                                error:&error] objectForKey:@"Result"];
-        NSLog(@"resend Email Link response is: %@",response);
+        //NSLog(@"resend Email Link response is: %@",response);
         if ([response isEqualToString:@"Already Activated."])
         {
             UIAlertView *av = [[UIAlertView alloc] initWithTitle:@""
@@ -2033,6 +2071,11 @@ UIImageView *picture;
                          error:&error];
 
         [dictSavedInfo setObject:@"NO" forKey:@"ImageChanged"];
+        [dictSavedInfo setObject:self.phone.text forKey:@"phoneno"];
+        [dictSavedInfo setObject:self.address_one.text forKey:@"Address1"];
+        [dictSavedInfo setObject:self.address_two.text forKey:@"Address2"];
+        [dictSavedInfo setObject:self.city.text forKey:@"City"];
+        [dictSavedInfo setObject:self.zip.text forKey:@"zip"];
 
         NSDictionary *resultValue = [dictProfileinfo valueForKey:@"MySettingsResult"];
         NSLog(@"My Settings Result:  %@",[resultValue valueForKey:@"Result"]);
@@ -2045,7 +2088,7 @@ UIImageView *picture;
         {
             [self.save setEnabled:NO];
             [self.save setUserInteractionEnabled:NO];
-            [self.save setStyleClass:@"disabled_gray"];
+            [self.save setTitleColor:Rgb2UIColor(210,210,210,.88) forState:UIControlStateNormal];
 
             // If DOB has been provided, send to server.  (This is currently a separate method from saving the rest of the Profile info... might want to combine it at some point.
             if (   [self.dob.text length] > 3 &&
@@ -2334,11 +2377,14 @@ UIImageView *picture;
         if (shouldFocusOnAddress)
         {
             shouldFocusOnAddress = NO;
+            shouldFocusOnDob = NO;
+            shouldFocusOnSsn = NO;
             [self.address_one becomeFirstResponder];
         }
         else if (shouldFocusOnDob)
         {
             shouldFocusOnDob = NO;
+            shouldFocusOnSsn = NO;
             [self.dob becomeFirstResponder];
         }
         else if (shouldFocusOnSsn && !wasSSNadded)
@@ -2381,6 +2427,9 @@ UIImageView *picture;
         if (![response isKindOfClass:[NSNull class]] && response != NULL &&
              [response rangeOfString:@"successfully"].length != 0)
         {
+            [user setBool:YES forKey:@"wasSsnAdded"];
+            wasSSNadded = true;
+
             [self.ssnGlyphIndicator setFont:[UIFont fontWithName:@"FontAwesome" size:16]];
             [self.ssnGlyphIndicator setText:[NSString fontAwesomeIconStringForIconIdentifier:@"fa-check-circle"]];
             [self.ssnGlyphIndicator setTextColor:kNoochGreen];

@@ -32,13 +32,12 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-	// Do any additional setup after loading the view.
 }
 
 -(void)viewWillAppear:(BOOL)animated
 {
     [super viewWillAppear:animated];
-  
+
     self.screenName = @"Reset Pin Screen";
     self.artisanNameTag = @"Reset PIN Screen";
 
@@ -63,15 +62,14 @@
     NSShadow * shadow = [[NSShadow alloc] init];
     shadow.shadowColor = Rgb2UIColor(19, 32, 38, .2);
     shadow.shadowOffset = CGSizeMake(0, -1);
-    
+
     NSDictionary * textAttributes = @{NSShadowAttributeName: shadow };
     UILabel * lbl = [[UILabel alloc]initWithFrame:CGRectMake(105, 20, 200, 30)];
     lbl.attributedText = [[NSAttributedString alloc] initWithString:NSLocalizedString(@"ResetPIN_scrnTitle", @"Reset PIN screen Scrn Title") attributes:textAttributes];
     [lbl setFont:[UIFont systemFontOfSize:22]];
     [lbl setTextColor:[UIColor whiteColor]];
     [navBar addSubview:lbl];
-    
-    // Do any additional setup after loading the view from its nib.
+
     self.pin = [UITextField new];
     [self.pin setKeyboardType:UIKeyboardTypeNumberPad];
     self.pin.inputAccessoryView = [[UIView alloc] init];
@@ -79,15 +77,13 @@
     [self.pin setFrame:CGRectMake(800, 800, 20, 20)];
     [self.view addSubview:self.pin];
     [self.pin becomeFirstResponder];
-    
-    //[self.navigationItem setTitle:@"Reset PIN "];
 
     title = [[UILabel alloc] initWithFrame:CGRectMake(10, 104, 300, 60)];
     [title setText:NSLocalizedString(@"ResetPIN_instruct", @"Reset PIN instructions")]; [title setTextAlignment:NSTextAlignmentCenter];
     [title setNumberOfLines:2];
     [title setStyleClass:@"Repin_instructiontext"];
     [self.view addSubview:title];
-    
+
     self.prompt = [[UILabel alloc] initWithFrame:CGRectMake(10, 245, 300, 30)];
     if ([[UIScreen mainScreen] bounds].size.height < 500) {
         [self.prompt setFrame:CGRectMake(10, 192, 300, 30)];
@@ -101,7 +97,7 @@
     self.second_num = [[UIView alloc] initWithFrame:CGRectMake(106,134,30,30)];
     self.third_num = [[UIView alloc] initWithFrame:CGRectMake(171,134,30,30)];
     self.fourth_num = [[UIView alloc] initWithFrame:CGRectMake(235,134,30,30)];
-    
+
     self.first_num.layer.cornerRadius = self.second_num.layer.cornerRadius = self.third_num.layer.cornerRadius = self.fourth_num.layer.cornerRadius = 15;
     self.first_num.backgroundColor = self.second_num.backgroundColor = self.third_num.backgroundColor = self.fourth_num.backgroundColor = [UIColor whiteColor];
     self.first_num.layer.borderWidth = self.second_num.layer.borderWidth = self.third_num.layer.borderWidth = self.fourth_num.layer.borderWidth = 3;
@@ -186,7 +182,7 @@
             pinchangeProgress = 3;
             self.prompt.text=@"";
             newPinString = [NSString stringWithFormat:@"%@%@",textField.text,string];
-            //@"Confirm your PIN"
+
             [title setText:NSLocalizedString(@"ResetPIN_cnfrmPINtxt", @"Reset PIN 'Confirm your PIN' text")];
             [self.pin setText:@""];
             [self.first_num setBackgroundColor:[UIColor whiteColor]];
@@ -293,7 +289,7 @@
             [self.first_num setBackgroundColor:[UIColor whiteColor]];
             self.pin.text = @"";
             self.prompt.text = @"";
-            //@"Enter New Pin"
+
             title.text = NSLocalizedString(@"ResetPIN_enterNewPin", @"Reset PIN 'Enter new PIN' text");
         }
         else
@@ -317,7 +313,7 @@
             [self.third_num setStyleClass:@"shakePin3"];
             [self.second_num setStyleClass:@"shakePin2"];
             [self.first_num setStyleClass:@"shakePin1"];
-            //@"1 Failed Attempt"
+
             self.prompt.text = NSLocalizedString(@"ResetPIN_1stFailed", @"Reset PIN '1st Failed Attempt' text");
             self.prompt.textColor = kNoochRed;
         }
@@ -331,7 +327,7 @@
             [self.third_num setStyleClass:@"shakePin3"];
             [self.second_num setStyleClass:@"shakePin2"];
             [self.first_num setStyleClass:@"shakePin1"];
-            //@"2 Failed Attempts"
+
             self.prompt.text = NSLocalizedString(@"ResetPIN_2ndFailed", @"Reset PIN '2nd Failed Attempt' text");
             self.prompt.textColor = kNoochRed;
             

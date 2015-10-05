@@ -89,18 +89,6 @@ NSMutableURLRequest *request;
     {
         [[assist shared] setisloggedout:NO];
 
-        if ([[[NSUserDefaults standardUserDefaults] objectForKey:@"NotificationPush"]intValue] == 1)
-        {
-            ProfileInfo *prof = [ProfileInfo new];
-            [nav_ctrl pushViewController:prof animated:YES];
-            [self.slidingViewController resetTopView];
-
-            isFromSettingsOptions = NO;
-            isProfileOpenFromSideBar = NO;
-            isFromTransDetails = NO;
-            sentFromHomeScrn = YES;
-        }
-
         me = [core new];
         [user removeObjectForKey:@"Balance"];
         loadInfo = [[NSMutableDictionary alloc] initWithContentsOfFile:[self autoLogin]];
@@ -248,22 +236,7 @@ NSMutableURLRequest *request;
 
         [[assist shared] setisloggedout:NO];
 
-        NSString * KnoxOnOff = [[ARPowerHookManager getValueForHookById:@"knox_OnOff"] lowercaseString];
-        NSString * SynapseOnOff = [[ARPowerHookManager getValueForHookById:@"synps_OnOff"] lowercaseString];
-
-        if ([KnoxOnOff isEqualToString:@"on"]) {
-            isKnoxOn = YES;
-        }
-        else {
-            isKnoxOn = NO;
-        }
-        if ([SynapseOnOff isEqualToString:@"on"]) {
-            isSynapseOn = YES;
-        }
-        else {
-            isSynapseOn = NO;
-        }
-        //NSLog(@"isSynapseOn is: %d",isSynapseOn);
+        isSynapseOn = NO;
     }
     else
     {
@@ -349,14 +322,6 @@ NSMutableURLRequest *request;
         else if (isSynapseOn)
         {
             [ARProfileManager setStringValue:@"NO" forVariable:@"IsSynapseBankAttached"];
-        }
-        else if (isKnoxOn && [user boolForKey:@"IsKnoxBankAvailable"])
-        {
-            [ARProfileManager setStringValue:@"YES" forVariable:@"IsKnoxBankAttached"];
-        }
-        else if (isKnoxOn)
-        {
-            [ARProfileManager setStringValue:@"NO" forVariable:@"IsKnoxBankAttached"];
         }
     });
 
@@ -2005,6 +1970,7 @@ void addressBookChanged(ABAddressBookRef addressBook, CFDictionaryRef info, void
 
     else if (alertView.tag == 42 && buttonIndex == 1)
     {
+        hasSeenDobPopup = YES;
         [self go_profileFromHome];
     }
 
@@ -2139,14 +2105,18 @@ void addressBookChanged(ABAddressBookRef addressBook, CFDictionaryRef info, void
         {
             // Body text if SSN was submitted, but not DoB
             alertBody = @"Please take 30 seconds to finish verifying your identity by entering your:\n\n• Date of birth\n\nFederal regulations require us to verify each user's identity. We will only ask for this info once and all data is stored with encryption on secure servers.\n\xF0\x9F\x94\x92";
-            shouldFocusOnDob = YES;
         }
-        else if (![[user objectForKey:@"dob"] isKindOfClass:[NSNull class]] &&
-                 [user objectForKey:@"dob"] != NULL)
+        else if ( [user objectForKey:@"dob"] &&
+                 [user objectForKey:@"dob"] != NULL &&
+                 [[user objectForKey:@"dob"] length] > 0)
         {
             // Body text if DoB was submitted, but not SSN
             alertBody = @"Please take 30 seconds to finish verifying your identity by entering your:\n\n• Just the LAST 4 digits of your SSN\n\nFederal regulations require us to verify each user's identity. We will only ask for this info once and all data is stored with encryption on secure servers.\n\xF0\x9F\x94\x92";
             shouldFocusOnSsn = YES;
+        }
+        else
+        {
+            shouldFocusOnDob = YES;
         }
 
         UIAlertView * alert = [[UIAlertView alloc]initWithTitle:@"Help Us Keep Nooch Safe"
@@ -2178,11 +2148,23 @@ void addressBookChanged(ABAddressBookRef addressBook, CFDictionaryRef info, void
         return NO;
     }
 
+    else if (![user boolForKey:@"IsSynapseBankVerified"] &&
+              [user boolForKey:@"isIdVerDocSubmitted"])
+    {
+        UIAlertView *av = [[UIAlertView alloc] initWithTitle:@"ID Verification In Progress"
+                                                     message:@"Thank you for submitting your ID and completing your profile.  Our team is currently reviewing your information so you can start sending money soon.\n\nThis process is usually quick, but may take up to 48 hours."
+                                                    delegate:self
+                                           cancelButtonTitle:@"OK"
+                                           otherButtonTitles:nil, nil];
+        [av show];
+        return NO;
+    }
+
     // ... and check if that bank account is 'Verified'
     else if (![user boolForKey:@"IsSynapseBankVerified"])
     {
         UIAlertView *av = [[UIAlertView alloc] initWithTitle:@"Bank Account Un-Verified"
-                                                     message:@"Looks like your bank account remains un-verified.  This usually happens when the contact info listed on the bank account does not match your Nooch profile information. Please contact Nooch support for more information."
+                                                     message:@"\xE2\x9A\xA0\nLooks like your bank account remains un-verified.  This usually happens when the contact info listed on the bank account does not match your Nooch profile information. Please contact Nooch support for more information."
                                                     delegate:self
                                            cancelButtonTitle:@"OK"
                                            otherButtonTitles:@"Learn More", nil];
@@ -2328,15 +2310,12 @@ void addressBookChanged(ABAddressBookRef addressBook, CFDictionaryRef info, void
 
         NSDictionary * dict = [NSJSONSerialization JSONObjectWithData:[result dataUsingEncoding:NSUTF8StringEncoding] options:0 error:&error];
 
-        NSLog(@"getPendingTransfersCount dict is: %@",dict);
+        //NSLog(@"getPendingTransfersCount dict is: %@",dict);
         int pendingRequestsReceived = [[dict valueForKey:@"pendingRequestsReceived"] intValue];
         NSString * count;
 
-        //[self.navigationItem setLeftBarButtonItem:nil];
-
         if (pendingRequestsReceived > 0 &&
-            ((isSynapseOn && [user boolForKey:@"IsSynapseBankAvailable"]) ||
-             (isKnoxOn && [user boolForKey:@"IsKnoxBankAvailable"])))
+            (isSynapseOn && [user boolForKey:@"IsSynapseBankAvailable"]))
         {
             if ([self.view.subviews containsObject:self.glyphNoBank])
             {
@@ -2382,8 +2361,7 @@ void addressBookChanged(ABAddressBookRef addressBook, CFDictionaryRef info, void
             [hamburger setTitleShadowColor:Rgb2UIColor(19, 32, 38, 0.22) forState:UIControlStateNormal];
             hamburger.titleLabel.shadowOffset = CGSizeMake(0.0, -1.0);
 
-            if ((isKnoxOn && ![user boolForKey:@"IsKnoxBankAvailable"]) ||
-                (isSynapseOn && ![user boolForKey:@"IsSynapseBankAvailable"]))
+            if (isSynapseOn && ![user boolForKey:@"IsSynapseBankAvailable"])
             {
                 if (![self.view.subviews containsObject:self.glyphNoBank])
                 {

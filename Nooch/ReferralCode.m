@@ -310,7 +310,7 @@
                password:[[NSString alloc] initWithString:[loginResult objectForKey:@"Status"]]
                     pin:[self.user objectForKey:@"pin_number"]
                 invCode:[self.code_field.text length] == 0 ? refCodeFromArtisan : self.code_field.text
-                   fbId:[self.user objectForKey:@"facebook_id"] ? [self.user objectForKey:@"facebook_id"]: @"" ];
+                   fbId:[self.user objectForKey:@"facebook_id"] ? [self.user objectForKey:@"facebook_id"] : @"" ];
 
         // NSLog(@"User Fields to be sent to server are: %@",create);
         self.code_field.text = @"";

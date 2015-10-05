@@ -23,11 +23,10 @@
 #import "MyApartment.h"
 
 @interface LeftMenu ()
-@property(nonatomic,strong) UITableView *menu;
-@property(nonatomic) NSIndexPath *selected;
-@property(nonatomic,strong) UILabel *name;
-@property(nonatomic,strong) UILabel *lastName;
-@property(nonatomic,strong) UILabel *glyph_noBank;
+@property(nonatomic,strong) UITableView * menu;
+@property(nonatomic,strong) UILabel * name;
+@property(nonatomic,strong) UILabel * lastName;
+@property(nonatomic,strong) UILabel * glyph_noBank;
 @property(nonatomic,strong) UIButton * settings;
 @end
 @implementation LeftMenu
@@ -44,13 +43,11 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-	// Do any additional setup after loading the view.
 
-    self.selected = 0,0;
-    [self.view setBackgroundColor:kNoochMenu];
+    [self.view setBackgroundColor:[Helpers hexColor:@"58595b"]];
 
     self.menu = [[UITableView alloc] initWithFrame:CGRectMake(0, 90, 320, [[UIScreen mainScreen] bounds].size.height-145)];
-    [self.menu setBackgroundColor:kNoochMenu]; [self.menu setDelegate:self]; [self.menu setDataSource:self]; [self.menu setSeparatorColor:kNoochGrayLight];
+    [self.menu setBackgroundColor:[Helpers hexColor:@"58595b"]]; [self.menu setDelegate:self]; [self.menu setDataSource:self]; [self.menu setSeparatorColor:kNoochGrayLight];
     [self.menu setRowHeight:45];
     [self.view addSubview:self.menu];
 
@@ -182,8 +179,7 @@
         [self.view addSubview:self.settings]; 
     }
 
-    if ((isKnoxOn && [user boolForKey:@"IsKnoxBankAvailable"]) ||
-        (isSynapseOn && [user boolForKey:@"IsSynapseBankAvailable"]))
+    if (isSynapseOn && [user boolForKey:@"IsSynapseBankAvailable"])
     {
         [self.glyph_noBank removeFromSuperview];
     }
@@ -319,7 +315,7 @@
     cell.indentationLevel = 1;
     cell.indentationWidth = 30;
     cell.textLabel.textColor = [UIColor whiteColor];
-    [cell setBackgroundColor:kNoochMenu];
+    [cell setBackgroundColor:[Helpers hexColor:@"58595b"]];
     cell.textLabel.font = [UIFont fontWithName:@"Roboto-Light" size:18];
 
     arrow = [UIButton buttonWithType:UIButtonTypeCustom];
@@ -334,7 +330,7 @@
     [iv setStyleClass:@"lside_menu_icons"];
 
     NSShadow * shadow = [[NSShadow alloc] init];
-    shadow.shadowColor = kLeftMenuShadow;
+    shadow.shadowColor = [Helpers hexColor:@"202122"];
     shadow.shadowOffset = CGSizeMake(0, 1);
     NSDictionary * textAttributes = @{NSShadowAttributeName: shadow };
     

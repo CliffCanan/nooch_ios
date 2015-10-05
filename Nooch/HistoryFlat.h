@@ -22,30 +22,33 @@ NSString *listType;
 @interface HistoryFlat : GAITrackedViewController<UITableViewDataSource,UITableViewDelegate,
 serveD,FPPopoverControllerDelegate,UISearchBarDelegate,SWTableViewCellDelegate,MBProgressHUDDelegate,CLLocationManagerDelegate,MFMailComposeViewControllerDelegate>
 {
-    UISegmentedControl *completed_pending;
-    short countRows;
-    NSMutableArray *histArray;
-    NSMutableArray *histShowArrayCompleted;
-    NSMutableArray *histShowArrayPending;
+    NSArray * histArrayCommon;
+    NSMutableArray * histArray;
+    NSMutableArray * histShowArrayCompleted;
+    NSMutableArray * histShowArrayPending;
+    NSMutableArray * histTempCompleted;
+    NSMutableArray * histTempPending;
+
     BOOL ishistLoading;
     BOOL isEnd, isStart;
-    int totalDisplayedTransfers_completed,index;
     BOOL isFilter, isSearch, isLocalSearch, isMapOpen;
-    FPPopoverController*fp;
-    NSString*SearchString;
-    UIView*mapArea;
+    BOOL locUpdateSuccessfully;
     float firstX,firstY;
     float lat_hist,lon_hist;
-    BOOL locUpdateSuccessfully;
-    NSArray*histArrayCommon;
-    UIButton*exportHistory;
-    NSMutableArray*histTempCompleted;
-    NSMutableArray*histTempPending;
-    NSString*subTypestr;
-    NSDate*ServerDate;
+    int totalDisplayedTransfers_completed,index;
+    short countRows;
+
+    FPPopoverController * fp;
+
+    UIButton * exportHistory;
     UILabel * emptyText_localSearch;
+    UISegmentedControl * completed_pending;
+    UIView * mapArea;
+    NSDate * ServerDate;
     NSIndexPath * indexPathForDeletion;
-    CLLocationManager*locationManager;
+    NSString * subTypestr;
+    NSString * SearchString;
+    CLLocationManager *locationManager;
     CLLocationCoordinate2D locationUser;
 }
 @property(nonatomic,strong) MBProgressHUD *hud;

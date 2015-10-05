@@ -46,7 +46,6 @@
     [back setTitleShadowColor:Rgb2UIColor(19, 32, 38, 0.2) forState:UIControlStateNormal];
     back.titleLabel.shadowOffset = CGSizeMake(0.0, -1.0);
     [back addTarget:self action:@selector(goBack) forControlEvents:UIControlEventTouchUpInside];
-    //[back setFrame:CGRectMake(0,5, 70, 30)];
     [navBar addSubview:back];
     
     NSShadow * shadow = [[NSShadow alloc] init];
@@ -335,7 +334,7 @@
 - (void)forgot_pass
 {
     [self.view endEditing:YES];
-    UIAlertView * alert = [[UIAlertView alloc]initWithTitle:NSLocalizedString(@"ResetPw_ForgotAlrtTitle1", @"Reset PW Forgot Password Alert Title")//@"Forgot Password"
+    UIAlertView * alert = [[UIAlertView alloc]initWithTitle:NSLocalizedString(@"ResetPw_ForgotAlrtTitle1", @"Reset PW Forgot Password Alert Title")
                                                     message:NSLocalizedString(@"ResetPw_ForgotAlrtBody1", @"Reset PW Forgot Password Alert Body Text")
                                                    delegate:self
                                           cancelButtonTitle:NSLocalizedString(@"ResetPw_ForgotAlrtBtn1", @"Reset PW Forgot Password Alert Cancel Btn")
@@ -345,33 +344,22 @@
     [[alert textFieldAtIndex:0] setKeyboardType:UIKeyboardTypeEmailAddress];
     [[alert textFieldAtIndex:0] setStyleClass:@"customTextField_2"];
     [alert textFieldAtIndex:0].inputAccessoryView = [[UIView alloc] init];
-    [alert setTag:220011];
+    [alert setTag:201];
     [alert show];
 }
 
 - (void)alertView:(UIAlertView *)actionSheet clickedButtonAtIndex:(NSInteger)buttonIndex
 {
-    if (actionSheet.tag == 220011 && buttonIndex == 1)
+    if (actionSheet.tag == 201 && buttonIndex == 1)
     {
         UITextField *emailField = [actionSheet textFieldAtIndex:0];
         
         if ([emailField.text length] > 0 && [emailField.text  rangeOfString:@"@"].location != NSNotFound && [emailField.text  rangeOfString:@"."].location != NSNotFound)
         {
-            /* RTSpinKitView *spinner1 = [[RTSpinKitView alloc] initWithStyle:RTSpinKitViewStyleWanderingCubes];
-            spinner1.color = [UIColor whiteColor];
-            self.hud = [[MBProgressHUD alloc] initWithView:self.view];
-            [self.navigationController.view addSubview:self.hud];
-            
-            self.hud.mode = MBProgressHUDModeCustomView;
-            self.hud.customView = spinner1;
-            self.hud.delegate = self;
-            self.hud.labelText = @"One sec...";
-            [self.hud show:YES];*/
-
-            serve * forgetful = [serve new];
-            forgetful.Delegate = self;
-            forgetful.tagName = @"ForgotPass";
-            [forgetful forgotPass:emailField.text];
+            serve * forgotPass = [serve new];
+            forgotPass.Delegate = self;
+            forgotPass.tagName = @"ForgotPass";
+            [forgotPass forgotPass:emailField.text];
         }
         else
         {
@@ -384,7 +372,7 @@
             [[alert textFieldAtIndex:0] setKeyboardType:UIKeyboardTypeEmailAddress];
             [[alert textFieldAtIndex:0] setStyleClass:@"customTextField_2"];
             [alert textFieldAtIndex:0].inputAccessoryView = [[UIView alloc] init];
-            [alert setTag:220011];
+            [alert setTag:201];
             [alert show];
         }
     }
